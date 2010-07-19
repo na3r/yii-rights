@@ -34,10 +34,9 @@ class RightsFilter extends CFilter
 			// We are in a module, append the module id to the auth item name
 			$module = $filterChain->controller->module;
 			if( $module!==NULL )
-				$authItem .= ucfirst($module->id); // We need to uppercase the module id
+				$authItem .= ucfirst($module->id).'_';
 
-			$authItem .= ucfirst($controllerId); // We need to uppercase the controller id
-			$authItem .= ucfirst($actionId); // We need to uppercase the action id
+			$authItem .= ucfirst($controllerId).'_'.ucfirst($actionId);
 
 			// Make sure the logged in user has access to the authorization item
 			if( $user->checkAccess($authItem)!==true )
@@ -65,7 +64,7 @@ class RightsFilter extends CFilter
 		if( $user->getIsGuest()===true )
 			$user->loginRequired();
 		else
-			throw new CHttpException(403, Yii::t('yii','You are not authorized to perform this action.'));
+			throw new CHttpException(403, Yii::t('rights', 'You are not authorized to perform this action.'));
 	}
 
 	/**

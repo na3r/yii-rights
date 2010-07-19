@@ -9,7 +9,8 @@
 class RightsAuthorizer extends CApplicationComponent
 {
 	private $_authManager;		// Auth manager
-	private $_superUser;		// Super user name
+	private $_superUserRole;	// Name of the super user role
+	private $_superUsers;		// Users with access to rights
 	private $_user;				// Instace of the user model
 	private $_usernameColumn;	// Username column name
 	private $_permissions;		// Permission tree from roles down
@@ -29,7 +30,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getRoles()
 	{
 		// Get the roles excluding the super user
-	 	$roles = $this->getAuthItems('role', NULL, array($this->_superUser));
+	 	$roles = $this->getAuthItems('role', NULL, array($this->_superUserRole));
 
 	 	// Loop through the roles and get their child counts
 	 	$childCounts = array();
@@ -58,6 +59,8 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function createAuthItem($name, $type, $description='', $bizRule=NULL, $data=NULL)
 	{
+		$bizRule = $bizRule!=='' ? $bizRule : NULL;
+		
 		if( isset($data)===true )
 			$data = empty($data)===false ? $this->saferEval('return '.$data.';') : NULL;
 
@@ -151,7 +154,7 @@ class RightsAuthorizer extends CApplicationComponent
 	protected function excludeInvalidAuthItems($authItems, $model=NULL)
 	{
 		// Always exclude the super user
-		$exclude = array($this->_superUser);
+		$exclude = array($this->_superUserRole);
 
 		// We are getting auth items valid for a certain item
 		// exclude its parents and children aswell
@@ -260,7 +263,6 @@ class RightsAuthorizer extends CApplicationComponent
 		return $found;
 	}
 
-
 	/**
 	* Gets the auth item children recursively.
 	* @param CAuthItem $item Auth item to get children for
@@ -310,7 +312,7 @@ class RightsAuthorizer extends CApplicationComponent
 				$userId = Yii::app()->user->id;
 
 			$authAssignments = $this->_authManager->getAuthAssignments($userId);
-			return isset($authAssignments[ $this->_superUser ]);
+			return isset($authAssignments[ $this->_superUserRole ]);
 		}
 
 		return false;
@@ -499,19 +501,35 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return string Super user name
+	* @return string Super user role name
 	*/
-	public function getSuperUser()
+	public function getSuperUserRole()
 	{
-		return $this->_superUser;
+		return $this->_superUserRole;
 	}
 
 	/**
-	* @param string $superUser Super user name
+	* @param string $superUserRole Super user role name
 	*/
-	public function setSuperUser($superUser)
+	public function setSuperUserRole($superUserRole)
 	{
-		$this->_superUser = $superUser;
+		$this->_superUserRole = $superUserRole;
+	}
+
+	/**
+	* @return string Super users
+	*/
+	public function getSuperUsers()
+	{
+		return $this->_superUsers;
+	}
+
+	/**
+	* @param string $superUsers Super users
+	*/
+	public function setSuperUsers($superUsers)
+	{
+		$this->_superUsers = $superUsers;
 	}
 
 	/**

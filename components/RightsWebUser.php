@@ -14,11 +14,6 @@ class RightsWebUser extends CWebUser
 	private $_module;
 
 	/**
-	* @var string Super user name
-	*/
-	private $_superUser = NULL;
-
-	/**
 	* @var bool User is super user?
 	*/
 	private $_isSuperUser = false;
@@ -29,7 +24,6 @@ class RightsWebUser extends CWebUser
 	public function init()
 	{
 		$this->_module = Yii::app()->getModule('rights');
-		$this->_superUser = $this->_module->superUser;
 
 		parent::init();
 	}

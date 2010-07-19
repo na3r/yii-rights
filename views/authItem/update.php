@@ -94,17 +94,21 @@ $this->breadcrumbs = array(
 
 			</div>
 
-			<div id="authItemAddChild">
+			<?php if( isset($childForm)===true ): ?>
 
-				<h3><?php echo Yii::t('rights', 'Add Child'); ?></h3>
+				<div id="authItemAddChild">
 
-				<div class="rightsForm form">
+					<h3><?php echo Yii::t('rights', 'Add Child'); ?></h3>
 
-					<?php echo $childForm->render(); ?>
+					<div class="rightsForm form">
+
+						<?php echo $childForm->render(); ?>
+
+					</div>
 
 				</div>
 
-			</div>
+			<?php endif; ?>
 
 		</div>
 

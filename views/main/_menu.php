@@ -9,7 +9,7 @@
 			array('label'=>Yii::t('rights', 'Tasks'), 'url'=>array('main/tasks')),
 			array('label'=>Yii::t('rights', 'Roles'), 'url'=>array('main/roles')),
 			array('label'=>Yii::t('rights', 'Create Auth Item'), 'url'=>array('/rights/authItem')),
-		),
+		)
 	));
 	?>
 

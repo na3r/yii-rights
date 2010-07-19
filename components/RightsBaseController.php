@@ -9,13 +9,6 @@
 class RightsBaseController extends CController
 {
 	/**
-	* @var array the breadcrumbs of the current page. The value of this property will
-	* be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
-	* for more details on how to specify this property.
-	*/
-	public $breadcrumbs = array();
-
-	/**
 	* The filter method for 'rights' access filter.
 	* This filter is a wrapper of {@link CAccessControlFilter}.
 	* @param CFilterChain the filter chain that the filter is on.
@@ -33,5 +26,13 @@ class RightsBaseController extends CController
 	public function allowedActions()
 	{
 		return '';
+	}
+
+	/**
+	* Actions to be taken on access denied.
+	*/
+	protected function accessDenied()
+	{
+		throw new CHttpException(403, Yii::t('rights', 'You are not authorized to perform this action.'));
 	}
 }

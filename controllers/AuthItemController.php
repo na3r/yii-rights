@@ -28,9 +28,11 @@ class AuthItemController extends Controller
 	*/
 	public function init()
 	{
-		$this->defaultAction = 'create';
 		$this->_module = Yii::app()->getModule('rights');
 		$this->_auth = $this->_module->getComponent('auth');
+
+		$this->layout = $this->_module->layout;
+		$this->defaultAction = 'create';
 	}
 
 	/**
@@ -60,7 +62,7 @@ class AuthItemController extends Controller
 					'assign',
 					'revoke',
 				),
-				'users'=>array($this->_auth->superUser),
+				'users'=>$this->_auth->superUsers,
 			),
 			array('deny',
 				'users'=>array('*'),
@@ -74,7 +76,7 @@ class AuthItemController extends Controller
 	public function actionCreate()
 	{
 		// Create the auth item form
-	    $form = new CForm('application.modules.rights.config.authItemForm', new AuthItemForm);
+	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm);
 	    $form->scenario = 'create';
 
 	    // Form is submitted and data is valid, redirect the user
@@ -100,40 +102,48 @@ class AuthItemController extends Controller
 		$model = $this->loadModel();
 
 		// Create the auth item form
-	    $form = new CForm('application.modules.rights.config.authItemForm', new AuthItemForm);
+	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm);
 	    $form->scenario = 'update';
 	    unset($form->elements['type']); // Unset the type as it cannot be changed
 
-		// Create a from to add a child for the auth item
+		// Create a form to add children to the auth item
 		$childrenSelectOptions = $this->_auth->getAuthItemSelectOptions($model->type, $model);
-	    $childForm = new CForm(array(
-		    'elements'=>array(
-		        'child'=>array(
-		            'type'=>'dropdownlist',
-		            'items'=>$childrenSelectOptions,
-		        ),
-		    ),
-		    'buttons'=>array(
-		        'submit'=>array(
-		            'type'=>'submit',
-		            'label'=>Yii::t('rights', 'Add'),
-		        ),
-		    ),
-		), new ChildForm);
-
-	    // Form is submitted and data is valid, redirect the user
-	    if( $form->submitted()===true && $form->validate()===true )
+		if( count($childrenSelectOptions)>0 )
 		{
-			// Update and redirect
-			$this->_auth->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
-			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
+		    $childForm = new CForm(array(
+			    'elements'=>array(
+			        'child'=>array(
+			            'type'=>'dropdownlist',
+			            'items'=>$childrenSelectOptions,
+			        ),
+			    ),
+			    'buttons'=>array(
+			        'submit'=>array(
+			            'type'=>'submit',
+			            'label'=>Yii::t('rights', 'Add'),
+			        ),
+			    ),
+			), new ChildForm);
+
+		    // Form is submitted and data is valid, redirect the user
+		    if( $form->submitted()===true && $form->validate()===true )
+			{
+				// Update and redirect
+				$this->_auth->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
+				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
+			}
+
+			// Child form is submitted and data is valid, redirect the user to the same page
+			if( $childForm->submitted()===true && $childForm->validate()===true )
+			{
+				$this->_auth->authManager->addItemChild($_GET['name'], $childForm->model->child);
+				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
+			}
 		}
-
-		// Child form is submitted and data is valid, redirect the user to the same page
-		if( $childForm->submitted()===true && $childForm->validate()===true )
+		// No children available
+		else
 		{
-			$this->_auth->authManager->addItemChild($_GET['name'], $childForm->model->child);
-			$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
+			$childForm = NULL;
 		}
 
 		// Set the values for the form fields

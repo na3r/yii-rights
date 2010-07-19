@@ -18,9 +18,9 @@ class Rights
 	* @var array Valid auth item types
 	*/
 	public static $authItemTypes = array(
-		CAuthItem::TYPE_ROLE=>'role',
-		CAuthItem::TYPE_TASK=>'task',
 		CAuthItem::TYPE_OPERATION=>'operation',
+		CAuthItem::TYPE_TASK=>'task',
+		CAuthItem::TYPE_ROLE=>'role',
 	);
 
 	/**

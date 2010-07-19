@@ -12,13 +12,34 @@ class RightsModule extends CWebModule
 	* Do not change these default values!
 	* These can be set in the module config.
 	*/
-	public $superUser			= 'Admin';		// Super user name
-	public $userModel			= 'User';		// User model class name
-	public $usernameColumn		= 'username';	// Name of the username column
-	public $enableBizRule		= true;			// Enable business rules?
-	public $enableBizRuleData	= false;		// Enable data for business rules?
-
-	private $_assetPath;
+	/**
+	* @var string Name of the role with super user priviledges
+	*/
+	public $superUserRole = 'Admin';
+	/**
+	* @var array Users with access to Rights
+	*/
+	public $superUsers = array('admin');
+	/**
+	* @var string User model class name
+	*/
+	public $userModel = 'User';
+	/**
+	* @var string Name of the username column in the db
+	*/
+	public $usernameColumn = 'username';
+	/**
+	* @var bool Enable business rules?
+	*/
+	public $enableBizRule = true;
+	/**
+	* @var bool Enable data for business rules?
+	*/
+	public $enableBizRuleData = false;
+	/**
+	* @var string Path to layout to use for Rights.
+	*/
+	public $layout = 'application.views.layouts.column1';
 
 	/**
 	* Initialization.
@@ -36,7 +57,8 @@ class RightsModule extends CWebModule
 		$this->setComponent('auth', new RightsAuthorizer);
 
 		// Set the super user, user model and create the permission tree
-		$this->auth->superUser = $this->superUser;
+		$this->auth->superUserRole = $this->superUserRole;
+		$this->auth->superUsers = $this->superUsers;
 		$this->auth->user = $this->userModel;
 		$this->auth->usernameColumn = $this->usernameColumn;
 		$this->auth->createPermissions();

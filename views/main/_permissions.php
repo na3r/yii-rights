@@ -72,10 +72,16 @@
 
 	<p class="rightsInfo">* <?php echo Yii::t('rights', 'Hover to see from where the permission is inherited.'); ?></p>
 
+	<script type="text/javascript">
+
+		jQuery('.inheritedItem').rightsTooltip({
+			title:'<?php echo Yii::t('rights', 'Parents: '); ?>'}
+		);
+
+	</script>
+
 <?php else: ?>
 
 	<p><?php echo Yii::t('rights', 'No auth items found.'); ?></p>
 
 <?php endif; ?>
-
-<?php Yii::app()->clientScript->registerScript('tooltip', 'jQuery(".inheritedItem").rightsTooltip({title:"'.Yii::t('rights', 'Parents: ').'"});', CClientScript::POS_END); ?>

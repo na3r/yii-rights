@@ -23,9 +23,11 @@ class AssignmentController extends Controller
 	*/
 	public function init()
 	{
-		$this->defaultAction = 'view';
 		$this->_module = Yii::app()->getModule('rights');
 		$this->_auth = $this->_module->getComponent('auth');
+
+		$this->layout = $this->_module->layout;
+		$this->defaultAction = 'view';
 	}
 
 	/**
@@ -52,7 +54,7 @@ class AssignmentController extends Controller
 					'user',
 					'revoke',
 				),
-				'users'=>array($this->_auth->superUser),
+				'users'=>$this->_auth->superUsers,
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

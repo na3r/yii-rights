@@ -23,9 +23,11 @@ class MainController extends Controller
 	*/
 	public function init()
 	{
-		$this->defaultAction = 'permissions';
 		$this->_module = Yii::app()->getModule('rights');
 		$this->_auth = $this->_module->getComponent('auth');
+
+		$this->layout = $this->_module->layout;
+		$this->defaultAction = 'permissions';
 	}
 
 	/**
@@ -46,16 +48,16 @@ class MainController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			array('allow',
 				'actions'=>array(
 					'permissions',
 					'operations',
 					'tasks',
 					'roles',
 				),
-				'users'=>array($this->_auth->superUser),
+				'users'=>$this->_auth->superUsers,
 			),
-			array('deny',  // deny all users
+			array('deny',
 				'users'=>array('*'),
 			),
 		);

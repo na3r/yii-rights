@@ -42,8 +42,8 @@ create table AuthAssignment
 ) type=InnoDB, character set utf8 collate utf8_general_ci;
 
 /**
- * Necessary roles and relations for the Authorization module.
- * If you wish to use a different super user name than 'admin'
+ * Necessary roles and relations for the Rights module.
+ * If you wish to use a different super user name than 'Admin'
  * change it before running these queries.
  * If you wish to assign the super user role to any other user
  * change the user id in the last query.
@@ -53,6 +53,6 @@ create table AuthAssignment
  * @since 0.5
  */
 
-insert into AuthItem (name,type,data) values ('admin',2,'N;');
-insert into AuthItem (name,type,data) values ('guest',2,'N;');
-insert into AuthAssignment (itemname,userid,data) values ('admin',1,'N;');
+insert into AuthItem (name,type,data) values ('Admin',2,'N;');
+insert into AuthItem (name,type,data) values ('Guest',2,'N;');
+insert into AuthAssignment (itemname,userid,data) values ('Admin',1,'N;');
