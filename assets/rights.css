@@ -1,0 +1,83 @@
+/**
+ * Rights module style sheet file.
+ *
+ * Add this css to your main stylesheet in order to apply the module css.
+ *
+ * @author Christoffer Niska
+ * @copyright Copyright &copy; 2008 Christoffer Niska
+ * @since 0.5
+ */
+
+.rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
+
+#rightsMenu { margin:0 0 30px 0; }
+#rightsMenu ul { margin:10px 0; padding:0; list-style-type:none; }
+#rightsMenu li {
+	display:inline;
+	margin:0;
+	padding:8px 12px;
+	background:url('images/bg_menuButton.gif') repeat-x;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+#rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
+
+a { color:#666699/*#587593*/; font-weight:bold; text-decoration:none; }
+a:hover { color:#666699; text-decoration:underline; }
+
+.rightsForm label {
+	display:block;
+	margin:0 0 8px 0;
+	font-weight:bold;
+	font-size:12px; }
+.rightsForm input[type=text] {
+	width:360px;
+	padding:5px;
+	background:url('images/bg_formInputText.gif') repeat-x;
+	border:1px solid #c0c0c0;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+.rightsForm input { outline:none !important; }
+.rightsForm input[type=submit] { padding:2px 5px; }
+.rightsForm span.required { color:#ff0000; }
+
+.rightsTable { border:0; margin:0 0 20px 0; }
+.rightsTable * { font-size:12px; }
+.rightsTable th, .rightsTable td { padding:10px; }
+.rightsTable th { font-weight:bold; font-size:13px; }
+.rightsTable .odd { background-color:#e8edff/*#e5f1f4*/; }
+
+.rightsMiniTable { border:0; }
+.rightsMiniTable * { font-size:11px; }
+.rightsMiniTable th, .rightsMiniTable td { padding:8px; }
+.rightsMiniTable .odd td { background-color:#e8edff; }
+
+.bizRuleColumn, .bizRuleDataColumn {
+	color:#808080;
+	font-family:Consolas, Arial, san-serif !important;
+	font-size:11px;
+}
+.deleteColumn, .removeColumn, .revokeColumn { text-align:right; }
+.assignmentColumn { }
+
+#authItemParents, #authItemChildren, #userAssignments { margin-bottom:30px; }
+.parentTable, .childTable, .userAssignmentTable { width:420px; }
+
+.rightsInfo { color:#808080; font-size:12px; font-style:italic; }
+.inheritedItem { cursor:pointer; font-style:italic; }
+
+#rightsTooltip {
+	min-width:100px;
+	max-width:240px;
+	padding:8px;
+    position:absolute;
+	background:url('images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
+    border:1px solid #c0c0c0;
+    font-family:Consolas, Arial, san-serif !important;
+    font-size:11px;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+}
+#rightsTooltip .heading { font-weight:bold; }
+#rightsTooltip .content { color:#808080; }
