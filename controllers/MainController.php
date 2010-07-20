@@ -92,9 +92,12 @@ class MainController extends Controller
 			}
 		}
 
+		// Calculate the role column width based on the amount of existing roles
+		$roleColumnWidth = count($roles)>0 ? 75/count($roles) : 0;
+
 		$params = array(
 			'roles'=>$roles,
-			'roleColumnWidth'=>(75/count($roles)),
+			'roleColumnWidth'=>$roleColumnWidth,
 			'authItems'=>$authItems,
 			'rights'=>$rights,
 			'parents'=>$parents,
