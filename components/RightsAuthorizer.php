@@ -60,7 +60,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function createAuthItem($name, $type, $description='', $bizRule=NULL, $data=NULL)
 	{
 		$bizRule = $bizRule!=='' ? $bizRule : NULL;
-		
+
 		if( isset($data)===true )
 			$data = empty($data)===false ? $this->saferEval('return '.$data.';') : NULL;
 
@@ -533,7 +533,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param string $superUser Super user name
+	* @param string $mode User model name
 	*/
 	public function setUser($model)
 	{

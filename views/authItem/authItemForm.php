@@ -25,7 +25,7 @@ $config = array(
     'buttons'=>array(
         'submit'=>array(
             'type'=>'submit',
-            'label'=>Yii::t('rights', 'Save'),
+            'label'=>Yii::t('RightsModule.tr', 'Save'),
         ),
     ),
 );

@@ -26,7 +26,7 @@ class ChildForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'child' => Yii::t('rights', 'Child'),
+			'child' => Yii::t('RightsModule.tr', 'Child'),
 		);
 	}
 }

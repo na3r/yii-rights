@@ -1,4 +1,4 @@
-<h2><?php echo Yii::t('rights', 'Permissions'); ?></h2>
+<h2><?php echo Yii::t('RightsModule.tr', 'Permissions'); ?></h2>
 
 <?php if( count($authItems)>0 ): ?>
 
@@ -6,7 +6,7 @@
 
 		<tr>
 
-			<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('rights', 'Description'); ?></th>
+			<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.tr', 'Description'); ?></th>
 
 			<?php foreach( $roles as $roleName=>$role ): ?>
 
@@ -29,7 +29,7 @@
 
 							<?php
 							// "Minor" hack. Couldn't think of any other way to do this.
-							echo CHtml::link(Yii::t('rights', 'Revoke'), '#', array(
+							echo CHtml::link(Yii::t('RightsModule.tr', 'Revoke'), '#', array(
 								'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/revoke', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('main/permissions').'", { ajax:true }); } }); return false;'
 							));
 							/*
@@ -42,14 +42,14 @@
 						<?php elseif( $rights[ $roleName ][ $name ]===Rights::PERM_INHERIT ): ?>
 
 							<span class="inheritedItem" title="<?php echo isset($parents[ $roleName ][ $name ])===true ? $parents[ $roleName ][ $name ] : ''; ?>">
-								<?php echo Yii::t('rights', 'Inherited'); ?> *
+								<?php echo Yii::t('RightsModule.tr', 'Inherited'); ?> *
 							</span>
 
 						<?php else: ?>
 
 							<?php
 							// "Minor" hack. Couldn't think of any other way to do this.
-							echo CHtml::link(Yii::t('rights', 'Assign'), '#', array(
+							echo CHtml::link(Yii::t('RightsModule.tr', 'Assign'), '#', array(
 								'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/assign', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('main/permissions').'", { ajax:true }); } }); return false;'
 							));
 							/*
@@ -70,18 +70,18 @@
 
 	</table>
 
-	<p class="rightsInfo">* <?php echo Yii::t('rights', 'Hover to see from where the permission is inherited.'); ?></p>
+	<p class="rightsInfo">* <?php echo Yii::t('RightsModule.tr', 'Hover to see from where the permission is inherited.'); ?></p>
 
 	<script type="text/javascript">
 
 		jQuery('.inheritedItem').rightsTooltip({
-			title:'<?php echo Yii::t('rights', 'Parents: '); ?>'}
+			title:'<?php echo Yii::t('RightsModule.tr', 'Parents'); ?>: '}
 		);
 
 	</script>
 
 <?php else: ?>
 
-	<p><?php echo Yii::t('rights', 'No auth items found.'); ?></p>
+	<p><?php echo Yii::t('RightsModule.tr', 'No auth items found.'); ?></p>
 
 <?php endif; ?>

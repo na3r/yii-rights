@@ -64,7 +64,7 @@ class RightsFilter extends CFilter
 		if( $user->getIsGuest()===true )
 			$user->loginRequired();
 		else
-			throw new CHttpException(403, Yii::t('rights', 'You are not authorized to perform this action.'));
+			throw new CHttpException(403, Yii::t('RightsModule.tr', 'You are not authorized to perform this action.'));
 	}
 
 	/**

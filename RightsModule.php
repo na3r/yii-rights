@@ -56,6 +56,18 @@ class RightsModule extends CWebModule
 		// Add the authorizer component needed by this module
 		$this->setComponent('auth', new RightsAuthorizer);
 
+		// Add the translation component
+		/*
+	    $this->setComponents(array(
+			'i18N'=>array(
+				'class'=>'CPhpMessageSource',
+				'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'messages',
+			),
+	    ));
+	    */
+
+	    //var_dump($this->i18N->translate('rights', 'Auth Item', 'fi'));
+
 		// Set the super user, user model and create the permission tree
 		$this->auth->superUserRole = $this->superUserRole;
 		$this->auth->superUsers = $this->superUsers;

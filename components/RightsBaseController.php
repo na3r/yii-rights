@@ -33,6 +33,6 @@ class RightsBaseController extends CController
 	*/
 	protected function accessDenied()
 	{
-		throw new CHttpException(403, Yii::t('rights', 'You are not authorized to perform this action.'));
+		throw new CHttpException(403, Yii::t('RightsModule.tr', 'You are not authorized to perform this action.'));
 	}
 }

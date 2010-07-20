@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	Yii::t('rights', 'Rights')=>array('/rights/main'),
-	Yii::t('rights', 'Permissions'),
+	'Rights'=>array('/rights/main'),
+	Yii::t('RightsModule.tr', 'Permissions'),
 );
 ?>
 

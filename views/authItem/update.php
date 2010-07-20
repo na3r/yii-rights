@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs = array(
-	Yii::t('rights', 'Rights')=>array('/rights/main'),
-	Yii::t('rights', 'Auth Item'),
+	'Rights'=>array('/rights/main'),
+	Yii::t('RightsModule.tr', 'Auth Item'),
 	$model->name,
 );
 ?>
@@ -14,7 +14,7 @@ $this->breadcrumbs = array(
 
 		<div class="rightsForm form span-12 first">
 
-			<h2><?php echo Yii::t('rights', 'Update :name', array(':name'=>$model->name)); ?></h2>
+			<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>$model->name)); ?></h2>
 
 			<p class="rightsInfo"><?php echo ucfirst(Rights::getAuthItemTypeString($model->type)); ?></p>
 
@@ -26,7 +26,7 @@ $this->breadcrumbs = array(
 
 			<div id="authItemParents">
 
-				<h2><?php echo Yii::t('rights', 'Parents'); ?></h2>
+				<h2><?php echo Yii::t('RightsModule.tr', 'Parents'); ?></h2>
 
 				<?php if( count($parents)>0 ): ?>
 
@@ -49,7 +49,7 @@ $this->breadcrumbs = array(
 
 				<?php else: ?>
 
-					<p class="rightsInfo"><?php echo Yii::t('rights', 'This item has no parents.'); ?></p>
+					<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no parents.'); ?></p>
 
 				<?php endif;?>
 
@@ -57,7 +57,7 @@ $this->breadcrumbs = array(
 
 			<div id="authItemChildren">
 
-				<h2><?php echo Yii::t('rights', 'Children'); ?></h2>
+				<h2><?php echo Yii::t('RightsModule.tr', 'Children'); ?></h2>
 
 				<?php if( count($children)>0 ): ?>
 
@@ -73,9 +73,9 @@ $this->breadcrumbs = array(
 
 								<td class="removeColumn">
 									<?php
-									echo CHtml::linkButton(Yii::t('rights', 'Remove'), array(
+									echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Remove'), array(
 										'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
-										'confirm'=>Yii::t('rights', 'Are you sure you want to remove this child?')
+										'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to remove this child?')
 									));
 									?>
 								</td>
@@ -88,7 +88,7 @@ $this->breadcrumbs = array(
 
 				<?php else: ?>
 
-					<p class="rightsInfo"><?php echo Yii::t('rights', 'This item has no children.'); ?></p>
+					<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no children.'); ?></p>
 
 				<?php endif; ?>
 
@@ -98,7 +98,7 @@ $this->breadcrumbs = array(
 
 				<div id="authItemAddChild">
 
-					<h3><?php echo Yii::t('rights', 'Add Child'); ?></h3>
+					<h3><?php echo Yii::t('RightsModule.tr', 'Add Child'); ?></h3>
 
 					<div class="rightsForm form">
 

@@ -69,11 +69,11 @@ class Rights
 	*/
 	public static function getAuthItemTypeSelectOptions()
 	{
-	 	$selectOptions = array();
-	 	foreach( Rights::$authItemTypes as $key=>$type )
-	 		$selectOptions[ $key ] = ucfirst($type);
-
-	 	return $selectOptions;
+	 	return array(
+	 		CAuthItem::TYPE_OPERATION=>Yii::t('RightsModule.tr', 'Operaatio'),
+	 		CAuthItem::TYPE_TASK=>Yii::t('RightsModule.tr', 'Tehtävä'),
+	 		CAuthItem::TYPE_ROLE=>Yii::t('RightsModule.tr', 'Rooli'),
+		);
 	}
 
 	/**
