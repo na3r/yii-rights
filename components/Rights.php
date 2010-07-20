@@ -70,9 +70,9 @@ class Rights
 	public static function getAuthItemTypeSelectOptions()
 	{
 	 	return array(
-	 		CAuthItem::TYPE_OPERATION=>Yii::t('RightsModule.tr', 'Operaatio'),
-	 		CAuthItem::TYPE_TASK=>Yii::t('RightsModule.tr', 'Tehtävä'),
-	 		CAuthItem::TYPE_ROLE=>Yii::t('RightsModule.tr', 'Rooli'),
+	 		CAuthItem::TYPE_OPERATION=>Yii::t('RightsModule.tr', 'Operation'),
+	 		CAuthItem::TYPE_TASK=>Yii::t('RightsModule.tr', 'Task'),
+	 		CAuthItem::TYPE_ROLE=>Yii::t('RightsModule.tr', 'Role'),
 		);
 	}
 
