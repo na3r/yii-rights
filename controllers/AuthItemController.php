@@ -76,14 +76,16 @@ class AuthItemController extends Controller
 	public function actionCreate()
 	{
 		// Create the auth item form
-	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm);
-	    $form->scenario = 'create';
+	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm('create'));
 
 	    // Form is submitted and data is valid, redirect the user
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
-			// Create and redirect
-			$this->_auth->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
+			// Create if not already exists
+			if( $this->_auth->authManager->getAuthItem($form->model->name)===NULL )
+				$this->_auth->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
+
+			// Redirect
 			$this->redirect(array('authItem/update', 'name'=>$form->model->name));
 		}
 
@@ -102,9 +104,30 @@ class AuthItemController extends Controller
 		$model = $this->loadModel();
 
 		// Create the auth item form
-	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm);
-	    $form->scenario = 'update';
+	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm('update'));
 	    unset($form->elements['type']); // Unset the type as it cannot be changed
+
+		// Form is submitted and data is valid, redirect the user
+		if( $form->submitted()===true && $form->validate()===true )
+		{
+			// Update and redirect
+			$this->_auth->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
+			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
+		}
+
+		// Delete is pressed
+		if( $form->submitted('delete')===true )
+		{
+			// Delete the item using Javascript
+			$script = 'confirm("'.Yii::t('RightsModule.tr', 'Are you sure you want to delete this item?').'") ? ';
+			$script.= 'jQuery.ajax({ ';
+			$script.= 'type:"POST", ';
+			$script.= 'url:"'.$this->createUrl('authItem/delete', array('name'=>$_GET['name'])).'", ';
+			$script.= 'data:{ ajax:true }, ';
+			$script.= 'success:function() { window.location.href="'.$this->createUrl(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions').'"; } ';
+			$script.= '}) : ""; ';
+			Yii::app()->clientScript->registerScript('aiDelete', $script);
+		}
 
 		// Create a form to add children to the auth item
 		$childrenSelectOptions = $this->_auth->getAuthItemSelectOptions($model->type, $model);
@@ -124,14 +147,6 @@ class AuthItemController extends Controller
 			        ),
 			    ),
 			), new ChildForm);
-
-		    // Form is submitted and data is valid, redirect the user
-		    if( $form->submitted()===true && $form->validate()===true )
-			{
-				// Update and redirect
-				$this->_auth->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
-				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
-			}
 
 			// Child form is submitted and data is valid, redirect the user to the same page
 			if( $childForm->submitted()===true && $childForm->validate()===true )

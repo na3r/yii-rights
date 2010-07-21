@@ -5,7 +5,7 @@
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 */
-$config = array(
+return array(
     'elements'=>array(
     	'type'=>array(
     		'type'=>'dropdownlist',
@@ -20,32 +20,26 @@ $config = array(
             'type'=>'text',
             'style'=>'width:320px',
         ),
+        'bizRule'=>array(
+    		'type'=>'text',
+    		'style'=>'width:320px',
+    		'visible'=>Rights::getConfig('enableBizRule')===true,
+    	),
+    	'data'=>array(
+	        'type'=>'text',
+	        'style'=>'width:320px',
+	        'visible'=>Rights::getConfig('enableBizRule')===true && Rights::getConfig('enableBizRuleData')===true,
+	    ),
     ),
-
     'buttons'=>array(
         'submit'=>array(
             'type'=>'submit',
             'label'=>Yii::t('RightsModule.tr', 'Save'),
         ),
+        'delete'=>array(
+        	'type'=>'submit',
+        	'label'=>Yii::t('RightsModule.tr', 'Delete'),
+        	'visible'=>$this->model->scenario!=='create',
+        ),
     ),
 );
-
-// Enable business rules if needed
-if( Rights::getConfig('enableBizRule')===true )
-{
-	$config['elements']['bizRule'] = array(
-    	'type'=>'text',
-    	'style'=>'width:320px',
-    );
-
-	// Also enable data for business rules if needed
-	if( Rights::getConfig('enableBizRuleData')===true )
-	{
-	    $config['elements']['data'] = array(
-	        'type'=>'text',
-	        'style'=>'width:320px',
-	    );
-	}
-}
-
-return $config;
