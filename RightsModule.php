@@ -64,13 +64,13 @@ class RightsModule extends CWebModule
 		$this->auth->createPermissions();
 
 		// Publish the module's assets folder
-		$assetPath = Yii::app()->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets');
+		$assetPath = Yii::app()->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
 
 		// Register jQuery and necessary scripts and styles
 		$app = Yii::app();
 		$app->clientScript->registerCoreScript('jquery');
-		$app->clientScript->registerScriptFile($assetPath.'/rights.js');
-		$app->clientScript->registerCssFile($assetPath.'/rights.css');
+		$app->clientScript->registerScriptFile($assetPath.'/js/rights.js');
+		$app->clientScript->registerCssFile($assetPath.'/css/rights.css');
 
 		// Set the default controller
 		$this->defaultController = 'main';
