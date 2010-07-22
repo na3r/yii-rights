@@ -1,14 +1,14 @@
 <?php
 /**
-* Auth item form class file.
+* Auth item child form class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9
 */
-class ChildForm extends CFormModel
+class AuthChildForm extends CFormModel
 {
-	public $child;
+	public $name;
 
 	/**
 	 * Declares the validation rules.
@@ -16,7 +16,7 @@ class ChildForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('child', 'required'),
+			array('name', 'required'),
 		);
 	}
 
@@ -26,7 +26,7 @@ class ChildForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'child' => Yii::t('RightsModule.tr', 'Child'),
+			'name' => Yii::t('RightsModule.tr', 'Name'),
 		);
 	}
 }

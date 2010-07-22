@@ -10,6 +10,7 @@ return array(
     	'type'=>array(
     		'type'=>'dropdownlist',
     		'items'=>Rights::getAuthItemTypeSelectOptions(),
+    		'visible'=>$this->model->scenario==='create',
     	),
         'name'=>array(
             'type'=>'text',
@@ -36,10 +37,19 @@ return array(
             'type'=>'submit',
             'label'=>Yii::t('RightsModule.tr', 'Save'),
         ),
+        /*
+        // FIXME: This should work as a form link but doesn't.
         'delete'=>array(
-        	'type'=>'submit',
+        	'type'=>'link',
         	'label'=>Yii::t('RightsModule.tr', 'Delete'),
+        	'attributes'=>array(
+        		//'submit'=>'authItem/delete',
+        		//'params'=>array('name'=>isset($_GET['name'])===true ? $_GET['name'] : ''),
+        		//'return'=>true,
+        		'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to delete this item?'),
+        	),
         	'visible'=>$this->model->scenario!=='create',
         ),
+        */
     ),
 );

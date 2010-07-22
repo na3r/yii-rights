@@ -105,7 +105,6 @@ class AuthItemController extends Controller
 
 		// Create the auth item form
 	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm('update'));
-	    unset($form->elements['type']); // Unset the type as it cannot be changed
 
 		// Form is submitted and data is valid, redirect the user
 		if( $form->submitted()===true && $form->validate()===true )
@@ -115,43 +114,17 @@ class AuthItemController extends Controller
 			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
 		}
 
-		// Delete is pressed
-		if( $form->submitted('delete')===true )
-		{
-			// Delete the item using Javascript
-			$script = 'confirm("'.Yii::t('RightsModule.tr', 'Are you sure you want to delete this item?').'") ? ';
-			$script.= 'jQuery.ajax({ ';
-			$script.= 'type:"POST", ';
-			$script.= 'url:"'.$this->createUrl('authItem/delete', array('name'=>$_GET['name'])).'", ';
-			$script.= 'data:{ ajax:true }, ';
-			$script.= 'success:function() { window.location.href="'.$this->createUrl(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions').'"; } ';
-			$script.= '}) : ""; ';
-			Yii::app()->clientScript->registerScript('aiDelete', $script);
-		}
-
 		// Create a form to add children to the auth item
-		$childrenSelectOptions = $this->_auth->getAuthItemSelectOptions($model->type, $model);
-		if( count($childrenSelectOptions)>0 )
+		$selectOptions = $this->_auth->getAuthItemSelectOptions($model->type, $model);
+		if( count($selectOptions)>0 )
 		{
-		    $childForm = new CForm(array(
-			    'elements'=>array(
-			        'child'=>array(
-			            'type'=>'dropdownlist',
-			            'items'=>$childrenSelectOptions,
-			        ),
-			    ),
-			    'buttons'=>array(
-			        'submit'=>array(
-			            'type'=>'submit',
-			            'label'=>Yii::t('rights', 'Add'),
-			        ),
-			    ),
-			), new ChildForm);
+		    $childForm = new CForm('application.modules.rights.views.authItem.authChildForm', new AuthChildForm);
+		    $childForm->elements['name']->items = $selectOptions; // Populate name items
 
 			// Child form is submitted and data is valid, redirect the user to the same page
 			if( $childForm->submitted()===true && $childForm->validate()===true )
 			{
-				$this->_auth->authManager->addItemChild($_GET['name'], $childForm->model->child);
+				$this->_auth->authManager->addItemChild($_GET['name'], $childForm->model->name);
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
 			}
 		}

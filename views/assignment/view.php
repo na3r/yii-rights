@@ -37,6 +37,8 @@ $this->breadcrumbs=array(
 
 			</table>
 
+			<?php $this->widget('CLinkPager', array('pages'=>$pages)); ?>
+
 		<?php else: ?>
 
 			<p><?php echo Yii::t('RightsModule.tr', 'No users found.'); ?></p>

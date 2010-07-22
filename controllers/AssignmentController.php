@@ -67,7 +67,24 @@ class AssignmentController extends Controller
 	*/
 	public function actionView()
 	{
-		$users = $this->_auth->getUsers();
+		$criteria = new CDbCriteria();
+		$count = $this->_auth->user->count($criteria);
+
+		// Create the pager
+		$pages = new CPagination($count);
+		$pages->pageSize = 20;
+		$pages->applyLimit($criteria);
+
+		// Get all users
+		$allUsers = $this->_auth->user->findAll($criteria);
+
+		// Remove super users
+		$users = array();
+		foreach( $allUsers as $user )
+			if( $this->_auth->isSuperUser($user->id)===false )
+				$users[ (int)$user->id ] = $user;
+
+		// Get the user assignments
 		$authAssignments = $this->_auth->getUserAuthAssignments(array_keys($users));
 
 		// Render the view
@@ -75,6 +92,7 @@ class AssignmentController extends Controller
 			'users'=>$users,
 			'username'=>$this->_auth->usernameColumn,
 			'authAssignments'=>$authAssignments,
+			'pages'=>$pages,
 			'i'=>0,
 		));
 	}

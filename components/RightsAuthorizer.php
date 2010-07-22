@@ -200,6 +200,8 @@ class RightsAuthorizer extends CApplicationComponent
 		return $selectOptions;
 	}
 
+
+
 	/**
 	* Gets parents for an auth item.
 	* @param string $itemName Authorization item to get parents for
@@ -406,22 +408,6 @@ class RightsAuthorizer extends CApplicationComponent
 					return 2;
 
 		return 0;
-	}
-
-	/**
-	* Gets the valid users (exclude the super users).
-	* @return array User models
-	*/
-	public function getUsers()
-	{
-		$users = $this->_user->findAll();
-
-		$validUsers = array();
-		foreach( $users as $user )
-			if( $this->isSuperUser($user->id)===false )
-				$validUsers[ (int)$user->id ] = $user;
-
-		return $validUsers;
 	}
 
 	/**
