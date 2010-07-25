@@ -9,6 +9,8 @@
  */
 
 .rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
+.rights a { color:#666699; font-weight:bold; text-decoration:none; }
+.rights a:hover { color:#666699; text-decoration:underline; }
 
 #rightsMenu { margin:0 0 30px 0; }
 #rightsMenu ul { margin:10px 0; padding:0; list-style-type:none; }
@@ -21,9 +23,6 @@
 	-webkit-border-radius:6px;
 }
 #rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
-
-a { color:#666699/*#587593*/; font-weight:bold; text-decoration:none; }
-a:hover { color:#666699; text-decoration:underline; }
 
 .rightsForm label {
 	display:block;
@@ -59,7 +58,6 @@ a:hover { color:#666699; text-decoration:underline; }
 	font-size:11px;
 }
 .deleteColumn, .removeColumn, .revokeColumn { text-align:right; }
-.assignmentColumn { }
 
 #authItemParents, #authItemChildren, #userAssignments { margin-bottom:30px; }
 .parentTable, .childTable, .userAssignmentTable { width:420px; }
@@ -81,3 +79,5 @@ a:hover { color:#666699; text-decoration:underline; }
 }
 #rightsTooltip .heading { font-weight:bold; }
 #rightsTooltip .content { color:#808080; }
+
+#rightsInstall { text-align:center; }
