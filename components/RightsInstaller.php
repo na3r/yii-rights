@@ -104,20 +104,22 @@ class RightsInstaller extends CApplicationComponent
 				$roles = array_merge($defaultRoles, array($superUserRole));
 				foreach( $roles as $roleName )
 				{
-					$sql = "insert into {$itemTable} (name, type) values (:name, :type)";
+					$sql = "insert into {$itemTable} (name, type, data) values (:name, :type, :data)";
 					$command = $this->db->createCommand($sql);
 					$command->bindValue(':name', $roleName);
 					$command->bindValue(':type', CAuthItem::TYPE_ROLE);
+					$command->bindValue(':data', 'N;'); // Column is serialized
 					$command->execute();
 				}
 
 				// Set super users
 				foreach( $superUsers as $id=>$username )
 				{
-					$sql = "insert into {$assignmentTable} (itemname, userid) values (:itemname, :userid)";
+					$sql = "insert into {$assignmentTable} (itemname, userid, data) values (:itemname, :userid, :data)";
 					$command = $this->db->createCommand($sql);
 					$command->bindValue(':itemname', $superUserRole);
 					$command->bindValue(':userid', $id);
+					$command->bindValue(':data', 'N;'); // Column is serialized
 					$command->execute();
 				}
 
