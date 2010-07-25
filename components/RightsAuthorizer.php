@@ -1,6 +1,6 @@
 <?php
 /**
-* RightsAuthorizer component class file.
+* Rights authorizer component class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska

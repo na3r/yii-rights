@@ -1,6 +1,6 @@
 <?php
 /**
-* Rights access filter class file.
+* Rights filter class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska

@@ -1,6 +1,6 @@
 <?php
 /**
-* Rights installer class file.
+* Rights installer component class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska

@@ -91,7 +91,7 @@ class RightsModule extends CWebModule
 	}
 
 	/**
-	* @return RightsInstaller component
+	* Installs Rights.
 	*/
 	public function install()
 	{
