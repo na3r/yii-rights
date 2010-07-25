@@ -1,8 +1,8 @@
 <?php
 /**
-* Rights helper class file.
+* Rights class file.
 *
-* Provides static functions for interaction with Rights outside of the module.
+* Provides static functions for interaction with Rights from outside of the module.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
@@ -25,10 +25,10 @@ class Rights
 
 	/**
 	* Assigns an auth item to the given user.
-	* @param mixed $itemName Name of the auth item to assign
-	* @param mixed $userId User id for user to assign the item to
-	* @param mixed $bizRule Business rule
-	* @param mixed $data Business rule data
+	* @param string $itemName Name of the auth item to assign
+	* @param int $userId User id for user to assign the item to
+	* @param string $bizRule Business rule
+	* @param string $data Business rule data
 	* @return CAuthItem
 	*/
 	public static function assign($itemName, $userId, $bizRule=NULL, $data=NULL)
@@ -56,7 +56,7 @@ class Rights
 	*/
 	public static function getConfig($name)
 	{
-		$module = Yii::app()->getModule('rights');
+		$module = self::getModule();
 		if( isset($module->$name)===true )
 			return $module->$name;
 

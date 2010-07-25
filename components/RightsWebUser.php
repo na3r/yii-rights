@@ -48,9 +48,9 @@ class RightsWebUser extends CWebUser
 		if( $this->_isSuperUser===true )
 			return true;
 
+		// User is super user and therefore allowed access
 		if( $this->_module->auth->isSuperUser()===true )
 		{
-			// User is super user and therefore allowed access
 			$this->_isSuperUser = true;
 			return true;
 		}

@@ -8,12 +8,34 @@
 */
 class RightsAuthorizer extends CApplicationComponent
 {
-	private $_authManager;		// Auth manager
-	private $_superUserRole;	// Name of the super user role
-	private $_superUsers;		// Users with access to rights
-	private $_user;				// Instace of the user model
-	private $_usernameColumn;	// Username column name
-	private $_permissions;		// Permission tree from roles down
+	/**
+	* @var CDbAuthManager Auth manager
+	*/
+	private $_authManager;
+	/**
+	* @var string Name of the super user role
+	*/
+	private $_superUserRole;
+	/**
+	* @var string Name of the guest role
+	*/
+	private $_guestRole;
+	/**
+	* @var array Users with access to Rights
+	*/
+	private $_superUsers;
+	/**
+	* @var CActiveRecord Instance of the user model
+	*/
+	private $_user;
+	/**
+	* @var string Name of the username column
+	*/
+	private $_usernameColumn;
+	/**
+	* @var array Permission tree from roles down
+	*/
+	private $_permissions;
 
 	/**
 	* Initialization.
@@ -21,6 +43,8 @@ class RightsAuthorizer extends CApplicationComponent
 	public function init()
 	{
 		$this->_authManager = Yii::app()->authManager;
+
+		parent::init();
 	}
 
 	/**
@@ -199,8 +223,6 @@ class RightsAuthorizer extends CApplicationComponent
 
 		return $selectOptions;
 	}
-
-
 
 	/**
 	* Gets parents for an auth item.

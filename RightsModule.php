@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 0.9.2
+* @version 0.9.3
 */
 class RightsModule extends CWebModule
 {
@@ -17,9 +17,13 @@ class RightsModule extends CWebModule
 	*/
 	public $superUserRole = 'Admin';
 	/**
+	* @var string Default roles
+	*/
+	public $defaultRoles = array('Guest');
+	/**
 	* @var array Users with access to Rights
 	*/
-	public $superUsers = array('admin');
+	public $superUsers = array(1=>'admin');
 	/**
 	* @var string User model class name
 	*/
@@ -37,6 +41,10 @@ class RightsModule extends CWebModule
 	*/
 	public $enableBizRuleData = false;
 	/**
+	* @var bool Whether to install the module when ran or not?
+	*/
+	public $install = false;
+	/**
 	* @var string Path to layout to use for Rights.
 	*/
 	public $layout = 'application.views.layouts.column1';
@@ -53,15 +61,21 @@ class RightsModule extends CWebModule
 			'rights.controllers.*',
 		));
 
-		// Add the authorizer component needed by this module
+		// Install the module if needed
+		if( $this->install===true )
+			$this->install();
+
+		// Add the installer and authorizer component needed by this module
 		$this->setComponent('auth', new RightsAuthorizer);
+
+		// Set the default roles for the auth manager
+		$this->auth->authManager->defaultRoles = $this->defaultRoles;
 
 		// Set the super user, user model and create the permission tree
 		$this->auth->superUserRole = $this->superUserRole;
 		$this->auth->superUsers = $this->superUsers;
 		$this->auth->user = $this->userModel;
 		$this->auth->usernameColumn = $this->usernameColumn;
-		$this->auth->createPermissions();
 
 		// Publish the module's assets folder
 		$assetPath = Yii::app()->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
@@ -77,6 +91,16 @@ class RightsModule extends CWebModule
 	}
 
 	/**
+	* @return RightsInstaller component
+	*/
+	public function install()
+	{
+		$this->setComponent('installer', new RightsInstaller);
+		$installer = $this->getComponent('installer');
+		$installer->install($this->defaultRoles, $this->superUserRole, $this->superUsers);
+	}
+
+	/**
 	* @return RightsAuthorizer component
 	*/
 	public function getAuth()
@@ -89,6 +113,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '0.9.2';
+		return '0.9.3';
 	}
 }

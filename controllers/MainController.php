@@ -68,6 +68,9 @@ class MainController extends Controller
 	*/
 	public function actionPermissions()
 	{
+		// Create the permissions tree
+		$this->_auth->createPermissions();
+
 		// Get the roles, tasks and operations
 		$roles = $this->_auth->getRoles();
 		$authItems = $this->_auth->getAuthItems(array('operation', 'task'));
