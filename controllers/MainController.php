@@ -9,24 +9,17 @@
 class MainController extends Controller
 {
 	/**
-	* @var RightsModule
-	*/
-	private $_module;
-
-	/**
 	* @var RightsAuthorizer
 	*/
-	private $_auth;
+	private $_authorizer;
 
 	/**
 	* Initialization.
 	*/
 	public function init()
 	{
-		$this->_module = Yii::app()->getModule('rights');
-		$this->_auth = $this->_module->getComponent('auth');
-
-		$this->layout = $this->_module->layout;
+		$this->_authorizer = Rights::getAuthorizer();
+		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'permissions';
 	}
 
@@ -55,7 +48,7 @@ class MainController extends Controller
 					'tasks',
 					'roles',
 				),
-				'users'=>$this->_auth->superUsers,
+				'users'=>$this->_authorizer->superUsers,
 			),
 			array('deny',
 				'users'=>array('*'),
@@ -69,11 +62,11 @@ class MainController extends Controller
 	public function actionPermissions()
 	{
 		// Create the permissions tree
-		$this->_auth->createPermissions();
+		$this->_authorizer->createPermissions();
 
 		// Get the roles, tasks and operations
-		$roles = $this->_auth->getRoles();
-		$authItems = $this->_auth->getAuthItems(array('operation', 'task'));
+		$roles = $this->_authorizer->getRoles();
+		$authItems = $this->_authorizer->getAuthItems(array('operation', 'task'));
 
 		// loop through the roles to get the list of right
 		// and parents for those that are inherited
@@ -84,11 +77,11 @@ class MainController extends Controller
 			foreach( $authItems as $name=>$item )
 			{
 				// Get the permission to each item
-				$right = $this->_auth->hasPermission($roleName, $name);
+				$right = $this->_authorizer->hasPermission($roleName, $name);
 
 				// Permissions in inherited, we need to get the parents for this item
 				if( $right===Rights::PERM_INHERIT )
-					$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $this->_auth->getAuthItemParents($name, $roleName)));
+					$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $this->_authorizer->getAuthItemParents($name, $roleName)));
 
 				// Add the item to the list of rights
 				$rights[ $roleName ][ $name ] = $right;
@@ -116,7 +109,7 @@ class MainController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$operations = $this->_auth->getAuthItems('operation');
+		$operations = $this->_authorizer->getAuthItems('operation');
 
 		// Calculate how many children each item has
 		$childCount = array();
@@ -127,8 +120,8 @@ class MainController extends Controller
 		$this->render('operations', array(
 			'authItems'=>$operations,
 			'childCount'=>$childCount,
-			'isBizRuleEnabled'=>$this->_module->enableBizRule,
-			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
+			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
+			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
 			'i'=>0,
 		));
 	}
@@ -138,7 +131,7 @@ class MainController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$tasks = $this->_auth->getAuthItems('task');
+		$tasks = $this->_authorizer->getAuthItems('task');
 
 		// Calculate how many children each item has
 		$childCount = array();
@@ -149,8 +142,8 @@ class MainController extends Controller
 		$this->render('tasks', array(
 			'authItems'=>$tasks,
 			'childCount'=>$childCount,
-			'isBizRuleEnabled'=>$this->_module->enableBizRule,
-			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
+			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
+			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
 			'i'=>0,
 		));
 	}
@@ -160,7 +153,7 @@ class MainController extends Controller
 	*/
 	public function actionRoles()
 	{
-		$roles = $this->_auth->getRoles();
+		$roles = $this->_authorizer->getRoles();
 
 		// Calculate how many children each item has
 		$childCount = array();
@@ -171,8 +164,8 @@ class MainController extends Controller
 		$this->render('roles', array(
 			'authItems'=>$roles,
 			'childCount'=>$childCount,
-			'isBizRuleEnabled'=>$this->_module->enableBizRule,
-			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
+			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
+			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
 			'i'=>0,
 		));
 	}

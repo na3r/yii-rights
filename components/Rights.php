@@ -33,8 +33,8 @@ class Rights
 	*/
 	public static function assign($itemName, $userId, $bizRule=NULL, $data=NULL)
 	{
-		$auth = self::getAuth();
-		return $auth->authManager->assign($itemName, $userId, $bizRule, $data);
+		$authorizer = self::getAuthorizer();
+		return $authorizer->authManager->assign($itemName, $userId, $bizRule, $data);
 	}
 
 	/**
@@ -45,8 +45,8 @@ class Rights
 	*/
 	public static function revoke($itemName, $userId)
 	{
-		$auth = self::getAuth();
-		return $auth->authManager->assign($itemName, $userId);
+		$authorizer = self::getAuthorizer();
+		return $authorizer->authManager->assign($itemName, $userId);
 	}
 
 	/**
@@ -146,9 +146,9 @@ class Rights
 	/**
 	* @return RightsAuthorizer component
 	*/
-	public static function getAuth()
+	public static function getAuthorizer()
 	{
 		$module = self::getModule();
-		return $module->getComponent('auth');
+		return $module->getAuthorizer();
 	}
 }

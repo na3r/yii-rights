@@ -9,14 +9,9 @@
 class AuthItemController extends Controller
 {
 	/**
-	* @var RightsModule
-	*/
-	private $_module;
-
-	/**
 	* @var RightsAuthorizer
 	*/
-	private $_auth;
+	private $_authorizer;
 
 	/**
 	 * @var CAuthItem the currently loaded data model instance.
@@ -28,10 +23,8 @@ class AuthItemController extends Controller
 	*/
 	public function init()
 	{
-		$this->_module = Yii::app()->getModule('rights');
-		$this->_auth = $this->_module->getComponent('auth');
-
-		$this->layout = $this->_module->layout;
+		$this->_authorizer = Rights::getAuthorizer();
+		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'create';
 	}
 
@@ -62,7 +55,7 @@ class AuthItemController extends Controller
 					'assign',
 					'revoke',
 				),
-				'users'=>$this->_auth->superUsers,
+				'users'=>$this->_authorizer->superUsers,
 			),
 			array('deny',
 				'users'=>array('*'),
@@ -82,8 +75,8 @@ class AuthItemController extends Controller
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Create if not already exists
-			if( $this->_auth->authManager->getAuthItem($form->model->name)===NULL )
-				$this->_auth->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
+			if( $this->_authorizer->authManager->getAuthItem($form->model->name)===NULL )
+				$this->_authorizer->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
 
 			// Redirect
 			$this->redirect(array('authItem/update', 'name'=>$form->model->name));
@@ -101,7 +94,7 @@ class AuthItemController extends Controller
 	public function actionUpdate()
 	{
 		// Create the permissions tree
-		$this->_auth->createPermissions();
+		$this->_authorizer->createPermissions();
 
 		// Get the authorization item
 		$model = $this->loadModel();
@@ -113,12 +106,12 @@ class AuthItemController extends Controller
 		if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Update and redirect
-			$this->_auth->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
+			$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
 			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
 		}
 
 		// Create a form to add children to the auth item
-		$selectOptions = $this->_auth->getAuthItemSelectOptions($model->type, $model);
+		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($model->type, $model);
 		if( count($selectOptions)>0 )
 		{
 		    $childForm = new CForm('application.modules.rights.views.authItem.authChildForm', new AuthChildForm);
@@ -127,7 +120,7 @@ class AuthItemController extends Controller
 			// Child form is submitted and data is valid, redirect the user to the same page
 			if( $childForm->submitted()===true && $childForm->validate()===true )
 			{
-				$this->_auth->authManager->addItemChild($_GET['name'], $childForm->model->name);
+				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
 			}
 		}
@@ -147,8 +140,8 @@ class AuthItemController extends Controller
 		// Render the view
 		$this->render('update', array(
 			'model'=>$model,
-			'children'=>$this->_auth->getAuthItemChildren($model, true),
-			'parents'=>$this->_auth->getAuthItemParents($model->name),
+			'children'=>$this->_authorizer->getAuthItemChildren($model, true),
+			'parents'=>$this->_authorizer->getAuthItemParents($model->name),
 			'form'=>$form,
 			'childForm'=>$childForm,
 		));
@@ -162,7 +155,7 @@ class AuthItemController extends Controller
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
-			$this->_auth->authManager->removeAuthItem($_GET['name']);
+			$this->_authorizer->authManager->removeAuthItem($_GET['name']);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -182,7 +175,7 @@ class AuthItemController extends Controller
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
-			$this->_auth->authManager->removeItemChild($_GET['name'], $_GET['child']);
+			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -249,7 +242,7 @@ class AuthItemController extends Controller
 		if( $this->_model===null )
 		{
 			if( isset($_GET['name'])===true )
-				$this->_model = $this->_auth->authManager->getAuthItem($_GET['name']);
+				$this->_model = $this->_authorizer->authManager->getAuthItem($_GET['name']);
 
 			if( $this->_model===null )
 				throw new CHttpException(404,'The requested page does not exist.');

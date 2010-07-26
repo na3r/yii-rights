@@ -9,21 +9,21 @@
 class RightsWebUser extends CWebUser
 {
 	/**
-	* @var RightsModule
+	* @var RightsAuthorizer
 	*/
-	private $_module;
+	private $_authorizer;
 
 	/**
-	* @var bool User is super user?
+	* @var bool Whether the user is a super user?
 	*/
-	private $_isSuperUser = false;
+	public $isSuperUser;
 
 	/**
 	* Initialization.
 	*/
 	public function init()
 	{
-		$this->_module = Yii::app()->getModule('rights');
+		$this->_authorizer = Rights::getAuthorizer();
 
 		parent::init();
 	}
@@ -44,16 +44,13 @@ class RightsWebUser extends CWebUser
 	 */
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
-		// Allow access without checking when the user is a super user
-		if( $this->_isSuperUser===true )
-			return true;
+		// Check if user is super user if not already checked
+		if( isset($this->isSuperUser)===false )
+			$this->isSuperUser = $this->_authorizer->isSuperUser();
 
-		// User is super user and therefore allowed access
-		if( $this->_module->auth->isSuperUser()===true )
-		{
-			$this->_isSuperUser = true;
+		// Allow access when the user is a super user
+		if( $this->isSuperUser===true )
 			return true;
-		}
 
 		// Otherwise do CWebUser::checkAccess
 		return parent::checkAccess($operation, $params, $allowCaching);

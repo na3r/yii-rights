@@ -65,17 +65,18 @@ class RightsModule extends CWebModule
 		if( $this->install===true )
 			$this->install();
 
-		// Add the installer and authorizer component needed by this module
-		$this->setComponent('auth', new RightsAuthorizer);
+		// Set and get the authorizer component
+		$this->setComponent('authorizer', new RightsAuthorizer);
+		$authorizer = $this->getAuthorizer();
 
 		// Set the default roles for the auth manager
-		$this->auth->authManager->defaultRoles = $this->defaultRoles;
+		$authorizer->authManager->defaultRoles = $this->defaultRoles;
 
 		// Set the super user, user model and create the permission tree
-		$this->auth->superUserRole = $this->superUserRole;
-		$this->auth->superUsers = $this->superUsers;
-		$this->auth->user = $this->userModel;
-		$this->auth->usernameColumn = $this->usernameColumn;
+		$authorizer->superUserRole = $this->superUserRole;
+		$authorizer->superUsers = $this->superUsers;
+		$authorizer->user = $this->userModel;
+		$authorizer->usernameColumn = $this->usernameColumn;
 
 		// Publish the module's assets folder
 		$assetPath = Yii::app()->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
@@ -103,9 +104,9 @@ class RightsModule extends CWebModule
 	/**
 	* @return RightsAuthorizer component
 	*/
-	public function getAuth()
+	public function getAuthorizer()
 	{
-		return $this->getComponent('auth');
+		return $this->getComponent('authorizer');
 	}
 
 	/**

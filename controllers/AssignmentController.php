@@ -9,24 +9,17 @@
 class AssignmentController extends Controller
 {
 	/**
-	* @var RightsModule
-	*/
-	private $_module;
-
-	/**
 	* @var RightsAuthorizer
 	*/
-	private $_auth;
+	private $_authorizer;
 
 	/**
 	* Initialization.
 	*/
 	public function init()
 	{
-		$this->_module = Yii::app()->getModule('rights');
-		$this->_auth = $this->_module->getComponent('auth');
-
-		$this->layout = $this->_module->layout;
+		$this->_authorizer = Rights::getAuthorizer();
+		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'view';
 	}
 
@@ -54,7 +47,7 @@ class AssignmentController extends Controller
 					'user',
 					'revoke',
 				),
-				'users'=>$this->_auth->superUsers,
+				'users'=>$this->_authorizer->superUsers,
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -68,7 +61,7 @@ class AssignmentController extends Controller
 	public function actionView()
 	{
 		$criteria = new CDbCriteria();
-		$count = $this->_auth->user->count($criteria);
+		$count = $this->_authorizer->user->count($criteria);
 
 		// Create the pager
 		$pages = new CPagination($count);
@@ -76,16 +69,16 @@ class AssignmentController extends Controller
 		$pages->applyLimit($criteria);
 
 		// Get all users
-		$allUsers = $this->_auth->user->findAll($criteria);
+		$allUsers = $this->_authorizer->user->findAll($criteria);
 
 		// Remove super users
 		$users = array();
 		foreach( $allUsers as $user )
-			if( $this->_auth->isSuperUser($user->id)===false )
+			if( $this->_authorizer->isSuperUser($user->id)===false )
 				$users[ (int)$user->id ] = $user;
 
 		// Get the assigned auth items for all user
-		$authAssignments = $this->_auth->getUserAuthAssignments(array_keys($users));
+		$authAssignments = $this->_authorizer->getUserAuthAssignments(array_keys($users));
 
 		// Create a list of assignments with beautified names for each user
 		// and place them in a list of assignment with the user id as key
@@ -97,7 +90,7 @@ class AssignmentController extends Controller
 		// Render the view
 		$this->render('view', array(
 			'users'=>$users,
-			'username'=>$this->_auth->usernameColumn,
+			'username'=>$this->_authorizer->usernameColumn,
 			'assignments'=>$assignments,
 			'pages'=>$pages,
 			'i'=>0,
@@ -109,8 +102,8 @@ class AssignmentController extends Controller
 	*/
 	public function actionUser()
 	{
-		$model = $this->_auth->user->findByPk($_GET['id']);
-		$assignedAuthItems = $this->_auth->getAuthItems(NULL, $model->id);
+		$model = $this->_authorizer->user->findByPk($_GET['id']);
+		$assignedAuthItems = $this->_authorizer->getAuthItems(NULL, $model->id);
 
 		// Get the assigned items
 		$assignedItems = array();
@@ -118,7 +111,7 @@ class AssignmentController extends Controller
 			$assignedItems[] = $item->name;
 
 		// Get the assignment select options
-		$selectOptions = $this->_auth->getAuthItemSelectOptions(NULL, NULL, $assignedItems);
+		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(NULL, NULL, $assignedItems);
 
 		// Create a from to add a child for the auth item
 	    $form = new CForm('application.modules.rights.views.assignment.assignmentForm', new AssignmentForm);
@@ -128,7 +121,7 @@ class AssignmentController extends Controller
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Update and redirect
-			$this->_auth->authManager->assign($form->model->authItem, $model->id);
+			$this->_authorizer->authManager->assign($form->model->authItem, $model->id);
 			$this->redirect(array('assignment/user', 'id'=>$model->id));
 		}
 
@@ -137,7 +130,7 @@ class AssignmentController extends Controller
 			'model'=>$model,
 			'form'=>$form,
 			'assignedItems'=>$assignedItems,
-			'username'=>$this->_auth->usernameColumn,
+			'username'=>$this->_authorizer->usernameColumn,
 			'i'=>0,
 		));
 	}
@@ -147,7 +140,7 @@ class AssignmentController extends Controller
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
-			$this->_auth->authManager->revoke($_GET['name'], $_GET['id']);
+			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
