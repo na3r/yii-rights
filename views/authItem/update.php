@@ -2,7 +2,7 @@
 $this->breadcrumbs = array(
 	'Rights'=>array('/rights/main'),
 	Yii::t('RightsModule.tr', 'Auth Item'),
-	$model->name,
+	Rights::beautifyName($model->name),
 );
 ?>
 

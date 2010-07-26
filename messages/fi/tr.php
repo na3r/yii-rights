@@ -39,7 +39,7 @@ return array(
 	'Data'=>'Data',
 	'Delete'=>'Poista',
 	'Are you sure to delete this operation?'=>'Oletko varma että haluat poistaa tämän operaation?',
-	'Values within square brackets tell how many children each item has.'=>'Arvot hakasuluissa kertovat monta lasta jokaisella kohteella on.',
+	'Values within square brackets tell how many children each item has.'=>'Hakasuluissa olevat luvut kertovat monta lasta kullakin kohteella on.',
 	'No operations found.'=>'Yhtään operaatiota ei löytynyt.',
 	/**
 	* views/main/tasks.php

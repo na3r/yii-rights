@@ -99,7 +99,7 @@ class Rights
 			case CAuthItem::TYPE_ROLE: return array('role', 'task', 'operation');
 			case CAuthItem::TYPE_TASK: return array('task', 'operation');
 			case CAuthItem::TYPE_OPERATION: return array('operation');
-			default: throw new CException('Invalid authorization item type.');
+			default: throw new CException('Invalid auth item type.');
 		}
 	}
 
@@ -112,10 +112,10 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return Yii::t('rights', 'operation');
-			case CAuthItem::TYPE_TASK: return Yii::t('rights', 'task');
-			case CAuthItem::TYPE_ROLE: return Yii::t('rights', 'role');
-			default: throw new CException('Invalid authorization item type.');
+			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.tr', 'operation');
+			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.tr', 'task');
+			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.tr', 'role');
+			default: throw new CException('Invalid auth item type.');
 		}
 	}
 
@@ -131,7 +131,7 @@ class Rights
 			case 'operation': return CAuthItem::TYPE_OPERATION;
 			case 'task': return CAuthItem::TYPE_TASK;
 			case 'role': return CAuthItem::TYPE_ROLE;
-			default: throw new CException('Invalid authorization item type.');
+			default: throw new CException('Invalid auth item type.');
 		}
 	}
 
