@@ -2,6 +2,8 @@
 /**
 * Finnish translations for Rights.
 *
+* Please contact me if you find an error in the translation.
+*
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.1
@@ -36,18 +38,20 @@ return array(
 	'Business rule'=>'Business sääntö',
 	'Data'=>'Data',
 	'Delete'=>'Poista',
-	'Are you sure to delete this item?'=>'Oletko varma että haluat poistaa tämän kohteen?',
+	'Are you sure to delete this operation?'=>'Oletko varma että haluat poistaa tämän operaation?',
 	'Values within square brackets tell how many children each item has.'=>'Arvot hakasuluissa kertovat monta lasta jokaisella kohteella on.',
 	'No operations found.'=>'Yhtään operaatiota ei löytynyt.',
 	/**
 	* views/main/tasks.php
 	*/
 	'Tasks'=>'Tehtävät',
+	'Are you sure to delete this task?'=>'Oletko varma että haluat poistaa tämän tehtävän?',
 	'No tasks found.'=>'Yhtään tehtävää ei löytynyt.',
 	/**
 	* views/main/roles.php
 	*/
 	'Roles'=>'Roolit',
+	'Are you sure to delete this role?'=>'Oletko varma että haluat poistaa tämän roolin?',
 	'No roles found.'=>'Yhtään roolia ei löytynyt.',
 	/**
 	* views/authItem/authItemForm.php

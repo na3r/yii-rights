@@ -70,7 +70,7 @@ $this->breadcrumbs=array(
 							<?php
 							echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Delete'), array(
 								'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('main/operations')),
-								'confirm'=>Yii::t('RightsModule.tr', 'Are you sure to delete this item?')));
+								'confirm'=>Yii::t('RightsModule.tr', 'Are you sure to delete this operation?')));
 							?>
 						</td>
 
