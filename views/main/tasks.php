@@ -43,7 +43,7 @@ $this->breadcrumbs=array(
 					<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
 						<td>
-							<?php echo CHtml::link($name, array('authItem/update', 'name'=>$name, 'redirect'=>urlencode('main/tasks'))); ?>
+							<?php echo CHtml::link(Rights::beautifyName($name), array('authItem/update', 'name'=>$name, 'redirect'=>urlencode('main/tasks'))); ?>
 
 							<?php if( $childCount[ $name ]>0 ): ?>
 

@@ -88,7 +88,7 @@ class MainController extends Controller
 
 				// Permissions in inherited, we need to get the parents for this item
 				if( $right===Rights::PERM_INHERIT )
-					$parents[ $roleName ][ $name ] = implode(', ', $this->_auth->getAuthItemParents($name, $roleName));
+					$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $this->_auth->getAuthItemParents($name, $roleName)));
 
 				// Add the item to the list of rights
 				$rights[ $roleName ][ $name ] = $right;

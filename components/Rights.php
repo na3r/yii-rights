@@ -64,6 +64,16 @@ class Rights
 	}
 
 	/**
+	* Beautifies auth item names by replacing underscores with spaces.
+	* @param string $name Auth item name
+	* @return string Beautified name
+	*/
+	public static function beautifyName($name)
+	{
+	 	return str_replace('_', ' ', $name);
+	}
+
+	/**
 	* Gets the auth item type select options.
 	* @return array Select options
 	*/

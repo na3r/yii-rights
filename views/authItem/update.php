@@ -14,7 +14,7 @@ $this->breadcrumbs = array(
 
 		<div class="rightsForm form span-12 first">
 
-			<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>$model->name)); ?></h2>
+			<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
 
 			<p class="rightsInfo"><?php echo ucfirst(Rights::getAuthItemTypeString($model->type)); ?></p>
 
@@ -38,7 +38,7 @@ $this->breadcrumbs = array(
 
 							<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
-								<td><?php echo CHtml::link($parentName, array('authItem/update', 'name'=>$parentName)); ?></td>
+								<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
 								<td>&nbsp;</td>
 
 							</tr>
@@ -69,7 +69,7 @@ $this->breadcrumbs = array(
 
 							<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
-								<td><?php echo CHtml::link($childName, array('authItem/update', 'name'=>$childName)); ?></td>
+								<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
 
 								<td class="removeColumn">
 									<?php

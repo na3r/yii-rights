@@ -173,12 +173,13 @@ class RightsAuthorizer extends CApplicationComponent
 	* When an item is provided its parents and children are excluded aswell.
 	* @param array $authItems Auth items to process
 	* @param CAuthItem $model Item to check valid auth items for
+	* @param array Additional items to be excluded
 	* @return array Valid auth items
 	*/
-	protected function excludeInvalidAuthItems($authItems, $model=NULL)
+	protected function excludeInvalidAuthItems($authItems, $model=NULL, $exclude=array())
 	{
 		// Always exclude the super user
-		$exclude = array($this->_superUserRole);
+		$exclude[] = $this->_superUserRole;
 
 		// We are getting auth items valid for a certain item
 		// exclude its parents and children aswell
@@ -208,18 +209,18 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param CAuthItem $model Item to get select options for
 	* @return array Select options
 	*/
-	public function getAuthItemSelectOptions($type=NULL, $model=NULL)
+	public function getAuthItemSelectOptions($type=NULL, $model=NULL, $exclude=array())
 	{
    		// Get the valid children types for this item
 		$validTypes = isset($type)===true ? Rights::getValidChildTypes($type) : Rights::$authItemTypes;
 
 		// Get the valid auth items for those types
 		$authItems = $this->getAuthItems($validTypes);
-		$authItems = $this->excludeInvalidAuthItems($authItems, $model);
+		$authItems = $this->excludeInvalidAuthItems($authItems, $model, $exclude);
 
 		$selectOptions = array();
 		foreach( $authItems as $item )
-			$selectOptions[ $item->name ] = ucfirst($item->name);
+			$selectOptions[ $item->name ] = Rights::beautifyName($item->name);
 
 		return $selectOptions;
 	}

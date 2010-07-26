@@ -66,8 +66,7 @@
 .inheritedItem { cursor:pointer; font-style:italic; }
 
 #rightsTooltip {
-	min-width:100px;
-	max-width:240px;
+	max-width:500px;
 	padding:8px;
     position:absolute;
 	background:url('../images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
@@ -79,5 +78,3 @@
 }
 #rightsTooltip .heading { font-weight:bold; }
 #rightsTooltip .content { color:#808080; }
-
-#rightsInstall { text-align:center; }

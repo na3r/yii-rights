@@ -9,7 +9,7 @@ return array(
 	'elements'=>array(
 		'name'=>array(
 			'type'=>'dropdownlist',
-			'items'=>array(), // Kinda hack but will be popuplate later
+			'items'=>array(), // Kind of a hack, but this will be popuplate later
 		),
 	),
 	'buttons'=>array(

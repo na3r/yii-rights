@@ -84,14 +84,21 @@ class AssignmentController extends Controller
 			if( $this->_auth->isSuperUser($user->id)===false )
 				$users[ (int)$user->id ] = $user;
 
-		// Get the user assignments
+		// Get the assigned auth items for all user
 		$authAssignments = $this->_auth->getUserAuthAssignments(array_keys($users));
+
+		// Create a list of assignments with beautified names for each user
+		// and place them in a list of assignment with the user id as key
+		$assignments = array();
+		foreach( $authAssignments as $userId=>$items )
+			foreach( $items as $name=>$item )
+				$assignments[ $userId ][] = Rights::beautifyName($name);
 
 		// Render the view
 		$this->render('view', array(
 			'users'=>$users,
 			'username'=>$this->_auth->usernameColumn,
-			'authAssignments'=>$authAssignments,
+			'assignments'=>$assignments,
 			'pages'=>$pages,
 			'i'=>0,
 		));
@@ -111,28 +118,11 @@ class AssignmentController extends Controller
 			$assignedItems[] = $item->name;
 
 		// Get the assignment select options
-		$assignmentSelectOptions = $this->_auth->getAuthItemSelectOptions();
-
-		// Unset the already assigned items
-		foreach( $assignedItems as $itemName )
-			if( isset($assignmentSelectOptions[ $itemName ])===true )
-				unset($assignmentSelectOptions[ $itemName ]);
+		$selectOptions = $this->_auth->getAuthItemSelectOptions(NULL, NULL, $assignedItems);
 
 		// Create a from to add a child for the auth item
-	    $form = new CForm(array(
-		    'elements'=>array(
-		        'authItem'=>array(
-		            'type'=>'dropdownlist',
-		            'items'=>$assignmentSelectOptions,
-		        ),
-		    ),
-		    'buttons'=>array(
-		        'submit'=>array(
-		            'type'=>'submit',
-		            'label'=>Yii::t('rights', 'Assign'),
-		        ),
-		    ),
-		), new AssignmentForm);
+	    $form = new CForm('application.modules.rights.views.assignment.assignmentForm', new AssignmentForm);
+	    $form->elements['authItem']->items = $selectOptions; // Populate auth items
 
 		// Form is submitted and data is valid, redirect the user
 	    if( $form->submitted()===true && $form->validate()===true )
@@ -148,7 +138,6 @@ class AssignmentController extends Controller
 			'form'=>$form,
 			'assignedItems'=>$assignedItems,
 			'username'=>$this->_auth->usernameColumn,
-			'auth'=>$this->_auth,
 			'i'=>0,
 		));
 	}

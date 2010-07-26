@@ -22,7 +22,7 @@ $this->breadcrumbs = array(
 
 					<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
-						<td><?php echo CHtml::link($itemName, array('authItem/update', 'name'=>$itemName)); ?></td>
+						<td><?php echo CHtml::link(Rights::beautifyName($itemName), array('authItem/update', 'name'=>$itemName)); ?></td>
 
 						<td class="revokeColumn">
 							<?php
