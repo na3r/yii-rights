@@ -2,7 +2,7 @@
 /**
 * Finnish translations for Rights.
 *
-* Please contact me if you find an error in the translation.
+* Please contact the author if you find an error in the translation.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
@@ -12,9 +12,9 @@ return array(
 	/**
 	* components/Rights.php
 	*/
-	'operation'=>'',
-	'task'=>'',
-	'role'=>'',
+	'Operation'=>'',
+	'Task'=>'',
+	'Role'=>'',
 	/**
 	* components/RightsFilter.php
 	*/
