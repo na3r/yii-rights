@@ -45,7 +45,7 @@
 .rightsTable * { font-size:12px; }
 .rightsTable th, .rightsTable td { padding:10px; }
 .rightsTable th { font-weight:bold; font-size:13px; }
-.rightsTable .odd { background-color:#e8edff/*#e5f1f4*/; }
+.rightsTable .odd { background-color:#e8edff; }
 
 .rightsMiniTable { border:0; }
 .rightsMiniTable * { font-size:11px; }

@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 0.9.3
+* @version 0.9.5
 */
 class RightsModule extends CWebModule
 {
@@ -27,7 +27,7 @@ class RightsModule extends CWebModule
 	/**
 	* @var string User model class name
 	*/
-	public $userModel = 'User';
+	public $userClass = 'User';
 	/**
 	* @var string Name of the username column in the db
 	*/
@@ -48,6 +48,10 @@ class RightsModule extends CWebModule
 	* @var string Path to layout to use for Rights.
 	*/
 	public $layout = 'application.views.layouts.column1';
+	/**
+	* @var string Style sheet file to use for Rights.
+	*/
+	public $css = 'rights.css';
 
 	/**
 	* Initialization.
@@ -75,17 +79,16 @@ class RightsModule extends CWebModule
 		// Set the super user, user model and create the permission tree
 		$authorizer->superUserRole = $this->superUserRole;
 		$authorizer->superUsers = $this->superUsers;
-		$authorizer->user = $this->userModel;
+		$authorizer->user = $this->userClass;
 		$authorizer->usernameColumn = $this->usernameColumn;
 
 		// Publish the module's assets folder
-		$assetPath = Yii::app()->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
-
-		// Register jQuery and necessary scripts and styles
+		// and register necessary scripts and the style sheet
 		$app = Yii::app();
+		$assetPath = $app->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
 		$app->clientScript->registerCoreScript('jquery');
 		$app->clientScript->registerScriptFile($assetPath.'/js/rights.js');
-		$app->clientScript->registerCssFile($assetPath.'/css/rights.css');
+		$app->clientScript->registerCssFile($assetPath.'/css/'.$this->css);
 
 		// Set the default controller
 		$this->defaultController = 'main';
@@ -114,6 +117,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '0.9.3';
+		return '0.9.5';
 	}
 }

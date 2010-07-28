@@ -28,7 +28,7 @@ class RightsInstaller extends CApplicationComponent
 	{
 		$this->_authManager = Yii::app()->authManager;
 		$this->db = $this->_authManager->db;
-		$this->isInstalled = self::isInstalled();
+		$this->isInstalled = $this->isInstalled();
 
 		parent::init();
 	}
@@ -54,18 +54,12 @@ class RightsInstaller extends CApplicationComponent
 
 			try
 			{
-				// Drop tables if they already exist
+				// Drop the AuthItem-table if it already exists
 				$sql = "drop table if exists {$itemTable}";
 				$command = $this->db->createCommand($sql);
 				$command->execute();
-				$sql = "drop table if exists {$itemChildTable}";
-				$command = $this->db->createCommand($sql);
-				$command->execute();
-				$sql = "drop table if exists {$assignmentTable}";
-				$command = $this->db->createCommand($sql);
-				$command->execute();
 
-				// AuthItem
+				// Create the AuthItem-table
 				$sql = "create table {$itemTable} ( ";
 				$sql.= "	name varchar(64) not null, ";
 				$sql.= "	type integer not null, ";
@@ -77,7 +71,12 @@ class RightsInstaller extends CApplicationComponent
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
-				// AuthChild
+				// Drop the AuthChild-table if it already exists
+				$sql = "drop table if exists {$itemChildTable}";
+				$command = $this->db->createCommand($sql);
+				$command->execute();
+
+				// Create the AuthChild-table
 				$sql = "create table {$itemChildTable} ( ";
 				$sql.= "	parent varchar(64) not null, ";
 				$sql.= "	child varchar(64) not null, ";
@@ -88,7 +87,12 @@ class RightsInstaller extends CApplicationComponent
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
-				// AuthAssignment
+				// Drop the AuthAssignment-table if it already exists
+				$sql = "drop table if exists {$assignmentTable}";
+				$command = $this->db->createCommand($sql);
+				$command->execute();
+
+				// Create the AuthAssignment-table
 				$sql = "create table {$assignmentTable} ( ";
 				$sql.= "	itemname varchar(64) not null, ";
 				$sql.= "	userid varchar(64) not null, ";
@@ -112,7 +116,7 @@ class RightsInstaller extends CApplicationComponent
 					$command->execute();
 				}
 
-				// Set super users
+				// Assign the super users the super user role
 				foreach( $superUsers as $id=>$username )
 				{
 					$sql = "insert into {$assignmentTable} (itemname, userid, data) values (:itemname, :userid, :data)";

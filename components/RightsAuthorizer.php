@@ -542,16 +542,16 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param string $mode User model name
+	* @param string $class Name of the user class
 	*/
-	public function setUser($model)
+	public function setUser($class)
 	{
 		// Make sure the given model exists
-		if( class_exists($model)===false )
-			throw new CException('Cannot find user model.');
+		if( class_exists($class)===false )
+			throw new CException('Cannot find user model class.');
 
 		// Create an instance of the model
-		$this->_user = new $model;
+		$this->_user = new $class;
 	}
 
 	/**
