@@ -29,7 +29,7 @@ $this->breadcrumbs=array(
 					<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
 						<td><?php echo CHtml::link($user->$username, array('assignment/user', 'id'=>$id)); ?></td>
-						<td class="assignmentColumn"><?php echo implode(', ', $assignments[ $id ]); ?></td>
+						<td class="assignmentColumn"><?php echo isset($assignments[ $id ])===true ? implode(', ', $assignments[ $id ]) : ''; ?></td>
 
 					</tr>
 
