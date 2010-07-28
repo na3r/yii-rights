@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
 
 							<?php if( $childCount[ $name ]>0 ): ?>
 
-								[ <b><?php echo $childCount[ $name ]; ?></b> ]
+								<span class="childCount">[ <span class="number"><?php echo $childCount[ $name ]; ?></span> ]</span>
 
 							<?php endif; ?>
 						</td>

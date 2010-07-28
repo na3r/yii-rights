@@ -52,18 +52,28 @@
 .rightsMiniTable th, .rightsMiniTable td { padding:8px; }
 .rightsMiniTable .odd td { background-color:#e8edff; }
 
-.bizRuleColumn, .bizRuleDataColumn {
+.rights .bizRuleColumn,
+.rights .bizRuleDataColumn {
 	color:#808080;
 	font-family:Consolas, Arial, san-serif !important;
 	font-size:11px;
 }
-.deleteColumn, .removeColumn, .revokeColumn { text-align:right; }
+.rights .deleteColumn,
+.rights .removeColumn,
+.rights .revokeColumn { text-align:right; }
 
-#authItemParents, #authItemChildren, #userAssignments { margin-bottom:30px; }
-.parentTable, .childTable, .userAssignmentTable { width:420px; }
+#authItemParents,
+#authItemChildren,
+#userAssignments { margin-bottom:30px; }
+
+.rights .parentTable,
+.rights .childTable,
+.rights .userAssignmentTable { width:420px; }
+.rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
+
+.rights .childCount .number { font-weight:bold; }
 
 .rightsInfo { color:#808080; font-size:12px; font-style:italic; }
-.inheritedItem { cursor:pointer; font-style:italic; }
 
 #rightsTooltip {
 	max-width:500px;

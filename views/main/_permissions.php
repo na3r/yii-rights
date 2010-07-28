@@ -30,13 +30,9 @@
 							<?php
 							// "Minor" hack. Couldn't think of any other way to do this.
 							echo CHtml::link(Yii::t('RightsModule.tr', 'Revoke'), '#', array(
+								'class'=>'revokeLink',
 								'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/revoke', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('main/permissions').'", { ajax:true }); } }); return false;'
 							));
-							/*
-							echo CHtml::linkButton(Yii::t('rights', 'Revoke'), array(
-								'submit'=>array('authItem/revoke', 'name'=>$role->name, 'child'=>$name),
-							));
-							*/
 							?>
 
 						<?php elseif( $rights[ $roleName ][ $name ]===Rights::PERM_INHERIT ): ?>
@@ -50,13 +46,9 @@
 							<?php
 							// "Minor" hack. Couldn't think of any other way to do this.
 							echo CHtml::link(Yii::t('RightsModule.tr', 'Assign'), '#', array(
+								'class'=>'assignLink',
 								'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/assign', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('main/permissions').'", { ajax:true }); } }); return false;'
 							));
-							/*
-							echo CHtml::linkButton(Yii::t('rights', 'Assign'), array(
-								'submit'=>array('authItem/assign', 'name'=>$role->name, 'child'=>$name),
-							));
-							*/
 							?>
 
 						<?php endif; ?>
