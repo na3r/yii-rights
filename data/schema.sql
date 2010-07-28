@@ -1,12 +1,12 @@
 /**
- * Database schema required by CDbAuthManager.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- * @since 1.0
- */
+* Database schema required by CDbAuthManager.
+*
+* @author Qiang Xue <qiang.xue@gmail.com>
+* @link http://www.yiiframework.com/
+* @copyright Copyright &copy; 2008 Yii Software LLC
+* @license http://www.yiiframework.com/license/
+* @since 1.0
+*/
 
 drop table if exists AuthAssignment;
 drop table if exists AuthItemChild;
@@ -42,17 +42,30 @@ create table AuthAssignment
 ) type=InnoDB, character set utf8 collate utf8_general_ci;
 
 /**
- * Necessary roles and relations for the Rights module.
- * If you wish to use a different super user name than 'Admin'
- * change it before running these queries.
- * If you wish to assign the super user role to any other user
- * change the user id in the last query.
- *
- * @author Christoffer Niska
- * @copyright Copyright &copy; 2008 Christoffer Niska
- * @since 0.5
- */
+* Necessary roles and relations for the Rights module.
+* If you wish to use a different super user name than 'Admin'
+* change it before running these queries.
+* If you wish to assign the super user role to any other user
+* change the user id in the last query.
+*
+* @author Christoffer Niska
+* @copyright Copyright &copy; 2008 Christoffer Niska
+* @since 0.5
+*/
 
 insert into AuthItem (name,type,data) values ('Admin',2,'N;');
 insert into AuthItem (name,type,data) values ('Guest',2,'N;');
 insert into AuthAssignment (itemname,userid,data) values ('Admin',1,'N;');
+
+/**
+* Schema for the User table.
+* @since 0.9.6
+*/
+
+create table User
+(
+   id             		integer not null auto_increment,
+   username             varchar(128) not null,
+   password             varchar(128) not null,
+   primary key (userid),
+) type=InnoDB, character set utf8 collate utf8_general_ci;
