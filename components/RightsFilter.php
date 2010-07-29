@@ -68,7 +68,8 @@ class RightsFilter extends CFilter
 	}
 
 	/**
-	* @param string $allowedActions
+	* Sets the allowed actions.
+	* @param string the actions that are always allowed separated by commas.
 	*/
 	public function setAllowedActions($allowedActions)
 	{

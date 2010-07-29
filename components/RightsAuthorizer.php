@@ -8,97 +8,63 @@
 */
 class RightsAuthorizer extends CApplicationComponent
 {
-	/**
-	* @var CDbAuthManager Auth manager
-	*/
 	private $_authManager;
-	/**
-	* @var string Name of the super user role
-	*/
 	private $_superUserRole;
-	/**
-	* @var string Name of the guest role
-	*/
 	private $_guestRole;
-	/**
-	* @var array Users with access to Rights
-	*/
-	private $_superUsers;
-	/**
-	* @var CActiveRecord Instance of the user model
-	*/
 	private $_user;
-	/**
-	* @var string Name of the username column
-	*/
 	private $_usernameColumn;
-	/**
-	* @var array Permission tree from roles down
-	*/
 	private $_permissions;
 
 	/**
-	* Initialization.
+	* Initializes the autorizer.
 	*/
 	public function init()
 	{
-		$this->_authManager = Yii::app()->authManager;
+		$this->_authManager = Yii::app()->getAuthManager();
 
 		parent::init();
 	}
 
 	/**
-	* Gets the roles (sorted by the number of children).
-	* @return Sorted roles
+	* Returns the roles.
+	* @param boolean whether to include the super user role or not.
+	* @param boolean whether to sort the items by their weights.
+	* @return the roles.
 	*/
-	public function getRoles()
+	public function getRoles($includeSuperUser=true, $sort=true)
 	{
-		// Get the roles excluding the super user
-	 	$roles = $this->getAuthItems('role', null, array($this->_superUserRole));
-
-	 	// Loop through the roles and get their child counts
-	 	$childCounts = array();
-	 	foreach( $roles as $roleName=>$role )
-	 		$childCounts[ $roleName ] = count($role->getChildren());
-
-	 	// Sort the child counts array in reverse
-	 	arsort($childCounts);
-
-		// Sort the roles by their child counts
-	 	$sortedRoles = array();
-	 	foreach( $childCounts as $roleName=>$count )
-	 		$sortedRoles[ $roleName ] = $roles[ $roleName ];
-
-	 	return $sortedRoles;
+		$exclude = $includeSuperUser===false ? array($this->_superUserRole) : array();
+	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, $exclude, $sort);
 	}
 
 	/**
-	* Creates an auth item.
-	* @param string $name Name
-	* @param integer $type Type
-	* @param string $description Description
-	* @param string $bizRule Business rule
-	* @param string $data Non-serialized data
-	* @return CAuthItem
+	* Creates an authorization item.
+	* @param string the item name. This must be a unique identifier.
+	* @param integer the item type (0: operation, 1: task, 2: role).
+	* @param string description of the item
+	* @param string business rule associated with the item. This is a piece of
+	* PHP code that will be executed when {@link checkAccess} is called for the item.
+	* @param mixed additional data associated with the item.
+	* @return CAuthItem the authorization item
 	*/
 	public function createAuthItem($name, $type, $description='', $bizRule=null, $data=null)
 	{
 		$bizRule = $bizRule!=='' ? $bizRule : null;
 
-		if( isset($data)===true )
+		if( $data!==null )
 			$data = empty($data)===false ? $this->saferEval('return '.$data.';') : null;
 
 		return $this->_authManager->createAuthItem($name, $type, $description, $bizRule, $data);
 	}
 
 	/**
-	* Updates an auth item.
-	* Reassigns the items parents and children if then name is changed.
-	* @param string $oldName Old name
-	* @param string $name New name
-	* @param string $description Description
-	* @param string $bizRule Business rule
-	* @param string $data Non-serialized data
+	* Updates an authorization item.
+	* @param string the item name. This must be a unique identifier.
+	* @param integer the item type (0: operation, 1: task, 2: role).
+	* @param string description of the item
+	* @param string business rule associated with the item. This is a piece of
+	* PHP code that will be executed when {@link checkAccess} is called for the item.
+	* @param mixed additional data associated with the item.
 	*/
 	public function updateAuthItem($oldName, $name, $description='', $bizRule=null, $data=null)
 	{
@@ -115,45 +81,66 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets auth items of one or several type.
-	* @param mixed $types Types of auth items to get - Valid types are 'role', 'task' and 'operation'
-	* @param int $userId User to get valid auth items for
-	* @param array $exclude Names of items to exclude
-	* @return array Auth items
-	*/
-	public function getAuthItems($types=null, $userId=null, $exclude=array())
+	 * Returns the authorization items of the specific type and user.
+	 * @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	 * meaning returning all items regardless of their type.
+	 * @param mixed the user ID. Defaults to null, meaning returning all items even if
+	 * they are not assigned to a user.
+	 * @param array the items to be excluded.
+	 * @param boolean sort items by to weights.
+	 * @return array the authorization items of the specific type.
+	 */
+	public function getAuthItems($type=null, $userId=null, $exclude=array(), $sort=false)
 	{
-		// Type is not given, set type to all valid types
-		if( isset($types)===false )
-			$types = Rights::$authItemTypes;
+		if( $type===null )
+		{
+			$items = $this->_authManager->getAuthItems($type, $userId, $sort);
+		}
+		else
+		{
+			// Make sure type is an array
+			if( $type!==(array)$type )
+				$type = array($type);
 
-		// Make sure types is an array
-		if( is_array($types)===false )
-			$types = array($types);
+			// Get the auth items for the given types
+			$authItems = array();
+			foreach( $type as $t )
+				$authItems[] = $this->_authManager->getAuthItems($t, $userId, $sort);
 
-		// Get the auth items for the given types
-		$items = array();
-		foreach( $types as $type )
-			$items[] = $this->_authManager->getAuthItems(Rights::getAuthItemTypeByString($type), $userId);
-
-		// Merge the auth items preserving the keys
-		$authItems = array();
-		foreach( $items as $children )
-			$authItems = $this->mergeAuthItems($authItems, $children);
+			// Merge the auth items preserving the keys
+			$items = array();
+			foreach( $authItems as $ai )
+				$items = $this->mergeAuthItems($items, $ai);
+		}
 
 		// Unset items that should be excluded
 		foreach( $exclude as $name )
-		 	if( isset($authItems[ $name ])===true )
-		 		unset($authItems[ $name ]);
+		 	if( isset($items[ $name ])===true )
+		 		unset($items[ $name ]);
 
-		return $authItems;
+		return $items;
 	}
 
 	/**
-	* Merges two arrays with auth items preserving the keys.
-	* @param array $array1 Items to merge to
-	* @param array $array2 Items to merge from
-	* @return array Merged items
+	* Returns a list of the child counts for each item.
+	* @param array list of items to get the child count for.
+	* @return array the child counts.
+	*/
+	public function getAuthItemChildCounts($items)
+	{
+		$childCounts = array();
+		if( $items!==array() )
+			foreach( $items as $name=>$item )
+				$childCounts[ $name ] = count($item->children);
+
+		return $childCounts;
+	}
+
+	/**
+	* Merges two arrays with authorization items preserving the keys.
+	* @param array the items to merge to.
+	* @param array the items to merge from.
+	* @return array the merged items.
 	*/
 	protected function mergeAuthItems($array1, $array2)
 	{
@@ -165,18 +152,15 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Excludes invalid auth items from those provided.
+	* Excludes invalid authorization items.
 	* When an item is provided its parents and children are excluded aswell.
-	* @param array $authItems Auth items to process
-	* @param CAuthItem $model Item to check valid auth items for
-	* @param array Additional items to be excluded
-	* @return array Valid auth items
+	* @param array the authorization items to process.
+	* @param CAuthItem the item to check valid authorization items for.
+	* @param array additional items to be excluded.
+	* @return array valid authorization items.
 	*/
 	protected function excludeInvalidAuthItems($authItems, $model=null, $exclude=array())
 	{
-		// Always exclude the super user
-		$exclude[] = $this->_superUserRole;
-
 		// We are getting auth items valid for a certain item
 		// exclude its parents and children aswell
 		if( $model!==null )
@@ -200,15 +184,16 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets the auth item select options.
-	* @param string $type Auth item type
-	* @param CAuthItem $model Item to get select options for
-	* @return array Select options
+	* Returns the authorization item select options.
+	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* meaning returning all items regardless of their type.
+	* @param CAuthItem the item for which to get the select options.
+	* @return array the select options.
 	*/
 	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
 	{
    		// Get the valid children types for this item
-		$validTypes = isset($type)===true ? Rights::getValidChildTypes($type) : Rights::$authItemTypes;
+		$validTypes = $type!==null ? Rights::getValidChildTypes($type) : null;
 
 		// Get the valid auth items for those types
 		$authItems = $this->getAuthItems($validTypes);
@@ -222,21 +207,20 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets parents for an auth item.
-	* @param string $itemName Authorization item to get parents for
-	* @param string $roleName Role in question
-	* @return array Names of the parents and grandparents
+	* Returns the parents of the specified authorization item.
+	* @param string the item name for which to get its parents.
+	* @param string the name of the role in which permissions to search.
+	* @return array the names of the parent items recursively.
 	*/
 	public function getAuthItemParents($itemName, $roleName=null)
 	{
-		$parentNames = array();
-
 		// Loop through the permissions to find all parents to the given item
+		$parentNames = array();
 		$permissions = $this->getPermissions($roleName);
 		foreach( $permissions as $roleName=>$children )
 		{
 			// Make sure we have children
-			if( count($children)>0 )
+			if( $children!==array() )
 			{
 				// Item is a child of this role, add the role to parents
 				if( isset($children[ $itemName ])===true )
@@ -254,10 +238,12 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets parents for an auth item recursively.
-	* @param string $itemName Authorization item to get parents for
-	* @param array $children Childrens to process
-	* @param array $parents Parents
+	* Returns the parents of the specified authorization item recursively.
+	* @param string the item name for which to get its parents.
+	* @param array the children items to process.
+	* @param array a list of all parents found so far.
+	* @return boolean whether the specified authorization item
+	* was found in the branch or not.
 	*/
 	private function getAuthItemParentsRecursive($itemName, $children, &$parents)
 	{
@@ -268,7 +254,7 @@ class RightsAuthorizer extends CApplicationComponent
 		foreach( $children as $childName=>$grandChildren )
 		{
 			// Make sure we have items
-		 	if( count($grandChildren)>0 )
+		 	if( $grandChildren!==array() )
 		 	{
 		 		// Item is a grand child of this child, add all necessary items as parents
 		 		// and mark the item found so that we can return that later
@@ -285,10 +271,10 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets the auth item children recursively.
-	* @param CAuthItem $item Auth item to get children for
-	* @param bool $sort Should the children be sorted by type?
-	* @return array Names of the children
+	* Returns the children for the specified authorization item recursively.
+	* @param CAuthItem the item for which to get its children.
+	* @param boolean whether to sort the children by type.
+	* @return array the names of the item's children.
 	*/
 	public function getAuthItemChildren(CAuthItem $item, $sort=false)
 	{
@@ -305,23 +291,37 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Sorts auth items by their type
-	* @param CAuthItem $item1
-	* @param CAuthItem $item2
-	* @return int Comparison result
+	* User defined sort function to sort authorization items by their type.
+	* @param CAuthItem the first item to compare.
+	* @param CAuthItem the second item to compare.
+	* @return integer the result of the comparison.
 	*/
 	protected function sortAuthItems(CAuthItem $item1, CAuthItem $item2)
 	{
-		if($item1->type===$item2->type)
+		if( $item1->type!==$item2->type )
+        	return ($item1->type>$item2->type) ? -1 : 1;
+		else
         	return 0;
+	}
 
-        return ($item1->type>$item2->type) ? -1 : 1;
+	public function getSuperUsers()
+	{
+		$nameColumn = $this->_usernameColumn;
+		$superUsers = array();
+		foreach( $this->_user->findAll() as $user )
+		{
+			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->id);
+			if( isset($items[ $this->_superUserRole ])===true )
+				$superUsers[] = $user->$nameColumn;
+		}
+
+		return $superUsers;
 	}
 
 	/**
-	* Checks if user is a super user.
-	* @param integer $userId User id
-	* @return bool
+	* Checks whether the user is a super user or not.
+	* @param integer the user id. Defaults to null, meaning the logged in user.
+	* @return boolean whether the user is a super user or not.
 	*/
 	public function isSuperUser($userId=null)
 	{
@@ -330,10 +330,10 @@ class RightsAuthorizer extends CApplicationComponent
 		{
 			// User id is not provided, use the logged in user
 			if( $userId===null)
-				$userId = Yii::app()->user->id;
+				$userId = Yii::app()->getUser()->id;
 
-			$authAssignments = $this->_authManager->getAuthAssignments($userId);
-			return isset($authAssignments[ $this->_superUserRole ]);
+			$assignments = $this->_authManager->getAuthAssignments($userId);
+			return isset($assignments[ $this->_superUserRole ]);
 		}
 
 		return false;
@@ -352,18 +352,17 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets the permissions tree recursively.
-	* @param CAuthItem $item Item to get permissions for
-	* @return array Part of the permissions tree
+	* Returns the permissions tree recursively.
+	* @param CAuthItem the item for which to get permissions.
+	* @return array the section of the permissions tree.
 	*/
 	private function getPermissionsRecursive(CAuthItem $item)
 	{
 		$permissions = array();
-
 	 	foreach( $item->getChildren() as $childName=>$child )
 	 	{
 	 		$permissions[ $childName ] = array();
-	 		if( count($grandChildren = $this->getPermissionsRecursive($child))>0 )
+	 		if( ($grandChildren = $this->getPermissionsRecursive($child))!==array() )
 				$permissions[ $childName ] = $grandChildren;
 		}
 
@@ -371,9 +370,10 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Get the permissions for all or a specific role.
-	* @param string $roleName Rolename to get permissions for
-	* @return mixed Permissions or false if role not found
+	* Returns the permissions for a specific role.
+	* @param string the name of the role for which to get permissions.
+	* Defaults to null meaning all roles.
+	* @return array the permissions.
 	*/
 	protected function getPermissions($roleName=null)
 	{
@@ -382,17 +382,17 @@ class RightsAuthorizer extends CApplicationComponent
 			if( isset($this->_permissions[ $roleName ])===true )
 				return $this->_permissions[ $roleName ];
 
-			return false;
+			return array();
 		}
 
 		return $this->_permissions;
 	}
 
 	/**
-	* Checks for permissions to item for given role.
-	* @param string $roleName Role name
-	* @param string $itemName Item name to check for
-	* @return integer 0:none, 1:direct, 2:inherited
+	* Check if a specific role has permissions to a specific authorization item.
+	* @param string the name of the role for which to check permissions.
+	* @param string the name of the item to check for.
+	* @return integer the permission type (0: None, 1: Direct, 2: Inherited).
 	*/
 	public function hasPermission($roleName, $itemName)
 	{
@@ -402,7 +402,7 @@ class RightsAuthorizer extends CApplicationComponent
 				return 1;
 
 			foreach( $this->_permissions[ $roleName ] as $children )
-				if( count($children)>0 )
+				if( $children!==array() )
 					if( $this->hasPermissionRecursive($itemName, $children)>0 )
 						return 2;
 		}
@@ -412,9 +412,9 @@ class RightsAuthorizer extends CApplicationComponent
 
 	/**
 	* Checks for permissions recursively.
-	* @param string $itemName Item name to check for
-	* @param array $items Items to check
-	* @return integer 0:none, 1:direct, 2:inherited
+	* @param string the name of the the item to check for.
+	* @param array the list items to process.
+	* @return integer the permission type (0: None, 1: Direct, 2: Inherited).
 	*/
 	private function hasPermissionRecursive($itemName, $items)
 	{
@@ -422,7 +422,7 @@ class RightsAuthorizer extends CApplicationComponent
 			return 2;
 
 		foreach( $items as $children )
-			if( count($children)>0 )
+			if( $children!==array() )
 				if( $this->hasPermissionRecursive($itemName, $children)>0 )
 					return 2;
 
@@ -430,26 +430,30 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Gets auth assignments for the given user(s).
-	* @param mixed $userId One or many user ids
-	* @return array Auth assignments
+	* Returns the assignments for a specific user.
+	* @param mixed one or many user ids.
+	* @return array the assignments.
 	*/
-	public function getUserAuthAssignments($userId)
+	public function getUserAssignments($userId=null)
 	{
-		if( is_array($userId)===false )
-			$userId = array($userId);
+		if( $userId!==(array)$userId )
+		{
+			$assignments = $this->_authManager->getAuthAssignments($userId);
+		}
+		else
+		{
+			$assignments = array();
+			foreach( $userId as $id )
+				$assignments[ $id ] = $this->_authManager->getAuthAssignments($id);
+		}
 
-		$authAssignments = array();
-		foreach( $userId as $id )
-			$authAssignments[ (string)$id ] = $this->_authManager->getAuthAssignments($id);
-
-		return $authAssignments;
+		return $assignments;
 	}
 
 	/**
 	* Makes code safer for use with eval().
-	* @param string $code Code to be run with eval.
-	* @return mixed Eval'ed code or null if the code was not safe
+	* @param string the code to be execute.
+	* @return mixed the return value of eval() or null if the code was unsafe to run.
 	*/
 	protected function saferEval($code)
 	{
@@ -490,7 +494,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return CDbAuthManager Auth manager
+	* @return CDbAuthManager the authorization manager
 	*/
 	public function getAuthManager()
 	{
@@ -498,7 +502,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param CDbAuthManager $authManager Auth manager
+	* @param CDbAuthManager the authorization manager
 	*/
 	public function setAuthManager($authManager)
 	{
@@ -506,7 +510,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return string Super user role name
+	* @return string the name of the super user role.
 	*/
 	public function getSuperUserRole()
 	{
@@ -514,7 +518,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param string $superUserRole Super user role name
+	* @param string the name of the super user role.
 	*/
 	public function setSuperUserRole($superUserRole)
 	{
@@ -522,36 +526,20 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return string Super users
-	*/
-	public function getSuperUsers()
-	{
-		return $this->_superUsers;
-	}
-
-	/**
-	* @param string $superUsers Super users
-	*/
-	public function setSuperUsers($superUsers)
-	{
-		$this->_superUsers = $superUsers;
-	}
-
-	/**
-	* @param string $class Name of the user class
+	* @param string the name of the user class.
 	*/
 	public function setUser($class)
 	{
 		// Make sure the given model exists
 		if( class_exists($class)===false )
-			throw new CException('Cannot find user model class.');
+			throw new CException('Cannot find the user model.');
 
 		// Create an instance of the model
 		$this->_user = new $class;
 	}
 
 	/**
-	* @return CActiveRecord User model
+	* @return CActiveRecord the user model.
 	*/
 	public function getUser()
 	{
@@ -559,19 +547,19 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param string $usernameColumn Username column name
+	* @param string the name of the username column.
 	*/
 	public function setUsernameColumn($attribute)
 	{
 		// Make sure the given column name exists in the user table
 		if( $this->_user->hasAttribute($attribute)===false )
-			throw new CException('Cannot find username column.');
+			throw new CException('Cannot find the username column.');
 
 		$this->_usernameColumn = $attribute;
 	}
 
 	/**
-	* @return string Username column name
+	* @return string the name of the username column.
 	*/
 	public function getUsernameColumn()
 	{

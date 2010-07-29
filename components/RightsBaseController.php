@@ -21,7 +21,7 @@ class RightsBaseController extends CController
 	}
 
 	/**
-	* @return string always allowed actions
+	* @return string the actions that are always allowed separated by commas.
 	*/
 	public function allowedActions()
 	{

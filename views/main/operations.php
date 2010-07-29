@@ -13,7 +13,7 @@
 
 		<h2><?php echo Yii::t('RightsModule.tr', 'Operations'); ?></h2>
 
-		<?php if( count($authItems)>0 ): ?>
+		<?php if( count($operations)>0 ): ?>
 
 			<table class="rightsTable operationTable" border="0" cellpadding="0" cellspacing="0">
 
@@ -37,7 +37,7 @@
 
 						<?php endif; ?>
 
-						<th class="deleteColumnHeading" style="width:60px;">&nbsp;</th>
+						<th class="deleteColumnHeading">&nbsp;</th>
 
 					</tr>
 
@@ -45,16 +45,16 @@
 
 				<tbody>
 
-					<?php foreach( $authItems as $name=>$item ): ?>
+					<?php $i=0; foreach( $operations as $name=>$item ): ?>
 
 						<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
 							<td>
 								<?php echo CHtml::link(Rights::beautifyName($name), array('authItem/update', 'name'=>$name, 'redirect'=>urlencode('main/operations'))); ?>
 
-								<?php if( $childCount[ $name ]>0 ): ?>
+								<?php if( $childCounts[ $name ]>0 ): ?>
 
-									<span class="childCount">[ <span class="number"><?php echo $childCount[ $name ]; ?></span> ]</span>
+									<span class="childCount">[ <span class="childCountNumber"><?php echo $childCounts[ $name ]; ?></span> ]</span>
 
 								<?php endif; ?>
 							</td>

@@ -41,16 +41,16 @@ class MainController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',
+			array('allow', // Allow super users to access Rights
 				'actions'=>array(
 					'permissions',
 					'operations',
 					'tasks',
 					'roles',
 				),
-				'users'=>$this->_authorizer->superUsers,
+				'users'=>$this->_authorizer->getSuperUsers(),
 			),
-			array('deny',
+			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
 		);
@@ -65,8 +65,8 @@ class MainController extends Controller
 		$this->_authorizer->createPermissions();
 
 		// Get the roles, tasks and operations
-		$roles = $this->_authorizer->getRoles();
-		$authItems = $this->_authorizer->getAuthItems(array('operation', 'task'));
+		$roles = $this->_authorizer->getRoles(false);
+		$authItems = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK));
 
 		// loop through the roles to get the list of right
 		// and parents for those that are inherited
@@ -80,11 +80,11 @@ class MainController extends Controller
 				$right = $this->_authorizer->hasPermission($roleName, $name);
 
 				// Permissions in inherited, we need to get the parents for this item
-				if( $right===Rights::PERM_INHERIT )
+				if( $right===Rights::PERM_INHERITED )
 				{
 					// Get auth item parents
 					$authItemParents = $this->_authorizer->getAuthItemParents($name, $roleName);
-					if( count($authItemParents)>0 )
+					if( $authItemParents!==array() )
 					{
 						// If the item has parents beautify their names,
 						// implode them to a string and add them to the list of parents
@@ -99,7 +99,7 @@ class MainController extends Controller
 		}
 
 		// Calculate the role column width based on the amount of existing roles
-		$roleColumnWidth = count($roles)>0 ? 75/count($roles) : 0;
+		$roleColumnWidth = $roles!==array() ? 75/count($roles) : 0;
 
 		$params = array(
 			'roles'=>$roles,
@@ -107,7 +107,6 @@ class MainController extends Controller
 			'authItems'=>$authItems,
 			'rights'=>$rights,
 			'parents'=>$parents,
-			'i'=>0,
 		);
 
 		// Render the view
@@ -119,20 +118,14 @@ class MainController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$operations = $this->_authorizer->getAuthItems('operation');
-
-		// Calculate how many children each item has
-		$childCount = array();
-		foreach( $operations as $name=>$item )
-			$childCount[ $name ] = count($item->children);
+		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
 
 		// Render the view
 		$this->render('operations', array(
-			'authItems'=>$operations,
-			'childCount'=>$childCount,
+			'operations'=>$operations,
+			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($operations),
 			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
 			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
-			'i'=>0,
 		));
 	}
 
@@ -141,20 +134,14 @@ class MainController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$tasks = $this->_authorizer->getAuthItems('task');
-
-		// Calculate how many children each item has
-		$childCount = array();
-		foreach( $tasks as $name=>$item )
-			$childCount[ $name ] = count($item->children);
+		$tasks = $this->_authorizer->getAuthItems(CAuthItem::TYPE_TASK);
 
 		// Render the view
 		$this->render('tasks', array(
-			'authItems'=>$tasks,
-			'childCount'=>$childCount,
+			'tasks'=>$tasks,
+			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($tasks),
 			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
 			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
-			'i'=>0,
 		));
 	}
 
@@ -165,18 +152,20 @@ class MainController extends Controller
 	{
 		$roles = $this->_authorizer->getRoles();
 
-		// Calculate how many children each item has
-		$childCount = array();
-		foreach( $roles as $name=>$item )
-			$childCount[ $name ] = count($item->children);
+		// Register the script to bind the sortable plugin to the role table if necessary
+		if( Rights::getConfig('enableWeights')===true )
+		{
+			Yii::app()->getClientScript()->registerScript('rightsRoleTable',
+				"$('.roleTable').rightsSortableTable({ url:'".$this->createUrl('authItem/processSortable')."' });"
+			);
+		}
 
 		// Render the view
 		$this->render('roles', array(
-			'authItems'=>$roles,
-			'childCount'=>$childCount,
+			'roles'=>$roles,
+			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($roles),
 			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
 			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
-			'i'=>0,
 		));
 	}
 }

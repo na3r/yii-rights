@@ -31,13 +31,13 @@
 
 				<tbody>
 
-					<?php foreach( $users as $id=>$user ): ?>
+					<?php $i=0; foreach( $users as $i=>$user ): ?>
 
-						<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+						<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
 
-							<td><?php echo CHtml::link($user->$username, array('assignment/user', 'id'=>$id)); ?></td>
+							<td><?php echo CHtml::link($user->$nameColumn, array('assignment/user', 'id'=>$user->id)); ?></td>
 
-							<td class="assignmentColumn"><?php echo isset($assignments[ $id ])===true ? implode(', ', $assignments[ $id ]) : ''; ?></td>
+							<td class="assignmentColumn"><?php echo isset($assignments[ $user->id ])===true ? implode(', ', $assignments[ $user->id ]) : ''; ?></td>
 
 						</tr>
 

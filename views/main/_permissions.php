@@ -22,7 +22,7 @@
 
 		<tbody>
 
-			<?php foreach( $authItems as $name => $item ): ?>
+			<?php $i=0; foreach( $authItems as $name => $item ): ?>
 
 				<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
@@ -39,7 +39,7 @@
 									'class'=>'revokeLink',
 								));	?>
 
-							<?php elseif( $rights[ $roleName ][ $name ]===Rights::PERM_INHERIT ): ?>
+							<?php elseif( $rights[ $roleName ][ $name ]===Rights::PERM_INHERITED ): ?>
 
 								<span class="inheritedItem" title="<?php echo isset($parents[ $roleName ][ $name ])===true ? $parents[ $roleName ][ $name ] : ''; ?>">
 									<?php echo Yii::t('RightsModule.tr', 'Inherited'); ?> *

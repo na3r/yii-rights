@@ -68,6 +68,7 @@ return array(
 	* views/main/roles.php
 	*/
 	'Roles'=>'',
+	'Super user'=>'', // New
 	'Are you sure to delete this role?'=>'',
 	'No roles found.'=>'',
 	/**
@@ -90,6 +91,8 @@ return array(
 	'Are you sure you want to remove this child?'=>'',
 	'This item has no children.'=>'',
 	'Add Child'=>'',
+	'No relations needs to be set for the super user role.'=>'', // New
+	'Super users are always granted access implicitly.'=>'', // New
 	/**
 	* views/assignment/user.php
 	*/

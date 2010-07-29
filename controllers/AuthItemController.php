@@ -46,7 +46,7 @@ class AuthItemController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',
+			array('allow', // Allow super users to access Rights
 				'actions'=>array(
 					'create',
 					'update',
@@ -54,10 +54,11 @@ class AuthItemController extends Controller
 					'removeChild',
 					'assign',
 					'revoke',
+					'processSortable',
 				),
-				'users'=>$this->_authorizer->superUsers,
+				'users'=>$this->_authorizer->getSuperUsers(),
 			),
-			array('deny',
+			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
 		);
@@ -74,16 +75,21 @@ class AuthItemController extends Controller
 	    // Form is submitted and data is valid, redirect the user
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
-			// Create if not already exists
+			// Make sure that an item with the name does not already exist
 			if( $this->_authorizer->authManager->getAuthItem($form->model->name)===null )
 			{
+				// Create item, set success message and redirect
 				$this->_authorizer->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
 				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name created.', array(':name'=>Rights::beautifyName($form->model->name))));
 				$this->redirect(array('authItem/update', 'name'=>$form->model->name));
 			}
 
 			// Auth item already exists, add a message
-			Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.tr', 'Could not create :name, item already exists.', array(':name'=>Rights::beautifyName($form->model->name))));
+			Yii::app()->user->setFlash('rightsError',
+				Yii::t('RightsModule.tr', 'Could not create :name, item already exists.', array(
+					':name'=>Rights::beautifyName($form->model->name))
+				)
+			);
 		}
 
 		// Render the view
@@ -112,14 +118,19 @@ class AuthItemController extends Controller
 			// Check if name has been changed, if so check that an item with that name does not already exist
 			if( $_GET['name']===$form->model->name || ($_GET['name']!==$form->model->name && $this->_authorizer->authManager->getAuthItem($_GET['name'])===null) )
 			{
-				// Update and redirect
+				// Update item, set success message and redirect
 				$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
 				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name updated.', array(':name'=>Rights::beautifyName($form->model->name))));
 				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
 			}
 
-			// Auth item already exists, add a message
-			Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.tr', 'Could not rename :oldName to :name, an item with that name already exists.', array(':oldName'=>Rights::beautifyName($_GET['name']), ':name'=>Rights::beautifyName($form->model->name))));
+			// An item with the new name already exists, set an error message
+			Yii::app()->user->setFlash('rightsError',
+				Yii::t('RightsModule.tr', 'Could not rename :oldName to :name, an item with that name already exists.', array(
+					':oldName'=>Rights::beautifyName($_GET['name']),
+					':name'=>Rights::beautifyName($form->model->name)
+				))
+			);
 		}
 
 		// Create a form to add children to the auth item
@@ -127,12 +138,14 @@ class AuthItemController extends Controller
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($model->type, $model);
 		if( count($selectOptions)>0 )
 		{
+			// Create the child form
 		    $childForm = new CForm('rights.views.authItem.authChildForm', new AuthChildForm);
 		    $childForm->elements['name']->items = $selectOptions; // Populate name items
 
-			// Child form is submitted and data is valid, redirect the user to the same page
+			// Child form is submitted and data is valid
 			if( $childForm->submitted()===true && $childForm->validate()===true )
 			{
+				// Add child, set success message and redirect to the same page
 				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
 				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', 'Child :name added.', array(':name'=>Rights::beautifyName($childForm->model->name))));
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
@@ -165,7 +178,10 @@ class AuthItemController extends Controller
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->removeAuthItem($_GET['name']);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name deleted.', array(':name'=>Rights::beautifyName($_GET['name']))));
+
+			Yii::app()->user->setFlash('rightsSuccess',
+				Yii::t('RightsModule.tr', ':name deleted.', array(':name'=>Rights::beautifyName($_GET['name'])))
+			);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -186,7 +202,10 @@ class AuthItemController extends Controller
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', 'Child :name removed.', array(':name'=>Rights::beautifyName($_GET['child']))));
+
+			Yii::app()->user->setFlash('rightsSuccess',
+				Yii::t('RightsModule.tr', 'Child :name removed.', array(':name'=>Rights::beautifyName($_GET['child'])))
+			);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -237,6 +256,19 @@ class AuthItemController extends Controller
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
 				$this->redirect(array('main/permissions'));
+		}
+		else
+		{
+			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
+		}
+	}
+
+	public function actionProcessSortable()
+	{
+		// We only allow sorting via POST request
+		if( Yii::app()->request->isPostRequest===true )
+		{
+			$this->_authorizer->authManager->updateItemWeights($_POST['result']);
 		}
 		else
 		{

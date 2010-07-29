@@ -17,16 +17,16 @@ class RightsInstaller extends CApplicationComponent
 	*/
 	public $db;
 	/**
-	* @var bool Whether Rights is installed or not?
+	* @var boolean whether Rights is installed or not.
 	*/
 	public $isInstalled;
 
 	/**
-	* Initialization.
+	* Initializes the installer.
 	*/
 	public function init()
 	{
-		$this->_authManager = Yii::app()->authManager;
+		$this->_authManager = Yii::app()->getAuthManager();
 		$this->db = $this->_authManager->db;
 		$this->isInstalled = $this->isInstalled();
 
@@ -34,12 +34,15 @@ class RightsInstaller extends CApplicationComponent
 	}
 
 	/**
-	* Installs the Rights module.
-	* @param string $superUserRole Name of the super user role
-	* @param array $superUsers List of super users (id=>name)
-	* @return bool
+	* Runs the installer.
+	* @param string the name of the super user role.
+	* @param array the list of default roles.
+	* @param array the list of super users to be assigned (id=>name).
+	* @param boolean whether to enable authorization item weights or not.
+	* @param boolean whether to drop and recreate the tables if they exist.
+	* @return boolean whether the installer ran successfully or not.
 	*/
-	public function install($defaultRoles, $superUserRole, $superUsers)
+	public function run($superUserRole, $defaultRoles, $superUsers, $enableWeights, $overwrite)
 	{
 		// Make sure that the module is not already installed
 		if( $this->isInstalled===false )
@@ -54,10 +57,29 @@ class RightsInstaller extends CApplicationComponent
 
 			try
 			{
-				// Drop the AuthItem-table if it already exists
-				$sql = "drop table if exists {$itemTable}";
-				$command = $this->db->createCommand($sql);
-				$command->execute();
+				// Drop tables if necessary
+				if( $overwrite===true )
+				{
+					// Drop the AuthItem-table if it already exists
+					$sql = "drop table if exists {$itemTable}";
+					$command = $this->db->createCommand($sql);
+					$command->execute();
+
+					// Drop the AuthChild-table if it already exists
+					$sql = "drop table if exists {$itemChildTable}";
+					$command = $this->db->createCommand($sql);
+					$command->execute();
+
+					// Drop the AuthAssignment-table if it already exists
+					$sql = "drop table if exists {$assignmentTable}";
+					$command = $this->db->createCommand($sql);
+					$command->execute();
+
+					// Drop the AuthItemWeight-table if it already exists
+					$sql = "drop table if exists {$itemWeightTable}";
+					$command = $this->db->createCommand($sql);
+					$command->execute();
+				}
 
 				// Create the AuthItem-table
 				$sql = "create table {$itemTable} ( ";
@@ -71,11 +93,6 @@ class RightsInstaller extends CApplicationComponent
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
-				// Drop the AuthChild-table if it already exists
-				$sql = "drop table if exists {$itemChildTable}";
-				$command = $this->db->createCommand($sql);
-				$command->execute();
-
 				// Create the AuthChild-table
 				$sql = "create table {$itemChildTable} ( ";
 				$sql.= "	parent varchar(64) not null, ";
@@ -84,11 +101,6 @@ class RightsInstaller extends CApplicationComponent
 				$sql.= "	foreign key (parent) references {$itemTable} (name) on delete cascade on update cascade, ";
 				$sql.= "	foreign key (child) references {$itemTable} (name) on delete cascade on update cascade ";
 				$sql.= ") type=InnoDB";
-				$command = $this->db->createCommand($sql);
-				$command->execute();
-
-				// Drop the AuthAssignment-table if it already exists
-				$sql = "drop table if exists {$assignmentTable}";
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
@@ -104,26 +116,40 @@ class RightsInstaller extends CApplicationComponent
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
+				// Create the AuthItemWeight-table if necessary
+				if( $enableWeights===true )
+				{
+					$sql = "create table {$this->_authManager->itemWeightTable} ( ";
+					$sql.= "	itemname varchar(64) not null, ";
+					$sql.= "	type integer not null, ";
+					$sql.= "	weight integer, ";
+					$sql.= "	primary key (itemname), ";
+					$sql.= "	foreign key (itemname) references {$itemTable} (name) on delete cascade on update cascade ";
+					$sql.= ") type=InnoDB";
+					$command = $this->db->createCommand($sql);
+					$command->execute();
+				}
+
 				// Insert the necessary roles
-				$roles = array_merge($defaultRoles, array($superUserRole));
+				$roles = array_merge(array($superUserRole), $defaultRoles);
 				foreach( $roles as $roleName )
 				{
 					$sql = "insert into {$itemTable} (name, type, data) values (:name, :type, :data)";
 					$command = $this->db->createCommand($sql);
 					$command->bindValue(':name', $roleName);
 					$command->bindValue(':type', CAuthItem::TYPE_ROLE);
-					$command->bindValue(':data', 'N;'); // Column is serialized
+					$command->bindValue(':data', 'N;');
 					$command->execute();
 				}
 
-				// Assign the super users the super user role
+				// Assign the super users their role
 				foreach( $superUsers as $id=>$username )
 				{
 					$sql = "insert into {$assignmentTable} (itemname, userid, data) values (:itemname, :userid, :data)";
 					$command = $this->db->createCommand($sql);
 					$command->bindValue(':itemname', $superUserRole);
 					$command->bindValue(':userid', $id);
-					$command->bindValue(':data', 'N;'); // Column is serialized
+					$command->bindValue(':data', 'N;');
 					$command->execute();
 				}
 
@@ -141,8 +167,7 @@ class RightsInstaller extends CApplicationComponent
 	}
 
 	/**
-	* Checks if the Rights is already installed.
-	* @return bool
+	* @return boolean whether Rights is installed or not.
 	*/
 	public function isInstalled()
 	{

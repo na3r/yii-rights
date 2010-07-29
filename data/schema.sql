@@ -50,6 +50,20 @@ insert into AuthItem (name,type,data) values ('Guest',2,'N;');
 insert into AuthAssignment (itemname,userid,data) values ('Admin',1,'N;');
 
 /**
+* Schema for AuthItemWeight
+* Used for sorting of AuthItem in Rights backend.
+* @since 0.9.6
+*/
+
+create table AuthItemWeight
+(
+	itemname varchar(64) not null,
+	type integer not null,
+	weight integer not null,
+	primary key (itemname)
+) type=InnoDB, character set utf8;
+
+/**
 * Schema for the User table.
 * @since 0.9.6
 */
@@ -59,5 +73,5 @@ create table User
    id integer not null auto_increment,
    username varchar(128) not null,
    password varchar(128) not null,
-   primary key (userid),
+   primary key (userid)
 ) type=InnoDB, character set utf8;

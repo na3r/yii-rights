@@ -41,15 +41,15 @@ class AssignmentController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			array('allow', // Allow super users to access Rights
 				'actions'=>array(
 					'view',
 					'user',
 					'revoke',
 				),
-				'users'=>$this->_authorizer->superUsers,
+				'users'=>$this->_authorizer->getSuperUsers(),
 			),
-			array('deny',  // deny all users
+			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
 		);
@@ -68,32 +68,27 @@ class AssignmentController extends Controller
 		$pages->pageSize = 20;
 		$pages->applyLimit($criteria);
 
-		// Get all users
-		$allUsers = $this->_authorizer->user->findAll($criteria);
-
-		// Remove super users
-		$users = array();
-		foreach( $allUsers as $user )
-			if( $this->_authorizer->isSuperUser($user->id)===false )
-				$users[ (int)$user->id ] = $user;
+		// Get all users and collect ids
+		$userIds = array();
+		foreach( $this->_authorizer->user->findAll($criteria) as $user )
+			$userIds[] = $user->id;
 
 		// Get the assigned auth items for all user
-		$authAssignments = $this->_authorizer->getUserAuthAssignments(array_keys($users));
+		$userAssignments = $this->_authorizer->getUserAssignments($userIds);
 
 		// Create a list of assignments with beautified names for each user
 		// and place them in a list of assignment with the user id as key
 		$assignments = array();
-		foreach( $authAssignments as $userId=>$items )
+		foreach( $userAssignments as $userId=>$items )
 			foreach( $items as $name=>$item )
 				$assignments[ $userId ][] = Rights::beautifyName($name);
 
 		// Render the view
 		$this->render('view', array(
 			'users'=>$users,
-			'username'=>$this->_authorizer->usernameColumn,
+			'nameColumn'=>$this->_authorizer->usernameColumn,
 			'assignments'=>$assignments,
 			'pages'=>$pages,
-			'i'=>0,
 		));
 	}
 
@@ -132,7 +127,6 @@ class AssignmentController extends Controller
 			'form'=>$form,
 			'assignedItems'=>$assignedItems,
 			'username'=>$this->_authorizer->usernameColumn,
-			'i'=>0,
 		));
 	}
 

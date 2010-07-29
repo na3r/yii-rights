@@ -1,3 +1,7 @@
+/**
+* Anonymous function that is immediately called
+* makes sure that we can use the $-shortcut for jQuery.
+*/
 (function($) {
 
 	/**
@@ -83,6 +87,49 @@
 	}
 
 	/**
+	* Rights sortable table plugin that uses of jui-sortable.
+	* @param Object options Plugin options
+	* @return this
+	*/
+	$.fn.rightsSortableTable = function(options) {
+
+		var defaults = {
+			handle: ''
+		};
+
+		var settings = $.extend(defaults, options);
+
+		return this.each(function() {
+
+			var $this = $(this);
+			var $tbody = $this.find('tbody');
+
+			$tbody.sortable({
+				// Set the handle
+				handle: settings.handle,
+				// Helper function to correct row width while dragging
+				helper: function(e, tr) {
+					var $helper = tr.clone();
+					var $children = tr.children();
+					$helper.children().each(function(index) {
+						$(this).width($children.eq(index).width())
+					});
+					return $helper;
+				},
+				// Actions to be taken when the row is dropped
+				update: function(e, ui) {
+					$.ajax({ type:"POST", url:settings.url, data:{ result:$tbody.sortable('toArray') } });
+					$tbody.find('tr:odd').removeClass('odd').addClass('even');
+					$tbody.find('tr:even').removeClass('even').addClass('odd');
+				}
+			})
+			.disableSelection();
+		});
+
+		return this;
+	}
+
+	/**
 	* Actions to be taken when the document is loaded.
 	*/
 	$(document).ready(function() {
@@ -92,18 +139,23 @@
 		*/
 		$('.rights tbody tr').hover(function() {
 
-			$(this).addClass('hover');
+			$(this).addClass('hover'); // On mouse over
 
 		}, function() {
 
-			$(this).removeClass('hover');
+			$(this).removeClass('hover'); // On mouse out
 
 		});
 
 		/**
 		* Fade effect for flash messages.
 		*/
-   		$('.rights .flash').animate({opacity: 1.0}, 3000).fadeOut(850);
+   		$('.rights .flash').animate({
+   			opacity: 1.0
+   		}, {
+   			duration: 3000
+   		})
+		.fadeOut(650);
 
 	});
 

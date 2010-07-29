@@ -10,26 +10,27 @@
 */
 class Rights
 {
-	const PERM_NONE = 0;		// Access denied
-	const PERM_DIRECT = 1;		// Non-inherited permission
-	const PERM_INHERIT = 2;		// Inherited permission
+	const PERM_NONE = 0;
+	const PERM_DIRECT = 1;
+	const PERM_INHERITED = 2;
 
 	/**
-	* @var array Valid auth item types
+	* @var array the authorization item types
 	*/
 	public static $authItemTypes = array(
-		CAuthItem::TYPE_OPERATION=>'operation',
-		CAuthItem::TYPE_TASK=>'task',
-		CAuthItem::TYPE_ROLE=>'role',
+		CAuthItem::TYPE_OPERATION,
+		CAuthItem::TYPE_TASK,
+		CAuthItem::TYPE_ROLE,
 	);
 
 	/**
-	* Assigns an auth item to the given user.
-	* @param string $itemName Name of the auth item to assign
-	* @param int $userId User id for user to assign the item to
-	* @param string $bizRule Business rule
-	* @param string $data Business rule data
-	* @return CAuthItem
+	* Assigns an authorization item to a specific user.
+	* @param string the name of the item to assign.
+	* @param integer the user id of the user for which to assign the item.
+	* @param string business rule associated with the item. This is a piece of
+	* PHP code that will be executed when {@link checkAccess} is called for the item.
+	* @param mixed additional data associated with the item.
+	* @return CAuthItem the authorization item
 	*/
 	public static function assign($itemName, $userId, $bizRule=null, $data=null)
 	{
@@ -38,10 +39,10 @@ class Rights
 	}
 
 	/**
-	* Revokes an auth item from the given user.
-	* @param string $itemName Name of the auth item to revoke
-	* @param mixed $userId User id for user to revoke the item from
-	* @return bool Was revoke successful?
+	* Revokes an authorization item from a specific user.
+	* @param string the name of the item to revoke.
+	* @param integer the user id of the user for which to revoke the item.
+	* @return boolean whether the item was removed or not.
 	*/
 	public static function revoke($itemName, $userId)
 	{
@@ -50,23 +51,38 @@ class Rights
 	}
 
 	/**
-	* Gets the given module configuration variable.
-	* @param string $name Name of the variable to get
-	* @return mixed Variable value
+	* Returns the roles assigned to a specific user.
+	* @param integer the user id of the user for which roles to get.
+	* @return array the roles.
+	*/
+	public static function getAssignedRoles($userId=null)
+	{
+		$u = Yii::app()->getUser();
+		if( $userId===null && $u->isGuest===false )
+			$userId = $u->id;
+
+	 	$authorizer = self::getAuthorizer();
+	 	return $authorizer->getAuthItems(CAuthItem::TYPE_ROLE, $userId);
+	}
+
+	/**
+	* Returns a specific Rights configuration variable.
+	* @param string the name of the variable to get.
+	* @return mixed the value of the variable or null if not set.
 	*/
 	public static function getConfig($name)
 	{
 		$module = self::getModule();
 		if( isset($module->$name)===true )
 			return $module->$name;
-
-		return null;
+		else
+			return null;
 	}
 
 	/**
-	* Beautifies auth item names by replacing underscores with spaces.
-	* @param string $name Auth item name
-	* @return string Beautified name
+	* Beautifies authorization item names.
+	* @param string the name to beautify.
+	* @return string the beautified name.
 	*/
 	public static function beautifyName($name)
 	{
@@ -74,8 +90,8 @@ class Rights
 	}
 
 	/**
-	* Gets the auth item type select options.
-	* @return array Select options
+	* Returns the authorization item type select options.
+	* @return array the select options.
 	*/
 	public static function getAuthItemTypeSelectOptions()
 	{
@@ -87,26 +103,9 @@ class Rights
 	}
 
 	/**
-	* Gets the valid auth item types for the given type.
-	* Used to avoid impossible assignments.
-	* @param string $type Authorization item type
-	* @return array Valid types
-	*/
-	public static function getValidChildTypes($type)
-	{
-	 	switch( (int)$type )
-		{
-			case CAuthItem::TYPE_ROLE: return array('role', 'task', 'operation');
-			case CAuthItem::TYPE_TASK: return array('task', 'operation');
-			case CAuthItem::TYPE_OPERATION: return array('operation');
-			default: throw new CException('Invalid auth item type.');
-		}
-	}
-
-	/**
-	* Gets the auth item type as a string.
-	* @param integer Auth item type as integer
-	* @return string Auth item type
+	* Returns a specific authorization item type as a string.
+	* @param integer the item type (0: operation, 1: task, 2: role).
+	* @return string the authorization item type string.
 	*/
 	public static function getAuthItemTypeString($type)
 	{
@@ -120,23 +119,23 @@ class Rights
 	}
 
 	/**
-	* Gets the auth item type by string.
-	* @param string $string Auth item name
-	* @return integer Auth item type
+	* Returns the valid child item types for a specific type.
+	* @param string the authorization item type.
+	* @return array the valid types.
 	*/
-	public static function getAuthItemTypeByString($string)
+	public static function getValidChildTypes($type)
 	{
-		switch( $string )
+	 	switch( (int)$type )
 		{
-			case 'operation': return CAuthItem::TYPE_OPERATION;
-			case 'task': return CAuthItem::TYPE_TASK;
-			case 'role': return CAuthItem::TYPE_ROLE;
+			case CAuthItem::TYPE_ROLE: return array('role', 'task', 'operation');
+			case CAuthItem::TYPE_TASK: return array('task', 'operation');
+			case CAuthItem::TYPE_OPERATION: return array('operation');
 			default: throw new CException('Invalid auth item type.');
 		}
 	}
 
 	/**
-	* @return RightsModule
+	* @return RightsModule the Rights module
 	*/
 	public static function getModule()
 	{
@@ -144,8 +143,11 @@ class Rights
 	}
 
 	/**
-	* Finds Rights even if it is nested inside another module.
-	* @param object $module Module to find the module in
+	* Searches for the Rights module among all installed modules.
+	* The module will be found even if it's nested within another module.
+	* @param object the module to find the module in. Defaults to null,
+	* meaning that the application will be used.
+	* @return the Rights module.
 	*/
 	private static function findModule($module=null)
 	{
@@ -164,7 +166,7 @@ class Rights
 	}
 
 	/**
-	* @return RightsAuthorizer component
+	* @return RightsAuthorizer the authorizer component
 	*/
 	public static function getAuthorizer()
 	{

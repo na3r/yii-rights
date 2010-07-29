@@ -20,7 +20,7 @@
 
 				<tbody>
 
-					<?php foreach( $assignedItems as $itemName ): ?>
+					<?php $i=0; foreach( $assignedItems as $itemName ): ?>
 
 						<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 

@@ -1,8 +1,6 @@
 /**
 * Rights module style sheet file.
 *
-* Add this css to your main stylesheet in order to apply the module css.
-*
 * @author Christoffer Niska
 * @copyright Copyright &copy; 2008 Christoffer Niska
 * @since 0.5
@@ -11,6 +9,10 @@
 .rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
 .rights a { color:#666699; font-weight:bold; text-decoration:none; }
 .rights a:hover { color:#666699; text-decoration:underline; }
+.rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
+
+.rights .floatLeft { float:left; }
+.rights .floatRight { float:right; }
 
 .rightsMenu { margin:0 0 20px 0; padding:0; list-style-type:none; }
 .rightsMenu li {
@@ -65,6 +67,15 @@
 .rightsMiniTable .odd td { background-color:#e8edff; }
 
 .rights .hover td { background-color:#ffffdd; }
+.rights .sortableTable .handle {
+	/*
+	width:12px;
+	height:12px;
+	display:inline-block;
+	background:url('images/sortable_handle.gif') 50% 50% no-repeat;
+	*/
+	cursor:pointer;
+}
 
 .rights .bizRuleColumn,
 .rights .bizRuleDataColumn {
@@ -74,7 +85,7 @@
 }
 .rights .deleteColumn,
 .rights .removeColumn,
-.rights .revokeColumn { text-align:right; }
+.rights .revokeColumn { width:80px; text-align:right; }
 
 #authItemParents,
 #authItemChildren,
@@ -85,7 +96,8 @@
 .rights .userAssignmentTable { width:420px; }
 .rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
 
-.rights .childCount .number { font-weight:bold; }
+.rights .superUser .superUserText {  }
+.rights .childCount .childCountNumber { font-weight:bold; }
 
 .rightsInfo { color:#808080; font-size:12px; font-style:italic; }
 

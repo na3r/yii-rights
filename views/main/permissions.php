@@ -17,7 +17,6 @@
 			'authItems'=>$authItems,
 			'rights'=>$rights,
 			'parents'=>$parents,
-			'i'=>$i,
 		)); ?>
 
 	</div>
