@@ -12,17 +12,28 @@
 .rights a { color:#666699; font-weight:bold; text-decoration:none; }
 .rights a:hover { color:#666699; text-decoration:underline; }
 
-#rightsMenu { margin:0 0 30px 0; }
-#rightsMenu ul { margin:10px 0; padding:0; list-style-type:none; }
-#rightsMenu li {
+.rightsMenu { margin:0 0 20px 0; padding:0; list-style-type:none; }
+.rightsMenu li {
 	display:inline;
 	margin:0;
 	padding:8px 12px;
-	background:url('../images/bg_menuButton.gif') repeat-x;
+	background:url('images/bg_menuButton.gif') repeat-x;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
-#rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
+.rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
+.rightsMenu a:hover { color:#ffffff; text-decoration:none; }
+
+.rightsFlash {
+	margin:20px 0;
+	padding:12px;
+	font-size:12px;
+	font-style:italic;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+.rightsFlash.success { color:#007700; background-color:#e0f8dd; }
+.rightsFlash.error { color:#940000; background-color:#fdd9d9; }
 
 .rightsForm label {
 	display:block;
@@ -32,7 +43,7 @@
 .rightsForm input[type=text] {
 	width:360px;
 	padding:5px;
-	background:url('../images/bg_formInputText.gif') repeat-x;
+	background:url('images/bg_formInputText.gif') repeat-x;
 	border:1px solid #c0c0c0;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
@@ -43,6 +54,7 @@
 
 .rightsTable { border:0; margin:0 0 20px 0; }
 .rightsTable * { font-size:12px; }
+.rightsTable thead th { background-color:transparent; }
 .rightsTable th, .rightsTable td { padding:10px; }
 .rightsTable th { font-weight:bold; font-size:13px; }
 .rightsTable .odd { background-color:#e8edff; }
@@ -73,13 +85,15 @@
 
 .rights .childCount .number { font-weight:bold; }
 
+.rights .hover td { background-color:#ffffdd; }
+
 .rightsInfo { color:#808080; font-size:12px; font-style:italic; }
 
 #rightsTooltip {
 	max-width:500px;
 	padding:8px;
     position:absolute;
-	background:url('../images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
+	background:url('images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
     border:1px solid #c0c0c0;
     font-family:Consolas, Arial, san-serif !important;
     font-size:11px;

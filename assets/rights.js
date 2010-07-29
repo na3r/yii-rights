@@ -82,4 +82,24 @@
 		});
 	}
 
+	/**
+	* Actions to be taken when the document is loaded.
+	*/
+	$(document).ready(function() {
+
+		/**
+		* Hover functionality for rights' tables.
+		*/
+		$('.rights tbody tr').hover(function() {
+
+			$(this).addClass('hover');
+
+		}, function() {
+
+			$(this).removeClass('hover');
+
+		});
+
+	});
+
 })(jQuery);
