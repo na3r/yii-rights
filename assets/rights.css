@@ -1,12 +1,12 @@
 /**
- * Rights module style sheet file.
- *
- * Add this css to your main stylesheet in order to apply the module css.
- *
- * @author Christoffer Niska
- * @copyright Copyright &copy; 2008 Christoffer Niska
- * @since 0.5
- */
+* Rights module style sheet file.
+*
+* Add this css to your main stylesheet in order to apply the module css.
+*
+* @author Christoffer Niska
+* @copyright Copyright &copy; 2008 Christoffer Niska
+* @since 0.5
+*/
 
 .rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
 .rights a { color:#666699; font-weight:bold; text-decoration:none; }
@@ -24,16 +24,16 @@
 .rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
 .rightsMenu a:hover { color:#ffffff; text-decoration:none; }
 
-.rightsFlash {
+#rightsFlash .flash {
 	margin:20px 0;
-	padding:12px;
+	padding:8px 12px;
 	font-size:12px;
 	font-style:italic;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
-.rightsFlash.success { color:#007700; background-color:#e0f8dd; }
-.rightsFlash.error { color:#7a0000; background-color:#fdd9d9; }
+#rightsFlash .flash.success { color:#007700; background-color:#e0f8dd; }
+#rightsFlash .flash.error { color:#7a0000; background-color:#fdd9d9; }
 
 .rightsForm label {
 	display:block;
@@ -64,6 +64,8 @@
 .rightsMiniTable th, .rightsMiniTable td { padding:8px; }
 .rightsMiniTable .odd td { background-color:#e8edff; }
 
+.rights .hover td { background-color:#ffffdd; }
+
 .rights .bizRuleColumn,
 .rights .bizRuleDataColumn {
 	color:#808080;
@@ -84,8 +86,6 @@
 .rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
 
 .rights .childCount .number { font-weight:bold; }
-
-.rights .hover td { background-color:#ffffdd; }
 
 .rightsInfo { color:#808080; font-size:12px; font-style:italic; }
 

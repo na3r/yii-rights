@@ -119,7 +119,7 @@ class AuthItemController extends Controller
 			}
 
 			// Auth item already exists, add a message
-			Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.tr', 'Could not rename :oldName to :name, an item with that name already exists.', array(':oldName'=>Rights::beautifyName($form->model->name), ':name'=>Rights::beautifyName($_GET['name']))));
+			Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.tr', 'Could not rename :oldName to :name, an item with that name already exists.', array(':oldName'=>Rights::beautifyName($_GET['name']), ':name'=>Rights::beautifyName($form->model->name))));
 		}
 
 		// Create a form to add children to the auth item

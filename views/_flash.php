@@ -1,19 +1,23 @@
-<?php if( Yii::app()->user->hasFlash('rightsSuccess')===true ):?>
+ <div id="rightsFlash">
 
-    <div class="rightsFlash success">
+	<?php if( Yii::app()->user->hasFlash('rightsSuccess')===true ):?>
 
-        <?php echo Yii::app()->user->getFlash('rightsSuccess'); ?>
+	    <div class="flash success">
 
-    </div>
+	        <?php echo Yii::app()->user->getFlash('rightsSuccess'); ?>
 
-<?php endif; ?>
+	    </div>
 
-<?php if( Yii::app()->user->hasFlash('rightsError')===true ):?>
+	<?php endif; ?>
 
-    <div class="rightsFlash error">
+	<?php if( Yii::app()->user->hasFlash('rightsError')===true ):?>
 
-        <?php echo Yii::app()->user->getFlash('rightsError'); ?>
+	    <div class="flash error">
 
-    </div>
+	        <?php echo Yii::app()->user->getFlash('rightsError'); ?>
 
-<?php endif; ?>
+	    </div>
+
+	<?php endif; ?>
+
+ </div>

@@ -100,6 +100,11 @@
 
 		});
 
+		/**
+		* Fade effect for flash messages.
+		*/
+   		$('.rights .flash').animate({opacity: 1.0}, 3000).fadeOut(850);
+
 	});
 
 })(jQuery);
