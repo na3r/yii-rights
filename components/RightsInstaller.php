@@ -143,7 +143,7 @@ class RightsInstaller extends CApplicationComponent
 				}
 
 				// Assign the super users their role
-				foreach( $superUsers as $id=>$username )
+				foreach( $superUsers as $id )
 				{
 					$sql = "insert into {$assignmentTable} (itemname, userid, data) values (:itemname, :userid, :data)";
 					$command = $this->db->createCommand($sql);

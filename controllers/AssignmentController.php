@@ -68,9 +68,12 @@ class AssignmentController extends Controller
 		$pages->pageSize = 20;
 		$pages->applyLimit($criteria);
 
-		// Get all users and collect ids
+		// Get all users
+		$users = $this->_authorizer->user->findAll($criteria);
+
+		// Collect the ids
 		$userIds = array();
-		foreach( $this->_authorizer->user->findAll($criteria) as $user )
+		foreach( $users as $user )
 			$userIds[] = $user->id;
 
 		// Get the assigned auth items for all user
