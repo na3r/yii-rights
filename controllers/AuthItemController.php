@@ -14,16 +14,16 @@ class AuthItemController extends Controller
 	private $_authorizer;
 
 	/**
-	 * @var CAuthItem the currently loaded data model instance.
-	 */
+	* @var CAuthItem the currently loaded data model instance.
+	*/
 	private $_model;
 
 	/**
-	* Initialization.
+	* Initializes the controller.
 	*/
 	public function init()
 	{
-		$this->_authorizer = Rights::getAuthorizer();
+		$this->_authorizer = $this->getModule()->getAuthorizer();
 		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'create';
 	}
@@ -69,17 +69,21 @@ class AuthItemController extends Controller
 	public function actionCreate()
 	{
 		// Create the auth item form
-	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm('create'));
+	    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('create'));
 
 	    // Form is submitted and data is valid, redirect the user
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Create if not already exists
-			if( $this->_authorizer->authManager->getAuthItem($form->model->name)===NULL )
+			if( $this->_authorizer->authManager->getAuthItem($form->model->name)===null )
+			{
 				$this->_authorizer->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
+				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name created.', array(':name'=>Rights::beautifyName($form->model->name))));
+				$this->redirect(array('authItem/update', 'name'=>$form->model->name));
+			}
 
-			// Redirect
-			$this->redirect(array('authItem/update', 'name'=>$form->model->name));
+			// Auth item already exists, add a message
+			Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.tr', 'Could not create :name, item already exists.', array(':name'=>Rights::beautifyName($form->model->name))));
 		}
 
 		// Render the view
@@ -100,34 +104,39 @@ class AuthItemController extends Controller
 		$model = $this->loadModel();
 
 		// Create the auth item form
-	    $form = new CForm('application.modules.rights.views.authItem.authItemForm', new AuthItemForm('update'));
+	    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('update'));
 
 		// Form is submitted and data is valid, redirect the user
 		if( $form->submitted()===true && $form->validate()===true )
 		{
-			// Update and redirect
-			$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
-			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
+			// Check if name has been changed, if so check that an item with that name does not already exist
+			if( $_GET['name']===$form->model->name || ($_GET['name']!==$form->model->name && $this->_authorizer->authManager->getAuthItem($_GET['name'])===null) )
+			{
+				// Update and redirect
+				$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
+				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name updated.', array(':name'=>Rights::beautifyName($form->model->name))));
+				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'main/permissions'));
+			}
+
+			// Auth item already exists, add a message
+			Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.tr', 'Could not rename :oldName to :name, an item with that name already exists.', array(':oldName'=>Rights::beautifyName($form->model->name), ':name'=>Rights::beautifyName($_GET['name']))));
 		}
 
 		// Create a form to add children to the auth item
+		$childForm = null;
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($model->type, $model);
 		if( count($selectOptions)>0 )
 		{
-		    $childForm = new CForm('application.modules.rights.views.authItem.authChildForm', new AuthChildForm);
+		    $childForm = new CForm('rights.views.authItem.authChildForm', new AuthChildForm);
 		    $childForm->elements['name']->items = $selectOptions; // Populate name items
 
 			// Child form is submitted and data is valid, redirect the user to the same page
 			if( $childForm->submitted()===true && $childForm->validate()===true )
 			{
 				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
+				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', 'Child :name added.', array(':name'=>Rights::beautifyName($childForm->model->name))));
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
 			}
-		}
-		// No children available
-		else
-		{
-			$childForm = NULL;
 		}
 
 		// Set the values for the form fields
@@ -135,7 +144,7 @@ class AuthItemController extends Controller
 		$form->model->description = $model->description;
 		$form->model->type = $model->type;
 		$form->model->bizRule = $model->bizRule!=='NULL' ? $model->bizRule : '';
-		$form->model->data = $model->data!==NULL ? serialize($model->data) : '';
+		$form->model->data = $model->data!==null ? serialize($model->data) : '';
 
 		// Render the view
 		$this->render('update', array(
@@ -156,6 +165,7 @@ class AuthItemController extends Controller
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->removeAuthItem($_GET['name']);
+			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name deleted.', array(':name'=>Rights::beautifyName($_GET['name']))));
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -163,7 +173,7 @@ class AuthItemController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 
@@ -176,6 +186,7 @@ class AuthItemController extends Controller
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
+			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', 'Child :name removed.', array(':name'=>Rights::beautifyName($_GET['child']))));
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -183,7 +194,7 @@ class AuthItemController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 
@@ -206,7 +217,7 @@ class AuthItemController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 
@@ -229,7 +240,7 @@ class AuthItemController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 
@@ -245,7 +256,7 @@ class AuthItemController extends Controller
 				$this->_model = $this->_authorizer->authManager->getAuthItem($_GET['name']);
 
 			if( $this->_model===null )
-				throw new CHttpException(404,'The requested page does not exist.');
+				throw new CHttpException(404, Yii::t('RightsModule.tr', 'The requested page does not exist.'));
 		}
 
 		return $this->_model;

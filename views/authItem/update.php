@@ -1,14 +1,14 @@
-<?php
-$this->breadcrumbs = array(
+<?php $this->breadcrumbs = array(
 	'Rights'=>array('/rights/main'),
 	Yii::t('RightsModule.tr', 'Auth Item'),
 	Rights::beautifyName($model->name),
-);
-?>
+); ?>
 
 <div class="rights">
 
-	<?php $this->renderPartial('/main/_menu'); ?>
+	<?php $this->renderPartial('/_menu'); ?>
+
+	<?php $this->renderPartial('/_flash'); ?>
 
 	<div class="authItem">
 
@@ -16,7 +16,7 @@ $this->breadcrumbs = array(
 
 			<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
 
-			<p class="rightsInfo"><?php echo ucfirst(Rights::getAuthItemTypeString($model->type)); ?></p>
+			<p class="rightsInfo"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
 
 			<?php echo $form->render(); ?>
 
@@ -32,18 +32,20 @@ $this->breadcrumbs = array(
 
 					<table class="rightsMiniTable parentTable" border="0" cellpadding="0" cellspacing="0">
 
-						<?php $i=0; ?>
+						<tbody>
 
-						<?php foreach( $parents as $parentName ): ?>
+							<?php foreach( $parents as $i=>$parentName ): ?>
 
-							<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+								<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
 
-								<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
-								<td>&nbsp;</td>
+									<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
+									<td>&nbsp;</td>
 
-							</tr>
+								</tr>
 
-						<?php endforeach; ?>
+							<?php endforeach; ?>
+
+						</tbody>
 
 			   		</table>
 
@@ -55,6 +57,8 @@ $this->breadcrumbs = array(
 
 			</div>
 
+			<hr />
+
 			<div id="authItemChildren">
 
 				<h2><?php echo Yii::t('RightsModule.tr', 'Children'); ?></h2>
@@ -63,26 +67,27 @@ $this->breadcrumbs = array(
 
 					<table class="rightsMiniTable childTable" border="0" cellpadding="0" cellspacing="0">
 
-						<?php $i=0; ?>
+						<tbody>
 
-						<?php foreach( $children as $childName ): ?>
+							<?php foreach( $children as $i=>$childName ): ?>
 
-							<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+								<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
 
-								<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
+									<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
 
-								<td class="removeColumn">
-									<?php
-									echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Remove'), array(
-										'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
-										'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to remove this child?')
-									));
-									?>
-								</td>
+									<td class="removeColumn">
+										<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Remove'), array(
+											'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
+											'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to remove this child?'),
+											'class'=>'removeLink',
+										)); ?>
+									</td>
 
-							</tr>
+								</tr>
 
-						<?php endforeach; ?>
+							<?php endforeach; ?>
+
+						</tbody>
 
 					</table>
 
@@ -94,7 +99,9 @@ $this->breadcrumbs = array(
 
 			</div>
 
-			<?php if( isset($childForm)===true ): ?>
+			<?php if( $childForm!==null ): ?>
+
+				<hr />
 
 				<div id="authItemAddChild">
 

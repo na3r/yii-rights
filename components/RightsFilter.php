@@ -33,7 +33,7 @@ class RightsFilter extends CFilter
 
 			// We are in a module, append the module id to the auth item name
 			$module = $filterChain->controller->module;
-			if( $module!==NULL )
+			if( $module!==null )
 				$authItem .= ucfirst($module->id).'_';
 
 			$authItem .= ucfirst($controllerId).'_'.ucfirst($actionId);

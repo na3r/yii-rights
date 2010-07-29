@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 0.9.5
+* @version 0.9.6
 */
 class RightsModule extends CWebModule
 {
@@ -51,7 +51,7 @@ class RightsModule extends CWebModule
 	/**
 	* @var string Style sheet file to use for Rights.
 	*/
-	public $css = 'rights.css';
+	public $cssFile;
 
 	/**
 	* Initialization.
@@ -82,13 +82,19 @@ class RightsModule extends CWebModule
 		$authorizer->user = $this->userClass;
 		$authorizer->usernameColumn = $this->usernameColumn;
 
-		// Publish the module's assets folder
-		// and register necessary scripts and the style sheet
-		$app = Yii::app();
-		$assetPath = $app->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
-		$app->clientScript->registerCoreScript('jquery');
-		$app->clientScript->registerScriptFile($assetPath.'/js/rights.js');
-		$app->clientScript->registerCssFile($assetPath.'/css/'.$this->css);
+		// Publish the assets folder
+		$assetPath = Yii::app()->assetManager->publish(dirname(__FILE__).DIRECTORY_SEPARATOR.'assets', false, -1, true);
+
+		// Register necessary scripts
+		Yii::app()->clientScript->registerCoreScript('jquery');
+		Yii::app()->clientScript->registerScriptFile($assetPath.'/rights.js');
+
+		// Default style sheet is used unless one is provided
+		if( $this->cssFile===null )
+			$this->cssFile = $assetPath.'/rights.css';
+
+		// Register the style sheet
+		Yii::app()->clientScript->registerCssFile($this->cssFile);
 
 		// Set the default controller
 		$this->defaultController = 'main';
@@ -117,6 +123,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '0.9.5';
+		return '0.9.6';
 	}
 }

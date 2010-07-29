@@ -20,6 +20,23 @@ return array(
 	*/
 	'You are not authorized to perform this action.'=>'Et ole oikeutettu suorittamaan tätä toimintoa.',
 	/**
+	* controllers/AssignmentController.php
+	*/
+	':name assigned.'=>':name myönnetty.',
+	':name revoked.'=>':name evätty.',
+	'Invalid request. Please do not repeat this request again.'=>'Virheellinen pyyntö. Älä toista tätä pyyntöä.',
+	/**
+	* controllers/AuthItemController.php
+	*/
+	':name created.'=>':name luotu.',
+	'Could not create :name, item already exists.'=>'Kohdetta ei pystytty luomaan, kohde on jo olemassa.',
+	':name updated.'=>':name päivitetty.',
+	'Could not rename :oldName to :name, an item with that name already exists.'=>'Nimeä :oldName ei voitu vaihtaa, kohde nimeltä :name on jo olemassa.',
+	'Child :name added.'=>'Lapsi :name lisätty.',
+	'Child :name removed.'=>'Lapsi :name poistettu.',
+	':name deleted.'=>':name postettu.',
+	'The requested page does not exist.'=>'Pyydettyä sivua ei ole olemassa.',
+	/**
 	* views/main/permissions.php
 	*/
 	'Permissions'=>'Oikeudet',

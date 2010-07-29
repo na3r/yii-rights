@@ -20,6 +20,23 @@ return array(
 	*/
 	'You are not authorized to perform this action.'=>'',
 	/**
+	* controllers/AssignmentController.php
+	*/
+	':name assigned.'=>'',
+	':name revoked.'=>'',
+	'Invalid request. Please do not repeat this request again.'=>'',
+	/**
+	* controllers/AuthItemController.php
+	*/
+	':name created.'=>'',
+	'Could not create :name, item already exists.'=>'',
+	':name updated.'=>'',
+	'Could not rename :oldName to :name, an item with that name already exists.',
+	'Child :name added.'=>'',
+	'Child :name removed.'=>'',
+	':name deleted.'=>'',
+	'The requested page does not exist.'=>'',
+	/**
 	* views/main/permissions.php
 	*/
 	'Permissions'=>'',

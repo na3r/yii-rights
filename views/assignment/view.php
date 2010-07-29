@@ -1,13 +1,13 @@
-<?php
-$this->breadcrumbs=array(
+<?php $this->breadcrumbs = array(
 	'Rights'=>array('/rights/main'),
 	Yii::t('RightsModule.tr', 'Assignments'),
-);
-?>
+); ?>
 
 <div class="rights">
 
-	<?php $this->renderPartial('/main/_menu'); ?>
+	<?php $this->renderPartial('/_menu'); ?>
+
+	<?php $this->renderPartial('/_flash'); ?>
 
 	<div id="rightsAssignments">
 
@@ -17,23 +17,33 @@ $this->breadcrumbs=array(
 
 			<table class="rightsTable assignmentsTable" border="0" cellpadding="0" cellspacing="0">
 
-				<tr>
+				<thead>
 
-					<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Username'); ?></th>
-					<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></th>
+					<tr>
 
-				</tr>
+						<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Username'); ?></th>
 
-				<?php foreach( $users as $id=>$user ): ?>
-
-					<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
-
-						<td><?php echo CHtml::link($user->$username, array('assignment/user', 'id'=>$id)); ?></td>
-						<td class="assignmentColumn"><?php echo isset($assignments[ $id ])===true ? implode(', ', $assignments[ $id ]) : ''; ?></td>
+						<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></th>
 
 					</tr>
 
-				<?php endforeach; ?>
+				</thead>
+
+				<tbody>
+
+					<?php foreach( $users as $id=>$user ): ?>
+
+						<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+
+							<td><?php echo CHtml::link($user->$username, array('assignment/user', 'id'=>$id)); ?></td>
+
+							<td class="assignmentColumn"><?php echo isset($assignments[ $id ])===true ? implode(', ', $assignments[ $id ]) : ''; ?></td>
+
+						</tr>
+
+					<?php endforeach; ?>
+
+				</tbody>
 
 			</table>
 

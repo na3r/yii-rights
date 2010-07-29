@@ -14,11 +14,11 @@ class MainController extends Controller
 	private $_authorizer;
 
 	/**
-	* Initialization.
+	* Initializes the controller.
 	*/
 	public function init()
 	{
-		$this->_authorizer = Rights::getAuthorizer();
+		$this->_authorizer = $this->getModule()->getAuthorizer();
 		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'permissions';
 	}
@@ -81,7 +81,17 @@ class MainController extends Controller
 
 				// Permissions in inherited, we need to get the parents for this item
 				if( $right===Rights::PERM_INHERIT )
-					$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $this->_authorizer->getAuthItemParents($name, $roleName)));
+				{
+					// Get auth item parents
+					$authItemParents = $this->_authorizer->getAuthItemParents($name, $roleName);
+					if( count($authItemParents)>0 )
+					{
+						// If the item has parents beautify their names,
+						// implode them to a string and add them to the list of parents
+						$authItemParents = array_map(array('Rights', 'beautifyName'), $authItemParents);
+						$parents[ $roleName ][ $name ] = implode(', ', $authItemParents);
+					}
+				}
 
 				// Add the item to the list of rights
 				$rights[ $roleName ][ $name ] = $right;

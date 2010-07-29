@@ -33,7 +33,7 @@
 	-webkit-border-radius:6px;
 }
 .rightsFlash.success { color:#007700; background-color:#e0f8dd; }
-.rightsFlash.error { color:#940000; background-color:#fdd9d9; }
+.rightsFlash.error { color:#7a0000; background-color:#fdd9d9; }
 
 .rightsForm label {
 	display:block;

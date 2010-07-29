@@ -1,13 +1,13 @@
-<?php
-$this->breadcrumbs = array(
+<?php $this->breadcrumbs = array(
 	'Rights'=>array('/rights/main'),
 	Yii::t('RightsModule.tr', 'Create Auth Item'),
-);
-?>
+); ?>
 
 <div class="rights">
 
-	<?php $this->renderPartial('/main/_menu'); ?>
+	<?php $this->renderPartial('/_menu'); ?>
+
+	<?php $this->renderPartial('/_flash'); ?>
 
 	<div class="authItem">
 

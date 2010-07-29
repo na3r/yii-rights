@@ -20,6 +20,24 @@ return array(
 	*/
 	'You are not authorized to perform this action.' => 'Sie sind nicht berechtigt diese Aktion auszuführen.',
 	/**
+	* controllers/AssignmentController.php
+	*/
+	':name assigned.'=>':name zugewiesen.',
+	':name revoked.'=>':name entzogen.',
+	'Invalid request. Please do not repeat this request again.'=>'Ungültige Anfrage. Bitte wiederholen Sie die Anfrage nicht.',
+	/**
+	* controllers/AuthItemController.php
+	*/
+	':name created.'=>':name erzeugt.',
+	'Could not create :name, item already exists.'=>':name konnte nicht erzeugt werden, da das Element schon existiert.',
+	':name updated.'=>':name aktualisiert.',
+	'Could not rename :oldName to :name, an item with that name already exists.'=>':oldName kann nicht nach :name umbenannt werden, da schon ein Element mit diesem Namen existiert.',
+	'Child :name added.'=>'Kindelement :name hinzugefügt.',
+	'Child :name removed.'=>'Kindelement :name entfernt.',
+	':name deleted.'=>':name gelöscht.',
+	'The requested page does not exist.'=>'The angeforderte Seite existiert nicht.',
+
+	/**
 	* views/main/permissions.php
 	*/
 	'Permissions' => 'Berechtigungen',

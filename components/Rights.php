@@ -31,7 +31,7 @@ class Rights
 	* @param string $data Business rule data
 	* @return CAuthItem
 	*/
-	public static function assign($itemName, $userId, $bizRule=NULL, $data=NULL)
+	public static function assign($itemName, $userId, $bizRule=null, $data=null)
 	{
 		$authorizer = self::getAuthorizer();
 		return $authorizer->authManager->assign($itemName, $userId, $bizRule, $data);
@@ -60,7 +60,7 @@ class Rights
 		if( isset($module->$name)===true )
 			return $module->$name;
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -112,9 +112,9 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.tr', 'operation');
-			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.tr', 'task');
-			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.tr', 'role');
+			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.tr', 'Operation');
+			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.tr', 'Task');
+			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.tr', 'Role');
 			default: throw new CException('Invalid auth item type.');
 		}
 	}
@@ -140,7 +140,27 @@ class Rights
 	*/
 	public static function getModule()
 	{
-		return Yii::app()->getModule('rights');
+		return self::findModule();
+	}
+
+	/**
+	* Finds Rights even if it is nested inside another module.
+	* @param object $module Module to find the module in
+	*/
+	private static function findModule($module=null)
+	{
+		if( $module===null )
+			$module = Yii::app();
+
+		if( ($m = $module->getModule('rights'))!==null )
+			return $m;
+
+		foreach( $module->getModules() as $id=>$c )
+			if( ($m = $module->getModule($id))!==null )
+				if( ($result = self::findModule($m))!==null )
+					return $result;
+
+		return null;
 	}
 
 	/**

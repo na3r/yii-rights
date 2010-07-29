@@ -14,18 +14,18 @@ class AssignmentController extends Controller
 	private $_authorizer;
 
 	/**
-	* Initialization.
+	* Initializes the controller.
 	*/
 	public function init()
 	{
-		$this->_authorizer = Rights::getAuthorizer();
+		$this->_authorizer = $this->getModule()->getAuthorizer();
 		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'view';
 	}
 
 	/**
-	 * @return array action filters
-	 */
+	* @return array action filters
+	*/
 	public function filters()
 	{
 		return array(
@@ -34,10 +34,10 @@ class AssignmentController extends Controller
 	}
 
 	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
+	* Specifies the access control rules.
+	* This method is used by the 'accessControl' filter.
+	* @return array access control rules
+	*/
 	public function accessRules()
 	{
 		return array(
@@ -103,7 +103,7 @@ class AssignmentController extends Controller
 	public function actionUser()
 	{
 		$model = $this->_authorizer->user->findByPk($_GET['id']);
-		$assignedAuthItems = $this->_authorizer->getAuthItems(NULL, $model->id);
+		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->id);
 
 		// Get the assigned items
 		$assignedItems = array();
@@ -111,10 +111,10 @@ class AssignmentController extends Controller
 			$assignedItems[] = $item->name;
 
 		// Get the assignment select options
-		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(NULL, NULL, $assignedItems);
+		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, $assignedItems);
 
 		// Create a from to add a child for the auth item
-	    $form = new CForm('application.modules.rights.views.assignment.assignmentForm', new AssignmentForm);
+	    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);
 	    $form->elements['authItem']->items = $selectOptions; // Populate auth items
 
 		// Form is submitted and data is valid, redirect the user
@@ -122,6 +122,7 @@ class AssignmentController extends Controller
 		{
 			// Update and redirect
 			$this->_authorizer->authManager->assign($form->model->authItem, $model->id);
+			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem))));
 			$this->redirect(array('assignment/user', 'id'=>$model->id));
 		}
 
@@ -135,12 +136,16 @@ class AssignmentController extends Controller
 		));
 	}
 
+	/**
+	* Revokes an assignment from an user.
+	*/
 	public function actionRevoke()
 	{
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
+			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name revoked.', array(':name'=>Rights::beautifyName($_GET['name']))));
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -148,7 +153,7 @@ class AssignmentController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 }

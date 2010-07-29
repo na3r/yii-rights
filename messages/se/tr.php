@@ -20,6 +20,23 @@ return array(
 	*/
 	'You are not authorized to perform this action.'=>'Du har inte rätt att utföra denna funktion.',
 	/**
+	* controllers/AssignmentController.php
+	*/
+	':name assigned.'=>':name tilldelad.',
+	':name revoked.'=>':name upphävd',
+	'Invalid request. Please do not repeat this request again.'=>'Ogiltigt förfrågan. Upprepa inte förfrågan pånytt.',
+	/**
+	* controllers/AuthItemController.php
+	*/
+	':name created.'=>':name skapad.',
+	'Could not create :name, item already exists.'=>':name kunde inte skapas, elementet finns redan.',
+	':name updated.'=>':name uppdaterad.',
+	'Could not rename :oldName to :name, an item with that name already exists.'=>'Kan inte ändra :oldName till :name, ett element med detta namn finns redan.',
+	'Child :name added.'=>'Barn :name tillagd.',
+	'Child :name removed.'=>'Barn :name borttagen.',
+	':name deleted.'=>':name raderad.',
+	'The requested page does not exist.'=>'Förfrågade sidan finns inte.',
+	/**
 	* views/main/permissions.php
 	*/
 	'Permissions'=>'Rättigheter',

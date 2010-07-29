@@ -54,7 +54,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getRoles()
 	{
 		// Get the roles excluding the super user
-	 	$roles = $this->getAuthItems('role', NULL, array($this->_superUserRole));
+	 	$roles = $this->getAuthItems('role', null, array($this->_superUserRole));
 
 	 	// Loop through the roles and get their child counts
 	 	$childCounts = array();
@@ -81,12 +81,12 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param string $data Non-serialized data
 	* @return CAuthItem
 	*/
-	public function createAuthItem($name, $type, $description='', $bizRule=NULL, $data=NULL)
+	public function createAuthItem($name, $type, $description='', $bizRule=null, $data=null)
 	{
-		$bizRule = $bizRule!=='' ? $bizRule : NULL;
+		$bizRule = $bizRule!=='' ? $bizRule : null;
 
 		if( isset($data)===true )
-			$data = empty($data)===false ? $this->saferEval('return '.$data.';') : NULL;
+			$data = empty($data)===false ? $this->saferEval('return '.$data.';') : null;
 
 		return $this->_authManager->createAuthItem($name, $type, $description, $bizRule, $data);
 	}
@@ -100,16 +100,16 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param string $bizRule Business rule
 	* @param string $data Non-serialized data
 	*/
-	public function updateAuthItem($oldName, $name, $description='', $bizRule=NULL, $data=NULL)
+	public function updateAuthItem($oldName, $name, $description='', $bizRule=null, $data=null)
 	{
 		$authItem = $this->_authManager->getAuthItem($oldName);
 		$authItem->name = $name;
-		$authItem->description = $description!=='' ? $description : NULL;
-		$authItem->bizRule = $bizRule!=='' ? $bizRule : NULL;
+		$authItem->description = $description!=='' ? $description : null;
+		$authItem->bizRule = $bizRule!=='' ? $bizRule : null;
 
 		// Make sure that data is not already serialized
 		if( @unserialize($data)===false )
-			$authItem->data = $data!=='' ? $this->saferEval('return '.$data.';') : NULL;
+			$authItem->data = $data!=='' ? $this->saferEval('return '.$data.';') : null;
 
 		$this->_authManager->saveAuthItem($authItem, $oldName);
 	}
@@ -121,7 +121,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param array $exclude Names of items to exclude
 	* @return array Auth items
 	*/
-	public function getAuthItems($types=NULL, $userId=NULL, $exclude=NULL)
+	public function getAuthItems($types=null, $userId=null, $exclude=array())
 	{
 		// Type is not given, set type to all valid types
 		if( isset($types)===false )
@@ -141,14 +141,10 @@ class RightsAuthorizer extends CApplicationComponent
 		foreach( $items as $children )
 			$authItems = $this->mergeAuthItems($authItems, $children);
 
-		// We need to exclude items
-		if( $exclude!==NULL )
-		{
-			// Exclude those items
-		 	foreach( $exclude as $name )
-		 		if( isset($authItems[ $name ])===true )
-		 			unset($authItems[ $name ]);
-		}
+		// Unset items that should be excluded
+		foreach( $exclude as $name )
+		 	if( isset($authItems[ $name ])===true )
+		 		unset($authItems[ $name ]);
 
 		return $authItems;
 	}
@@ -176,14 +172,14 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param array Additional items to be excluded
 	* @return array Valid auth items
 	*/
-	protected function excludeInvalidAuthItems($authItems, $model=NULL, $exclude=array())
+	protected function excludeInvalidAuthItems($authItems, $model=null, $exclude=array())
 	{
 		// Always exclude the super user
 		$exclude[] = $this->_superUserRole;
 
 		// We are getting auth items valid for a certain item
 		// exclude its parents and children aswell
-		if( $model!==NULL )
+		if( $model!==null )
 		{
 		 	$exclude[] = $model->name;
 		 	foreach( $model->getChildren() as $child )
@@ -209,7 +205,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param CAuthItem $model Item to get select options for
 	* @return array Select options
 	*/
-	public function getAuthItemSelectOptions($type=NULL, $model=NULL, $exclude=array())
+	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
 	{
    		// Get the valid children types for this item
 		$validTypes = isset($type)===true ? Rights::getValidChildTypes($type) : Rights::$authItemTypes;
@@ -231,7 +227,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param string $roleName Role in question
 	* @return array Names of the parents and grandparents
 	*/
-	public function getAuthItemParents($itemName, $roleName=NULL)
+	public function getAuthItemParents($itemName, $roleName=null)
 	{
 		$parentNames = array();
 
@@ -327,13 +323,13 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param integer $userId User id
 	* @return bool
 	*/
-	public function isSuperUser($userId=NULL)
+	public function isSuperUser($userId=null)
 	{
 		// Make sure the user is logged in
 		if( Yii::app()->user->isGuest===false )
 		{
 			// User id is not provided, use the logged in user
-			if( $userId===NULL)
+			if( $userId===null)
 				$userId = Yii::app()->user->id;
 
 			$authAssignments = $this->_authManager->getAuthAssignments($userId);
@@ -379,9 +375,9 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param string $roleName Rolename to get permissions for
 	* @return mixed Permissions or false if role not found
 	*/
-	protected function getPermissions($roleName=NULL)
+	protected function getPermissions($roleName=null)
 	{
-		if( $roleName!==NULL )
+		if( $roleName!==null )
 		{
 			if( isset($this->_permissions[ $roleName ])===true )
 				return $this->_permissions[ $roleName ];
@@ -474,7 +470,7 @@ class RightsAuthorizer extends CApplicationComponent
 		// Loop through the language constructs
 		foreach( $languageConstructs as $lc )
 			if( preg_match('/'.$lc.'\ *\(?\ *[\"\']+/', $code)>0 )
-				return NULL; // Language construct found, not safe for eval
+				return null; // Language construct found, not safe for eval
 
 		// Get a list of all defined functions
 		$definedFunctions = get_defined_functions();
@@ -484,13 +480,13 @@ class RightsAuthorizer extends CApplicationComponent
 		// Append a '(' to the functions to avoid confusion between e.g. array() and array_merge()
 		foreach( $functions as $f )
 			if( preg_match('/'.$f.'\ *\({1}/', $code)>0 )
-				return NULL; // Function call found, not safe for eval
+				return null; // Function call found, not safe for eval
 
 		// Eval the safer code
 		$evaledCode = @eval($code);
 
 		// Return the eval'ed code or null if the result was false
-		return $evaledCode!==false ? $evaledCode : NULL;
+		return $evaledCode!==false ? $evaledCode : null;
 	}
 
 	/**
