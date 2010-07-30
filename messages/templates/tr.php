@@ -1,12 +1,12 @@
 <?php
 /**
-* Finnish translations for Rights.
+* {Language} translation for Rights.
 *
 * Please contact the author if you find an error in the translation.
 *
-* @author Christoffer Niska <cniska@live.com>
-* @copyright Copyright &copy; 2010 Christoffer Niska
-* @since 0.9.1
+* @author {YourName} <{YourEmail}>
+* @copyright Copyright &copy; 2010 {YourName}
+* @since 0.9.7
 */
 return array(
 	/**
@@ -72,6 +72,10 @@ return array(
 	'Are you sure you want to delete this role?'=>'', // Corrected in 0.9.7
 	'Roles can be organized by dragging and dropping.'=>'', // Added in 0.9.7
 	'No roles found.'=>'',
+	/**
+	* views/authItem/authChildForm.php
+	*/
+	'Add'=>'',
 	/**
 	* views/authItem/authItemForm.php
 	*/

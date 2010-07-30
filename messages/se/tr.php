@@ -1,6 +1,6 @@
 <?php
 /**
-* Swedish translations for Rights.
+* Swedish translation for Rights.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -72,6 +72,10 @@ return array(
 	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
 	'Roles can be organized by dragging and dropping.'=>'Roller kan organiseras genom att dra och slappa.',
 	'No roles found.'=>'Inga roller hittades.',
+	/**
+	* views/authItem/authChildForm.php
+	*/
+	'Add'=>'Lägg till',
 	/**
 	* views/authItem/authItemForm.php
 	*/

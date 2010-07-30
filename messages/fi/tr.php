@@ -1,6 +1,6 @@
 <?php
 /**
-* Finnish translations for Rights.
+* Finnish translation for Rights.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -72,6 +72,10 @@ return array(
 	'Are you sure you want to delete this role?'=>'Oletko varma että haluat poistaa tämän roolin?',
 	'Roles can be organized by dragging and dropping.'=>'Roolit voidaan uudelleenjärjestää vetämällä ja tiputtamalla.',
 	'No roles found.'=>'Yhtään roolia ei löytynyt.',
+	/**
+	* views/authItem/authChildForm.php
+	*/
+	'Add'=>'Lisää',
 	/**
 	* views/authItem/authItemForm.php
 	*/

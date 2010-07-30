@@ -1,6 +1,6 @@
 <?php
 /**
-* German translations for Rights.
+* German translation for Rights.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -36,7 +36,6 @@ return array(
 	'Child :name removed.'=>'Kindelement :name entfernt.',
 	':name deleted.'=>':name gelöscht.',
 	'The requested page does not exist.'=>'The angeforderte Seite existiert nicht.',
-
 	/**
 	* views/main/permissions.php
 	*/
@@ -69,8 +68,14 @@ return array(
 	* views/main/roles.php
 	*/
 	'Roles' => 'Rollen',
+	'super user'=>'', //
 	'Are you sure to delete this role?' => 'Sind Sie sicher, dass Sie diese Rolle löschen möchten?',
+	'Roles can be organized by dragging and dropping.'=>'', //
 	'No roles found.' => 'Keine Rollen gefunden.',
+	/**
+	* views/authItem/authChildForm.php
+	*/
+	'Add'=>'Hinzufügen', // Check
 	/**
 	* views/authItem/authItemForm.php
 	*/
@@ -85,12 +90,15 @@ return array(
 	*/
 	'Auth Item' => 'Autorisierungselement ',
 	'Update :name' => ':name aktualisieren',
+	'Relations'=>'', //
 	'This item has no parents.' => 'Dieses Element hat keine Elternelemente.',
 	'Children' => 'Kindelemente',
 	'Remove' => 'Entfernen',
 	'Are you sure you want to remove this child?' => 'Sind Sie sicher, dass Sie dieses Kindelement entfernen möchten?',
 	'This item has no children.' => 'Dieses Element hat keine Kindelemente.',
 	'Add Child' => 'Kindelement hinzufügen',
+	'No relations needs to be set for the super user role.'=>'', //
+	'Super users are always granted access implicitly.'=>'', //
 	/**
 	* views/assignment/user.php
 	*/

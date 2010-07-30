@@ -191,10 +191,7 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
 	{
-   		// Get the valid children types for this item
 		$validTypes = $type!==null ? Rights::getValidChildTypes($type) : null;
-
-		// Get the valid auth items for those types
 		$items = $this->getAuthItems($validTypes);
 		$items = $this->excludeInvalidAuthItems($items, $model, $exclude);
 
@@ -249,10 +246,8 @@ class RightsAuthorizer extends CApplicationComponent
 		// We assume that we do not find the item
 		$found = false;
 
-		// Loop through the children
 		foreach( $children as $childName=>$grandChildren )
 		{
-			// Make sure we have items
 		 	if( $grandChildren!==array() )
 		 	{
 		 		// Item is a grand child of this child, add all necessary items as parents
@@ -328,10 +323,8 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function isSuperUser($userId=null)
 	{
-		// Make sure the user is logged in
 		if( Yii::app()->user->isGuest===false )
 		{
-			// Logged in user is checked unless an user id is provided
 			if( $userId===null)
 				$userId = Yii::app()->getUser()->id;
 
