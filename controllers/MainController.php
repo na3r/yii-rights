@@ -62,49 +62,26 @@ class MainController extends Controller
 	public function actionPermissions()
 	{
 		// Create the permissions tree
-		$this->_authorizer->createPermissions();
-
-		// Get the roles, tasks and operations
 		$roles = $this->_authorizer->getRoles(false);
-		$authItems = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK));
+		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK));
+		$permissions = $this->_authorizer->getPermissions();
 
-		// loop through the roles to get the list of right
-		// and parents for those that are inherited
-		$rights = $parents = array();
+		$rights = array();
 		foreach( $roles as $roleName=>$role )
-		{
-			// Loop through each auth item
-			foreach( $authItems as $name=>$item )
-			{
-				// Get the permission to each item
-				$right = $this->_authorizer->hasPermission($roleName, $name);
+			foreach( $items as $name=>$item )
+				$rights[ $roleName ][ $name ] = $this->_authorizer->hasPermission($name, $permissions[ $roleName ]);
 
-				// Permissions in inherited, we need to get the parents for this item
+		$parents = array();
+		foreach( $rights as $roleName=>$perm )
+			foreach( $perm as $name=>$right )
 				if( $right===Rights::PERM_INHERITED )
-				{
-					// Get auth item parents
-					$authItemParents = $this->_authorizer->getAuthItemParents($name, $roleName);
-					if( $authItemParents!==array() )
-					{
-						// If the item has parents beautify their names,
-						// implode them to a string and add them to the list of parents
-						$authItemParents = array_map(array('Rights', 'beautifyName'), $authItemParents);
-						$parents[ $roleName ][ $name ] = implode(', ', $authItemParents);
-					}
-				}
-
-				// Add the item to the list of rights
-				$rights[ $roleName ][ $name ] = $right;
-			}
-		}
-
-		// Calculate the role column width based on the amount of existing roles
-		$roleColumnWidth = $roles!==array() ? 75/count($roles) : 0;
+					if( ($p = $this->_authorizer->getAuthItemParents($name, $roleName))!==array() && $p===(array)$p )
+						$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $p));
 
 		$params = array(
 			'roles'=>$roles,
-			'roleColumnWidth'=>$roleColumnWidth,
-			'authItems'=>$authItems,
+			'roleColumnWidth'=>$roles!==array() ? 75/count($roles) : 0,
+			'items'=>$items,
 			'rights'=>$rights,
 			'parents'=>$parents,
 		);
@@ -155,8 +132,8 @@ class MainController extends Controller
 		// Register the script to bind the sortable plugin to the role table if necessary
 		if( Rights::getConfig('enableWeights')===true )
 		{
-			Yii::app()->getClientScript()->registerScript('rightsRoleTable',
-				"$('.roleTable').rightsSortableTable({ url:'".$this->createUrl('authItem/processSortable')."' });"
+			Yii::app()->getClientScript()->registerScript('RightsRoleTableSort',
+				"jQuery('.roleTable').rightsSortableTable({ url:'".$this->createUrl('authItem/processSortable')."' });"
 			);
 		}
 
@@ -166,6 +143,7 @@ class MainController extends Controller
 			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($roles),
 			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
 			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
+			'isWeightsEnabled'=>Rights::getConfig('enableWeights'),
 		));
 	}
 }

@@ -13,7 +13,6 @@ class RightsAuthorizer extends CApplicationComponent
 	private $_guestRole;
 	private $_user;
 	private $_usernameColumn;
-	private $_permissions;
 
 	/**
 	* Initializes the autorizer.
@@ -196,11 +195,11 @@ class RightsAuthorizer extends CApplicationComponent
 		$validTypes = $type!==null ? Rights::getValidChildTypes($type) : null;
 
 		// Get the valid auth items for those types
-		$authItems = $this->getAuthItems($validTypes);
-		$authItems = $this->excludeInvalidAuthItems($authItems, $model, $exclude);
+		$items = $this->getAuthItems($validTypes);
+		$items = $this->excludeInvalidAuthItems($items, $model, $exclude);
 
 		$selectOptions = array();
-		foreach( $authItems as $item )
+		foreach( $items as $item )
 			$selectOptions[ $item->name ] = Rights::beautifyName($item->name);
 
 		return $selectOptions;
@@ -227,7 +226,7 @@ class RightsAuthorizer extends CApplicationComponent
 					$parentNames[] = $roleName;
 
 				// Get the parents recursive
-				$potentialParents = array($roleName);
+				$potentialParents = array();
 				if( $this->getAuthItemParentsRecursive($itemName, $children, $potentialParents)===true )
 					$parentNames = array_merge($parentNames, $potentialParents);
 			}
@@ -299,11 +298,15 @@ class RightsAuthorizer extends CApplicationComponent
 	protected function sortAuthItems(CAuthItem $item1, CAuthItem $item2)
 	{
 		if( $item1->type!==$item2->type )
-        	return ($item1->type>$item2->type) ? -1 : 1;
+        	return $item1->type>$item2->type ? -1 : 1;
 		else
         	return 0;
 	}
 
+	/**
+	* Returns the users with super user priviledges.
+	* @return the super users.
+	*/
 	public function getSuperUsers()
 	{
 		$nameColumn = $this->_usernameColumn;
@@ -328,7 +331,7 @@ class RightsAuthorizer extends CApplicationComponent
 		// Make sure the user is logged in
 		if( Yii::app()->user->isGuest===false )
 		{
-			// User id is not provided, use the logged in user
+			// Logged in user is checked unless an user id is provided
 			if( $userId===null)
 				$userId = Yii::app()->getUser()->id;
 
@@ -340,19 +343,29 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Creates and sets the permissions tree.
+	* Returns the permissions for a specific authorization item.
+	* @param string the name of the item for which to get permissions. Defaults to null,
+	* meaning that the full permission tree is returned.
+	* @return the permission tree.
 	*/
-	public function createPermissions()
+	public function getPermissions($itemName=null)
 	{
-		$permissions = array();
-		foreach( $this->getRoles() as $name=>$item )
-			$permissions[ $name ] = $this->getPermissionsRecursive($item);
+		if( $itemName!==null )
+		{
+			$item = $this->_authManager->getAuthItem($itemName);
+			$permissions[ $itemName ] = $this->getPermissionsRecursive($item);
+		}
+		else
+		{
+			foreach( $this->getRoles() as $name=>$item )
+				$permissions[ $name ] = $this->getPermissionsRecursive($item);
+		}
 
-		$this->_permissions = $permissions;
+		return $permissions;
 	}
 
 	/**
-	* Returns the permissions tree recursively.
+	* Returns the permissions for a specific authorization item recursively.
 	* @param CAuthItem the item for which to get permissions.
 	* @return array the section of the permissions tree.
 	*/
@@ -370,60 +383,19 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the permissions for a specific role.
-	* @param string the name of the role for which to get permissions.
-	* Defaults to null meaning all roles.
-	* @return array the permissions.
-	*/
-	protected function getPermissions($roleName=null)
-	{
-		if( $roleName!==null )
-		{
-			if( isset($this->_permissions[ $roleName ])===true )
-				return $this->_permissions[ $roleName ];
-
-			return array();
-		}
-
-		return $this->_permissions;
-	}
-
-	/**
 	* Check if a specific role has permissions to a specific authorization item.
 	* @param string the name of the role for which to check permissions.
 	* @param string the name of the item to check for.
 	* @return integer the permission type (0: None, 1: Direct, 2: Inherited).
 	*/
-	public function hasPermission($roleName, $itemName)
+	public function hasPermission($itemName, $permissions)
 	{
-		if( isset($this->_permissions[ $roleName ])===true )
-		{
-			if( isset($this->_permissions[ $roleName ][ $itemName ])===true )
-				return 1;
+		if( isset($permissions[ $itemName ])===true )
+			return 1;
 
-			foreach( $this->_permissions[ $roleName ] as $children )
-				if( $children!==array() )
-					if( $this->hasPermissionRecursive($itemName, $children)>0 )
-						return 2;
-		}
-
-		return 0;
-	}
-
-	/**
-	* Checks for permissions recursively.
-	* @param string the name of the the item to check for.
-	* @param array the list items to process.
-	* @return integer the permission type (0: None, 1: Direct, 2: Inherited).
-	*/
-	private function hasPermissionRecursive($itemName, $items)
-	{
-		if( isset($items[ $itemName ])===true )
-			return 2;
-
-		foreach( $items as $children )
+		foreach( $permissions as $children )
 			if( $children!==array() )
-				if( $this->hasPermissionRecursive($itemName, $children)>0 )
+				if( $this->hasPermission($itemName, $children)>0 )
 					return 2;
 
 		return 0;

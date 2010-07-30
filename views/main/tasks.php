@@ -77,7 +77,7 @@
 
 								<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Delete'), array(
 									'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('main/tasks')),
-									'confirm'=>Yii::t('RightsModule.tr', 'Are you sure to delete this task?'),
+									'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to delete this task?'),
 									'class'=>'deleteLink',
 								)); ?>
 

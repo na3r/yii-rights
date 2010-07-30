@@ -55,20 +55,22 @@ return array(
 	'Business rule'=>'Business regel',
 	'Data'=>'Data',
 	'Delete'=>'Radera',
-	'Are you sure to delete this operation?'=>'Är du säker att du vill radera denna operation?',
+	'Are you sure you want to delete this operation?'=>'Är du säker att du vill radera denna operation?',
 	'Values within square brackets tell how many children each item has.'=>'Värden i hakparenteser berättar hur många barn varje element har.',
 	'No operations found.'=>'Inga operationer hittades.',
 	/**
 	* views/main/tasks.php
 	*/
 	'Tasks'=>'Uppgifter',
-	'Are you sure to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
+	'Are you sure you want to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
 	'No tasks found.'=>'Inga uppgifter hittades.',
 	/**
 	* views/main/roles.php
 	*/
 	'Roles'=>'Roller',
-	'Are you sure to delete this role?'=>'Är du säker att du vill radera denna roll?',
+	'super user'=>'superanvändare',
+	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
+	'Roles can be organized by dragging and dropping.'=>'Roller kan organiseras genom att dra och slappa.',
 	'No roles found.'=>'Inga roller hittades.',
 	/**
 	* views/authItem/authItemForm.php
@@ -84,12 +86,15 @@ return array(
 	*/
 	'Auth Item'=>'Auktoriserings Element',
 	'Update :name'=>'Uppdatera :name',
+	'Relations'=>'Relationer',
 	'This item has no parents.'=>'Detta element har inga föräldrar.',
 	'Children'=>'Barn',
 	'Remove'=>'Ta bort',
 	'Are you sure you want to remove this child?'=>'Är du säker att du vill radera detta barn?',
 	'This item has no children.'=>'Denna element har inga barn.',
 	'Add Child'=>'Lägg till Barn',
+	'No relations needs to be set for the super user role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
+	'Super users are always granted access implicitly.'=>'Superanvändare beviljas ankomst alltid implicit.',
 	/**
 	* views/assignment/user.php
 	*/

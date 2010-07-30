@@ -103,9 +103,6 @@ class AuthItemController extends Controller
 	*/
 	public function actionUpdate()
 	{
-		// Create the permissions tree
-		$this->_authorizer->createPermissions();
-
 		// Get the authorization item
 		$model = $this->loadModel();
 

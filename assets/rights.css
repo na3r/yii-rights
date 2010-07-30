@@ -96,7 +96,7 @@
 .rights .userAssignmentTable { width:420px; }
 .rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
 
-.rights .superUser .superUserText {  }
+.rights .superUser .superUserText { font-style:italic; }
 .rights .childCount .childCountNumber { font-weight:bold; }
 
 .rightsInfo { color:#808080; font-size:12px; font-style:italic; }

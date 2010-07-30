@@ -57,7 +57,7 @@ $this->breadcrumbs = array(
 
 								<?php if( $name===Rights::getConfig('superUserRole') ): ?>
 
-									<span class="superUser">( <span class="superUserText"><?php echo Yii::t('RightsModule.tr', 'Super user'); ?></span> )</span>
+									<span class="superUser">( <span class="superUserText"><?php echo Yii::t('RightsModule.tr', 'super user'); ?></span> )</span>
 
 								<?php endif; ?>
 
@@ -89,7 +89,7 @@ $this->breadcrumbs = array(
 
 									<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Delete'), array(
 										'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('main/roles')),
-										'confirm'=>Yii::t('RightsModule.tr', 'Are you sure to delete this role?'),
+										'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to delete this role?'),
 										'class'=>'deleteLink',
 									)); ?>
 
@@ -107,7 +107,11 @@ $this->breadcrumbs = array(
 
 			<p class="rightsInfo floatLeft"><?php echo Yii::t('RightsModule.tr', 'Values within square brackets tell how many children each item has.'); ?></p>
 
-			<p class="rightsInfo floatRight"><?php echo Yii::t('RightsModule.tr', 'Roles can be reorganized by dragging and dropping.'); ?></p>
+			<?php if( $isWeightsEnabled===true ): ?>
+
+				<p class="rightsInfo floatRight"><?php echo Yii::t('RightsModule.tr', 'Roles can be organized by dragging and dropping.'); ?></p>
+
+			<?php endif; ?>
 
 		<?php else: ?>
 

@@ -14,7 +14,7 @@
 		<?php $this->renderPartial('_permissions', array(
 			'roles'=>$roles,
 			'roleColumnWidth'=>$roleColumnWidth,
-			'authItems'=>$authItems,
+			'items'=>$items,
 			'rights'=>$rights,
 			'parents'=>$parents,
 		)); ?>

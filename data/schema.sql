@@ -60,7 +60,8 @@ create table AuthItemWeight
 	itemname varchar(64) not null,
 	type integer not null,
 	weight integer not null,
-	primary key (itemname)
+	primary key (itemname),
+	foreign key (itemname) references AuthItem (name) on delete cascade on update cascade
 ) type=InnoDB, character set utf8;
 
 /**

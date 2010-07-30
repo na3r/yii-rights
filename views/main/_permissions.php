@@ -1,6 +1,6 @@
 <h2><?php echo Yii::t('RightsModule.tr', 'Permissions'); ?></h2>
 
-<?php if( count($authItems)>0 ): ?>
+<?php if( count($items)>0 ): ?>
 
 	<table class="rightsTable permissionTable" border="0" cellpadding="0" cellspacing="0">
 
@@ -22,7 +22,7 @@
 
 		<tbody>
 
-			<?php $i=0; foreach( $authItems as $name => $item ): ?>
+			<?php $i=0; foreach( $items as $name => $item ): ?>
 
 				<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
@@ -71,8 +71,8 @@
 	<script type="text/javascript">
 
 		jQuery('.inheritedItem').rightsTooltip({
-			title:'<?php echo Yii::t('RightsModule.tr', 'Parents'); ?>: '}
-		);
+			title:'<?php echo Yii::t('RightsModule.tr', 'Parents'); ?>: '
+		});
 
 	</script>
 
