@@ -33,10 +33,6 @@ class RightsModule extends CWebModule
 	*/
 	public $enableBizRuleData = false;
 	/**
-	* @var boolean whether to enable sorting of authorization items.
-	*/
-	public $enableSorting = true;
-	/**
 	* @var mixed boolean whether to install the module
 	* or an configuration array for installing the module.
 	*/
@@ -106,12 +102,11 @@ class RightsModule extends CWebModule
 	*/
 	public function runInstaller()
 	{
-		$config = $this->install;
-		$superUsers = isset($config['superUsers'])===true ? $config['superUsers'] : array(1);
-		$overwrite = isset($config['overwrite'])===true ? $config['overwrite'] : false;
+		$superUsers = isset($this->install['superUsers'])===true ? $this->install['superUsers'] : array(1);
+		$overwrite = isset($this->install['overwrite'])===true ? $this->install['overwrite'] : false;
 		$this->setComponent('installer', new RightsInstaller);
 		$installer = $this->getComponent('installer');
-		$installer->run($this->superUserRole, $this->defaultRoles, $superUsers, $this->enableSorting, $overwrite);
+		$installer->run($this->superUserRole, $this->defaultRoles, $superUsers, $overwrite);
 	}
 
 	/**

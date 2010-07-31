@@ -11,9 +11,6 @@
 .rights a:hover { color:#666699; text-decoration:underline; }
 .rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
 
-.rights .floatLeft { float:left; }
-.rights .floatRight { float:right; }
-
 .rightsMenu { margin:0 0 20px 0; padding:0; list-style-type:none; }
 .rightsMenu li {
 	display:inline;

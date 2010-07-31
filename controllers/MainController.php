@@ -129,13 +129,10 @@ class MainController extends Controller
 	{
 		$roles = $this->_authorizer->getRoles();
 
-		// Register the script to bind the sortable plugin to the role table if necessary
-		if( Rights::getConfig('enableSorting')===true )
-		{
-			Yii::app()->getClientScript()->registerScript('RightsRoleTableSort',
-				"jQuery('.roleTable').rightsSortableTable({ url:'".$this->createUrl('authItem/processSortable')."' });"
-			);
-		}
+		// Register the script to bind the sortable plugin to the role table
+		Yii::app()->getClientScript()->registerScript('RightsRoleTableSort',
+			"jQuery('.roleTable').rightsSortableTable({ url:'".$this->createUrl('authItem/processSortable')."' });"
+		);
 
 		// Render the view
 		$this->render('roles', array(
@@ -143,7 +140,6 @@ class MainController extends Controller
 			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($roles),
 			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
 			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
-			'isSortingEnabled'=>Rights::getConfig('enableSorting'),
 		));
 	}
 }

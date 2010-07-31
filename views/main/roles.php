@@ -105,13 +105,9 @@ $this->breadcrumbs = array(
 
 			</table>
 
-			<p class="rightsInfo floatLeft"><?php echo Yii::t('RightsModule.tr', 'Values within square brackets tell how many children each item has.'); ?></p>
+			<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'Roles can be organized by dragging and dropping.'); ?></p>
 
-			<?php if( $isWeightsEnabled===true ): ?>
-
-				<p class="rightsInfo floatRight"><?php echo Yii::t('RightsModule.tr', 'Roles can be organized by dragging and dropping.'); ?></p>
-
-			<?php endif; ?>
+			<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'Values within square brackets tell how many children each item has.'); ?></p>
 
 		<?php else: ?>
 
