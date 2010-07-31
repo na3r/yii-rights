@@ -38,11 +38,11 @@ class RightsInstaller extends CApplicationComponent
 	* @param string the name of the super user role.
 	* @param array the list of default roles.
 	* @param array the list of super users to be assigned (id=>name).
-	* @param boolean whether to enable authorization item weights or not.
+	* @param boolean whether to enable sorting of authorization items or not.
 	* @param boolean whether to drop and recreate the tables if they exist.
 	* @return boolean whether the installer ran successfully or not.
 	*/
-	public function run($superUserRole, $defaultRoles, $superUsers, $enableWeights, $overwrite)
+	public function run($superUserRole, $defaultRoles, $superUsers, $enableSorting, $overwrite)
 	{
 		// Make sure that the module is not already installed
 		if( $this->isInstalled===false )
@@ -117,7 +117,7 @@ class RightsInstaller extends CApplicationComponent
 				$command->execute();
 
 				// Create the AuthItemWeight-table if necessary
-				if( $enableWeights===true )
+				if( $enableSorting===true )
 				{
 					$sql = "create table {$this->_authManager->itemWeightTable} ( ";
 					$sql.= "	itemname varchar(64) not null, ";

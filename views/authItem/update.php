@@ -124,7 +124,7 @@
 
 				<p class="rightsInfo">
 
-					<?php echo Yii::t('RightsModule.tr', 'No relations needs to be set for the super user role.'); ?><br />
+					<?php echo Yii::t('RightsModule.tr', 'No relations need to be set for the super user role.'); ?><br />
 					<?php echo Yii::t('RightsModule.tr', 'Super users are always granted access implicitly.'); ?>
 
 				</p>

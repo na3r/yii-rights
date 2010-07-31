@@ -97,7 +97,7 @@ return array(
 	'Are you sure you want to remove this child?'=>'',
 	'This item has no children.'=>'',
 	'Add Child'=>'',
-	'No relations needs to be set for the super user role.'=>'', // Added in 0.9.7
+	'No relations need to be set for the super user role.'=>'', // Added in 0.9.7
 	'Super users are always granted access implicitly.'=>'', // Added in 0.9.7
 	/**
 	* views/assignment/user.php

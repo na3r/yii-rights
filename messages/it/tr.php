@@ -4,8 +4,8 @@
 *
 * Please contact the author if you find an error in the translation.
 *
-* @author joeysantiago
-* @copyright Copyright © 2010 joeysantiago
+* @author Federico Prato <federico.prato@yahoo.it>
+* @copyright Copyright © 2010 Federico Prato
 * @since 0.9.7
 */
 return array(
@@ -97,7 +97,7 @@ return array(
 	'Are you sure you want to remove this child?'=>'Sicuro di voler rimuovere questo figlio?',
 	'This item has no children.'=>'Questo oggetto non ha figli.',
 	'Add Child'=>'Aggiungi figlio',
-	'No relations needs to be set for the super user role.'=>'Per il ruolo del super utente non è necessario inserire relazioni',
+	'No relations need to be set for the super user role.'=>'Per il ruolo del super utente non è necessario inserire relazioni',
 	'Super users are always granted access implicitly.'=>'Ai super utenti è sempre consentito l\accesso.',
 	/**
 	* views/assignment/user.php

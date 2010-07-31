@@ -97,7 +97,7 @@ return array(
 	'Are you sure you want to remove this child?'=>'Oletko varma että haluat poistaa tämän lapsen?',
 	'This item has no children.'=>'Tällä kohteella ei ole yhtään lasta.',
 	'Add Child'=>'Lisää Lapsi',
-	'No relations needs to be set for the super user role.'=>'Yhteyksiä ei tarvitse määrittää ylikäyttäjä-roolille.',
+	'No relations need to be set for the super user role.'=>'Yhteyksiä ei tarvitse määrittää ylikäyttäjä-roolille.',
 	'Super users are always granted access implicitly.'=>'Ylikäyttäjille myönnetään aina pääsy ehdotta.',
 	/**
 	* views/assignment/user.php

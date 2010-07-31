@@ -97,7 +97,7 @@ return array(
 	'Are you sure you want to remove this child?'=>'Är du säker att du vill radera detta barn?',
 	'This item has no children.'=>'Denna element har inga barn.',
 	'Add Child'=>'Lägg till Barn',
-	'No relations needs to be set for the super user role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
+	'No relations need to be set for the super user role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
 	'Super users are always granted access implicitly.'=>'Superanvändare beviljas ankomst alltid implicit.',
 	/**
 	* views/assignment/user.php

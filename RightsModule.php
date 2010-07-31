@@ -33,11 +33,12 @@ class RightsModule extends CWebModule
 	*/
 	public $enableBizRuleData = false;
 	/**
-	* @var boolean whether to enable organization of authorization items.
+	* @var boolean whether to enable sorting of authorization items.
 	*/
-	public $enableWeights = true;
+	public $enableSorting = true;
 	/**
-	* @var boolean whether to install the module when ran or not?
+	* @var mixed boolean whether to install the module
+	* or an configuration array for installing the module.
 	*/
 	public $install = false;
 	/**
@@ -106,18 +107,11 @@ class RightsModule extends CWebModule
 	public function runInstaller()
 	{
 		$config = $this->install;
-		if( $config===(array)$config )
-		{
-			$superUsers = isset($config['superUsers'])===true ? $config['superUsers'] : array();
-			$overwrite = isset($config['overwrite'])===true ? $config['overwrite'] : false;
-			$this->setComponent('installer', new RightsInstaller);
-			$installer = $this->getComponent('installer');
-			$installer->run($this->superUserRole, $this->defaultRoles, $superUsers, $this->enableWeights, $overwrite);
-		}
-		else
-		{
-		 	throw new CException('Install property has to be an array of configurations.');
-		}
+		$superUsers = isset($config['superUsers'])===true ? $config['superUsers'] : array(1);
+		$overwrite = isset($config['overwrite'])===true ? $config['overwrite'] : false;
+		$this->setComponent('installer', new RightsInstaller);
+		$installer = $this->getComponent('installer');
+		$installer->run($this->superUserRole, $this->defaultRoles, $superUsers, $this->enableSorting, $overwrite);
 	}
 
 	/**
