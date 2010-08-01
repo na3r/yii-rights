@@ -113,7 +113,7 @@ class AuthItemController extends Controller
 		if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Check if name has been changed, if so check that an item with that name does not already exist
-			if( $_GET['name']===$form->model->name || ($_GET['name']!==$form->model->name && $this->_authorizer->authManager->getAuthItem($_GET['name'])===null) )
+			if( $_GET['name']===$form->model->name || ($_GET['name']!==$form->model->name && $this->_authorizer->authManager->getAuthItem($form->model->name)===null) )
 			{
 				// Update item, set success message and redirect
 				$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
