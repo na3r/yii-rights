@@ -64,15 +64,9 @@
 .rightsMiniTable .odd td { background-color:#e8edff; }
 
 .rights .hover td { background-color:#ffffdd; }
-.rights .sortableTable .handle {
-	/*
-	width:12px;
-	height:12px;
-	display:inline-block;
-	background:url('images/sortable_handle.gif') 50% 50% no-repeat;
-	*/
-	cursor:pointer;
-}
+
+.rights .sortableTable .sortablePlaceholder { height:38px; background-color:#000000; }
+.rights .sortableTable .sortableHandle { cursor:pointer; }
 
 .rights .bizRuleColumn,
 .rights .bizRuleDataColumn {

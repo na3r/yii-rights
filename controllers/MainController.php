@@ -131,7 +131,10 @@ class MainController extends Controller
 
 		// Register the script to bind the sortable plugin to the role table
 		Yii::app()->getClientScript()->registerScript('RightsRoleTableSort',
-			"jQuery('.roleTable').rightsSortableTable({ url:'".$this->createUrl('authItem/processSortable')."' });"
+			"jQuery('.roleTable').rightsSortableTable({
+				placeholder: 'sortablePlaceholder',
+				url:'".$this->createUrl('authItem/processSortable')."'
+			});"
 		);
 
 		// Render the view
