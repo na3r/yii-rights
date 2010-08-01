@@ -29,10 +29,15 @@ class RightsBaseController extends CController
 	}
 
 	/**
-	* Actions to be taken on access denied.
+	* Denies the access of the user.
+	* This method is invoked when access check fails.
+	* @param IWebUser the current user
 	*/
-	protected function accessDenied()
+	public function accessDenied($user)
 	{
-		throw new CHttpException(403, Yii::t('RightsModule.tr', 'You are not authorized to perform this action.'));
+		if( $user->getIsGuest()===true )
+			$user->loginRequired();
+		else
+			throw new CHttpException(403, Yii::t('RightsModule.tr', 'You are not authorized to perform this action.'));
 	}
 }

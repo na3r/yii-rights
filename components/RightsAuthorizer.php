@@ -191,6 +191,10 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
 	{
+		// Exclude the super user role as it cannot be a child of any item
+		$exclude[] = $this->_superUserRole;
+
+		// Get the valid authorization items
 		$validTypes = $type!==null ? Rights::getValidChildTypes($type) : null;
 		$items = $this->getAuthItems($validTypes);
 		$items = $this->excludeInvalidAuthItems($items, $model, $exclude);
