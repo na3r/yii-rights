@@ -141,7 +141,17 @@ class Rights
 	}
 
 	/**
-	* @return RightsModule the Rights module
+	* @return string a string that can be displayed on your Web page
+	* showing Powered-by-Rights information.
+	*/
+	public static function powered()
+	{
+		$module = self::getModule();
+		return 'Access Control by <a href="http://code.google.com/p/yii-rights/" rel="external">Rights</a> version '.$module->getVersion().'.';
+	}
+
+	/**
+	* @return RightsModule the Rights module.
 	*/
 	public static function getModule()
 	{
@@ -172,7 +182,7 @@ class Rights
 	}
 
 	/**
-	* @return RightsAuthorizer the authorizer component
+	* @return RightsAuthorizer the authorizer component.
 	*/
 	public static function getAuthorizer()
 	{
