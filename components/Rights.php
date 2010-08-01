@@ -52,14 +52,15 @@ class Rights
 
 	/**
 	* Returns the roles assigned to a specific user.
+	* If no user id is provided the logged in user will be used.
 	* @param integer the user id of the user for which roles to get.
 	* @return array the roles.
 	*/
 	public static function getAssignedRoles($userId=null)
 	{
-		$u = Yii::app()->getUser();
-		if( $userId===null && $u->isGuest===false )
-			$userId = $u->id;
+		$user = Yii::app()->getUser();
+		if( $userId===null && $user->isGuest===false )
+			$userId = $user->id;
 
 	 	$authorizer = self::getAuthorizer();
 	 	return $authorizer->getAuthItems(CAuthItem::TYPE_ROLE, $userId);
@@ -114,6 +115,7 @@ class Rights
 			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.tr', 'Operation');
 			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.tr', 'Task');
 			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.tr', 'Role');
+			// Invalid type
 			default: throw new CException('Invalid auth item type.');
 		}
 	}
@@ -127,9 +129,13 @@ class Rights
 	{
 	 	switch( (int)$type )
 		{
-			case CAuthItem::TYPE_ROLE: return array('role', 'task', 'operation');
-			case CAuthItem::TYPE_TASK: return array('task', 'operation');
-			case CAuthItem::TYPE_OPERATION: return array('operation');
+			// Roles can consist of any type of authorization items
+			case CAuthItem::TYPE_ROLE: return self::$authItemTypes;
+			// Tasks can consist of other tasks and operations
+			case CAuthItem::TYPE_TASK: return array(CAuthItem::TYPE_TASK, CAuthItem::TYPE_OPERATION);
+			// Operations can consist of other operations
+			case CAuthItem::TYPE_OPERATION: return array(CAuthItem::TYPE_OPERATION);
+			// Invalid type
 			default: throw new CException('Invalid auth item type.');
 		}
 	}
