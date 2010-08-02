@@ -28,18 +28,27 @@ class RightsFilter extends CFilter
 		// Check if the action should always be allowed
 		if( in_array($action->id, $this->_allowedActions)===false )
 		{
+			// Initialize the authorization item as an empty string
 			$authItem = '';
 
-			// Append the module id to the authorization item name if necessary
+			// Append the module id to the authorization item name
+			// if the controller called belongs to a module
 			if( ($module = $controller->getModule())!==null )
-				$authItem .= ucfirst($module->id).'_';
+				$authItem .= strtolower($module->id).'.';
 
-			// Append the controller and action id to the authorization item name
-			$authItem .= ucfirst($controller->id).'_'.ucfirst($action->id);
+			// Append the controller id to the authorization item name
+			$authItem .= strtolower($controller->id);
 
-			// Make sure the current user has access to the authorization item
+			// Check if user has access to the controller
 			if( $user->checkAccess($authItem)!==true )
-				$allow = false;
+			{
+				// Append the action id to the authorization item name
+				$authItem .= '.'.strtolower($action->id);
+
+				// Check if the user has access to the controller action
+				if( $user->checkAccess($authItem)!==true )
+					$allow = false;
+			}
 		}
 
 		// User is not allowed access, deny access

@@ -87,7 +87,7 @@ class Rights
 	*/
 	public static function beautifyName($name)
 	{
-		$name = str_replace('/', ' ', $name);
+		$name = str_replace('.', ' ', $name);
 		$name = str_replace('_', ' ', $name);
 		$name = ucwords($name);
 		return $name;
