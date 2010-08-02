@@ -74,5 +74,5 @@ create table User
    id integer not null auto_increment,
    username varchar(128) not null,
    password varchar(128) not null,
-   primary key (userid)
+   primary key (id)
 ) type=InnoDB, character set utf8;
