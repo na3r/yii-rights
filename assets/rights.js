@@ -88,7 +88,7 @@
 		// Default settings
 		var defaults = {
 			handle: '',
-			placeholder: '',
+			placeholder: 'sortablePlaceholder',
 		};
 
 		// Merge the options with the defaults
@@ -160,7 +160,7 @@
 		*/
    		$('.rights .flash').animate({ opacity: 1.0 }, { duration: 3000 })
    		.fadeOut(650);
-
+   		
 	});
 
 })(jQuery);

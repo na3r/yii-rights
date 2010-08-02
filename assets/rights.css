@@ -11,8 +11,9 @@
 .rights a:hover { color:#666699; text-decoration:underline; }
 .rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
 
-.rightsMenu { margin:0 0 20px 0; padding:0; list-style-type:none; }
-.rightsMenu li {
+#rightsMenu { margin:20px 0; }
+#rightsMenu ul { margin:0; padding:0; list-style-type:none; }
+#rightsMenu li {
 	display:inline;
 	margin:0;
 	padding:8px 12px;
@@ -20,11 +21,11 @@
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
-.rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
-.rightsMenu a:hover { color:#ffffff; text-decoration:none; }
+#rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
+#rightsMenu a:hover { color:#ffffff; text-decoration:none; }
 
 #rightsFlash .flash {
-	margin:20px 0;
+	margin:0 0 20px 0;
 	padding:8px 12px;
 	font-size:12px;
 	font-style:italic;
@@ -39,14 +40,15 @@
 	margin:0 0 8px 0;
 	font-weight:bold;
 	font-size:12px; }
-.rightsForm input[type=text] {
-	width:360px;
+.rightsForm input[type=text],
+.rightsForm input[type=password] {
 	padding:5px;
 	background:url('images/bg_formInputText.gif') repeat-x;
 	border:1px solid #c0c0c0;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
+
 .rightsForm input { outline:none !important; }
 .rightsForm input[type=submit] { padding:2px 5px; }
 .rightsForm span.required { color:#ff0000; }
