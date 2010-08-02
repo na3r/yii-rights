@@ -116,7 +116,7 @@ class AuthItemController extends Controller
 				// Update item, set success message and redirect
 				$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
 				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name updated.', array(':name'=>Rights::beautifyName($form->model->name))));
-				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'rights/default/permissions'));
+				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'default/permissions'));
 			}
 
 			// An item with the new name already exists, set an error message
@@ -180,7 +180,7 @@ class AuthItemController extends Controller
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'rights/default/permissions'));
+				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'default/permissions'));
 		}
 		else
 		{
@@ -227,7 +227,7 @@ class AuthItemController extends Controller
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array('rights/default/permissions'));
+				$this->redirect(array('default/permissions'));
 		}
 		else
 		{
@@ -250,7 +250,7 @@ class AuthItemController extends Controller
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array('rights/default/permissions'));
+				$this->redirect(array('default/permissions'));
 		}
 		else
 		{

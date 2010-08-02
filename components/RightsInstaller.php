@@ -106,7 +106,7 @@ class RightsInstaller extends CApplicationComponent
 				$command->execute();
 
 				// Insert the necessary roles
-				$roles = array_merge(array($this->superuserRole), $this->defaultRoles);
+				$roles = array_merge(array($this->superuserRole, 'Authenticated'), $this->defaultRoles);
 				foreach( $roles as $roleName )
 				{
 					$sql = "insert into {$itemTable} (name, type, data) ";
@@ -119,16 +119,13 @@ class RightsInstaller extends CApplicationComponent
 				}
 
 				// Assign the logged in user the superusers role
-				foreach( $this->superUsers as $id )
-				{
-					$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
-					$sql.= "values (:itemname, :userid, :data)";
-					$command = $this->db->createCommand($sql);
-					$command->bindValue(':itemname', $this->superuserRole);
-					$command->bindValue(':userid', Yii::app()->getUser()->id);
-					$command->bindValue(':data', 'N;');
-					$command->execute();
-				}
+				$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
+				$sql.= "values (:itemname, :userid, :data)";
+				$command = $this->db->createCommand($sql);
+				$command->bindValue(':itemname', $this->superuserRole);
+				$command->bindValue(':userid', Yii::app()->getUser()->id);
+				$command->bindValue(':data', 'N;');
+				$command->execute();
 
 				// All commands executed successfully, commit
 				$txn->commit();
