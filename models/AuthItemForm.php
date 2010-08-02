@@ -15,8 +15,8 @@ class AuthItemForm extends CFormModel
 	public $data;
 
 	/**
-	 * Declares the validation rules.
-	 */
+	* Declares the validation rules.
+	*/
 	public function rules()
 	{
 		return array(
@@ -27,8 +27,8 @@ class AuthItemForm extends CFormModel
 	}
 
 	/**
-	 * Declares attribute labels.
-	 */
+	* Declares attribute labels.
+	*/
 	public function attributeLabels()
 	{
 		return array(

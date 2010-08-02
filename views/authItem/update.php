@@ -1,137 +1,129 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('/rights/main'),
+	'Rights'=>array('/rights'),
 	Yii::t('RightsModule.tr', 'Auth Item'),
 	Rights::beautifyName($model->name),
 ); ?>
 
-<div class="rights">
+<div class="authItem">
 
-	<?php $this->renderPartial('/_menu'); ?>
+	<div class="rightsForm form span-12 first">
 
-	<?php $this->renderPartial('/_flash'); ?>
+		<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
 
-	<div class="authItem">
+		<p class="rightsInfo"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
 
-		<div class="rightsForm form span-12 first">
+		<?php echo $form->render(); ?>
 
-			<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
+	</div>
 
-			<p class="rightsInfo"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
+	<div id="authItemRelations" class="span-11 last">
 
-			<?php echo $form->render(); ?>
+		<h2><?php echo Yii::t('RightsModule.tr', 'Relations'); ?></h2>
 
-		</div>
+		<?php if( $model->name!==Rights::getConfig('superUserRole') ): ?>
 
-		<div id="authItemRelations" class="span-11 last">
+			<div id="authItemParents">
 
-			<h2><?php echo Yii::t('RightsModule.tr', 'Relations'); ?></h2>
+				<h3><?php echo Yii::t('RightsModule.tr', 'Parents'); ?></h3>
 
-			<?php if( $model->name!==Rights::getConfig('superUserRole') ): ?>
+				<?php if( count($parents)>0 ): ?>
 
-				<div id="authItemParents">
+					<table class="rightsMiniTable parentTable" border="0" cellpadding="0" cellspacing="0">
 
-					<h3><?php echo Yii::t('RightsModule.tr', 'Parents'); ?></h3>
+						<tbody>
 
-					<?php if( count($parents)>0 ): ?>
+							<?php foreach( $parents as $i=>$parentName ): ?>
 
-						<table class="rightsMiniTable parentTable" border="0" cellpadding="0" cellspacing="0">
+								<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
 
-							<tbody>
+									<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
 
-								<?php foreach( $parents as $i=>$parentName ): ?>
+									<td>&nbsp;</td>
 
-									<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
+								</tr>
 
-										<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
+							<?php endforeach; ?>
 
-										<td>&nbsp;</td>
+						</tbody>
 
-									</tr>
+			   		</table>
 
-								<?php endforeach; ?>
+				<?php else: ?>
 
-							</tbody>
+					<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no parents.'); ?></p>
 
-			   			</table>
+				<?php endif;?>
 
-					<?php else: ?>
+			</div>
 
-						<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no parents.'); ?></p>
+			<div id="authItemChildren">
 
-					<?php endif;?>
+				<h3><?php echo Yii::t('RightsModule.tr', 'Children'); ?></h3>
 
-				</div>
+				<?php if( count($children)>0 ): ?>
 
-				<div id="authItemChildren">
+					<table class="rightsMiniTable childTable" border="0" cellpadding="0" cellspacing="0">
 
-					<h3><?php echo Yii::t('RightsModule.tr', 'Children'); ?></h3>
+						<tbody>
 
-					<?php if( count($children)>0 ): ?>
+							<?php foreach( $children as $i=>$childName ): ?>
 
-						<table class="rightsMiniTable childTable" border="0" cellpadding="0" cellspacing="0">
+								<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
 
-							<tbody>
+									<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
 
-								<?php foreach( $children as $i=>$childName ): ?>
+									<td class="removeColumn">
 
-									<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
+										<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Remove'), array(
+											'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
+											'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to remove this child?'),
+											'class'=>'removeLink',
+										)); ?>
 
-										<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
+									</td>
 
-										<td class="removeColumn">
+								</tr>
 
-											<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Remove'), array(
-												'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
-												'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to remove this child?'),
-												'class'=>'removeLink',
-											)); ?>
+							<?php endforeach; ?>
 
-										</td>
+						</tbody>
 
-									</tr>
+					</table>
 
-								<?php endforeach; ?>
+				<?php else: ?>
 
-							</tbody>
-
-						</table>
-
-					<?php else: ?>
-
-						<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no children.'); ?></p>
-
-					<?php endif; ?>
-
-				</div>
-
-				<?php if( $childForm!==null ): ?>
-
-					<div id="authItemAddChild">
-
-						<h4><?php echo Yii::t('RightsModule.tr', 'Add Child'); ?></h4>
-
-						<div class="rightsForm form">
-
-							<?php echo $childForm->render(); ?>
-
-						</div>
-
-					</div>
+					<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no children.'); ?></p>
 
 				<?php endif; ?>
 
-			<?php else: ?>
+			</div>
 
-				<p class="rightsInfo">
+			<?php if( $childForm!==null ): ?>
 
-					<?php echo Yii::t('RightsModule.tr', 'No relations need to be set for the super user role.'); ?><br />
-					<?php echo Yii::t('RightsModule.tr', 'Super users are always granted access implicitly.'); ?>
+				<div id="authItemAddChild">
 
-				</p>
+					<h4><?php echo Yii::t('RightsModule.tr', 'Add Child'); ?></h4>
+
+					<div class="rightsForm form">
+
+						<?php echo $childForm->render(); ?>
+
+					</div>
+
+				</div>
 
 			<?php endif; ?>
 
-		</div>
+		<?php else: ?>
+
+			<p class="rightsInfo">
+
+				<?php echo Yii::t('RightsModule.tr', 'No relations need to be set for the super user role.'); ?><br />
+				<?php echo Yii::t('RightsModule.tr', 'Super users are always granted access implicitly.'); ?>
+
+			</p>
+
+		<?php endif; ?>
 
 	</div>
 

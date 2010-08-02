@@ -1,6 +1,6 @@
 <?php
 /**
-* Auth item form configuration file.
+* Authorization item form configuration file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska

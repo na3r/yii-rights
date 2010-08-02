@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 0.9.7
+* @version 0.9.8
 */
 class RightsModule extends CWebModule
 {
@@ -25,18 +25,17 @@ class RightsModule extends CWebModule
 	*/
 	public $usernameColumn = 'username';
 	/**
-	* @var boolean whether to enable business rules or not.
+	* @var boolean whether to enable business rules.
 	*/
 	public $enableBizRule = true;
 	/**
-	* @var boolean whether to enable data for business rules or not.
+	* @var boolean whether to enable data for business rules.
 	*/
 	public $enableBizRuleData = false;
 	/**
-	* @var mixed boolean whether to install the module
-	* or an configuration array for installing the module.
+	* @var boolean whether to enable the installer.
 	*/
-	public $install = false;
+	public $enableInstaller = false;
 	/**
 	* @var string the style sheet file to use for Rights.
 	*/
@@ -46,8 +45,10 @@ class RightsModule extends CWebModule
 	*/
 	public $layout;
 
+	private $_assetsUrl;
+
 	/**
-	* Initializes the module.
+	* Initializes the "rights" module.
 	*/
 	public function init()
 	{
@@ -58,55 +59,74 @@ class RightsModule extends CWebModule
 			'rights.controllers.*',
 		));
 
-		// Run the installer if necessary
-		if( $this->install!==false  )
-			$this->runInstaller();
+		// Set the module components
+		$this->setComponents(array(
+			'authorizer'=>array(
+				'class'=>'RightsAuthorizer',
+				'superUserRole'=>$this->superUserRole,
+				'user'=>$this->userClass,
+				'usernameColumn'=>$this->usernameColumn,
+			),
+			'errorHandler'=>array(
+				'errorAction'=>'rights/default/error',
+			),
+		));
 
-		// Set the authorizer component
-		$this->setComponent('authorizer', new RightsAuthorizer);
-		$authorizer = $this->getAuthorizer();
-		$authorizer->getAuthManager()->defaultRoles = $this->defaultRoles;
-		$authorizer->superUserRole = $this->superUserRole;
-		$authorizer->user = $this->userClass;
-		$authorizer->usernameColumn = $this->usernameColumn;
+		// Check if we need to enable the installer
+		if( $this->enableInstaller===true )
+		{
+			// Set the installer component
+			$this->setComponents(array(
+				'installer'=>array(
+					'class'=>'RightsInstaller',
+					'superUserRole'=>$this->superUserRole,
+					'defaultRoles'=>$this->defaultRoles,
+				),
+			));
+			$this->defaultController = 'setup';
+		}
 
+		$this->getAuthorizer()->getAuthManager()->defaultRoles = $this->defaultRoles;
+		$this->registerScripts();
+
+		// Default layout is used unless one is provided
+		if( $this->layout===null )
+			$this->layout = 'rights.views.layouts.rights';
+	}
+
+	/**
+	* Registers the necessary scripts.
+	*/
+	public function registerScripts()
+	{
 		// Publish the necessary paths
 		$app = Yii::app();
-		$am = $app->getAssetManager();
-		$assetPath = $am->publish(Yii::getPathOfAlias('rights.assets'), false, -1, true);
-		$juiPath = $am->publish(Yii::getPathOfAlias('zii.vendors.jui'));
+		$assetsUrl = $this->getAssetsUrl();
+		$juiUrl = $app->getAssetManager()->publish(Yii::getPathOfAlias('zii.vendors.jui'));
 
 		// Register the necessary scripts
 		$cs = $app->getClientScript();
 		$cs->registerCoreScript('jquery');
-		$cs->registerScriptFile($juiPath.'/js/jquery-ui.min.js');
-		$cs->registerScriptFile($assetPath.'/rights.js');
+		$cs->registerScriptFile($juiUrl.'/js/jquery-ui.min.js');
+		$cs->registerScriptFile($assetsUrl.'/js/rights.js');
 
 		// Default style sheet is used unless one is provided
 		if( $this->cssFile===null )
-			$this->cssFile = $assetPath.'/rights.css';
+			$this->cssFile = $assetsUrl.'/css/rights.css';
 
 		// Register the style sheet
 		$cs->registerCssFile($this->cssFile);
-
-		// Default layout is used unless one is provided
-		if( $this->layout===null )
-			$this->layout = 'application.views.layouts.column1';
-
-		// Set the default controller
-		$this->defaultController = 'main';
 	}
 
 	/**
-	* Runs the installer component.
+	* @return string the base URL that contains all published asset files of Rights.
 	*/
-	public function runInstaller()
+	public function getAssetsUrl()
 	{
-		$superUsers = isset($this->install['superUsers'])===true ? $this->install['superUsers'] : array(1);
-		$overwrite = isset($this->install['overwrite'])===true ? $this->install['overwrite'] : false;
-		$this->setComponent('installer', new RightsInstaller);
-		$installer = $this->getComponent('installer');
-		$installer->run($this->superUserRole, $this->defaultRoles, $superUsers, $overwrite);
+		if( $this->_assetsUrl===null )
+			$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets'), false, -1, true);
+
+		return $this->_assetsUrl;
 	}
 
 	/**
@@ -118,10 +138,18 @@ class RightsModule extends CWebModule
 	}
 
 	/**
+	* @return RightsInstaller the installer component
+	*/
+	public function getInstaller()
+	{
+		return $this->getComponent('installer');
+	}
+
+	/**
 	* @return the current version
 	*/
 	public function getVersion()
 	{
-		return '0.9.7';
+		return '0.9.8';
 	}
 }

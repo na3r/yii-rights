@@ -1,64 +1,56 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('/rights/main'),
+	'Rights'=>array('/rights'),
 	Yii::t('RightsModule.tr', 'Assignments')=>array('/rights/assignment/view'),
 	$model->$username,
 ); ?>
 
-<div class="rights">
+<div id="userAssignments" class="span-12 first">
 
-	<?php $this->renderPartial('/_menu'); ?>
+	<h2><?php echo Yii::t('RightsModule.tr', 'Assignments for :username', array(':username'=>$model->$username)); ?></h2>
 
-	<?php $this->renderPartial('/_flash'); ?>
+	<?php if( count($assignedItems)>0 ): ?>
 
-	<div id="userAssignments" class="span-12 first">
+		<table class="rightsMiniTable userAssignmentTable" border="0" cellpadding="0" cellspacing="0">
 
-		<h2><?php echo Yii::t('RightsModule.tr', 'Assignments for :username', array(':username'=>$model->$username)); ?></h2>
+			<tbody>
 
-		<?php if( count($assignedItems)>0 ): ?>
+				<?php $i=0; foreach( $assignedItems as $itemName ): ?>
 
-			<table class="rightsMiniTable userAssignmentTable" border="0" cellpadding="0" cellspacing="0">
+					<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
-				<tbody>
+						<td><?php echo CHtml::link(Rights::beautifyName($itemName), array('authItem/update', 'name'=>$itemName)); ?></td>
 
-					<?php $i=0; foreach( $assignedItems as $itemName ): ?>
+						<td class="revokeColumn">
+							<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Revoke'), array(
+								'submit'=>array('assignment/revoke', 'id'=>$model->id, 'name'=>$itemName),
+								'confirm'=>Yii::t('RightsModule.tr', 'Are you sure to revoke this assignment?'),
+								'class'=>'revokeLink',
+							)); ?>
+						</td>
 
-						<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+					</tr>
 
-							<td><?php echo CHtml::link(Rights::beautifyName($itemName), array('authItem/update', 'name'=>$itemName)); ?></td>
+				<?php endforeach; ?>
 
-							<td class="revokeColumn">
-								<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Revoke'), array(
-									'submit'=>array('assignment/revoke', 'id'=>$model->id, 'name'=>$itemName),
-									'confirm'=>Yii::t('RightsModule.tr', 'Are you sure to revoke this assignment?'),
-									'class'=>'revokeLink',
-								)); ?>
-							</td>
+			</tbody>
 
-						</tr>
+		</table>
 
-					<?php endforeach; ?>
+	<?php else: ?>
 
-				</tbody>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This user has not been assigned any auth items.'); ?></p>
 
-			</table>
+	<?php endif; ?>
 
-		<?php else: ?>
+</div>
 
-			<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This user has not been assigned any auth items.'); ?></p>
+<div id="addUserAssignment" class="span-11 last">
 
-		<?php endif; ?>
+	<h3><?php echo Yii::t('RightsModule.tr', 'Add Assignment'); ?></h3>
 
-	</div>
+	<div class="rightsForm form">
 
-	<div id="addUserAssignment" class="span-11 last">
-
-		<h3><?php echo Yii::t('RightsModule.tr', 'Add Assignment'); ?></h3>
-
-		<div class="rightsForm form">
-
-			<?php echo $form->render(); ?>
-
-		</div>
+		<?php echo $form->render(); ?>
 
 	</div>
 

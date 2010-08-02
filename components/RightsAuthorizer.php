@@ -19,9 +19,9 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function init()
 	{
-		$this->_authManager = Yii::app()->getAuthManager();
-
 		parent::init();
+
+		$this->_authManager = Yii::app()->getAuthManager();
 	}
 
 	/**
@@ -33,7 +33,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getRoles($includeSuperUser=true, $sort=true)
 	{
 		$exclude = $includeSuperUser===false ? array($this->_superUserRole) : array();
-	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, $exclude, $sort);
+	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, $sort, $exclude);
 	}
 
 	/**
@@ -85,11 +85,11 @@ class RightsAuthorizer extends CApplicationComponent
 	 * meaning returning all items regardless of their type.
 	 * @param mixed the user ID. Defaults to null, meaning returning all items even if
 	 * they are not assigned to a user.
-	 * @param array the items to be excluded.
 	 * @param boolean sort items by to weights.
+	 * @param array the items to be excluded.
 	 * @return array the authorization items of the specific type.
 	 */
-	public function getAuthItems($type=null, $userId=null, $exclude=array(), $sort=false)
+	public function getAuthItems($type=null, $userId=null, $sort=false, $exclude=array())
 	{
 		if( $type===null )
 		{

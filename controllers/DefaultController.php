@@ -1,12 +1,12 @@
 <?php
 /**
-* Rights main controller class file.
+* Rights default controller class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.5
 */
-class MainController extends Controller
+class DefaultController extends Controller
 {
 	/**
 	* @var RightsAuthorizer
@@ -24,20 +24,18 @@ class MainController extends Controller
 	}
 
 	/**
-	 * @return array action filters
-	 */
+	* @return array action filters
+	*/
 	public function filters()
 	{
-		return array(
-			'accessControl',
-		);
+		return array('accessControl');
 	}
 
 	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
+	* Specifies the access control rules.
+	* This method is used by the 'accessControl' filter.
+	* @return array access control rules
+	*/
 	public function accessRules()
 	{
 		return array(
@@ -63,7 +61,7 @@ class MainController extends Controller
 	{
 		// Create the permissions tree
 		$roles = $this->_authorizer->getRoles(false);
-		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK));
+		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK), null, true);
 		$permissions = $this->_authorizer->getPermissions();
 
 		$rights = array();
@@ -87,7 +85,10 @@ class MainController extends Controller
 		);
 
 		// Render the view
-		isset($_POST['ajax'])===true ? $this->renderPartial('_permissions', $params) : $this->render('permissions', $params);
+		if( isset($_POST['ajax'])===true )
+			$this->renderPartial('_permissions', $params);
+		else
+			$this->render('permissions', $params);
 	}
 
 	/**
@@ -95,7 +96,14 @@ class MainController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION, null, true);
+
+		// Register the script to bind the sortable plugin to the operation table
+		Yii::app()->getClientScript()->registerScript('rightsOperationTableSort',
+			"jQuery('.operationTable').rightsSortableTable({
+				url:'".$this->createUrl('/rights/authItem/processSortable')."'
+			});"
+		);
 
 		// Render the view
 		$this->render('operations', array(
@@ -111,7 +119,14 @@ class MainController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$tasks = $this->_authorizer->getAuthItems(CAuthItem::TYPE_TASK);
+		$tasks = $this->_authorizer->getAuthItems(CAuthItem::TYPE_TASK, null, true);
+
+		// Register the script to bind the sortable plugin to the task table
+		Yii::app()->getClientScript()->registerScript('rightsTaskTableSort',
+			"jQuery('.taskTable').rightsSortableTable({
+				url:'".$this->createUrl('/rights/authItem/processSortable')."'
+			});"
+		);
 
 		// Render the view
 		$this->render('tasks', array(
@@ -130,10 +145,9 @@ class MainController extends Controller
 		$roles = $this->_authorizer->getRoles();
 
 		// Register the script to bind the sortable plugin to the role table
-		Yii::app()->getClientScript()->registerScript('RightsRoleTableSort',
+		Yii::app()->getClientScript()->registerScript('rightsRoleTableSort',
 			"jQuery('.roleTable').rightsSortableTable({
-				placeholder: 'sortablePlaceholder',
-				url:'".$this->createUrl('authItem/processSortable')."'
+				url:'".$this->createUrl('/rights/authItem/processSortable')."'
 			});"
 		);
 
@@ -144,5 +158,19 @@ class MainController extends Controller
 			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
 			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
 		));
+	}
+
+	/**
+	* Displays the error page.
+	*/
+	public function actionError()
+	{
+	    if( $error=Yii::app()->errorHandler->error )
+	    {
+	    	if( Yii::app()->request->isAjaxRequest===true )
+	    		echo $error['message'];
+	    	else
+	        	$this->render('error', $error);
+	    }
 	}
 }

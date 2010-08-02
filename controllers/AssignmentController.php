@@ -28,9 +28,7 @@ class AssignmentController extends Controller
 	*/
 	public function filters()
 	{
-		return array(
-			'accessControl',
-		);
+		return array('accessControl');
 	}
 
 	/**

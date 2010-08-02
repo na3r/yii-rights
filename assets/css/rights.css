@@ -17,7 +17,7 @@
 	display:inline;
 	margin:0;
 	padding:8px 12px;
-	background:url('images/bg_menuButton.gif') repeat-x;
+	background:url('../images/bg_menuButton.gif') repeat-x;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
@@ -43,7 +43,7 @@
 .rightsForm input[type=text],
 .rightsForm input[type=password] {
 	padding:5px;
-	background:url('images/bg_formInputText.gif') repeat-x;
+	background:url('../images/bg_formInputText.gif') repeat-x;
 	border:1px solid #c0c0c0;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
@@ -98,7 +98,7 @@
 	max-width:500px;
 	padding:8px;
     position:absolute;
-	background:url('images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
+	background:url('../images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
     border:1px solid #c0c0c0;
     font-family:Consolas, Arial, san-serif !important;
     font-size:11px;

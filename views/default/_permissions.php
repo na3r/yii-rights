@@ -35,7 +35,7 @@
 							<?php if( $rights[ $roleName ][ $name ]===Rights::PERM_DIRECT ): ?>
 
 								<?php echo CHtml::link(Yii::t('RightsModule.tr', 'Revoke'), '#', array(
-									'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/revoke', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('main/permissions').'", { ajax:true }); } }); return false;',
+									'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/revoke', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('default/permissions').'", { ajax:true }); } }); return false;',
 									'class'=>'revokeLink',
 								));	?>
 
@@ -48,7 +48,7 @@
 							<?php else: ?>
 
 								<?php echo CHtml::link(Yii::t('RightsModule.tr', 'Assign'), '#', array(
-									'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/assign', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('main/permissions').'", { ajax:true }); } }); return false;',
+									'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/assign', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('default/permissions').'", { ajax:true }); } }); return false;',
 									'class'=>'assignLink',
 								)); ?>
 
@@ -78,6 +78,6 @@
 
 <?php else: ?>
 
-	<p><?php echo Yii::t('RightsModule.tr', 'No auth items found.'); ?></p>
+	<p><?php echo Yii::t('RightsModule.tr', 'No authorization items found.'); ?></p>
 
 <?php endif; ?>

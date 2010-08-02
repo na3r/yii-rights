@@ -8,16 +8,19 @@
 */
 class RightsInstaller extends CApplicationComponent
 {
-	/**
-	* @var CDbAuthManager
-	*/
+	public $superUserRole;
+	public $defaultRoles;
+	public $superUsers;
+	public $overwrite;
+
 	private $_authManager;
+
 	/**
 	* @var CDbConnection
 	*/
 	public $db;
 	/**
-	* @var boolean whether Rights is installed or not.
+	* @var boolean whether Rights is installed.
 	*/
 	public $isInstalled;
 
@@ -26,26 +29,22 @@ class RightsInstaller extends CApplicationComponent
 	*/
 	public function init()
 	{
+		parent::init();
+
 		$this->_authManager = Yii::app()->getAuthManager();
 		$this->db = $this->_authManager->db;
 		$this->isInstalled = $this->isInstalled();
-
-		parent::init();
 	}
 
 	/**
 	* Runs the installer.
-	* @param string the name of the super user role.
-	* @param array the list of default roles.
-	* @param array the list of super users to be assigned (id=>name).
-	* @param boolean whether to drop and recreate the tables if they exist.
 	* @return boolean whether the installer ran successfully or not.
 	*/
-	public function run($superUserRole, $defaultRoles, $superUsers, $overwrite)
+	public function run()
 	{
 		// Run the installer only if the module is not already installed
 		// or if we wish to overwrite the existing tables.
-		if( $this->isInstalled===false || $overwrite===true )
+		if( $this->isInstalled===false || $this->overwrite===true )
 		{
 			$itemTable = $this->_authManager->itemTable;
 			$itemChildTable = $this->_authManager->itemChildTable;
@@ -58,7 +57,7 @@ class RightsInstaller extends CApplicationComponent
 			try
 			{
 				// Drop tables if necessary
-				if( $overwrite===true )
+				if( $this->overwrite===true )
 					$this->dropTables();
 
 				// Create the AuthItem-table
@@ -108,7 +107,7 @@ class RightsInstaller extends CApplicationComponent
 				$command->execute();
 
 				// Insert the necessary roles
-				$roles = array_merge(array($superUserRole), $defaultRoles);
+				$roles = array_merge(array($this->superUserRole), $this->defaultRoles);
 				foreach( $roles as $roleName )
 				{
 					$sql = "insert into {$itemTable} (name, type, data) ";
@@ -121,12 +120,12 @@ class RightsInstaller extends CApplicationComponent
 				}
 
 				// Assign the super users their role
-				foreach( $superUsers as $id )
+				foreach( $this->superUsers as $id )
 				{
 					$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
 					$sql.= "values (:itemname, :userid, :data)";
 					$command = $this->db->createCommand($sql);
-					$command->bindValue(':itemname', $superUserRole);
+					$command->bindValue(':itemname', $this->superUserRole);
 					$command->bindValue(':userid', $id);
 					$command->bindValue(':data', 'N;');
 					$command->execute();

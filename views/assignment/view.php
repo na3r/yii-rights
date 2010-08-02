@@ -1,60 +1,52 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('/rights/main'),
+	'Rights'=>array('/rights'),
 	Yii::t('RightsModule.tr', 'Assignments'),
 ); ?>
 
-<div class="rights">
+<div id="rightsAssignments">
 
-	<?php $this->renderPartial('/_menu'); ?>
+	<h2><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></h2>
 
-	<?php $this->renderPartial('/_flash'); ?>
+	<?php if( count($users)>0 ): ?>
 
-	<div id="rightsAssignments">
+		<table class="rightsTable assignmentsTable" border="0" cellpadding="0" cellspacing="0">
 
-		<h2><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></h2>
+			<thead>
 
-		<?php if( count($users)>0 ): ?>
+				<tr>
 
-			<table class="rightsTable assignmentsTable" border="0" cellpadding="0" cellspacing="0">
+					<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Username'); ?></th>
 
-				<thead>
+					<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></th>
 
-					<tr>
+				</tr>
 
-						<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Username'); ?></th>
+			</thead>
 
-						<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></th>
+			<tbody>
+
+				<?php $i=0; foreach( $users as $i=>$user ): ?>
+
+					<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
+
+						<td><?php echo CHtml::link($user->$nameColumn, array('assignment/user', 'id'=>$user->id)); ?></td>
+
+						<td class="assignmentColumn"><?php echo isset($assignments[ $user->id ])===true ? implode(', ', $assignments[ $user->id ]) : ''; ?></td>
 
 					</tr>
 
-				</thead>
+				<?php endforeach; ?>
 
-				<tbody>
+			</tbody>
 
-					<?php $i=0; foreach( $users as $i=>$user ): ?>
+		</table>
 
-						<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
+		<?php $this->widget('CLinkPager', array('pages'=>$pages)); ?>
 
-							<td><?php echo CHtml::link($user->$nameColumn, array('assignment/user', 'id'=>$user->id)); ?></td>
+	<?php else: ?>
 
-							<td class="assignmentColumn"><?php echo isset($assignments[ $user->id ])===true ? implode(', ', $assignments[ $user->id ]) : ''; ?></td>
+		<p><?php echo Yii::t('RightsModule.tr', 'No users found.'); ?></p>
 
-						</tr>
-
-					<?php endforeach; ?>
-
-				</tbody>
-
-			</table>
-
-			<?php $this->widget('CLinkPager', array('pages'=>$pages)); ?>
-
-		<?php else: ?>
-
-			<p><?php echo Yii::t('RightsModule.tr', 'No users found.'); ?></p>
-
-		<?php endif; ?>
-
-	</div>
+	<?php endif; ?>
 
 </div>
