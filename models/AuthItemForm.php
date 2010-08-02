@@ -32,11 +32,11 @@ class AuthItemForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'name'			=> Yii::t('RightsModule.tr', 'Name'),
-			'description'	=> Yii::t('RightsModule.tr', 'Description'),
-			'type'			=> Yii::t('RightsModule.tr', 'Type'),
-			'bizRule'		=> Yii::t('RightsModule.tr', 'Business rule'),
-			'data'			=> Yii::t('RightsModule.tr', 'Data'),
+			'name'			=> Yii::t('RightsModule.core', 'Name'),
+			'description'	=> Yii::t('RightsModule.core', 'Description'),
+			'type'			=> Yii::t('RightsModule.core', 'Type'),
+			'bizRule'		=> Yii::t('RightsModule.core', 'Business rule'),
+			'data'			=> Yii::t('RightsModule.core', 'Data'),
 		);
 	}
 }

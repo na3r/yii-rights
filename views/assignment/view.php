@@ -1,11 +1,11 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>array('/rights'),
-	Yii::t('RightsModule.tr', 'Assignments'),
+	Yii::t('RightsModule.core', 'Assignments'),
 ); ?>
 
 <div id="rightsAssignments">
 
-	<h2><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></h2>
+	<h2><?php echo Yii::t('RightsModule.core', 'Assignments'); ?></h2>
 
 	<?php if( count($users)>0 ): ?>
 
@@ -15,9 +15,9 @@
 
 				<tr>
 
-					<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Username'); ?></th>
+					<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.core', 'Username'); ?></th>
 
-					<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Assignments'); ?></th>
+					<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.core', 'Assignments'); ?></th>
 
 				</tr>
 
@@ -45,7 +45,7 @@
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.tr', 'No users found.'); ?></p>
+		<p><?php echo Yii::t('RightsModule.core', 'No users found.'); ?></p>
 
 	<?php endif; ?>
 

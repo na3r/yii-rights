@@ -1,6 +1,6 @@
 <?php
 /**
-* Swedish translation for Rights.
+* Swedish translation for Rights core.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -16,15 +16,12 @@ return array(
 	'Task'=>'Uppgift',
 	'Role'=>'Roll',
 	/**
-	* components/RightsFilter.php
-	*/
-	'You are not authorized to perform this action.'=>'Du har inte rätt att utföra denna funktion.',
-	/**
 	* controllers/AssignmentController.php
 	*/
 	':name assigned.'=>':name tilldelad.',
 	':name revoked.'=>':name upphävd',
 	'Invalid request. Please do not repeat this request again.'=>'Ogiltigt förfrågan. Upprepa inte förfrågan pånytt.',
+	'You are not authorized to perform this action.'=>'Du har inte rätt att utföra denna funktion.',
 	/**
 	* controllers/AuthItemController.php
 	*/
@@ -37,18 +34,19 @@ return array(
 	':name deleted.'=>':name raderad.',
 	'The requested page does not exist.'=>'Förfrågade sidan finns inte.',
 	/**
-	* views/main/permissions.php
+	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Rättigheter',
 	'Description'=>'Beskrivning',
+	'No description'=>'Ingen beskrivning',
 	'Revoke'=>'Upphäv',
 	'Inherited'=>'Ärvd',
 	'Assign'=>'Tilldela',
 	'Hover to see from where the permission is inherited.'=>'För musen ovan för att se varifrån rättigheten är ärvd.',
 	'Parents'=>'Föräldrar',
-	'No auth items found.'=>'Inga auktoriserings element hittades.',
+	'No authorization items found.'=>'Inga auktoriserings element hittades.',
 	/**
-	* views/main/operations.php
+	* views/default/operations.php
 	*/
 	'Operations'=>'Operationer',
 	'Name'=>'Namn',
@@ -59,13 +57,13 @@ return array(
 	'Values within square brackets tell how many children each item has.'=>'Värden i hakparenteser berättar hur många barn varje element har.',
 	'No operations found.'=>'Inga operationer hittades.',
 	/**
-	* views/main/tasks.php
+	* views/default/tasks.php
 	*/
 	'Tasks'=>'Uppgifter',
 	'Are you sure you want to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
 	'No tasks found.'=>'Inga uppgifter hittades.',
 	/**
-	* views/main/roles.php
+	* views/default/roles.php
 	*/
 	'Roles'=>'Roller',
 	'super user'=>'superanvändare',

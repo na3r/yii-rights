@@ -1,13 +1,13 @@
 <?php
 $this->breadcrumbs = array(
 	'Rights'=>array('/rights'),
-	Yii::t('RightsModule.tr', 'Roles'),
+	Yii::t('RightsModule.core', 'Roles'),
 );
 ?>
 
 <div id="rightsRoles">
 
-	<h2><?php echo Yii::t('RightsModule.tr', 'Roles'); ?></h2>
+	<h2><?php echo Yii::t('RightsModule.core', 'Roles'); ?></h2>
 
 	<?php if( count($roles)>0 ): ?>
 
@@ -17,17 +17,17 @@ $this->breadcrumbs = array(
 
 				<tr>
 
-					<th class="nameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Name'); ?></th>
+					<th class="nameColumnHeading"><?php echo Yii::t('RightsModule.core', 'Name'); ?></th>
 
-					<th class="descriptionColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Description'); ?></th>
+					<th class="descriptionColumnHeading"><?php echo Yii::t('RightsModule.core', 'Description'); ?></th>
 
 					<?php if( $isBizRuleEnabled===true ): ?>
 
-						<th class="bizRuleColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Business rule'); ?></th>
+						<th class="bizRuleColumnHeading"><?php echo Yii::t('RightsModule.core', 'Business rule'); ?></th>
 
 						<?php if( $isBizRuleDataEnabled===true ): ?>
 
-							<th class="dataColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Data'); ?></th>
+							<th class="dataColumnHeading"><?php echo Yii::t('RightsModule.core', 'Data'); ?></th>
 
 						<?php endif; ?>
 
@@ -51,7 +51,7 @@ $this->breadcrumbs = array(
 
 							<?php if( $name===Rights::getConfig('superuserRole') ): ?>
 
-								<span class="superUser">( <span class="superUserText"><?php echo Yii::t('RightsModule.tr', 'super user'); ?></span> )</span>
+								<span class="superUser">( <span class="superUserText"><?php echo Yii::t('RightsModule.core', 'super user'); ?></span> )</span>
 
 							<?php endif; ?>
 
@@ -81,9 +81,9 @@ $this->breadcrumbs = array(
 
 							<?php if( $name!==Rights::getConfig('superuserRole') ): ?>
 
-								<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Delete'), array(
+								<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
 									'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/roles')),
-									'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to delete this role?'),
+									'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this role?'),
 									'class'=>'deleteLink',
 								)); ?>
 
@@ -99,11 +99,11 @@ $this->breadcrumbs = array(
 
 		</table>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'Values within square brackets tell how many children each item has.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.tr', 'No roles found.'); ?></p>
+		<p><?php echo Yii::t('RightsModule.core', 'No roles found.'); ?></p>
 
 	<?php endif; ?>
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* Italian translation for Rights.
+* Italian translation for Rights core.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -16,15 +16,12 @@ return array(
 	'Task'=>'Task',
 	'Role'=>'Ruolo',
 	/**
-	* components/RightsFilter.php
-	*/
-	'You are not authorized to perform this action.'=>'Non sei autorizzato a svolgere quest\'azione.',
-	/**
 	* controllers/AssignmentController.php
 	*/
 	':name assigned.'=>':name assegnato',
 	':name revoked.'=>':name revocato',
 	'Invalid request. Please do not repeat this request again.'=>'Richiesta non valida. Per cortesia, non ripeterla.',
+	'You are not authorized to perform this action.'=>'Non sei autorizzato a svolgere quest\'azione.',
 	/**
 	* controllers/AuthItemController.php
 	*/
@@ -37,18 +34,19 @@ return array(
 	':name deleted.'=>'Rimosso :name',
 	'The requested page does not exist.'=>'La pagina richiesta non esiste',
 	/**
-	* views/main/permissions.php
+	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Permessi',
 	'Description'=>'Descrizione',
+	'No description'=>'', // ?
 	'Revoke'=>'Revoca',
 	'Inherited'=>'Ereditato',
 	'Assign'=>'Assegna',
 	'Hover to see from where the permission is inherited.'=>'Passa sopra con il mouse per vedere da dove viene ereditato il permesso.',
 	'Parents'=>'Parenti',
-	'No auth items found.'=>'Non sono state trovate autorizzazioni.',
+	'No authorization items found.'=>'Non sono state trovate autorizzazioni.',
 	/**
-	* views/main/operations.php
+	* views/default/operations.php
 	*/
 	'Operations'=>'Operazioni',
 	'Name'=>'Nome',
@@ -59,13 +57,13 @@ return array(
 	'Values within square brackets tell how many children each item has.'=>'Il valore tra parentesi quadre indica quanti figli ha ogni oggetto.',
 	'No operations found.'=>'Non sono state trovate operazioni.',
 	/**
-	* views/main/tasks.php
+	* views/default/tasks.php
 	*/
 	'Tasks'=>'Task',
 	'Are you sure your want to delete this task?'=>'Sicuro di voler eliminare l\'elemento?',
 	'No tasks found.'=>'Non sono stati trovati task.',
 	/**
-	* views/main/roles.php
+	* views/default/roles.php
 	*/
 	'Roles'=>'Ruoli',
 	'super user'=>'super utente',

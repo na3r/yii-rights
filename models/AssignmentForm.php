@@ -26,7 +26,7 @@ class AssignmentForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'authItem' => Yii::t('RightsModule.tr', 'Auth Item'),
+			'authItem' => Yii::t('RightsModule.core', 'Auth Item'),
 		);
 	}
 }

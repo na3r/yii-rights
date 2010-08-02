@@ -1,4 +1,4 @@
-<h2><?php echo Yii::t('RightsModule.tr', 'Permissions'); ?></h2>
+<h2><?php echo Yii::t('RightsModule.core', 'Permissions'); ?></h2>
 
 <?php if( count($items)>0 ): ?>
 
@@ -8,7 +8,7 @@
 
 			<tr>
 
-				<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.tr', 'Description'); ?></th>
+				<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.core', 'Description'); ?></th>
 
 				<?php foreach( $roles as $roleName=>$role ): ?>
 
@@ -26,7 +26,7 @@
 
 				<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
-					<td><?php echo CHtml::encode($item->description); ?></td>
+					<td><?php echo $item->description!=='' ? CHtml::encode($item->description) : Yii::t('RightsModule.core', 'No description'); ?></td>
 
 					<?php foreach( $roles as $roleName=>$role ): ?>
 
@@ -34,7 +34,7 @@
 
 							<?php if( $rights[ $roleName ][ $name ]===Rights::PERM_DIRECT ): ?>
 
-								<?php echo CHtml::link(Yii::t('RightsModule.tr', 'Revoke'), '#', array(
+								<?php echo CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
 									'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/revoke', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('default/permissions').'", { ajax:true }); } }); return false;',
 									'class'=>'revokeLink',
 								));	?>
@@ -42,12 +42,12 @@
 							<?php elseif( $rights[ $roleName ][ $name ]===Rights::PERM_INHERITED ): ?>
 
 								<span class="inheritedItem" title="<?php echo isset($parents[ $roleName ][ $name ])===true ? $parents[ $roleName ][ $name ] : ''; ?>">
-									<?php echo Yii::t('RightsModule.tr', 'Inherited'); ?> *
+									<?php echo Yii::t('RightsModule.core', 'Inherited'); ?> *
 								</span>
 
 							<?php else: ?>
 
-								<?php echo CHtml::link(Yii::t('RightsModule.tr', 'Assign'), '#', array(
+								<?php echo CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
 									'onclick'=>'jQuery.ajax({ type:"POST", url:"'.$this->createUrl('authItem/assign', array('name'=>$role->name, 'child'=>$name)).'", data:{ ajax:true }, success:function() { $("#rightsPermissions").load("'.$this->createUrl('default/permissions').'", { ajax:true }); } }); return false;',
 									'class'=>'assignLink',
 								)); ?>
@@ -66,18 +66,18 @@
 
 	</table>
 
-	<p class="rightsInfo">* <?php echo Yii::t('RightsModule.tr', 'Hover to see from where the permission is inherited.'); ?></p>
+	<p class="rightsInfo">* <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
 
 	<script type="text/javascript">
 
 		jQuery('.inheritedItem').rightsTooltip({
-			title:'<?php echo Yii::t('RightsModule.tr', 'Parents'); ?>: '
+			title:'<?php echo Yii::t('RightsModule.core', 'Parents'); ?>: '
 		});
 
 	</script>
 
 <?php else: ?>
 
-	<p><?php echo Yii::t('RightsModule.tr', 'No authorization items found.'); ?></p>
+	<p><?php echo Yii::t('RightsModule.core', 'No authorization items found.'); ?></p>
 
 <?php endif; ?>

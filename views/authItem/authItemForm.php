@@ -35,18 +35,18 @@ return array(
     'buttons'=>array(
         'submit'=>array(
             'type'=>'submit',
-            'label'=>Yii::t('RightsModule.tr', 'Save'),
+            'label'=>Yii::t('RightsModule.core', 'Save'),
         ),
         /*
         // FIXME: This should work as a form link but doesn't.
         'delete'=>array(
         	'type'=>'link',
-        	'label'=>Yii::t('RightsModule.tr', 'Delete'),
+        	'label'=>Yii::t('RightsModule.core', 'Delete'),
         	'attributes'=>array(
         		//'submit'=>'authItem/delete',
         		//'params'=>array('name'=>isset($_GET['name'])===true ? $_GET['name'] : ''),
         		//'return'=>true,
-        		'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to delete this item?'),
+        		'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this item?'),
         	),
         	'visible'=>$this->model->scenario!=='create',
         ),

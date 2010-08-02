@@ -1,6 +1,6 @@
 <?php
 /**
-* Finnish translation for Rights.
+* Finnish translation for Rights core.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -16,15 +16,12 @@ return array(
 	'Task'=>'Tehtävä',
 	'Role'=>'Rooli',
 	/**
-	* components/RightsFilter.php
-	*/
-	'You are not authorized to perform this action.'=>'Et ole oikeutettu suorittamaan tätä toimintoa.',
-	/**
 	* controllers/AssignmentController.php
 	*/
 	':name assigned.'=>':name myönnetty.',
 	':name revoked.'=>':name evätty.',
 	'Invalid request. Please do not repeat this request again.'=>'Virheellinen pyyntö. Älä toista tätä pyyntöä.',
+	'You are not authorized to perform this action.'=>'Et ole oikeutettu suorittamaan tätä toimintoa.',
 	/**
 	* controllers/AuthItemController.php
 	*/
@@ -37,18 +34,19 @@ return array(
 	':name deleted.'=>':name poistettu.',
 	'The requested page does not exist.'=>'Pyydettyä sivua ei ole olemassa.',
 	/**
-	* views/main/permissions.php
+	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Oikeudet',
 	'Description'=>'Kuvaus',
+	'No description'=>'Ei kuvausta',
 	'Revoke'=>'Evää',
 	'Inherited'=>'Peritty',
 	'Assign'=>'Myönnä',
 	'Hover to see from where the permission is inherited.'=>'Vie hiiren kursori päälle nähdäksesi mistä oikeus on peritty.',
 	'Parents'=>'Vanhemmat',
-	'No auth items found.'=>'Yhtään kohdetta ei löytynyt.',
+	'No authorization items found.'=>'Yhtään kohdetta ei löytynyt.',
 	/**
-	* views/main/operations.php
+	* views/default/operations.php
 	*/
 	'Operations'=>'Operaatiot',
 	'Name'=>'Nimi',
@@ -59,13 +57,13 @@ return array(
 	'Values within square brackets tell how many children each item has.'=>'Hakasuluissa olevat luvut kertovat monta lasta kullakin kohteella on.',
 	'No operations found.'=>'Yhtään operaatiota ei löytynyt.',
 	/**
-	* views/main/tasks.php
+	* views/default/tasks.php
 	*/
 	'Tasks'=>'Tehtävät',
 	'Are you sure you want to delete this task?'=>'Oletko varma että haluat poistaa tämän tehtävän?',
 	'No tasks found.'=>'Yhtään tehtävää ei löytynyt.',
 	/**
-	* views/main/roles.php
+	* views/default/roles.php
 	*/
 	'Roles'=>'Roolit',
 	'super user'=>'ylikäyttäjä',

@@ -1,6 +1,6 @@
 <?php
 /**
-* German translation for Rights.
+* German translation for Rights core.
 *
 * Please contact the author if you find an error in the translation.
 *
@@ -16,15 +16,12 @@ return array(
 	'Task'=>'Tätigkeit',
 	'Role'=>'Rolle',
 	/**
-	* components/RightsFilter.php
-	*/
-	'You are not authorized to perform this action.'=>'Sie sind nicht berechtigt diese Aktion auszuführen.',
-	/**
 	* controllers/AssignmentController.php
 	*/
 	':name assigned.'=>':name zugewiesen.',
 	':name revoked.'=>':name entzogen.',
 	'Invalid request. Please do not repeat this request again.'=>'Ungültige Anfrage. Bitte wiederholen Sie die Anfrage nicht.',
+	'You are not authorized to perform this action.'=>'Sie sind nicht berechtigt diese Aktion auszuführen.',
 	/**
 	* controllers/AuthItemController.php
 	*/
@@ -37,18 +34,19 @@ return array(
 	':name deleted.'=>':name gelöscht.',
 	'The requested page does not exist.'=>'The angeforderte Seite existiert nicht.',
 	/**
-	* views/main/permissions.php
+	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Berechtigungen',
 	'Description'=>'Beschreibung',
+	'No description'=>'Keine Beschreibung',
 	'Revoke'=>'Entziehen',
 	'Inherited'=>'Geerbt',
 	'Assign'=>'Zuweisen',
 	'Hover to see from where the permission is inherited.'=>'Von wem die Berechtigung geerbt ist kann man durch darüberhovern einsehen.',
 	'Parents'=>'Elternelemente',
-	'No auth items found.'=>'Keine Autorisierungselemente gefunden.',
+	'No authorization items found.'=>'Keine Autorisierungselemente gefunden.',
 	/**
-	* views/main/operations.php
+	* views/default/operations.php
 	*/
 	'Operations'=>'Operationen',
 	'Name'=>'Name',
@@ -59,13 +57,13 @@ return array(
 	'Values within square brackets tell how many children each item has.'=>'Werte in eckigen Klammern geben die Anzahl der jeweiligen Kindelemente an.',
 	'No operations found.'=>'Keine Operationen gefunden.',
 	/**
-	* views/main/tasks.php
+	* views/default/tasks.php
 	*/
 	'Tasks'=>'Tätigkeiten',
 	'Are you sure to delete this task?'=>'Sind Sie sicher, dass Sie diese Tätigkeit löschen möchten?',
 	'No tasks found.'=>'Keine Tätigkeiten gefunden.',
 	/**
-	* views/main/roles.php
+	* views/default/roles.php
 	*/
 	'Roles'=>'Rollen',
 	'super user'=>'Super User',
@@ -75,7 +73,7 @@ return array(
 	/**
 	* views/authItem/authChildForm.php
 	*/
-	'Add'=>'Hinzufügen', // Check
+	'Add'=>'Hinzufügen', // ?
 	/**
 	* views/authItem/authItemForm.php
 	*/

@@ -100,9 +100,9 @@ class Rights
 	public static function getAuthItemTypeSelectOptions()
 	{
 	 	return array(
-	 		CAuthItem::TYPE_OPERATION=>Yii::t('RightsModule.tr', 'Operation'),
-	 		CAuthItem::TYPE_TASK=>Yii::t('RightsModule.tr', 'Task'),
-	 		CAuthItem::TYPE_ROLE=>Yii::t('RightsModule.tr', 'Role'),
+	 		CAuthItem::TYPE_OPERATION=>Yii::t('RightsModule.core', 'Operation'),
+	 		CAuthItem::TYPE_TASK=>Yii::t('RightsModule.core', 'Task'),
+	 		CAuthItem::TYPE_ROLE=>Yii::t('RightsModule.core', 'Role'),
 		);
 	}
 
@@ -115,9 +115,9 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.tr', 'Operation');
-			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.tr', 'Task');
-			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.tr', 'Role');
+			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.core', 'Operation');
+			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.core', 'Task');
+			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.core', 'Role');
 			// Invalid type
 			default: throw new CException('Invalid auth item type.');
 		}

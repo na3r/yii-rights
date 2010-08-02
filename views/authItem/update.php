@@ -1,6 +1,6 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>array('/rights'),
-	Yii::t('RightsModule.tr', 'Auth Item'),
+	Yii::t('RightsModule.core', 'Auth Item'),
 	Rights::beautifyName($model->name),
 ); ?>
 
@@ -8,7 +8,7 @@
 
 	<div class="rightsForm form span-12 first">
 
-		<h2><?php echo Yii::t('RightsModule.tr', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
+		<h2><?php echo Yii::t('RightsModule.core', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
 
 		<p class="rightsInfo"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
 
@@ -18,13 +18,13 @@
 
 	<div id="authItemRelations" class="span-11 last">
 
-		<h2><?php echo Yii::t('RightsModule.tr', 'Relations'); ?></h2>
+		<h2><?php echo Yii::t('RightsModule.core', 'Relations'); ?></h2>
 
 		<?php if( $model->name!==Rights::getConfig('superuserRole') ): ?>
 
 			<div id="authItemParents">
 
-				<h3><?php echo Yii::t('RightsModule.tr', 'Parents'); ?></h3>
+				<h3><?php echo Yii::t('RightsModule.core', 'Parents'); ?></h3>
 
 				<?php if( count($parents)>0 ): ?>
 
@@ -50,7 +50,7 @@
 
 				<?php else: ?>
 
-					<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no parents.'); ?></p>
+					<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This item has no parents.'); ?></p>
 
 				<?php endif;?>
 
@@ -58,7 +58,7 @@
 
 			<div id="authItemChildren">
 
-				<h3><?php echo Yii::t('RightsModule.tr', 'Children'); ?></h3>
+				<h3><?php echo Yii::t('RightsModule.core', 'Children'); ?></h3>
 
 				<?php if( count($children)>0 ): ?>
 
@@ -74,9 +74,9 @@
 
 									<td class="removeColumn">
 
-										<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Remove'), array(
+										<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
 											'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
-											'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to remove this child?'),
+											'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to remove this child?'),
 											'class'=>'removeLink',
 										)); ?>
 
@@ -92,7 +92,7 @@
 
 				<?php else: ?>
 
-					<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'This item has no children.'); ?></p>
+					<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This item has no children.'); ?></p>
 
 				<?php endif; ?>
 
@@ -102,7 +102,7 @@
 
 				<div id="authItemAddChild">
 
-					<h4><?php echo Yii::t('RightsModule.tr', 'Add Child'); ?></h4>
+					<h4><?php echo Yii::t('RightsModule.core', 'Add Child'); ?></h4>
 
 					<div class="rightsForm form">
 
@@ -118,8 +118,8 @@
 
 			<p class="rightsInfo">
 
-				<?php echo Yii::t('RightsModule.tr', 'No relations need to be set for the super user role.'); ?><br />
-				<?php echo Yii::t('RightsModule.tr', 'Super users are always granted access implicitly.'); ?>
+				<?php echo Yii::t('RightsModule.core', 'No relations need to be set for the super user role.'); ?><br />
+				<?php echo Yii::t('RightsModule.core', 'Super users are always granted access implicitly.'); ?>
 
 			</p>
 

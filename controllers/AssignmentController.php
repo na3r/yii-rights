@@ -118,7 +118,7 @@ class AssignmentController extends Controller
 		{
 			// Update and redirect
 			$this->_authorizer->authManager->assign($form->model->authItem, $model->id);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem))));
+			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem))));
 			$this->redirect(array('assignment/user', 'id'=>$model->id));
 		}
 
@@ -140,7 +140,7 @@ class AssignmentController extends Controller
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.tr', ':name revoked.', array(':name'=>Rights::beautifyName($_GET['name']))));
+			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name revoked.', array(':name'=>Rights::beautifyName($_GET['name']))));
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -148,7 +148,7 @@ class AssignmentController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400, Yii::t('RightsModule.tr', 'Invalid request. Please do not repeat this request again.'));
+			throw new CHttpException(400, Yii::t('RightsModule.core', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 }

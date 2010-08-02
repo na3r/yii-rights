@@ -1,6 +1,6 @@
 <?php $this->breadcrumbs=array(
 	'Rights'=>array('/rights'),
-	Yii::t('RightsModule.tr', 'Permissions'),
+	Yii::t('RightsModule.core', 'Permissions'),
 ); ?>
 
 <div id="rightsPermissions">

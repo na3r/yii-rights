@@ -15,7 +15,7 @@ return array(
 	'buttons'=>array(
 		'submit'=>array(
 		    'type'=>'submit',
-		    'label'=>Yii::t('RightsModule.tr', 'Assign'),
+		    'label'=>Yii::t('RightsModule.core', 'Assign'),
 		),
 	),
 );

@@ -1,11 +1,11 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>array('/rights'),
-	Yii::t('RightsModule.tr', 'Tasks'),
+	Yii::t('RightsModule.core', 'Tasks'),
 ); ?>
 
 <div id="rightsTasks">
 
-	<h2><?php echo Yii::t('RightsModule.tr', 'Tasks'); ?></h2>
+	<h2><?php echo Yii::t('RightsModule.core', 'Tasks'); ?></h2>
 
 	<?php if( count($tasks)>0 ): ?>
 
@@ -15,17 +15,17 @@
 
 				<tr>
 
-					<th class="nameColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Name'); ?></th>
+					<th class="nameColumnHeading"><?php echo Yii::t('RightsModule.core', 'Name'); ?></th>
 
-					<th class="descriptionColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Description'); ?></th>
+					<th class="descriptionColumnHeading"><?php echo Yii::t('RightsModule.core', 'Description'); ?></th>
 
 					<?php if( $isBizRuleEnabled===true ): ?>
 
-						<th class="bizRuleColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Business rule'); ?></th>
+						<th class="bizRuleColumnHeading"><?php echo Yii::t('RightsModule.core', 'Business rule'); ?></th>
 
 						<?php if( $isBizRuleDataEnabled===true ): ?>
 
-							<th class="dataColumnHeading"><?php echo Yii::t('RightsModule.tr', 'Data'); ?></th>
+							<th class="dataColumnHeading"><?php echo Yii::t('RightsModule.core', 'Data'); ?></th>
 
 						<?php endif; ?>
 
@@ -69,9 +69,9 @@
 
 						<td class="deleteColumn">
 
-							<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Delete'), array(
+							<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
 								'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/tasks')),
-								'confirm'=>Yii::t('RightsModule.tr', 'Are you sure you want to delete this task?'),
+								'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this task?'),
 								'class'=>'deleteLink',
 							)); ?>
 
@@ -85,11 +85,11 @@
 
 		</table>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.tr', 'Values within square brackets tell how many children each item has.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.tr', 'No tasks found.'); ?></p>
+		<p><?php echo Yii::t('RightsModule.core', 'No tasks found.'); ?></p>
 
 	<?php endif; ?>
 

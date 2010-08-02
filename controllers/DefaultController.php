@@ -64,11 +64,13 @@ class DefaultController extends Controller
 		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK), null, true);
 		$permissions = $this->_authorizer->getPermissions();
 
+		// Get the rights to items for each role
 		$rights = array();
 		foreach( $roles as $roleName=>$role )
 			foreach( $items as $name=>$item )
 				$rights[ $roleName ][ $name ] = $this->_authorizer->hasPermission($name, $permissions[ $roleName ]);
 
+		// Get the item parents
 		$parents = array();
 		foreach( $rights as $roleName=>$perm )
 			foreach( $perm as $name=>$right )
@@ -76,6 +78,7 @@ class DefaultController extends Controller
 					if( ($p = $this->_authorizer->getAuthItemParents($name, $roleName))!==array() && $p===(array)$p )
 						$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $p));
 
+		// View parameters
 		$params = array(
 			'roles'=>$roles,
 			'roleColumnWidth'=>$roles!==array() ? 75/count($roles) : 0,
