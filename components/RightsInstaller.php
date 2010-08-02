@@ -8,10 +8,8 @@
 */
 class RightsInstaller extends CApplicationComponent
 {
-	public $superUserRole;
+	public $superuserRole;
 	public $defaultRoles;
-	public $superUsers;
-	public $overwrite;
 
 	private $_authManager;
 
@@ -38,13 +36,14 @@ class RightsInstaller extends CApplicationComponent
 
 	/**
 	* Runs the installer.
+	* @param boolean whether to drop tables if they exists.
 	* @return boolean whether the installer ran successfully or not.
 	*/
-	public function run()
+	public function run($overwrite=false)
 	{
 		// Run the installer only if the module is not already installed
 		// or if we wish to overwrite the existing tables.
-		if( $this->isInstalled===false || $this->overwrite===true )
+		if( $this->isInstalled===false || $overwrite===true )
 		{
 			$itemTable = $this->_authManager->itemTable;
 			$itemChildTable = $this->_authManager->itemChildTable;
@@ -57,7 +56,7 @@ class RightsInstaller extends CApplicationComponent
 			try
 			{
 				// Drop tables if necessary
-				if( $this->overwrite===true )
+				if( $overwrite===true )
 					$this->dropTables();
 
 				// Create the AuthItem-table
@@ -107,7 +106,7 @@ class RightsInstaller extends CApplicationComponent
 				$command->execute();
 
 				// Insert the necessary roles
-				$roles = array_merge(array($this->superUserRole), $this->defaultRoles);
+				$roles = array_merge(array($this->superuserRole), $this->defaultRoles);
 				foreach( $roles as $roleName )
 				{
 					$sql = "insert into {$itemTable} (name, type, data) ";
@@ -119,14 +118,14 @@ class RightsInstaller extends CApplicationComponent
 					$command->execute();
 				}
 
-				// Assign the super users their role
+				// Assign the logged in user the superusers role
 				foreach( $this->superUsers as $id )
 				{
 					$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
 					$sql.= "values (:itemname, :userid, :data)";
 					$command = $this->db->createCommand($sql);
-					$command->bindValue(':itemname', $this->superUserRole);
-					$command->bindValue(':userid', $id);
+					$command->bindValue(':itemname', $this->superuserRole);
+					$command->bindValue(':userid', Yii::app()->getUser()->id);
 					$command->bindValue(':data', 'N;');
 					$command->execute();
 				}
@@ -167,7 +166,7 @@ class RightsInstaller extends CApplicationComponent
 	}
 
 	/**
-	* @return boolean whether Rights is installed or not.
+	* @return boolean whether Rights is installed.
 	*/
 	public function isInstalled()
 	{
@@ -178,6 +177,10 @@ class RightsInstaller extends CApplicationComponent
 			$command->queryScalar();
 
 			$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemChildTable}";
+			$command = $this->db->createCommand($sql);
+			$command->queryScalar();
+
+			$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemWeightTable}";
 			$command = $this->db->createCommand($sql);
 			$command->queryScalar();
 

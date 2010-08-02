@@ -24,62 +24,95 @@ class SetupController extends Controller
 	{
 		// Get the installer and authorizer
 		$installer = $this->getModule()->getInstaller();
-		$authorizer = $this->getModule()->getAuthorizer();
-
-		// Get all the users and the name of the username column
-		$users = $authorizer->user->findAll();
-		$usernameColumn = $authorizer->usernameColumn;
-
-		// Create the select options for the super users
-		$selectOptions = array();
-		foreach( $users as $user )
-			$selectOptions[ $user->id ] = $user->$usernameColumn;
+		$isInstalled = $installer->isInstalled;
 
 		// Create the install form
-		$form = new CForm('rights.views.setup.installForm', new InstallForm);
-		$form->elements['superUsers']->items = $selectOptions;
+		$form = new CForm(array(
+			'elements'=>array(
+				'overwrite'=>array(
+					'type'=>'checkbox',
+					'visible'=>$isInstalled===true,
+				),
+			),
+			'buttons'=>array(
+				'submit'=>array(
+					'type'=>'submit',
+					'label'=>Yii::t('RightsModule.setup', 'Install'),
+				),
+			),
+		), new InstallForm);
 
 		// Form is submitted and valid
-		if( $form->submitted()===true && $form->validate()===true )
+		if( $form->submitted()===true && $form->validate()===true && $form->model->canInstall()===true )
 		{
-			// Check if the module is already installed,
-			// if so require that the user chooses to overwrite.
-			if( $installer->isInstalled===false || $installer->isInstalled===true && (bool)$form->model->overwrite!==false )
-			{
-				// Configure and run the installer and redirect to the ready page
-				$installer->superUsers = $form->model->superUsers;
-				$installer->overwrite = (bool)$form->model->overwrite;
-
-				// Installer ran correctly
-				if( $installer->run()===true )
-				{
-					$this->redirect(array('setup/ready'));
-				}
-				// Installer failed (probably sql error)
-				else
-				{
-					Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.setup', 'Install failed.'));
-				}
-			}
-			// Module is already installed and the user did not choose to overwrite
-			else
-			{
-				Yii::app()->user->setFlash('rightsError', Yii::t('RightsModule.setup', 'Rights is already installed! To reinstall select "Overwrite".'));
-			}
+			// Run the installer and redirect
+			$installer->run($form->model->overwrite);
+			$this->redirect(array('setup/installReady'));
 		}
 
 		// Render the view
 		$this->render('install', array(
 			'form'=>$form,
-			'isInstalled'=>$installer->isInstalled,
+			'isInstalled'=>$isInstalled,
 		));
 	}
 
 	/**
 	* Displays the install ready page.
 	*/
-	public function actionReady()
+	public function actionInstallReady()
 	{
-		$this->render('ready');
+		$this->render('installReady');
+	}
+
+	/**
+	* Displays the generator page.
+	*
+	*/
+	public function actionGenerate()
+	{
+		// Get the generator and authorizer
+		$generator = $this->getModule()->getGenerator();
+		$authorizer = $this->getModule()->getAuthorizer();
+
+		// Createh the form model
+		$model = Yii::createComponent('rights.models.GenerateForm');
+
+		// Form has been submitted
+		if( isset($_POST['GenerateForm'])===true )
+		{
+			// Form is valid
+			$model->attributes = $_POST['GenerateForm'];
+			if( $model->validate()===true )
+			{
+				// Get the chosen items
+				$items = array();
+				foreach( $model->items as $itemname=>$value )
+					if( (bool)$value===true )
+						$items[] = $itemname;
+
+				// Add the items to the generator as operations and run the generator
+				$generator->addItems($items, CAuthItem::TYPE_OPERATION);
+				if( ($generatedItems = $generator->run())!==false && $generatedItems!==array() )
+				{
+					Yii::app()->getUser()->setFlash('rightsSuccess',
+						Yii::t('RightsModule.setup', 'Created :items.', array(':items'=>implode(', ', $generatedItems)))
+					);
+				}
+			}
+		}
+
+		// We need operation names lowercase for comparason
+		$ops = $authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		$operations = array();
+		foreach( $ops as $name=>$item )
+			$operations[ strtolower($name) ] = $item;
+
+		// Render the view
+		$this->render('generate', array(
+			'model'=>$model,
+			'items'=>$generator->getControllerActions(),
+			'operations'=>$operations,
+		));
 	}
 }

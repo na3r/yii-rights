@@ -9,7 +9,7 @@
 class RightsAuthorizer extends CApplicationComponent
 {
 	private $_authManager;
-	private $_superUserRole;
+	private $_superuserRole;
 	private $_guestRole;
 	private $_user;
 	private $_usernameColumn;
@@ -32,7 +32,7 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getRoles($includeSuperUser=true, $sort=true)
 	{
-		$exclude = $includeSuperUser===false ? array($this->_superUserRole) : array();
+		$exclude = $includeSuperUser===false ? array($this->_superuserRole) : array();
 	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, $sort, $exclude);
 	}
 
@@ -192,7 +192,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
 	{
 		// Exclude the super user role as it cannot be a child of any item
-		$exclude[] = $this->_superUserRole;
+		$exclude[] = $this->_superuserRole;
 
 		// Get the valid authorization items
 		$validTypes = $type!==null ? Rights::getValidChildTypes($type) : null;
@@ -313,7 +313,7 @@ class RightsAuthorizer extends CApplicationComponent
 		foreach( $this->_user->findAll() as $user )
 		{
 			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->id);
-			if( isset($items[ $this->_superUserRole ])===true )
+			if( isset($items[ $this->_superuserRole ])===true )
 				$superUsers[] = $user->$nameColumn;
 		}
 
@@ -333,7 +333,7 @@ class RightsAuthorizer extends CApplicationComponent
 				$userId = Yii::app()->getUser()->id;
 
 			$assignments = $this->_authManager->getAuthAssignments($userId);
-			return isset($assignments[ $this->_superUserRole ]);
+			return isset($assignments[ $this->_superuserRole ]);
 		}
 
 		return false;
@@ -481,17 +481,17 @@ class RightsAuthorizer extends CApplicationComponent
 	/**
 	* @return string the name of the super user role.
 	*/
-	public function getSuperUserRole()
+	public function getSuperuserRole()
 	{
-		return $this->_superUserRole;
+		return $this->_superuserRole;
 	}
 
 	/**
 	* @param string the name of the super user role.
 	*/
-	public function setSuperUserRole($superUserRole)
+	public function setSuperuserRole($superuserRole)
 	{
-		$this->_superUserRole = $superUserRole;
+		$this->_superuserRole = $superuserRole;
 	}
 
 	/**

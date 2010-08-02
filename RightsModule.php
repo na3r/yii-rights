@@ -11,7 +11,7 @@ class RightsModule extends CWebModule
 	/**
 	* @var string the name of the role with super user priviledges.
 	*/
-	public $superUserRole = 'Admin';
+	public $superuserRole = 'Admin';
 	/**
 	* @var array list of default roles.
 	*/
@@ -63,12 +63,12 @@ class RightsModule extends CWebModule
 		$this->setComponents(array(
 			'authorizer'=>array(
 				'class'=>'RightsAuthorizer',
-				'superUserRole'=>$this->superUserRole,
+				'superuserRole'=>$this->superuserRole,
 				'user'=>$this->userClass,
 				'usernameColumn'=>$this->usernameColumn,
 			),
-			'errorHandler'=>array(
-				'errorAction'=>'rights/default/error',
+			'generator'=>array(
+				'class'=>'RightsGenerator',
 			),
 		));
 
@@ -79,7 +79,7 @@ class RightsModule extends CWebModule
 			$this->setComponents(array(
 				'installer'=>array(
 					'class'=>'RightsInstaller',
-					'superUserRole'=>$this->superUserRole,
+					'superuserRole'=>$this->superuserRole,
 					'defaultRoles'=>$this->defaultRoles,
 				),
 			));
@@ -143,6 +143,14 @@ class RightsModule extends CWebModule
 	public function getInstaller()
 	{
 		return $this->getComponent('installer');
+	}
+
+	/**
+	* @return RightsGenerator the generator component
+	*/
+	public function getGenerator()
+	{
+		return $this->getComponent('generator');
 	}
 
 	/**

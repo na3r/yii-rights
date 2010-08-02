@@ -8,7 +8,6 @@
 */
 class InstallForm extends CFormModel
 {
-	public $superUsers;
 	public $overwrite;
 
 	/**
@@ -17,7 +16,6 @@ class InstallForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('superUsers', 'required'),
 			array('overwrite', 'safe'),
 		);
 	}
@@ -28,8 +26,27 @@ class InstallForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'superUsers'	=> Yii::t('RightsModule.setup', 'Super users'),
-			'overwrite'		=> Yii::t('RightsModule.setup', 'Overwrite'),
+			'overwrite'	=> Yii::t('RightsModule.setup', 'Overwrite'),
 		);
+	}
+
+	/**
+	* Validator to check whether Rights can be installed.
+	* @return boolean the validation result.
+	*/
+	public function canInstall()
+	{
+		$installer = Rights::getModule()->getInstaller();
+		if( $installer->isInstalled===false || $installer->isInstalled===true && (bool)$this->overwrite!==false )
+		{
+			return true;
+		}
+		else
+		{
+			Yii::app()->user->setFlash('rightsError',
+				Yii::t('RightsModule.setup', 'Rights is already installed! Select "Overwrite" to reinstall.')
+			);
+			return false;
+		}
 	}
 }

@@ -49,7 +49,7 @@ $this->breadcrumbs = array(
 
 							<?php echo CHtml::link(Rights::beautifyName($name), array('authItem/update', 'name'=>$name, 'redirect'=>urlencode('default/roles'))); ?>
 
-							<?php if( $name===Rights::getConfig('superUserRole') ): ?>
+							<?php if( $name===Rights::getConfig('superuserRole') ): ?>
 
 								<span class="superUser">( <span class="superUserText"><?php echo Yii::t('RightsModule.tr', 'super user'); ?></span> )</span>
 
@@ -79,7 +79,7 @@ $this->breadcrumbs = array(
 
 						<td class="deleteColumn">
 
-							<?php if( $name!==Rights::getConfig('superUserRole') ): ?>
+							<?php if( $name!==Rights::getConfig('superuserRole') ): ?>
 
 								<?php echo CHtml::linkButton(Yii::t('RightsModule.tr', 'Delete'), array(
 									'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/roles')),
