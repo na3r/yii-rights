@@ -59,7 +59,7 @@ class RightsModule extends CWebModule
 			'rights.controllers.*',
 		));
 
-		// Set the module components
+		// Set the authorizer component
 		$this->setComponents(array(
 			'authorizer'=>array(
 				'class'=>'RightsAuthorizer',
@@ -67,24 +67,7 @@ class RightsModule extends CWebModule
 				'user'=>$this->userClass,
 				'usernameColumn'=>$this->usernameColumn,
 			),
-			'generator'=>array(
-				'class'=>'RightsGenerator',
-			),
 		));
-
-		// Check if we need to enable the installer
-		if( $this->enableInstaller===true )
-		{
-			// Set the installer component
-			$this->setComponents(array(
-				'installer'=>array(
-					'class'=>'RightsInstaller',
-					'superuserRole'=>$this->superuserRole,
-					'defaultRoles'=>$this->defaultRoles,
-				),
-			));
-			$this->defaultController = 'setup';
-		}
 
 		$this->getAuthorizer()->getAuthManager()->defaultRoles = $this->defaultRoles;
 		$this->registerScripts();
@@ -142,7 +125,19 @@ class RightsModule extends CWebModule
 	*/
 	public function getInstaller()
 	{
-		return $this->getComponent('installer');
+		if( ($installer = $this->getComponent('installer'))===null )
+		{
+			$this->setComponents(array(
+				'installer'=>array(
+					'class'=>'RightsInstaller',
+					'superuserRole'=>$this->superuserRole,
+					'defaultRoles'=>$this->defaultRoles,
+				),
+			));
+			$installer = $this->getComponent('installer');
+		}
+
+		return $installer;
 	}
 
 	/**
@@ -150,7 +145,17 @@ class RightsModule extends CWebModule
 	*/
 	public function getGenerator()
 	{
-		return $this->getComponent('generator');
+		if( ($generator = $this->getComponent('generator'))===null )
+		{
+			$this->setComponents(array(
+				'generator'=>array(
+					'class'=>'RightsGenerator',
+				),
+			));
+			$generator = $this->getComponent('generator');
+		}
+
+		return $generator;
 	}
 
 	/**

@@ -107,3 +107,11 @@
 }
 #rightsTooltip .heading { font-weight:bold; }
 #rightsTooltip .content { color:#808080; }
+
+.rights .moduleRow { background-color:#bdc1d1; }
+.rights .controllerRow { background-color:#d3d7e8; }
+.rights .controllerNameColumn { font-size:12px; }
+.rights .pathColumn { color:#808080; font-style:italic; }
+
+
+.rights .exists * { color:#808080; }

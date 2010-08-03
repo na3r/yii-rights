@@ -8,7 +8,7 @@
 
 			<tr>
 
-				<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.core', 'Description'); ?></th>
+				<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.core', 'Permission'); ?></th>
 
 				<?php foreach( $roles as $roleName=>$role ): ?>
 
@@ -26,7 +26,7 @@
 
 				<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
-					<td><?php echo $item->description!=='' ? CHtml::encode($item->description) : Yii::t('RightsModule.core', 'No description'); ?></td>
+					<td><?php echo $item->description!='' ? CHtml::encode($item->description) : CHtml::encode($name); ?></td>
 
 					<?php foreach( $roles as $roleName=>$role ): ?>
 

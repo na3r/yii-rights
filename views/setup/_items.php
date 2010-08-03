@@ -2,23 +2,24 @@
 
 	<?php if( isset($item['actions'])===true && $item['actions']!==array() ): ?>
 
-		<?php $controllerIndex = isset($moduleName)===true ? $moduleName.'.'.$key : $key; ?>
-		<?php $controllerExists = isset($operations[ strtolower($controllerIndex.'.All') ]); ?>
+		<?php $controllerKey = isset($moduleName)===true ? $moduleName.'.'.$key : $key; ?>
+		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey.'.All') ]); ?>
 
-		<tr style="background-color:#d3d7e8;">
-			<td><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.$controllerIndex.'.All]') : '&nbsp;X'; ?></td>
-			<td colspan="2" style="font-size:12px;"><?php echo ucfirst($key).'Controller'; ?></td>
+		<tr class="controllerRow <?php echo $controllerExists===true ? 'exists' : ''; ?>">
+			<td class="checkBoxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.$controllerKey.'.All]') : ''; ?></td>
+			<td class="controllerNameColumn"><?php echo ucfirst($key).'Controller'; ?></td>
+			<td class="pathColumn"><?php echo substr($item['path'], $basePathLength+1); ?></td>
 		</tr>
 
 		<?php $i=0; foreach( $item['actions'] as $action ): ?>
 
-			<?php $actionIndex = $controllerIndex.'.'.$action['name']; ?>
-			<?php $actionExists = isset($operations[ strtolower($actionIndex) ]); ?>
+			<?php $actionKey = $controllerKey.'.'.$action['name']; ?>
+			<?php $actionExists = isset($existingItems[ strtolower($actionKey) ]); ?>
 
-			<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
-				<td><?php echo $actionExists===false ? $form->checkBox($model, 'items['.$actionIndex.']') : '&nbsp;X'; ?></td>
-				<td><?php echo $action['name']; ?></td>
-				<td style="color:#808080;"><?php echo substr($item['path'], $basePathLength+1).'('.$action['line'].')'; ?></td>
+			<tr class="actionRow <?php echo $actionExists===true ? 'exists' : ''; ?> <?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+				<td class="checkBoxColumn"><?php echo $actionExists===false ? $form->checkBox($model, 'items['.$actionKey.']') : ''; ?></td>
+				<td class="nameColumn"><?php echo $action['name']; ?></td>
+				<td class="pathColumn"><?php echo substr($item['path'], $basePathLength+1).'('.$action['line'].')'; ?></td>
 			</tr>
 
 		<?php endforeach; ?>
@@ -29,8 +30,8 @@
 
 		<?php foreach( $item as $moduleName=>$c ): ?>
 
-			<tr><th colspan="3"><?php echo Yii::t('RightsModule.setup', 'Modules'); ?></th></tr>
-			<tr><th colspan="3" style="background-color:#bdc1d1;"><?php echo ucfirst($moduleName).'Module'; ?></th></tr>
+			<tr><th class="modulesRow" colspan="3"><?php echo Yii::t('RightsModule.setup', 'Modules'); ?></th></tr>
+			<tr><th class="moduleRow" colspan="3"><?php echo ucfirst($moduleName).'Module'; ?></th></tr>
 
 			<?php $this->renderPartial('_items', array(
 				'model'=>$model,

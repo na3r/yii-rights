@@ -5,7 +5,10 @@
 	<?php $form=$this->beginWidget('CActiveForm'); ?>
 
 		<div class="row">
-			<p><?php echo Yii::t('RightsModule.setup', 'Please select which items to generate.'); ?></p>
+			<p>
+				<?php echo Yii::t('RightsModule.setup', 'Rights can generate your authorization items for you.'); ?><br />
+				<?php echo Yii::t('RightsModule.setup', 'Please select which items you wish to generate.'); ?>
+			</p>
 			<table class="rightsTable generateItemTable" border="0" cellpadding="0" cellspacing="0">
 				<tbody>
 
@@ -15,7 +18,7 @@
 						'model'=>$model,
 						'form'=>$form,
 						'items'=>$items,
-						'operations'=>$operations,
+						'existingItems'=>$existingItems,
 						'basePathLength'=>strlen(Yii::app()->basePath),
 					)); ?>
 

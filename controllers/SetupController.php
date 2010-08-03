@@ -18,43 +18,32 @@ class SetupController extends Controller
 	}
 
 	/**
-	* Displays the install page.
+	* Installs the module.
 	*/
 	public function actionInstall()
 	{
 		// Get the installer and authorizer
 		$installer = $this->getModule()->getInstaller();
-		$isInstalled = $installer->isInstalled;
 
-		// Create the install form
-		$form = new CForm(array(
-			'elements'=>array(
-				'overwrite'=>array(
-					'type'=>'checkbox',
-					'visible'=>$isInstalled===true,
-				),
-			),
-			'buttons'=>array(
-				'submit'=>array(
-					'type'=>'submit',
-					'label'=>Yii::t('RightsModule.setup', 'Install'),
-				),
-			),
-		), new InstallForm);
-
-		// Form is submitted and valid
-		if( $form->submitted()===true && $form->validate()===true && $form->model->canInstall()===true )
+		// Make sure rights is not already installed
+		if( $installer->isInstalled()===false )
 		{
-			// Run the installer and redirect
-			$installer->run($form->model->overwrite);
-			$this->redirect(array('setup/installReady'));
+			// Redirect to generate if install is succeeds
+			if( $installer->run()===true )
+				$this->redirect($this->createUrl('setup/installReady'));
+
+			// Set an error message
+			Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Installation failed.'));
+		}
+		// Rights is already installed
+		else
+		{
+			// Set an error
+			Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Rights is already installed.'));
 		}
 
-		// Render the view
-		$this->render('install', array(
-			'form'=>$form,
-			'isInstalled'=>$isInstalled,
-		));
+		// Redirect to Rights default action
+		$this->redirect(Yii::app()->createUrl('rights'));
 	}
 
 	/**
@@ -98,21 +87,22 @@ class SetupController extends Controller
 					Yii::app()->getUser()->setFlash('rightsSuccess',
 						Yii::t('RightsModule.setup', 'Created :items.', array(':items'=>implode(', ', $generatedItems)))
 					);
+					$this->redirect(Yii::app()->createUrl('rights'));
 				}
 			}
 		}
 
 		// We need operation names lowercase for comparason
-		$ops = $authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
-		$operations = array();
-		foreach( $ops as $name=>$item )
-			$operations[ strtolower($name) ] = $item;
+		$operations = $authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		$existingItems = array();
+		foreach( $operations as $name=>$item )
+			$existingItems[ strtolower($name) ] = $item;
 
 		// Render the view
 		$this->render('generate', array(
 			'model'=>$model,
 			'items'=>$generator->getControllerActions(),
-			'operations'=>$operations,
+			'existingItems'=>$existingItems,
 		));
 	}
 }
