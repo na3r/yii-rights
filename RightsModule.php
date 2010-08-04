@@ -98,12 +98,16 @@ class RightsModule extends CWebModule
 		$cs->registerScriptFile($juiUrl.'/js/jquery-ui.min.js');
 		$cs->registerScriptFile($assetsUrl.'/js/rights.js');
 
-		// Default style sheet is used unless one is provided
-		if( $this->cssFile===null )
-			$this->cssFile = $assetsUrl.'/css/rights.css';
+		// Make sure we want to register a style sheet
+		if( $this->cssFile!==false )
+		{
+			// Default style sheet is used unless one is provided
+			if( $this->cssFile===null )
+				$this->cssFile = $assetsUrl.'/css/rights.css';
 
-		// Register the style sheet
-		$cs->registerCssFile($this->cssFile);
+			// Register the style sheet
+			$cs->registerCssFile($this->cssFile);
+		}
 	}
 
 	/**
