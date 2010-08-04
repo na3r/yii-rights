@@ -23,7 +23,6 @@
 						<td class="revokeColumn">
 							<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Revoke'), array(
 								'submit'=>array('assignment/revoke', 'id'=>$model->id, 'name'=>$itemName),
-								'confirm'=>Yii::t('RightsModule.core', 'Are you sure to revoke this assignment?'),
 								'class'=>'revokeLink',
 							)); ?>
 						</td>

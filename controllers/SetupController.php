@@ -12,6 +12,10 @@ class SetupController extends Controller
 	* @var RightsAuthorizer
 	*/
 	private $_authorizer;
+	/**
+	* @var RightsInstaller
+	*/
+	private $_installer;
 
 	/**
 	* Initializes the controller.
@@ -19,6 +23,7 @@ class SetupController extends Controller
 	public function init()
 	{
 		$this->_authorizer = $this->getModule()->getAuthorizer();
+		$this->_installer = $this->getModule()->getInstaller();
 		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'install';
 	}
@@ -28,7 +33,7 @@ class SetupController extends Controller
 	*/
 	public function filters()
 	{
-		return array('accessControl');
+		return $this->_installer->isInstalled===true ? array('accessControl') : array();
 	}
 
 	/**
@@ -64,15 +69,12 @@ class SetupController extends Controller
 		// Make sure the user is not a guest
 		if( Yii::app()->user->isGuest===false )
 		{
-			// Get the installer and authorizer
-			$installer = $this->getModule()->getInstaller();
-
 			// Make sure rights is not already installed
-			if( $installer->isInstalled===false )
+			if( $this->_installer->isInstalled===false )
 			{
 				// Redirect to generate if install is succeeds
-				if( $installer->run()===true )
-					$this->redirect($this->createUrl('setup/ready'));
+				if( $this->_installer->run()===true )
+					$this->redirect(array('setup/ready'));
 
 				// Set an error message
 				Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Installation failed.'));

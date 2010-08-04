@@ -19,7 +19,7 @@ class DefaultController extends Controller
 	public function init()
 	{
 		if( $this->getModule()->getInstaller()->isInstalled===false )
-			$this->redirect(array(setup/install));
+			$this->redirect(array('setup/install'));
 
 		$this->_authorizer = $this->getModule()->getAuthorizer();
 		$this->layout = Rights::getConfig('layout');

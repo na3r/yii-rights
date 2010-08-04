@@ -26,13 +26,15 @@ return array(
 	* controllers/AuthItemController.php
 	*/
 	':name created.'=>':name skapad.',
-	'Could not create :name, item already exists.'=>':name kunde inte skapas, elementet finns redan.',
 	':name updated.'=>':name uppdaterad.',
-	'Could not rename :oldName to :name, an item with that name already exists.'=>'Kan inte ändra :oldName till :name, ett element med detta namn finns redan.',
 	'Child :name added.'=>'Barn :name tillagd.',
 	'Child :name removed.'=>'Barn :name borttagen.',
 	':name deleted.'=>':name raderad.',
 	'The requested page does not exist.'=>'Förfrågade sidan finns inte.',
+	/**
+	* models/AuthItemForm.php
+	*/
+	'An item with this name already exists.'=>'Ett element med detta namn finns redan.',
 	/**
 	* views/default/(_)permissions.php
 	*/
@@ -92,7 +94,6 @@ return array(
 	'This item has no parents.'=>'Detta element har inga föräldrar.',
 	'Children'=>'Barn',
 	'Remove'=>'Ta bort',
-	'Are you sure you want to remove this child?'=>'Är du säker att du vill radera detta barn?',
 	'This item has no children.'=>'Denna element har inga barn.',
 	'Add Child'=>'Lägg till Barn',
 	'No relations need to be set for the superuser role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
@@ -101,7 +102,6 @@ return array(
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'Uppdrag för användare :username',
-	'Are you sure to revoke this assignment?'=>'Är du säker att du vill upphäva detta uppdrag?',
 	'This user has not been assigned any authorization items.'=>'Denna användare har inte tilldelats några auktoriserings element.',
 	'Add Assignment'=>'Lägg till Uppdrag',
 	/**

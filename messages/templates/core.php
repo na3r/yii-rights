@@ -26,13 +26,15 @@ return array(
 	* controllers/AuthItemController.php
 	*/
 	':name created.'=>'',															// Added in 0.9.5
-	'Could not create :name, item already exists.'=>'',								// Added in 0.9.5
 	':name updated.'=>'', 															// Added in 0.9.5
-	'Could not rename :oldName to :name, an item with that name already exists.',	// Added in 0.9.5
 	'Child :name added.'=>'',														// Added in 0.9.5
 	'Child :name removed.'=>'',														// Added in 0.9.5
 	':name deleted.'=>'',															// Added in 0.9.5
 	'The requested page does not exist.'=>'',										// Added in 0.9.5
+	/**
+	* models/AuthItemForm.php
+	*/
+	'An item with this name already exists.'=>'',									// Added in 0.9.8
 	/**
 	* views/default/(_)permissions.php
 	*/
@@ -92,7 +94,6 @@ return array(
 	'This item has no parents.'=>'',
 	'Children'=>'',
 	'Remove'=>'',
-	'Are you sure you want to remove this child?'=>'',
 	'This item has no children.'=>'',
 	'Add Child'=>'',
 	'No relations need to be set for the superuser role.'=>'',						// Added in 0.9.7
@@ -101,7 +102,6 @@ return array(
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'',
-	'Are you sure to revoke this assignment?'=>'',
 	'This user has not been assigned any authorization items.'=>'',
 	'Add Assignment'=>'',
 	/**

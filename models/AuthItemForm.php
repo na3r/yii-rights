@@ -20,9 +20,12 @@ class AuthItemForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('name, description', 'required'),
+			array('name', 'required'),
+			array('name', 'nameIsAvailable', 'on'=>'create'),
+			array('name', 'newNameIsAvailable', 'on'=>'update'),
+			array('name', 'isSuperuser'),
 			array('type', 'required', 'on'=>'create'),
-		   	array('type, bizRule, data', 'safe'),
+		   	array('description, type, bizRule, data', 'safe'),
 		);
 	}
 
@@ -39,4 +42,36 @@ class AuthItemForm extends CFormModel
 			'data'			=> Yii::t('RightsModule.core', 'Data'),
 		);
 	}
+
+	/**
+	* Makes sure that the name is available.
+	* This is the 'nameIsAvailable' validator as declared in rules().
+	*/
+	public function nameIsAvailable($attribute, $params)
+	{
+		// Make sure that an authorization item with the name does not already exist
+		if( Rights::getAuthorizer()->authManager->getAuthItem($this->name)!==null )
+			$this->addError('name', Yii::t('RightsModule.core', 'An item with this name already exists.', array(':name'=>$this->name)));
+	}
+
+	/**
+	* Makes sure that the new name is available if the name been has changed.
+	* This is the 'newNameIsAvailable' validator as declared in rules().
+	*/
+	public function newNameIsAvailable($attribute, $params)
+	{
+		if( strtolower($_GET['name'])!==strtolower($this->name) )
+			$this->nameIsAvailable($attribute, $params);
+	}
+
+	/**
+	* Makes sure that the superuser roles name is not changed.
+	* This is the 'isSuperuser' validator as declared in rules().
+	*/
+	public function isSuperuser($attribute, $params)
+	{
+		if( $_GET['name']!==$this->name && strtolower($_GET['name'])===strtolower(Rights::getConfig('superuserRole')) )
+			$this->addError('name', Yii::t('RightsModule.core', 'Name of the superuser cannot be changed.'));
+	}
 }
+

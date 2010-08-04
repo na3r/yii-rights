@@ -26,13 +26,15 @@ return array(
 	* controllers/AuthItemController.php
 	*/
 	':name created.'=>':name luotu.',
-	'Could not create :name, item already exists.'=>'Kohdetta ei pystytty luomaan, kohde on jo olemassa.',
 	':name updated.'=>':name päivitetty.',
-	'Could not rename :oldName to :name, an item with that name already exists.'=>'Nimeä :oldName ei voitu vaihtaa, kohde nimeltä :name on jo olemassa.',
 	'Child :name added.'=>'Lapsi :name lisätty.',
 	'Child :name removed.'=>'Lapsi :name poistettu.',
 	':name deleted.'=>':name poistettu.',
 	'The requested page does not exist.'=>'Pyydettyä sivua ei ole olemassa.',
+	/**
+	* models/AuthItemForm.php
+	*/
+	'An item with this name already exists.'=>'Nimi on jo käytössä.',
 	/**
 	* views/default/(_)permissions.php
 	*/
@@ -92,7 +94,6 @@ return array(
 	'This item has no parents.'=>'Tällä kohteella ei ole yhtään vanhempaa.',
 	'Children'=>'Lapset',
 	'Remove'=>'Poista',
-	'Are you sure you want to remove this child?'=>'Oletko varma että haluat poistaa tämän lapsen?',
 	'This item has no children.'=>'Tällä kohteella ei ole yhtään lasta.',
 	'Add Child'=>'Lisää Lapsi',
 	'No relations need to be set for the superuser role.'=>'Yhteyksiä ei tarvitse määrittää ylikäyttäjä-roolille.',
@@ -101,7 +102,6 @@ return array(
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'Käyttäjän :username toimeksiannot',
-	'Are you sure to revoke this assignment?'=>'Oletko varma että haluat evätä tämän toimeksiannon?',
 	'This user has not been assigned any authorization items.'=>'Tälle käyttäjälle ei ole määrätty yhtään valtuutusta.',
 	'Add Assignment'=>'Lisää Toimeksianto',
 	/**

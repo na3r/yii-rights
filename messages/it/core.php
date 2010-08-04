@@ -26,13 +26,15 @@ return array(
 	* controllers/AuthItemController.php
 	*/
 	':name created.'=>':name creato',
-	'Could not create :name, item already exists.'=>'Non è stato possibile creare :name, l\'oggetto esiste già.',
 	':name updated.'=>':name aggiornato',
-	'Could not rename :oldName to :name, an item with that name already exists.'=>'Non è stato possibile rinominare :oldName in :name, poiché il nome è già in uso.',
 	'Child :name added.'=>'Aggiunto il figlio :name',
 	'Child :name removed.'=>'Rimosso il figlio :name',
 	':name deleted.'=>'Rimosso :name',
 	'The requested page does not exist.'=>'La pagina richiesta non esiste',
+	/**
+	* models/AuthItemForm.php
+	*/
+	'An item with this name already exists.'=>'', // ?
 	/**
 	* views/default/(_)permissions.php
 	*/
@@ -92,7 +94,6 @@ return array(
 	'This item has no parents.'=>'Questo oggetto non ha parenti.',
 	'Children'=>'Figli',
 	'Remove'=>'Rimuovi',
-	'Are you sure you want to remove this child?'=>'Sicuro di voler rimuovere questo figlio?',
 	'This item has no children.'=>'Questo oggetto non ha figli.',
 	'Add Child'=>'Aggiungi figlio',
 	'No relations need to be set for the superuser role.'=>'Per il ruolo del super utente non è necessario inserire relazioni',
@@ -101,7 +102,6 @@ return array(
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'Elementi assegnati a :username',
-	'Are you sure to revoke this assignment?'=>'Sicuro di voler revocare questo elemento?',
 	'This user has not been assigned any authorization items.'=>'A questo utente non sono stati assegnati elementi.',
 	'Add Assignment'=>'Nuovo elemento',
 	/**

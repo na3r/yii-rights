@@ -76,7 +76,6 @@
 
 										<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
 											'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
-											'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to remove this child?'),
 											'class'=>'removeLink',
 										)); ?>
 
