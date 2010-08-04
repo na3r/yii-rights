@@ -212,31 +212,40 @@ class RightsAuthorizer extends CApplicationComponent
 	* Returns the parents of the specified authorization item.
 	* @param string the item name for which to get its parents.
 	* @param string the name of the role in which permissions to search.
-	* @return array the names of the parent items recursively.
+	* @return array the names of the parent items.
 	*/
-	public function getAuthItemParents($itemName, $roleName=null)
+	public function getAuthItemParents($itemName, $roleName=null, $direct=false)
 	{
-		// Loop through the permissions to find all parents to the given item
-		$parentNames = array();
 		$permissions = $this->getPermissions($roleName);
-		foreach( $permissions as $roleName=>$children )
-		{
-			// Make sure we have children
-			if( $children!==array() )
-			{
-				// Item is a child of this role, add the role to parents
-				if( isset($children[ $itemName ])===true )
-					$parentNames[] = $roleName;
+		$parents = $this->getAuthItemParentsRecursive($itemName, $permissions, $direct);
+		return array_unique($parents);
+	}
 
-				// Get the parents recursive
-				$potentialParents = array();
-				if( $this->getAuthItemParentsRecursive($itemName, $children, $potentialParents)===true )
-					$parentNames = array_merge($parentNames, $potentialParents);
+	/**
+	* Returns the parents of the specified authorization item recursively.
+	* @param string the item name for which to get its parents.
+	* @param array the items to process.
+	* @param boolean whether we want the specified items parent or all parents.
+	* @return the names of the parents items recursively.
+	*/
+	private function getAuthItemParentsRecursive($itemName, $items, $direct)
+	{
+		$parents = array();
+		foreach( $items as $name=>$children )
+		{
+		 	if( $children!==array() )
+		 	{
+		 		// Item found we need the indirect parents aswell
+		 		if( isset($children[ $itemName ])===true || $direct===false )
+		 			$parents[] = $name;
+
+		 		if( ($p = $this->getAuthItemParentsRecursive($itemName, $children, $direct))!==array() )
+		 			$parents = array_merge($parents, $p);
 			}
 		}
 
-		// We only want each parent once
-		return array_unique($parentNames);
+		return $parents;
+
 	}
 
 	/**
@@ -247,11 +256,11 @@ class RightsAuthorizer extends CApplicationComponent
 	* @return boolean whether the specified authorization item
 	* was found in the branch.
 	*/
-	private function getAuthItemParentsRecursive($itemName, $children, &$parents)
+	/*
+	private function getAuthItemParentsRecursive($itemName, $children, &$parents, $direct)
 	{
 		// We assume that we do not find the item
 		$found = false;
-
 		foreach( $children as $childName=>$grandChildren )
 		{
 		 	if( $grandChildren!==array() )
@@ -259,8 +268,11 @@ class RightsAuthorizer extends CApplicationComponent
 		 		// Item is a grand child of this child, add all necessary items as parents
 		 		// and mark the item found so that we can return that later
 		 		if( isset($grandChildren[ $itemName ])===true ||
-		 			$this->getAuthItemParentsRecursive($itemName, $grandChildren, $parents)===true )
+		 			$this->getAuthItemParentsRecursive($itemName, $grandChildren, $parents, $direct)===true )
 		 		{
+		 			//if( isset($parents[ $itemName ])===true || $direct===false )
+ 		 			CVarDumper::dump($parents,10,true);
+
  		 			$parents[] = $childName;
  		 			$found = true;
 				}
@@ -269,6 +281,7 @@ class RightsAuthorizer extends CApplicationComponent
 
 		return $found;
 	}
+	*/
 
 	/**
 	* Returns the children for the specified authorization item recursively.

@@ -78,7 +78,7 @@ class DefaultController extends Controller
 		foreach( $rights as $roleName=>$perm )
 			foreach( $perm as $name=>$right )
 				if( $right===Rights::PERM_INHERITED )
-					if( ($p = $this->_authorizer->getAuthItemParents($name, $roleName))!==array() && $p===(array)$p )
+					if( ($p = $this->_authorizer->getAuthItemParents($name, $roleName, true))!==array() && $p===(array)$p )
 						$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), $p));
 
 		// View parameters

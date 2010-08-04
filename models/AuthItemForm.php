@@ -23,7 +23,7 @@ class AuthItemForm extends CFormModel
 			array('name', 'required'),
 			array('name', 'nameIsAvailable', 'on'=>'create'),
 			array('name', 'newNameIsAvailable', 'on'=>'update'),
-			array('name', 'isSuperuser'),
+			array('name', 'isSuperuser', 'on'=>'update'),
 			array('type', 'required', 'on'=>'create'),
 		   	array('description, type, bizRule, data', 'safe'),
 		);

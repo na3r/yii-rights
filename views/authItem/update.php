@@ -32,9 +32,9 @@
 
 						<tbody>
 
-							<?php foreach( $parents as $i=>$parentName ): ?>
+							<?php $i=0; foreach( $parents as $parentName ): ?>
 
-								<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
+								<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
 									<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
 
@@ -66,9 +66,9 @@
 
 						<tbody>
 
-							<?php foreach( $children as $i=>$childName ): ?>
+							<?php $i=0; foreach( $children as $childName ): ?>
 
-								<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
+								<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
 
 									<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
 
