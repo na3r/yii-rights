@@ -20,12 +20,12 @@ class AuthItemForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('name', 'required'),
+			array('name, description', 'required'),
 			array('name', 'nameIsAvailable', 'on'=>'create'),
 			array('name', 'newNameIsAvailable', 'on'=>'update'),
 			array('name', 'isSuperuser', 'on'=>'update'),
 			array('type', 'required', 'on'=>'create'),
-		   	array('description, type, bizRule, data', 'safe'),
+		   	array('type, bizRule, data', 'safe'),
 		);
 	}
 

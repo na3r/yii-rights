@@ -212,6 +212,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* Returns the parents of the specified authorization item.
 	* @param string the item name for which to get its parents.
 	* @param string the name of the role in which permissions to search.
+	* @param boolean whether we want the specified items parent or all parents.
 	* @return array the names of the parent items.
 	*/
 	public function getAuthItemParents($itemName, $roleName=null, $direct=false)
@@ -235,17 +236,21 @@ class RightsAuthorizer extends CApplicationComponent
 		{
 		 	if( $children!==array() )
 		 	{
-		 		// Item found we need the indirect parents aswell
-		 		if( isset($children[ $itemName ])===true || $direct===false )
+		 		// Item found
+		 		if( isset($children[ $itemName ])===true )
+		 		{
 		 			$parents[] = $name;
-
-		 		if( ($p = $this->getAuthItemParentsRecursive($itemName, $children, $direct))!==array() )
-		 			$parents = array_merge($parents, $p);
+				}
+				// Check if item is in the children recursively
+				else
+				{
+		 			if( ($p = $this->getAuthItemParentsRecursive($itemName, $children, $direct))!==array() )
+		 				$parents = array_merge($parents, $p);
+				}
 			}
 		}
 
 		return $parents;
-
 	}
 
 	/**
