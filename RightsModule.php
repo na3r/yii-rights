@@ -9,7 +9,7 @@
 class RightsModule extends CWebModule
 {
 	/**
-	* @var string the name of the role with super user priviledges.
+	* @var string the name of the role with superuser priviledges.
 	*/
 	public $superuserRole = 'Admin';
 	/**
@@ -23,7 +23,7 @@ class RightsModule extends CWebModule
 	/**
 	* @var string the name of the username column in the user table.
 	*/
-	public $usernameColumn = 'username';
+	public $userNameColumn = 'username';
 	/**
 	* @var boolean whether to enable business rules.
 	*/
@@ -59,17 +59,26 @@ class RightsModule extends CWebModule
 			'rights.controllers.*',
 		));
 
-		// Set the authorizer component
+		// Set the components component
 		$this->setComponents(array(
 			'authorizer'=>array(
 				'class'=>'RightsAuthorizer',
 				'superuserRole'=>$this->superuserRole,
+				'defaultRoles'=>$this->defaultRoles,
 				'user'=>$this->userClass,
-				'usernameColumn'=>$this->usernameColumn,
+				'userNameColumn'=>$this->userNameColumn,
+			),
+			'installer'=>array(
+				'class'=>'RightsInstaller',
+				'superuserRole'=>$this->superuserRole,
+				'defaultRoles'=>$this->defaultRoles,
+			),
+			'generator'=>array(
+				'class'=>'RightsGenerator',
 			),
 		));
 
-		$this->getAuthorizer()->getAuthManager()->defaultRoles = $this->defaultRoles;
+		// Register the scripts
 		$this->registerScripts();
 
 		// Default layout is used unless one is provided
@@ -125,19 +134,7 @@ class RightsModule extends CWebModule
 	*/
 	public function getInstaller()
 	{
-		if( ($installer = $this->getComponent('installer'))===null )
-		{
-			$this->setComponents(array(
-				'installer'=>array(
-					'class'=>'RightsInstaller',
-					'superuserRole'=>$this->superuserRole,
-					'defaultRoles'=>$this->defaultRoles,
-				),
-			));
-			$installer = $this->getComponent('installer');
-		}
-
-		return $installer;
+		return $this->getComponent('installer');
 	}
 
 	/**
@@ -145,17 +142,7 @@ class RightsModule extends CWebModule
 	*/
 	public function getGenerator()
 	{
-		if( ($generator = $this->getComponent('generator'))===null )
-		{
-			$this->setComponents(array(
-				'generator'=>array(
-					'class'=>'RightsGenerator',
-				),
-			));
-			$generator = $this->getComponent('generator');
-		}
-
-		return $generator;
+		return $this->getComponent('generator');
 	}
 
 	/**

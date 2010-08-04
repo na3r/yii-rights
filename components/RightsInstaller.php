@@ -8,19 +8,16 @@
 */
 class RightsInstaller extends CApplicationComponent
 {
-	public $superuserRole;
-	public $defaultRoles;
-
 	private $_authManager;
+	private $_defaultRoles;
+	private $_superuserRole;
+	private $_isInstalled;
 
 	/**
 	* @var CDbConnection
 	*/
 	public $db;
-	/**
-	* @var boolean whether Rights is installed.
-	*/
-	public $isInstalled;
+
 
 	/**
 	* Initializes the installer.
@@ -31,13 +28,12 @@ class RightsInstaller extends CApplicationComponent
 
 		$this->_authManager = Yii::app()->getAuthManager();
 		$this->db = $this->_authManager->db;
-		$this->isInstalled = $this->isInstalled();
 	}
 
 	/**
 	* Runs the installer.
 	* @param boolean whether to drop tables if they exists.
-	* @return boolean whether the installer ran successfully or not.
+	* @return boolean whether the installer ran successfully.
 	*/
 	public function run($overwrite=false)
 	{
@@ -106,7 +102,7 @@ class RightsInstaller extends CApplicationComponent
 				$command->execute();
 
 				// Insert the necessary roles
-				$roles = array_merge(array($this->superuserRole, 'Authenticated'), $this->defaultRoles);
+				$roles = array_merge(array($this->_superuserRole, 'Authenticated'), $this->_defaultRoles);
 				foreach( $roles as $roleName )
 				{
 					$sql = "insert into {$itemTable} (name, type, data) ";
@@ -122,7 +118,7 @@ class RightsInstaller extends CApplicationComponent
 				$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
 				$sql.= "values (:itemname, :userid, :data)";
 				$command = $this->db->createCommand($sql);
-				$command->bindValue(':itemname', $this->superuserRole);
+				$command->bindValue(':itemname', $this->_superuserRole);
 				$command->bindValue(':userid', Yii::app()->getUser()->id);
 				$command->bindValue(':data', 'N;');
 				$command->execute();
@@ -165,31 +161,54 @@ class RightsInstaller extends CApplicationComponent
 	/**
 	* @return boolean whether Rights is installed.
 	*/
-	public function isInstalled()
+	public function getIsInstalled()
 	{
-		try
+		if( $this->_isInstalled===null )
 		{
-			$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemTable}";
-			$command = $this->db->createCommand($sql);
-			$command->queryScalar();
+			try
+			{
+				$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemTable}";
+				$command = $this->db->createCommand($sql);
+				$command->queryScalar();
 
-			$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemChildTable}";
-			$command = $this->db->createCommand($sql);
-			$command->queryScalar();
+				$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemChildTable}";
+				$command = $this->db->createCommand($sql);
+				$command->queryScalar();
 
-			$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemWeightTable}";
-			$command = $this->db->createCommand($sql);
-			$command->queryScalar();
+				$sql = "SELECT COUNT(*) FROM {$this->_authManager->itemWeightTable}";
+				$command = $this->db->createCommand($sql);
+				$command->queryScalar();
 
-			$sql = "SELECT COUNT(*) FROM {$this->_authManager->assignmentTable}";
-			$command = $this->db->createCommand($sql);
-			$command->queryScalar();
+				$sql = "SELECT COUNT(*) FROM {$this->_authManager->assignmentTable}";
+				$command = $this->db->createCommand($sql);
+				$command->queryScalar();
 
-			return true;
+				$this->_isInstalled = true;
+			}
+			catch( CDbException $e )
+			{
+				$this->_isInstalled = false;
+			}
 		}
-		catch( CDbException $e )
-		{
-			return false;
-		}
+
+		return $this->_isInstalled;
+	}
+
+	/**
+	* Sets the default roles.
+	* @param mixed the default roles.
+	*/
+	public function setDefaultRoles($roles)
+	{
+		$this->_defaultRoles = $roles;
+	}
+
+	/**
+	* Sets the superuser role name.
+	* @param string the name of the superuser role.
+	*/
+	public function setSuperuserRole($roleName)
+	{
+		$this->_superuserRole = $roleName;
 	}
 }

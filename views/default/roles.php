@@ -51,7 +51,7 @@ $this->breadcrumbs = array(
 
 							<?php if( $name===Rights::getConfig('superuserRole') ): ?>
 
-								<span class="superUser">( <span class="superUserText"><?php echo Yii::t('RightsModule.core', 'super user'); ?></span> )</span>
+								<span class="superuser">( <span class="superuserText"><?php echo Yii::t('RightsModule.core', 'superuser'); ?></span> )</span>
 
 							<?php endif; ?>
 

@@ -6,8 +6,8 @@
 		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey.'.All') ]); ?>
 
 		<tr class="controllerRow <?php echo $controllerExists===true ? 'exists' : ''; ?>">
-			<td class="checkBoxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.$controllerKey.'.All]') : ''; ?></td>
-			<td class="controllerNameColumn"><?php echo ucfirst($key).'Controller'; ?></td>
+			<td class="checkboxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.$controllerKey.'.All]') : ''; ?></td>
+			<td class="nameColumn"><?php echo ucfirst($key).'Controller'; ?></td>
 			<td class="pathColumn"><?php echo substr($item['path'], $basePathLength+1); ?></td>
 		</tr>
 
@@ -17,7 +17,7 @@
 			<?php $actionExists = isset($existingItems[ strtolower($actionKey) ]); ?>
 
 			<tr class="actionRow <?php echo $actionExists===true ? 'exists' : ''; ?> <?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
-				<td class="checkBoxColumn"><?php echo $actionExists===false ? $form->checkBox($model, 'items['.$actionKey.']') : ''; ?></td>
+				<td class="checkboxColumn"><?php echo $actionExists===false ? $form->checkBox($model, 'items['.$actionKey.']') : ''; ?></td>
 				<td class="nameColumn"><?php echo $action['name']; ?></td>
 				<td class="pathColumn"><?php echo substr($item['path'], $basePathLength+1).'('.$action['line'].')'; ?></td>
 			</tr>
@@ -37,7 +37,7 @@
 				'model'=>$model,
 				'form'=>$form,
 				'items'=>$c,
-				'operations'=>$operations,
+				'existingItems'=>$existingItems,
 				'moduleName'=>$moduleName,
 				'basePathLength'=>$basePathLength,
 			)); ?>

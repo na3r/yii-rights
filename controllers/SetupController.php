@@ -9,12 +9,51 @@
 class SetupController extends Controller
 {
 	/**
+	* @var RightsAuthorizer
+	*/
+	private $_authorizer;
+
+	/**
 	* Initializes the controller.
 	*/
 	public function init()
 	{
+		$this->_authorizer = $this->getModule()->getAuthorizer();
 		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'install';
+	}
+
+	/**
+	* @return array action filters
+	*/
+	public function filters()
+	{
+		return array('accessControl');
+	}
+
+	/**
+	* Specifies the access control rules.
+	* This method is used by the 'accessControl' filter.
+	* @return array access control rules
+	*/
+	public function accessRules()
+	{
+		return array(
+			array('allow', // Allow superusers to access Rights
+				'actions'=>array(
+					'ready',
+					'generate',
+				),
+				'users'=>$this->_authorizer->getSuperusers(),
+			),
+			array('allow', // Allow the install action
+				'actions'=>array('install'),
+				'users'=>array('*'),
+			),
+			array('deny', // Deny all users
+				'users'=>array('*'),
+			),
+		);
 	}
 
 	/**
@@ -22,36 +61,45 @@ class SetupController extends Controller
 	*/
 	public function actionInstall()
 	{
-		// Get the installer and authorizer
-		$installer = $this->getModule()->getInstaller();
-
-		// Make sure rights is not already installed
-		if( $installer->isInstalled()===false )
+		// Make sure the user is not a guest
+		if( Yii::app()->user->isGuest===false )
 		{
-			// Redirect to generate if install is succeeds
-			if( $installer->run()===true )
-				$this->redirect($this->createUrl('setup/installReady'));
+			// Get the installer and authorizer
+			$installer = $this->getModule()->getInstaller();
 
-			// Set an error message
-			Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Installation failed.'));
+			// Make sure rights is not already installed
+			if( $installer->isInstalled===false )
+			{
+				// Redirect to generate if install is succeeds
+				if( $installer->run()===true )
+					$this->redirect($this->createUrl('setup/ready'));
+
+				// Set an error message
+				Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Installation failed.'));
+			}
+			// Rights is already installed
+			else
+			{
+				// Set an error
+				Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Rights is already installed.'));
+			}
+
+			// Redirect to Rights default action
+			$this->redirect(Yii::app()->createUrl('rights'));
 		}
-		// Rights is already installed
+		// User is guest, deny access
 		else
 		{
-			// Set an error
-			Yii::app()->getUser()->setFlash('rightsError', Yii::t('RightsModule.setup', 'Rights is already installed.'));
+			throw new CHttpException(403, Yii::t('RightModule.setup', 'You must be logged in to install Rights.'));
 		}
-
-		// Redirect to Rights default action
-		$this->redirect(Yii::app()->createUrl('rights'));
 	}
 
 	/**
 	* Displays the install ready page.
 	*/
-	public function actionInstallReady()
+	public function actionReady()
 	{
-		$this->render('installReady');
+		$this->render('ready');
 	}
 
 	/**
@@ -84,9 +132,7 @@ class SetupController extends Controller
 				$generator->addItems($items, CAuthItem::TYPE_OPERATION);
 				if( ($generatedItems = $generator->run())!==false && $generatedItems!==array() )
 				{
-					Yii::app()->getUser()->setFlash('rightsSuccess',
-						Yii::t('RightsModule.setup', 'Created :items.', array(':items'=>implode(', ', $generatedItems)))
-					);
+					Yii::app()->getUser()->setFlash('rightsSuccess', Yii::t('RightsModule.setup', 'Authorization items created.'));
 					$this->redirect(Yii::app()->createUrl('rights'));
 				}
 			}

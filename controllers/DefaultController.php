@@ -18,6 +18,9 @@ class DefaultController extends Controller
 	*/
 	public function init()
 	{
+		if( $this->getModule()->getInstaller()->isInstalled===false )
+			$this->redirect(array(setup/install));
+
 		$this->_authorizer = $this->getModule()->getAuthorizer();
 		$this->layout = Rights::getConfig('layout');
 		$this->defaultAction = 'permissions';
@@ -39,14 +42,14 @@ class DefaultController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // Allow super users to access Rights
+			array('allow', // Allow superusers to access Rights
 				'actions'=>array(
 					'permissions',
 					'operations',
 					'tasks',
 					'roles',
 				),
-				'users'=>$this->_authorizer->getSuperUsers(),
+				'users'=>$this->_authorizer->getSuperusers(),
 			),
 			array('deny', // Deny all users
 				'users'=>array('*'),

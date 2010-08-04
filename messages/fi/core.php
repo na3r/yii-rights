@@ -66,7 +66,7 @@ return array(
 	* views/default/roles.php
 	*/
 	'Roles'=>'Roolit',
-	'super user'=>'ylikäyttäjä',
+	'superuser'=>'ylikäyttäjä',
 	'Are you sure you want to delete this role?'=>'Oletko varma että haluat poistaa tämän roolin?',
 	'Roles can be organized by dragging and dropping.'=>'Roolit voidaan uudelleenjärjestää vetämällä ja tiputtamalla.',
 	'No roles found.'=>'Yhtään roolia ei löytynyt.',
@@ -95,14 +95,14 @@ return array(
 	'Are you sure you want to remove this child?'=>'Oletko varma että haluat poistaa tämän lapsen?',
 	'This item has no children.'=>'Tällä kohteella ei ole yhtään lasta.',
 	'Add Child'=>'Lisää Lapsi',
-	'No relations need to be set for the super user role.'=>'Yhteyksiä ei tarvitse määrittää ylikäyttäjä-roolille.',
+	'No relations need to be set for the superuser role.'=>'Yhteyksiä ei tarvitse määrittää ylikäyttäjä-roolille.',
 	'Super users are always granted access implicitly.'=>'Ylikäyttäjille myönnetään aina pääsy ehdotta.',
 	/**
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'Käyttäjän :username toimeksiannot',
 	'Are you sure to revoke this assignment?'=>'Oletko varma että haluat evätä tämän toimeksiannon?',
-	'This user has not been assigned any auth items.'=>'Tälle käyttäjälle ei ole määrätty yhtään valtuutusta.',
+	'This user has not been assigned any authorization items.'=>'Tälle käyttäjälle ei ole määrätty yhtään valtuutusta.',
 	'Add Assignment'=>'Lisää Toimeksianto',
 	/**
 	* views/assignments/view.php

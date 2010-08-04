@@ -5,14 +5,13 @@
 	<?php $form=$this->beginWidget('CActiveForm'); ?>
 
 		<div class="row">
-			<p>
-				<?php echo Yii::t('RightsModule.setup', 'Rights can generate your authorization items for you.'); ?><br />
-				<?php echo Yii::t('RightsModule.setup', 'Please select which items you wish to generate.'); ?>
-			</p>
+			<p><?php echo Yii::t('RightsModule.setup', 'Please select which items you wish to generate.'); ?></p>
 			<table class="rightsTable generateItemTable" border="0" cellpadding="0" cellspacing="0">
 				<tbody>
 
-					<tr><th colspan="3"><?php echo Yii::t('RightsModule.setup', 'Application'); ?></th></tr>
+					<tr class="applicationRow">
+						<th colspan="3"><?php echo Yii::t('RightsModule.setup', 'Application'); ?></th>
+					</tr>
 
 					<?php $this->renderPartial('_items', array(
 						'model'=>$model,

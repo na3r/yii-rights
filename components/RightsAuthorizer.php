@@ -11,28 +11,30 @@ class RightsAuthorizer extends CApplicationComponent
 	private $_authManager;
 	private $_superuserRole;
 	private $_guestRole;
+	private $_defaultRoles;
 	private $_user;
-	private $_usernameColumn;
+	private $_userNameColumn;
 
 	/**
-	* Initializes the autorizer.
+	* Initializes the authorizer.
 	*/
 	public function init()
 	{
 		parent::init();
 
 		$this->_authManager = Yii::app()->getAuthManager();
+		$this->_authManager->defaultRoles = $this->_defaultRoles;
 	}
 
 	/**
 	* Returns the roles.
-	* @param boolean whether to include the super user role or not.
+	* @param boolean whether to include the superuser.
 	* @param boolean whether to sort the items by their weights.
 	* @return the roles.
 	*/
-	public function getRoles($includeSuperUser=true, $sort=true)
+	public function getRoles($includeSuperuser=true, $sort=true)
 	{
-		$exclude = $includeSuperUser===false ? array($this->_superuserRole) : array();
+		$exclude = $includeSuperuser===false ? array($this->_superuserRole) : array();
 	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, $sort, $exclude);
 	}
 
@@ -101,12 +103,12 @@ class RightsAuthorizer extends CApplicationComponent
 			if( $type!==(array)$type )
 				$type = array($type);
 
-			// Get the auth items for the given types
+			// Get the authorization items for the given types
 			$authItems = array();
 			foreach( $type as $t )
 				$authItems[] = $this->_authManager->getAuthItems($t, $userId, $sort);
 
-			// Merge the auth items preserving the keys
+			// Merge the authorization items preserving the keys
 			$items = array();
 			foreach( $authItems as $ai )
 				$items = $this->mergeAuthItems($items, $ai);
@@ -160,7 +162,7 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	protected function excludeInvalidAuthItems($authItems, $model=null, $exclude=array())
 	{
-		// We are getting auth items valid for a certain item
+		// We are getting authorization items valid for a certain item
 		// exclude its parents and children aswell
 		if( $model!==null )
 		{
@@ -191,7 +193,7 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
 	{
-		// Exclude the super user role as it cannot be a child of any item
+		// Exclude the superuser role as it cannot be a child of any item
 		$exclude[] = $this->_superuserRole;
 
 		// Get the valid authorization items
@@ -243,7 +245,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param array the children items to process.
 	* @param array a list of all parents found so far.
 	* @return boolean whether the specified authorization item
-	* was found in the branch or not.
+	* was found in the branch.
 	*/
 	private function getAuthItemParentsRecursive($itemName, $children, &$parents)
 	{
@@ -303,34 +305,35 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the users with super user priviledges.
-	* @return the super users.
+	* Returns the users with superuser priviledges.
+	* @return the superusers.
 	*/
-	public function getSuperUsers()
+	public function getSuperusers()
 	{
-		$nameColumn = $this->_usernameColumn;
-		$superUsers = array();
+		$nameColumn = $this->_userNameColumn;
+		$superusers = array();
 		foreach( $this->_user->findAll() as $user )
 		{
 			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->id);
 			if( isset($items[ $this->_superuserRole ])===true )
-				$superUsers[] = $user->$nameColumn;
+				$superusers[] = $user->$nameColumn;
 		}
 
-		return $superUsers;
+		return $superusers;
 	}
 
 	/**
-	* Checks whether the user is a super user or not.
+	* Checks whether the user is a superuser.
 	* @param integer the user id. Defaults to null, meaning the logged in user.
-	* @return boolean whether the user is a super user or not.
+	* @return boolean whether the user is a superuser.
 	*/
-	public function isSuperUser($userId=null)
+	public function isSuperuser($userId=null)
 	{
-		if( Yii::app()->user->isGuest===false )
+		$user = Yii::app()->getUser();
+		if( $user->isGuest===false )
 		{
 			if( $userId===null)
-				$userId = Yii::app()->getUser()->id;
+				$userId = $user->id;
 
 			$assignments = $this->_authManager->getAuthAssignments($userId);
 			return isset($assignments[ $this->_superuserRole ]);
@@ -479,7 +482,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return string the name of the super user role.
+	* @return string the name of the superuser role.
 	*/
 	public function getSuperuserRole()
 	{
@@ -487,7 +490,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param string the name of the super user role.
+	* @param string the name of the superuser role.
 	*/
 	public function setSuperuserRole($superuserRole)
 	{
@@ -495,11 +498,19 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
+	* @param string the default roles.
+	*/
+	public function setDefaultRoles($roles)
+	{
+		$this->_defaultRoles = $roles;
+	}
+
+	/**
 	* @param string the name of the user class.
 	*/
 	public function setUser($class)
 	{
-		// Make sure the given model exists
+		// Make sure the given class exists
 		if( class_exists($class)===false )
 			throw new CException('Cannot find the user model.');
 
@@ -518,20 +529,20 @@ class RightsAuthorizer extends CApplicationComponent
 	/**
 	* @param string the name of the username column.
 	*/
-	public function setUsernameColumn($attribute)
+	public function setUserNameColumn($name)
 	{
 		// Make sure the given column name exists in the user table
-		if( $this->_user->hasAttribute($attribute)===false )
+		if( $this->_user->hasAttribute($name)===false )
 			throw new CException('Cannot find the username column.');
 
-		$this->_usernameColumn = $attribute;
+		$this->_userNameColumn = $name;
 	}
 
 	/**
 	* @return string the name of the username column.
 	*/
-	public function getUsernameColumn()
+	public function getUserNameColumn()
 	{
-		return $this->_usernameColumn;
+		return $this->_userNameColumn;
 	}
 }

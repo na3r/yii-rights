@@ -66,7 +66,7 @@ return array(
 	* views/default/roles.php
 	*/
 	'Roles'=>'',
-	'super user'=>'', // Added in 0.9.7
+	'superuser'=>'', // Added in 0.9.7
 	'Are you sure you want to delete this role?'=>'',								// Corrected in 0.9.7
 	'Roles can be organized by dragging and dropping.'=>'',							// Added in 0.9.7
 	'No roles found.'=>'',
@@ -95,14 +95,14 @@ return array(
 	'Are you sure you want to remove this child?'=>'',
 	'This item has no children.'=>'',
 	'Add Child'=>'',
-	'No relations need to be set for the super user role.'=>'',						// Added in 0.9.7
+	'No relations need to be set for the superuser role.'=>'',						// Added in 0.9.7
 	'Super users are always granted access implicitly.'=>'',						// Added in 0.9.7
 	/**
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'',
 	'Are you sure to revoke this assignment?'=>'',
-	'This user has not been assigned any auth items.'=>'',
+	'This user has not been assigned any authorization items.'=>'',
 	'Add Assignment'=>'',
 	/**
 	* views/assignment/view.php

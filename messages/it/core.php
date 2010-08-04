@@ -66,7 +66,7 @@ return array(
 	* views/default/roles.php
 	*/
 	'Roles'=>'Ruoli',
-	'super user'=>'super utente',
+	'superuser'=>'super utente',
 	'Are you sure your want to delete this role?'=>'Sicuro di voler eliminare l\'elemento?',
 	'Roles can be organized by dragging and dropping.'=>'È possibile organizzare i ruoli trascinandoli e rilasciandoli',
 	'No roles found.'=>'Non sono stati trovati ruoli.',
@@ -95,14 +95,14 @@ return array(
 	'Are you sure you want to remove this child?'=>'Sicuro di voler rimuovere questo figlio?',
 	'This item has no children.'=>'Questo oggetto non ha figli.',
 	'Add Child'=>'Aggiungi figlio',
-	'No relations need to be set for the super user role.'=>'Per il ruolo del super utente non è necessario inserire relazioni',
+	'No relations need to be set for the superuser role.'=>'Per il ruolo del super utente non è necessario inserire relazioni',
 	'Super users are always granted access implicitly.'=>'Ai super utenti è sempre consentito l\accesso.',
 	/**
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'Elementi assegnati a :username',
 	'Are you sure to revoke this assignment?'=>'Sicuro di voler revocare questo elemento?',
-	'This user has not been assigned any auth items.'=>'A questo utente non sono stati assegnati elementi.',
+	'This user has not been assigned any authorization items.'=>'A questo utente non sono stati assegnati elementi.',
 	'Add Assignment'=>'Nuovo elemento',
 	/**
 	* views/assignments/view.php

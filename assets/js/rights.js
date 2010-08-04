@@ -160,7 +160,17 @@
 		*/
    		$('.rights .flash').animate({ opacity: 1.0 }, { duration: 3000 })
    		.fadeOut(650);
-   		
+
+   		/**
+   		* Checkbox functionality for the generate item table.
+   		*/
+   		$('.rights .generateItemTable').find('td.nameColumn, td.pathColumn').toggle(function(e) {
+			$(this).parent('tr').find('input[type=checkbox]').attr('checked', 'checked');
+		}, function(e) {
+			$(this).parent('tr').find('input[type=checkbox]').removeAttr('checked');
+		})
+		.disableSelection();
+
 	});
 
 })(jQuery);

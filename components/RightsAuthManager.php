@@ -9,13 +9,13 @@ class RightsAuthManager extends CDbAuthManager
 	* meaning returning all items regardless of their type.
 	* @param mixed the user ID. Defaults to null, meaning returning all items even if
 	* they are not assigned to a user.
-	* @param boolean whether to sort the results according to item weights or not.
+	* @param boolean whether to sort the results according to item weights.
 	* Sort is not supported when type is provided.
 	* @return array the authorization items of the specific type.
 	*/
 	public function getAuthItems($type=null, $userId=null, $sort=false)
 	{
-		// Get the auth items
+		// Get the authorization items
 		$items = parent::getAuthItems($type, $userId);
 
 		// We need to sort the items by their weights

@@ -9,9 +9,9 @@
 class RightsWebUser extends CWebUser
 {
 	/**
-	* @var boolean whether the user is a super user or not.
+	* @var boolean whether the user is a superuser.
 	*/
-	public $isSuperUser;
+	public $isSuperuser;
 
 	/**
 	* Performs access check for this user.
@@ -29,12 +29,12 @@ class RightsWebUser extends CWebUser
 	*/
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
-		// Check if user is super user if not already checked
-		if( isset($this->isSuperUser)===false )
-			$this->isSuperUser = Rights::getAuthorizer()->isSuperUser();
+		// Check if user is superuser if not already checked
+		if( isset($this->isSuperuser)===false )
+			$this->isSuperuser = Rights::getAuthorizer()->isSuperuser();
 
-		// Allow access when the user is a super user
-		if( isset($this->isSuperUser)===true && $this->isSuperUser===true )
+		// Allow access when the user is a superuser
+		if( isset($this->isSuperuser)===true && $this->isSuperuser===true )
 			return true;
 
 		// Otherwise do CWebUser::checkAccess

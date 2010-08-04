@@ -66,7 +66,7 @@ return array(
 	* views/default/roles.php
 	*/
 	'Roles'=>'Roller',
-	'super user'=>'superanvändare',
+	'superuser'=>'superanvändare',
 	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
 	'Roles can be organized by dragging and dropping.'=>'Roller kan organiseras genom att dra och slappa.',
 	'No roles found.'=>'Inga roller hittades.',
@@ -95,14 +95,14 @@ return array(
 	'Are you sure you want to remove this child?'=>'Är du säker att du vill radera detta barn?',
 	'This item has no children.'=>'Denna element har inga barn.',
 	'Add Child'=>'Lägg till Barn',
-	'No relations need to be set for the super user role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
+	'No relations need to be set for the superuser role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
 	'Super users are always granted access implicitly.'=>'Superanvändare beviljas ankomst alltid implicit.',
 	/**
 	* views/assignment/user.php
 	*/
 	'Assignments for :username'=>'Uppdrag för användare :username',
 	'Are you sure to revoke this assignment?'=>'Är du säker att du vill upphäva detta uppdrag?',
-	'This user has not been assigned any auth items.'=>'Denna användare har inte tilldelats några auktoriserings element.',
+	'This user has not been assigned any authorization items.'=>'Denna användare har inte tilldelats några auktoriserings element.',
 	'Add Assignment'=>'Lägg till Uppdrag',
 	/**
 	* views/assignments/view.php

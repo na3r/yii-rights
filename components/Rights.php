@@ -42,7 +42,7 @@ class Rights
 	* Revokes an authorization item from a specific user.
 	* @param string the name of the item to revoke.
 	* @param integer the user id of the user for which to revoke the item.
-	* @return boolean whether the item was removed or not.
+	* @return boolean whether the item was removed.
 	*/
 	public static function revoke($itemName, $userId)
 	{
@@ -119,7 +119,7 @@ class Rights
 			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.core', 'Task');
 			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.core', 'Role');
 			// Invalid type
-			default: throw new CException('Invalid auth item type.');
+			default: throw new CException('Invalid authorization item type.');
 		}
 	}
 
@@ -139,7 +139,7 @@ class Rights
 			// Operations can consist of other operations
 			case CAuthItem::TYPE_OPERATION: return array(CAuthItem::TYPE_OPERATION);
 			// Invalid type
-			default: throw new CException('Invalid auth item type.');
+			default: throw new CException('Invalid authorization item type.');
 		}
 	}
 

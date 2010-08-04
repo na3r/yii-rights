@@ -108,10 +108,12 @@
 #rightsTooltip .heading { font-weight:bold; }
 #rightsTooltip .content { color:#808080; }
 
+.generateItemTable tr td { cursor:pointer; }
+.generateItemTable label { display:inline; margin:0; font-size:12px !important; font-weight:normal !important; }
 .rights .moduleRow { background-color:#bdc1d1; }
 .rights .controllerRow { background-color:#d3d7e8; }
 .rights .controllerNameColumn { font-size:12px; }
+.rights .checkboxColumn { width:20px; }
 .rights .pathColumn { color:#808080; font-style:italic; }
 
-
-.rights .exists * { color:#808080; }
+.rights .exists * { color:#a0a0a0; }

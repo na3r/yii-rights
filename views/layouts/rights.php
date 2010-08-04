@@ -4,7 +4,7 @@
 
 	<div id="content" class="rights">
 
-		<?php if( strpos($this->route, 'setup/install')===false ): ?>
+		<?php if( $this->id!=='setup' ): ?>
 
 			<div id="rightsMenu">
 

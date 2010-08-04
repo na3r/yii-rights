@@ -44,7 +44,7 @@ class AuthItemController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // Allow super users to access Rights
+			array('allow', // Allow superusers to access Rights
 				'actions'=>array(
 					'create',
 					'update',
@@ -54,7 +54,7 @@ class AuthItemController extends Controller
 					'revoke',
 					'processSortable',
 				),
-				'users'=>$this->_authorizer->getSuperUsers(),
+				'users'=>$this->_authorizer->getSuperusers(),
 			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
@@ -67,7 +67,7 @@ class AuthItemController extends Controller
 	*/
 	public function actionCreate()
 	{
-		// Create the auth item form
+		// Create the authorization item form
 	    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('create'));
 
 	    // Form is submitted and data is valid, redirect the user
@@ -104,7 +104,7 @@ class AuthItemController extends Controller
 		// Get the authorization item
 		$model = $this->loadModel();
 
-		// Create the auth item form
+		// Create the authorization item form
 	    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('update'));
 
 		// Form is submitted and data is valid
@@ -128,7 +128,7 @@ class AuthItemController extends Controller
 			);
 		}
 
-		// Create a form to add children to the auth item
+		// Create a form to add children to the authorization item
 		$childForm = null;
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($model->type, $model);
 		if( count($selectOptions)>0 )

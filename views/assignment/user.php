@@ -38,7 +38,7 @@
 
 	<?php else: ?>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This user has not been assigned any auth items.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'); ?></p>
 
 	<?php endif; ?>
 

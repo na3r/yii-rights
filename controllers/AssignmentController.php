@@ -39,13 +39,13 @@ class AssignmentController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // Allow super users to access Rights
+			array('allow', // Allow superusers to access Rights
 				'actions'=>array(
 					'view',
 					'user',
 					'revoke',
 				),
-				'users'=>$this->_authorizer->getSuperUsers(),
+				'users'=>$this->_authorizer->getSuperusers(),
 			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
@@ -74,7 +74,7 @@ class AssignmentController extends Controller
 		foreach( $users as $user )
 			$userIds[] = $user->id;
 
-		// Get the assigned auth items for all user
+		// Get the assigned authorization items for all user
 		$userAssignments = $this->_authorizer->getUserAssignments($userIds);
 
 		// Create a list of assignments with beautified names for each user
@@ -87,7 +87,7 @@ class AssignmentController extends Controller
 		// Render the view
 		$this->render('view', array(
 			'users'=>$users,
-			'nameColumn'=>$this->_authorizer->usernameColumn,
+			'nameColumn'=>$this->_authorizer->userNameColumn,
 			'assignments'=>$assignments,
 			'pages'=>$pages,
 		));
@@ -109,9 +109,9 @@ class AssignmentController extends Controller
 		// Get the assignment select options
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, $assignedItems);
 
-		// Create a from to add a child for the auth item
+		// Create a from to add a child for the authorization item
 	    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);
-	    $form->elements['authItem']->items = $selectOptions; // Populate auth items
+	    $form->elements['authItem']->items = $selectOptions; // Populate authorization items
 
 		// Form is submitted and data is valid, redirect the user
 	    if( $form->submitted()===true && $form->validate()===true )
@@ -127,7 +127,7 @@ class AssignmentController extends Controller
 			'model'=>$model,
 			'form'=>$form,
 			'assignedItems'=>$assignedItems,
-			'username'=>$this->_authorizer->usernameColumn,
+			'username'=>$this->_authorizer->userNameColumn,
 		));
 	}
 
