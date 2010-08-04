@@ -142,6 +142,43 @@
 	}
 
 	/**
+	* Rights select table rows plugin.
+	* @param Object options Plugin options
+	* @return the jQuery element
+	*/
+	$.fn.rightsSelectRows = function(options) {
+
+		// Default settings
+		var defaults = {
+
+		};
+
+		// Merge the options with the defaults
+		var settings = $.extend(defaults, options);
+
+		return this.each(function() {
+
+			var $this = $(this);
+
+			$this.find('tr')
+			.filter(':has(:checkbox:checked)')
+			.addClass('selected')
+			.end()
+			.click(function(e) {
+				if( e.target.type!=='checkbox' ) {
+					$(':checkbox', this).trigger('click');
+				}
+			})
+			.find(':checkbox')
+			.click(function(event) {
+				$(this).parents('tr:first').toggleClass('selected');
+			});
+
+			$this.disableSelection();
+		});
+	}
+
+	/**
 	* Actions to be taken when the document is loaded.
 	*/
 	$(document).ready(function() {
@@ -164,12 +201,14 @@
    		/**
    		* Checkbox functionality for the generate item table.
    		*/
+   		/*
    		$('.rights .generateItemTable').find('td.nameColumn, td.pathColumn').toggle(function(e) {
 			$(this).parent('tr').find('input[type=checkbox]').attr('checked', 'checked');
 		}, function(e) {
 			$(this).parent('tr').find('input[type=checkbox]').removeAttr('checked');
 		})
 		.disableSelection();
+		*/
 
 	});
 

@@ -1,6 +1,6 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('/rights'),
-	Yii::t('RightsModule.core', 'Assignments')=>array('/rights/assignment/view'),
+	'Rights'=>array('./'),
+	Yii::t('RightsModule.core', 'Assignments')=>array('assignment/view'),
 	$model->$username,
 ); ?>
 

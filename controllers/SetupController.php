@@ -87,7 +87,7 @@ class SetupController extends Controller
 			}
 
 			// Redirect to Rights default action
-			$this->redirect(Yii::app()->createUrl('rights'));
+			$this->redirect(Yii::app()->homeUrl);
 		}
 		// User is guest, deny access
 		else
@@ -135,7 +135,7 @@ class SetupController extends Controller
 				if( ($generatedItems = $generator->run())!==false && $generatedItems!==array() )
 				{
 					Yii::app()->getUser()->setFlash('rightsSuccess', Yii::t('RightsModule.setup', 'Authorization items created.'));
-					$this->redirect(Yii::app()->createUrl('rights'));
+					$this->redirect(array('default/permissions'));
 				}
 			}
 		}
@@ -145,6 +145,10 @@ class SetupController extends Controller
 		$existingItems = array();
 		foreach( $operations as $name=>$item )
 			$existingItems[ strtolower($name) ] = $item;
+
+		Yii::app()->clientScript->registerScript('rightsGenerateItemTableSelectRows',
+			"jQuery('.generateItemTable').rightsSelectRows();"
+		);
 
 		// Render the view
 		$this->render('generate', array(

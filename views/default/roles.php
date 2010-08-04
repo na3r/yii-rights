@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs = array(
-	'Rights'=>array('/rights'),
+	'Rights'=>array('./'),
 	Yii::t('RightsModule.core', 'Roles'),
 );
 ?>

@@ -32,7 +32,7 @@ class RightsFilter extends CFilter
 			$authItem = '';
 
 			// Append the module id to the authorization item name
-			// if the controller called belongs to a module
+			// in case the controller called belongs to a module
 			if( ($module = $controller->getModule())!==null )
 				$authItem .= strtolower($module->id).'.';
 

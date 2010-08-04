@@ -1,5 +1,5 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('/rights'),
+	'Rights'=>array('./'),
 	Yii::t('RightsModule.core', 'Auth Item'),
 	Rights::beautifyName($model->name),
 ); ?>

@@ -108,6 +108,7 @@
 #rightsTooltip .heading { font-weight:bold; }
 #rightsTooltip .content { color:#808080; }
 
+.generateItemTable { margin:0; }
 .generateItemTable tr td { cursor:pointer; }
 .generateItemTable label { display:inline; margin:0; font-size:12px !important; font-weight:normal !important; }
 .rights .moduleRow { background-color:#bdc1d1; }

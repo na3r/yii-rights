@@ -33,10 +33,6 @@ class RightsModule extends CWebModule
 	*/
 	public $enableBizRuleData = false;
 	/**
-	* @var boolean whether to enable the installer.
-	*/
-	public $enableInstaller = false;
-	/**
 	* @var string the style sheet file to use for Rights.
 	*/
 	public $cssFile;

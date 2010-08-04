@@ -107,7 +107,7 @@ class DefaultController extends Controller
 		// Register the script to bind the sortable plugin to the operation table
 		Yii::app()->getClientScript()->registerScript('rightsOperationTableSort',
 			"jQuery('.operationTable').rightsSortableTable({
-				url:'".$this->createUrl('/rights/authItem/processSortable')."'
+				url:'".$this->createUrl('authItem/processSortable')."'
 			});"
 		);
 
@@ -130,7 +130,7 @@ class DefaultController extends Controller
 		// Register the script to bind the sortable plugin to the task table
 		Yii::app()->getClientScript()->registerScript('rightsTaskTableSort',
 			"jQuery('.taskTable').rightsSortableTable({
-				url:'".$this->createUrl('/rights/authItem/processSortable')."'
+				url:'".$this->createUrl('authItem/processSortable')."'
 			});"
 		);
 
@@ -153,7 +153,7 @@ class DefaultController extends Controller
 		// Register the script to bind the sortable plugin to the role table
 		Yii::app()->getClientScript()->registerScript('rightsRoleTableSort',
 			"jQuery('.roleTable').rightsSortableTable({
-				url:'".$this->createUrl('/rights/authItem/processSortable')."'
+				url:'".$this->createUrl('authItem/processSortable')."'
 			});"
 		);
 
