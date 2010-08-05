@@ -135,7 +135,7 @@ class AuthItemController extends Controller
 		$this->render('update', array(
 			'model'=>$model,
 			'children'=>$this->_authorizer->getAuthItemChildren($model, true),
-			'parents'=>$this->_authorizer->getAuthItemParents($model->name),
+			'parents'=>$this->_authorizer->getAuthItemParents($model->name, null, true),
 			'form'=>$form,
 			'childForm'=>$childForm,
 		));
