@@ -1,6 +1,11 @@
+<?php $this->breadcrumbs = array(
+	'Rights'=>Rights::getBaseUrl(),
+	Yii::t('RightsModule.core', 'Auth Item Generator'),
+); ?>
+
 <h2><?php echo Yii::t('RightsModule.core', 'Auth Item Generator'); ?></h2>
 
-<div class="rightsForm form">
+<div class="form">
 
 	<?php $form=$this->beginWidget('CActiveForm'); ?>
 
@@ -8,7 +13,7 @@
 
 			<p><?php echo Yii::t('RightsModule.core', 'Please select which authorization items you wish to generate.'); ?></p>
 
-			<table class="rightsTable generateItemTable" border="0" cellpadding="0" cellspacing="0">
+			<table class="generateItemTable" border="0" cellpadding="0" cellspacing="0">
 
 				<tbody>
 

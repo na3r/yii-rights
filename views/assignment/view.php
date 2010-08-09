@@ -1,5 +1,5 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('./'),
+	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Assignments'),
 ); ?>
 
@@ -9,7 +9,7 @@
 
 	<?php if( count($users)>0 ): ?>
 
-		<table class="rightsTable assignmentsTable" border="0" cellpadding="0" cellspacing="0">
+		<table class="table assignmentsTable" border="0" cellpadding="0" cellspacing="0">
 
 			<thead>
 
@@ -45,7 +45,7 @@
 
 	<?php else: ?>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No users found.'); ?></p>
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'No users found.'); ?></p>
 
 	<?php endif; ?>
 

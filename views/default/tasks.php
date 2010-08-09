@@ -1,5 +1,5 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('./'),
+	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Tasks'),
 ); ?>
 
@@ -11,7 +11,7 @@
 
 	<?php if( count($tasks)>0 ): ?>
 
-		<table class="rightsTable taskTable" border="0" cellpadding="0" cellspacing="0">
+		<table class="taskTable" border="0" cellpadding="0" cellspacing="0">
 
 			<thead>
 
@@ -87,11 +87,11 @@
 
 		</table>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
 
 	<?php else: ?>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No tasks found.'); ?></p>
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'No tasks found.'); ?></p>
 
 	<?php endif; ?>
 

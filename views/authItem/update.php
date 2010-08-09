@@ -1,16 +1,16 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('./'),
-	Yii::t('RightsModule.core', 'Auth Item'),
+	'Rights'=>Rights::getBaseUrl(),
+	Rights::getAuthItemTypeString($model->type),
 	Rights::beautifyName($model->name),
 ); ?>
 
 <div class="authItem">
 
-	<div class="rightsForm form span-12 first">
+	<div class="form span-12 first">
 
 		<h2><?php echo Yii::t('RightsModule.core', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
 
-		<p class="rightsInfo"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
+		<p class="info"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
 
 		<?php echo $form->render(); ?>
 
@@ -28,7 +28,7 @@
 
 				<?php if( count($parents)>0 ): ?>
 
-					<table class="rightsMiniTable parentTable" border="0" cellpadding="0" cellspacing="0">
+					<table class="miniTable parentTable" border="0" cellpadding="0" cellspacing="0">
 
 						<tbody>
 
@@ -50,7 +50,7 @@
 
 				<?php else: ?>
 
-					<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This item has no parents.'); ?></p>
+					<p class="info"><?php echo Yii::t('RightsModule.core', 'This item has no parents.'); ?></p>
 
 				<?php endif;?>
 
@@ -62,7 +62,7 @@
 
 				<?php if( count($children)>0 ): ?>
 
-					<table class="rightsMiniTable childTable" border="0" cellpadding="0" cellspacing="0">
+					<table class="miniTable childTable" border="0" cellpadding="0" cellspacing="0">
 
 						<tbody>
 
@@ -91,7 +91,7 @@
 
 				<?php else: ?>
 
-					<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This item has no children.'); ?></p>
+					<p class="info"><?php echo Yii::t('RightsModule.core', 'This item has no children.'); ?></p>
 
 				<?php endif; ?>
 
@@ -103,7 +103,7 @@
 
 					<h4><?php echo Yii::t('RightsModule.core', 'Add Child'); ?></h4>
 
-					<div class="rightsForm form">
+					<div class="form">
 
 						<?php echo $childForm->render(); ?>
 
@@ -115,7 +115,7 @@
 
 		<?php else: ?>
 
-			<p class="rightsInfo">
+			<p class="info">
 
 				<?php echo Yii::t('RightsModule.core', 'No relations need to be set for the superuser role.'); ?><br />
 				<?php echo Yii::t('RightsModule.core', 'Super users are always granted access implicitly.'); ?>

@@ -49,13 +49,17 @@ class RightsModule extends CWebModule
 	*/
 	public $install = false;
 	/**
+	* @var string the url to Rights. Override when module is nested.
+	*/
+	public $baseUrl = '/rights';
+	/**
+	* @var string that path to the layout file to use for displaying Rights.
+	*/
+	public $layout;
+	/**
 	* @var string the style sheet file to use for Rights.
 	*/
 	public $cssFile;
-	/**
-	* @var string path to the layout file to use for displaying Rights.
-	*/
-	public $layout;
 
 	private $_assetsUrl;
 

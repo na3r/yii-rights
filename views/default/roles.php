@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs = array(
-	'Rights'=>array('./'),
+	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Roles'),
 );
 ?>
@@ -13,7 +13,7 @@ $this->breadcrumbs = array(
 
 	<?php if( count($roles)>0 ): ?>
 
-		<table class="rightsTable roleTable" border="0" cellpadding="0" cellspacing="0">
+		<table class="roleTable" border="0" cellpadding="0" cellspacing="0">
 
 			<thead>
 
@@ -101,11 +101,11 @@ $this->breadcrumbs = array(
 
 		</table>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
 
 	<?php else: ?>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No roles found.'); ?></p>
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'No roles found.'); ?></p>
 
 	<?php endif; ?>
 

@@ -2,8 +2,8 @@
 
 	<h2><?php echo Yii::t('RightsModule.install', 'Congratulations!'); ?></h2>
 
-	<p style="color:#00aa00;">
-		<?php echo Yii::t('RightsModule.install', ' Rights has been installed succesfully.'); ?>
+	<p class="greenText">
+		<?php echo Yii::t('RightsModule.install', 'Rights has been installed succesfully.'); ?>
 	</p>
 
 	<p>

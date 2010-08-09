@@ -95,7 +95,7 @@ return array(
 	* views/authItem/generate.php
 	*/
 	'Auth Item Generator'=>'Auktorisointi elementti Generaattori',
-	'Please select which authorization items you wish to generate.'=>'Valitse mitkä auktorisointi elementit haluat generoida.',
+	'Please select which authorization items you wish to generate.'=>'Valitse mitkä elementit haluat generoida.',
 	'Application'=>'Sovellus',
 	'Select all'=>'Valitse kaikki',
 	'Select none'=>'Poista valinnat',

@@ -1,4 +1,4 @@
- <div id="rightsFlash">
+ <div class="flashes">
 
 	<?php if( Yii::app()->user->hasFlash('RightsSuccess')===true ):?>
 

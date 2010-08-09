@@ -67,6 +67,16 @@ class Rights
 	}
 
 	/**
+	* Returns the base url to Rights.
+	* @return the url to Rights.
+	*/
+	public static function getBaseUrl()
+	{
+		$module = self::getModule();
+		return Yii::app()->createUrl($module->baseUrl);
+	}
+
+	/**
 	* Returns a specific Rights configuration variable.
 	* @param string the name of the variable to get.
 	* @return mixed the value of the variable or null if not set.

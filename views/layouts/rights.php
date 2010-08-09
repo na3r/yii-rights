@@ -1,12 +1,12 @@
 <?php $this->beginContent('application.views.layouts.main'); ?>
 
-<div class="container">
+<div id="rights" class="container">
 
-	<div id="content" class="rights">
+	<div id="content">
 
 		<?php if( $this->id!=='install' ): ?>
 
-			<div id="rightsMenu">
+			<div class="menu">
 
 				<?php $this->renderPartial('/_menu'); ?>
 

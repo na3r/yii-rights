@@ -6,14 +6,20 @@
 * @since 0.5
 */
 
-.rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
-.rights a { color:#666699; font-weight:bold; text-decoration:none; }
-.rights a:hover { color:#666699; text-decoration:underline; }
-.rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
+/**
+* Core style.
+*/
 
-#rightsMenu { margin:20px 0; }
-#rightsMenu ul { margin:0; padding:0; list-style-type:none; }
-#rightsMenu li {
+#rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
+#rights a { color:#666699; font-weight:bold; text-decoration:none; }
+#rights a:hover { color:#666699; text-decoration:underline; }
+#rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
+#rights .green { color:#00aa00; }
+#rights .red { color:#ff0000; }
+
+#rights .menu { margin:20px 0; }
+#rights .menu ul { margin:0; padding:0; list-style-type:none; }
+#rights .menu li {
 	display:inline;
 	margin:0;
 	padding:8px 12px;
@@ -21,10 +27,10 @@
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
-#rightsMenu a { color:#ffffff; font-size:12px; text-decoration:none; }
-#rightsMenu a:hover { color:#ffffff; text-decoration:none; }
+#rights .menu a { color:#ffffff; font-size:12px; text-decoration:none; }
+#rights .menu a:hover { color:#ffffff; text-decoration:none; }
 
-#rightsFlash .flash {
+#rights .flash {
 	margin:0 0 20px 0;
 	padding:8px 12px;
 	font-size:12px;
@@ -32,16 +38,16 @@
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
-#rightsFlash .flash.success { color:#007700; background-color:#e0f8dd; }
-#rightsFlash .flash.error { color:#7a0000; background-color:#fdd9d9; }
+#rights .flash.success { color:#007700; background-color:#e0f8dd; }
+#rights .flash.error { color:#7a0000; background-color:#fdd9d9; }
 
-.rightsForm label {
+#rights .form label {
 	display:block;
 	margin:0 0 8px 0;
 	font-weight:bold;
 	font-size:12px; }
-.rightsForm input[type=text],
-.rightsForm input[type=password] {
+#rights .form input[type=text],
+#rights .form input[type=password] {
 	padding:5px;
 	background:url('../images/bg_formInputText.gif') repeat-x;
 	border:1px solid #c0c0c0;
@@ -49,50 +55,67 @@
 	-webkit-border-radius:6px;
 }
 
-.rightsForm input { outline:none !important; }
-.rightsForm input[type=submit] { padding:2px 5px; }
-.rightsForm span.required { color:#ff0000; }
+#rights .form input { outline:none !important; }
+#rights .form input[type=submit] { padding:2px 5px; }
+#rights .form span.required { color:#ff0000; }
 
-.rightsTable { border:0; margin:0 0 20px 0; }
-.rightsTable * { font-size:12px; }
-.rightsTable thead th { background-color:transparent; }
-.rightsTable th, .rightsTable td { padding:10px; }
-.rightsTable th { font-weight:bold; font-size:13px; }
-.rightsTable .odd { background-color:#e8edff; }
+#rights table { border:0; margin:0 0 20px 0; }
+#rights table * { font-size:12px; }
+#rights table thead th { background-color:transparent; }
+#rights table th, #rights table td { padding:10px; }
+#rights table th { font-weight:bold; font-size:13px; }
+#rights table .odd { background-color:#e8edff; }
 
-.rightsMiniTable { border:0; }
-.rightsMiniTable * { font-size:11px; }
-.rightsMiniTable th, .rightsMiniTable td { padding:8px; }
-.rightsMiniTable .odd td { background-color:#e8edff; }
+#rights .miniTable { border:0; }
+#rights .miniTable * { font-size:11px; }
+#rights .miniTable th, .rightsMiniTable td { padding:8px; }
+#rights .miniTable .odd td { background-color:#e8edff; }
 
-.rights .hover td { background-color:#ffffdd; }
+#rights .hover td { background-color:#ffffdd; }
 
-.rights .sortableTable .sortablePlaceholder { height:38px; background-color:#000000; }
-.rights .sortableTable .sortableHandle { cursor:pointer; }
+#rights .sortableTable .sortablePlaceholder { height:38px; background-color:#000000; }
+#rights .sortableTable .sortableHandle { cursor:pointer; }
 
-.rights .bizRuleColumn,
-.rights .bizRuleDataColumn {
+#rights .bizRuleColumn,
+#rights .bizRuleDataColumn {
 	color:#808080;
 	font-family:Consolas, Arial, san-serif !important;
 	font-size:11px;
 }
-.rights .deleteColumn,
-.rights .removeColumn,
-.rights .revokeColumn { width:80px; text-align:right; }
+#rights .deleteColumn,
+#rights .removeColumn,
+#rights .revokeColumn { width:80px; text-align:right; }
 
-#authItemParents,
-#authItemChildren,
-#userAssignments { margin-bottom:30px; }
+#rights #authItemParents,
+#rights #authItemChildren,
+#rights #userAssignments { margin-bottom:30px; }
 
-.rights .parentTable,
-.rights .childTable,
-.rights .userAssignmentTable { width:420px; }
-.rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
+#rights .parentTable,
+#rights .childTable,
+#rights .userAssignmentTable { width:420px; }
+#rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
 
-.rights .superUser .superUserText { font-style:italic; }
-.rights .childCount .childCountNumber { font-weight:bold; }
+#rights .superUser .superUserText { font-style:italic; }
+#rights .childCount .childCountNumber { font-weight:bold; }
 
-.rightsInfo { color:#808080; font-size:12px; font-style:italic; }
+#rights .info { color:#808080; font-size:12px; font-style:italic; }
+
+#rights .generateItemTable { margin:0; }
+#rights .generateItemTable tr td { cursor:pointer; }
+#rights .moduleRow { background-color:#bdc1d1; }
+#rights .controllerRow { background-color:#d3d7e8; }
+#rights .controllerNameColumn { font-size:12px; }
+#rights .checkboxColumn { width:20px; }
+#rights .pathColumn { color:#808080; font-style:italic; }
+
+#rights .exists * { color:#a0a0a0; }
+
+#rights #installConfirm,
+#rights #installReady { margin:30px 0; text-align:center; }
+
+/**
+* Tooltip style.
+*/
 
 #rightsTooltip {
 	max-width:500px;
@@ -107,17 +130,3 @@
 }
 #rightsTooltip .heading { font-weight:bold; }
 #rightsTooltip .content { color:#808080; }
-
-.generateItemTable { margin:0; }
-.generateItemTable tr td { cursor:pointer; }
-.generateItemTable label { display:inline; margin:0; font-size:12px !important; font-weight:normal !important; }
-.rights .moduleRow { background-color:#bdc1d1; }
-.rights .controllerRow { background-color:#d3d7e8; }
-.rights .controllerNameColumn { font-size:12px; }
-.rights .checkboxColumn { width:20px; }
-.rights .pathColumn { color:#808080; font-style:italic; }
-
-.rights .exists * { color:#a0a0a0; }
-
-#installConfirm,
-#installReady { margin:30px 0; text-align:center; }

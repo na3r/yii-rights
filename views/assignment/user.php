@@ -1,5 +1,5 @@
 <?php $this->breadcrumbs = array(
-	'Rights'=>array('./'),
+	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Assignments')=>array('assignment/view'),
 	$model->$nameColumn,
 ); ?>
@@ -10,7 +10,7 @@
 
 	<?php if( count($assignedItems)>0 ): ?>
 
-		<table class="rightsMiniTable userAssignmentTable" border="0" cellpadding="0" cellspacing="0">
+		<table class="miniTable userAssignmentTable" border="0" cellpadding="0" cellspacing="0">
 
 			<tbody>
 
@@ -37,7 +37,7 @@
 
 	<?php else: ?>
 
-		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'); ?></p>
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'); ?></p>
 
 	<?php endif; ?>
 
@@ -47,7 +47,7 @@
 
 	<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
 
-	<div class="rightsForm form">
+	<div class="form">
 
 		<?php echo $form->render(); ?>
 

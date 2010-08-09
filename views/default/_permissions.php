@@ -2,7 +2,7 @@
 
 <?php if( count($items)>0 ): ?>
 
-	<table class="rightsTable permissionTable" border="0" cellpadding="0" cellspacing="0">
+	<table class="permissionTable" border="0" cellpadding="0" cellspacing="0">
 
 		<thead>
 
@@ -66,7 +66,7 @@
 
 	</table>
 
-	<p class="rightsInfo">* <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
+	<p class="info">* <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
 
 	<script type="text/javascript">
 

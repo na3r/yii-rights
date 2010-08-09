@@ -1,5 +1,5 @@
 <?php $this->breadcrumbs=array(
-	'Rights'=>array('./'),
+	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Permissions'),
 ); ?>
 
