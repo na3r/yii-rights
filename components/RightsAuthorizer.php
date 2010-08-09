@@ -158,7 +158,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param array additional items to be excluded.
 	* @return array valid authorization items.
 	*/
-	protected function excludeInvalidAuthItems($authItems, $model=null, $exclude=array())
+	protected function excludeInvalidAuthItems($items, $model=null, $exclude=array())
 	{
 		// We are getting authorization items valid for a certain item
 		// exclude its parents and children aswell
@@ -175,7 +175,7 @@ class RightsAuthorizer extends CApplicationComponent
 
 		// Get the valid authorization items
 		$validAuthItems = array();
-		foreach( $authItems as $name=>$item )
+		foreach( $items as $name=>$item )
 			if( in_array($name, $exclude)===false )
 				$validAuthItems[ $name ] = $item;
 
@@ -220,7 +220,7 @@ class RightsAuthorizer extends CApplicationComponent
 	{
 		// Get the valid authorization items
 		$type = $type!==null ? Rights::getValidChildTypes($type) : null;
-		$this->getAuthItemSelectOptions($type, $userId, $model, $sort, $exclude);
+		return $this->getAuthItemSelectOptions($type, $userId, $model, $sort, $exclude);
 	}
 
 	/**
