@@ -9,10 +9,13 @@
 class AuthItemController extends Controller
 {
 	/**
+	* @var RightsModule
+	*/
+	private $_module;
+	/**
 	* @var RightsAuthorizer
 	*/
 	private $_authorizer;
-
 	/**
 	* @var CAuthItem the currently loaded data model instance.
 	*/
@@ -23,8 +26,9 @@ class AuthItemController extends Controller
 	*/
 	public function init()
 	{
-		$this->_authorizer = $this->getModule()->getAuthorizer();
-		$this->layout = Rights::getConfig('layout');
+		$this->_module = $this->getModule();
+		$this->_authorizer = $this->_module->getAuthorizer();
+		$this->layout = $this->_module->layout;
 		$this->defaultAction = 'create';
 	}
 
@@ -49,6 +53,7 @@ class AuthItemController extends Controller
 					'create',
 					'update',
 					'delete',
+					'generate',
 					'removeChild',
 					'assign',
 					'revoke',
@@ -74,8 +79,10 @@ class AuthItemController extends Controller
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Create item, set success message and redirect
-			$this->_authorizer->createAuthItem($form->model->name, $form->model->type, $form->model->description, $form->model->bizRule, $form->model->data);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name created.', array(':name'=>Rights::beautifyName($form->model->name))));
+			$this->_authorizer->createAuthItem($form->model->name, $_GET['type'], $form->model->description, $form->model->bizRule, $form->model->data);
+			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+				Yii::t('RightsModule.core', ':name created.', array(':name'=>Rights::beautifyName($form->model->name)))
+			);
 			$this->redirect(array('authItem/update', 'name'=>$form->model->name));
 		}
 
@@ -101,13 +108,16 @@ class AuthItemController extends Controller
 		{
 			// Update item, set success message and redirect
 			$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name updated.', array(':name'=>Rights::beautifyName($form->model->name))));
+			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+				Yii::t('RightsModule.core', ':name updated.', array(':name'=>Rights::beautifyName($form->model->name)))
+			);
 			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'default/permissions'));
 		}
 
 		// Create a form to add children to the authorization item
 		$childForm = null;
-		$selectOptions = $this->_authorizer->getValidAuthItemSelectOptions($model->type, null, $model, true, array($this->_authorizer->superuserRole));
+		$validTypes = Rights::getValidChildTypes($model->type);
+		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($validTypes, null, $model, true, array($this->_authorizer->superuserRole));
 		if( count($selectOptions)>0 )
 		{
 			// Create the child form
@@ -119,7 +129,9 @@ class AuthItemController extends Controller
 			{
 				// Add child, set success message and redirect to the same page
 				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
-				Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', 'Child :name added.', array(':name'=>Rights::beautifyName($childForm->model->name))));
+				Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+					Yii::t('RightsModule.core', 'Child :name added.', array(':name'=>Rights::beautifyName($childForm->model->name)))
+				);
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
 			}
 		}
@@ -151,7 +163,7 @@ class AuthItemController extends Controller
 		{
 			$this->_authorizer->authManager->removeAuthItem($_GET['name']);
 
-			Yii::app()->user->setFlash('rightsSuccess',
+			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
 				Yii::t('RightsModule.core', ':name deleted.', array(':name'=>Rights::beautifyName($_GET['name'])))
 			);
 
@@ -166,6 +178,60 @@ class AuthItemController extends Controller
 	}
 
 	/**
+	* Displays the generator page.
+	*/
+	public function actionGenerate()
+	{
+		// Get the generator and authorizer
+		$generator = $this->_module->getGenerator();
+
+		// Createh the form model
+		$model = Yii::createComponent('rights.models.GenerateForm');
+
+		// Form has been submitted
+		if( isset($_POST['GenerateForm'])===true )
+		{
+			// Form is valid
+			$model->attributes = $_POST['GenerateForm'];
+			if( $model->validate()===true )
+			{
+				// Get the chosen items
+				$items = array();
+				foreach( $model->items as $itemname=>$value )
+					if( (bool)$value===true )
+						$items[] = $itemname;
+
+				// Add the items to the generator as operations and run the generator
+				$generator->addItems($items, CAuthItem::TYPE_OPERATION);
+				if( ($generatedItems = $generator->run())!==false && $generatedItems!==array() )
+				{
+					Yii::app()->getUser()->setFlash($this->_module->flashSuccessKey,
+						Yii::t('RightsModule.core', 'Authorization items created.')
+					);
+					$this->redirect(array('default/permissions'));
+				}
+			}
+		}
+
+		// We need operation names lowercase for comparason
+		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		$existingItems = array();
+		foreach( $operations as $name=>$item )
+			$existingItems[ strtolower($name) ] = $item;
+
+		Yii::app()->clientScript->registerScript('rightsGenerateItemTableSelectRows',
+			"jQuery('.generateItemTable').rightsSelectRows();"
+		);
+
+		// Render the view
+		$this->render('generate', array(
+			'model'=>$model,
+			'items'=>$generator->getControllerActions(),
+			'existingItems'=>$existingItems,
+		));
+	}
+
+	/**
 	* Removes a child from an authorization item.
 	*/
 	public function actionRemoveChild()
@@ -175,7 +241,7 @@ class AuthItemController extends Controller
 		{
 			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
 
-			Yii::app()->user->setFlash('rightsSuccess',
+			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
 				Yii::t('RightsModule.core', 'Child :name removed.', array(':name'=>Rights::beautifyName($_GET['child'])))
 			);
 

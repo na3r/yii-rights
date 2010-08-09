@@ -13,6 +13,7 @@ class RightsAuthorizer extends CApplicationComponent
 	private $_guestRole;
 	private $_defaultRoles;
 	private $_user;
+	private $_userIdColumn;
 	private $_userNameColumn;
 
 	/**
@@ -203,24 +204,6 @@ class RightsAuthorizer extends CApplicationComponent
 			$selectOptions[ $item->name ] = Rights::beautifyName($item->name);
 
 		return $selectOptions;
-	}
-
-	/**
-	* Returns the valid authorization item select options for the type, user id and/or model.
-	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
-	* meaning returning all items regardless of their type.
-	* @param mixed the user ID. Defaults to null, meaning returning all items even if
-	* they are not assigned to a user.
-	* @param CAuthItem the item for which to get the select options.
-	* @param boolean whether to sort the authorization items.
-	* @param array the items to be excluded.
-	* @return array the select options.
-	*/
-	public function getValidAuthItemSelectOptions($type=null, $userId=null, $model=null, $sort=true, $exclude=array())
-	{
-		// Get the valid authorization items
-		$type = $type!==null ? Rights::getValidChildTypes($type) : null;
-		return $this->getAuthItemSelectOptions($type, $userId, $model, $sort, $exclude);
 	}
 
 	/**
@@ -527,6 +510,26 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getUser()
 	{
 	 	return $this->_user;
+	}
+
+	/**
+	* @param string the name of the user id column.
+	*/
+	public function setUserIdColumn($name)
+	{
+		// Make sure the given column name exists in the user table
+		if( $this->_user->hasAttribute($name)===false )
+			throw new CException('Cannot find the user id column.');
+
+		$this->_userIdColumn = $name;
+	}
+
+	/**
+	* @return string the name of the user id column.
+	*/
+	public function getUserIdColumn()
+	{
+		return $this->_userIdColumn;
 	}
 
 	/**

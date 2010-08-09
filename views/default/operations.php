@@ -7,6 +7,8 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Operations'); ?></h2>
 
+	<p><?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION)); ?></p>
+
 	<?php if( count($operations)>0 ): ?>
 
 		<table class="rightsTable operationTable" border="0" cellpadding="0" cellspacing="0">
@@ -89,7 +91,7 @@
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.core', 'No operations found.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No operations found.'); ?></p>
 
 	<?php endif; ?>
 

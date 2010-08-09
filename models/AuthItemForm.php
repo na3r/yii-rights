@@ -24,8 +24,7 @@ class AuthItemForm extends CFormModel
 			array('name', 'nameIsAvailable', 'on'=>'create'),
 			array('name', 'newNameIsAvailable', 'on'=>'update'),
 			array('name', 'isSuperuser', 'on'=>'update'),
-			array('type', 'required', 'on'=>'create'),
-		   	array('type, bizRule, data', 'safe'),
+		   	array('bizRule, data', 'safe'),
 		);
 	}
 
@@ -37,7 +36,6 @@ class AuthItemForm extends CFormModel
 		return array(
 			'name'			=> Yii::t('RightsModule.core', 'Name'),
 			'description'	=> Yii::t('RightsModule.core', 'Description'),
-			'type'			=> Yii::t('RightsModule.core', 'Type'),
 			'bizRule'		=> Yii::t('RightsModule.core', 'Business rule'),
 			'data'			=> Yii::t('RightsModule.core', 'Data'),
 		);

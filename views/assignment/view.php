@@ -29,9 +29,9 @@
 
 					<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
 
-						<td><?php echo CHtml::link($user->$nameColumn, array('assignment/user', 'id'=>$user->id)); ?></td>
+						<td><?php echo CHtml::link($user->$nameColumn, array('assignment/user', 'id'=>$user->$idColumn)); ?></td>
 
-						<td class="assignmentColumn"><?php echo isset($assignments[ $user->id ])===true ? implode(', ', $assignments[ $user->id ]) : ''; ?></td>
+						<td class="assignmentColumn"><?php echo isset($assignments[ $user->$idColumn ])===true ? implode(', ', $assignments[ $user->$idColumn ]) : ''; ?></td>
 
 					</tr>
 
@@ -45,7 +45,7 @@
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.core', 'No users found.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No users found.'); ?></p>
 
 	<?php endif; ?>
 

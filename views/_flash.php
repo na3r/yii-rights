@@ -1,20 +1,20 @@
  <div id="rightsFlash">
 
-	<?php if( Yii::app()->user->hasFlash('rightsSuccess')===true ):?>
+	<?php if( Yii::app()->user->hasFlash('RightsSuccess')===true ):?>
 
 	    <div class="flash success">
 
-	        <?php echo Yii::app()->user->getFlash('rightsSuccess'); ?>
+	        <?php echo Yii::app()->user->getFlash('RightsSuccess'); ?>
 
 	    </div>
 
 	<?php endif; ?>
 
-	<?php if( Yii::app()->user->hasFlash('rightsError')===true ):?>
+	<?php if( Yii::app()->user->hasFlash('RightsError')===true ):?>
 
 	    <div class="flash error">
 
-	        <?php echo Yii::app()->user->getFlash('rightsError'); ?>
+	        <?php echo Yii::app()->user->getFlash('RightsError'); ?>
 
 	    </div>
 

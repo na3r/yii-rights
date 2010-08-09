@@ -30,10 +30,10 @@
 
 		<?php foreach( $item as $moduleName=>$c ): ?>
 
-			<tr><th class="modulesRow" colspan="3"><?php echo Yii::t('RightsModule.setup', 'Modules'); ?></th></tr>
+			<tr><th class="modulesRow" colspan="3"><?php echo Yii::t('RightsModule.core', 'Modules'); ?></th></tr>
 			<tr><th class="moduleRow" colspan="3"><?php echo ucfirst($moduleName).'Module'; ?></th></tr>
 
-			<?php $this->renderPartial('_items', array(
+			<?php $this->renderPartial('_generateItems', array(
 				'model'=>$model,
 				'form'=>$form,
 				'items'=>$c,

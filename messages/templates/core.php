@@ -30,6 +30,7 @@ return array(
 	'Child :name added.'=>'',														// Added in 0.9.5
 	'Child :name removed.'=>'',														// Added in 0.9.5
 	':name deleted.'=>'',															// Added in 0.9.5
+	'Authorization items created.'=>'',												// Added in 0.9.9
 	'The requested page does not exist.'=>'',										// Added in 0.9.5
 	/**
 	* models/AuthItemForm.php
@@ -39,8 +40,7 @@ return array(
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'',
-	'Description'=>'',
-	'No description'=>'',															// Added in 0.9.8
+	'Permission'=>'',																// Added in 0.9.9
 	'Revoke'=>'',
 	'Inherited'=>'',
 	'Assign'=>'',
@@ -51,7 +51,9 @@ return array(
 	* views/default/operations.php
 	*/
 	'Operations'=>'',
+	'Create a new operation'=>'',													// Added in 0.9.9
 	'Name'=>'',
+	'Description'=>'',																// Moved in 0.9.9
 	'Business rule'=>'',
 	'Data'=>'',
 	'Delete'=>'',
@@ -62,15 +64,16 @@ return array(
 	* views/default/tasks.php
 	*/
 	'Tasks'=>'',
+	'Create a new task'=>'',														// Added in 0.9.9
 	'Are you sure you want to delete this task?'=>'',								// Corrected in 0.9.7
 	'No tasks found.'=>'',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'',
+	'Create a new role'=>'',														// Added in 0.9.9
 	'superuser'=>'', // Added in 0.9.7
 	'Are you sure you want to delete this role?'=>'',								// Corrected in 0.9.7
-	'Roles can be organized by dragging and dropping.'=>'',							// Added in 0.9.7
 	'No roles found.'=>'',
 	/**
 	* views/authItem/authChildForm.php
@@ -81,10 +84,22 @@ return array(
 	*/
 	'Save'=>'',
 	/**
+	* views/authItem/_generateItems.php
+	*/
+	'Modules'=>'',																	// Added in 0.9.9
+	/**
 	* views/authItem/create.php
 	*/
-	'Create Auth Item'=>'',
-	'Notice: Auth Item type cannot be changed afterwards.'=>'',
+	'Create :type'=>'',																// Added in 0.9.9
+	/**
+	* views/authItem/generate.php
+	*/
+	'Auth Item Generator'=>'',														// Added in 0.9.9
+	'Please select which authorization items you wish to generate.'=>'',			// Added in 0.9.9
+	'Application'=>'',																// Added in 0.9.9
+	'Select all'=>'',																// Added in 0.9.9
+	'Select none'=>'',																// Added in 0.9.9
+	'Generate'=>'',																	// Added in 0.9.9
 	/**
 	* views/authItem/update.php
 	*/

@@ -9,6 +9,10 @@
 class DefaultController extends Controller
 {
 	/**
+	* @var RightsModule
+	*/
+	private $_module;
+	/**
 	* @var RightsAuthorizer
 	*/
 	private $_authorizer;
@@ -18,11 +22,9 @@ class DefaultController extends Controller
 	*/
 	public function init()
 	{
-		if( $this->getModule()->getInstaller()->isInstalled===false )
-			$this->redirect(array('setup/install'));
-
-		$this->_authorizer = $this->getModule()->getAuthorizer();
-		$this->layout = Rights::getConfig('layout');
+		$this->_module = $this->getModule();
+		$this->_authorizer = $this->_module->getAuthorizer();
+		$this->layout = $this->_module->layout;
 		$this->defaultAction = 'permissions';
 	}
 
@@ -115,8 +117,8 @@ class DefaultController extends Controller
 		$this->render('operations', array(
 			'operations'=>$operations,
 			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($operations),
-			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
-			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
+			'isBizRuleEnabled'=>$this->_module->enableBizRule,
+			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
 		));
 	}
 
@@ -138,8 +140,8 @@ class DefaultController extends Controller
 		$this->render('tasks', array(
 			'tasks'=>$tasks,
 			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($tasks),
-			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
-			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
+			'isBizRuleEnabled'=>$this->_module->enableBizRule,
+			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
 		));
 	}
 
@@ -161,8 +163,8 @@ class DefaultController extends Controller
 		$this->render('roles', array(
 			'roles'=>$roles,
 			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($roles),
-			'isBizRuleEnabled'=>Rights::getConfig('enableBizRule'),
-			'isBizRuleDataEnabled'=>Rights::getConfig('enableBizRuleData'),
+			'isBizRuleEnabled'=>$this->_module->enableBizRule,
+			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
 		));
 	}
 }

@@ -9,6 +9,10 @@
 class AssignmentController extends Controller
 {
 	/**
+	* @var RightsModule
+	*/
+	private $_module;
+	/**
 	* @var RightsAuthorizer
 	*/
 	private $_authorizer;
@@ -18,8 +22,9 @@ class AssignmentController extends Controller
 	*/
 	public function init()
 	{
-		$this->_authorizer = $this->getModule()->getAuthorizer();
-		$this->layout = Rights::getConfig('layout');
+		$this->_module = $this->getModule();
+		$this->_authorizer = $this->_module->getAuthorizer();
+		$this->layout = $this->_module->layout;
 		$this->defaultAction = 'view';
 	}
 
@@ -58,6 +63,9 @@ class AssignmentController extends Controller
 	*/
 	public function actionView()
 	{
+		$idColumn = $this->_authorizer->userIdColumn;
+		$nameColumn = $this->_authorizer->userNameColumn;
+
 		$criteria = new CDbCriteria();
 		$count = $this->_authorizer->user->count($criteria);
 
@@ -72,7 +80,7 @@ class AssignmentController extends Controller
 		// Collect the ids
 		$userIds = array();
 		foreach( $users as $user )
-			$userIds[] = $user->id;
+			$userIds[] = $user->$idColumn;
 
 		// Get the assigned authorization items for all user
 		$userAssignments = $this->_authorizer->getUserAssignments($userIds);
@@ -87,7 +95,8 @@ class AssignmentController extends Controller
 		// Render the view
 		$this->render('view', array(
 			'users'=>$users,
-			'nameColumn'=>$this->_authorizer->userNameColumn,
+			'idColumn'=>$idColumn,
+			'nameColumn'=>$nameColumn,
 			'assignments'=>$assignments,
 			'pages'=>$pages,
 		));
@@ -98,8 +107,10 @@ class AssignmentController extends Controller
 	*/
 	public function actionUser()
 	{
+		$idColumn = $this->_authorizer->userIdColumn;
+		$nameColumn = $this->_authorizer->userNameColumn;
 		$model = $this->_authorizer->user->findByPk($_GET['id']);
-		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->id);
+		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->$idColumn);
 
 		// Get the assigned items
 		$assignedItems = array();
@@ -107,7 +118,7 @@ class AssignmentController extends Controller
 			$assignedItems[] = $item->name;
 
 		// Get the assignment select options
-		$selectOptions = $this->_authorizer->getValidAuthItemSelectOptions(null, null, null, true, $assignedItems);
+		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignedItems);
 
 		// Create a from to add a child for the authorization item
 	    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);
@@ -117,9 +128,11 @@ class AssignmentController extends Controller
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Update and redirect
-			$this->_authorizer->authManager->assign($form->model->authItem, $model->id);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem))));
-			$this->redirect(array('assignment/user', 'id'=>$model->id));
+			$this->_authorizer->authManager->assign($form->model->authItem, $model->$idColumn);
+			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+				Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem)))
+			);
+			$this->redirect(array('assignment/user', 'id'=>$model->$idColumn));
 		}
 
 		// Render the view
@@ -127,7 +140,8 @@ class AssignmentController extends Controller
 			'model'=>$model,
 			'form'=>$form,
 			'assignedItems'=>$assignedItems,
-			'username'=>$this->_authorizer->userNameColumn,
+			'idColumn'=>$idColumn,
+			'nameColumn'=>$nameColumn,
 		));
 	}
 
@@ -140,7 +154,9 @@ class AssignmentController extends Controller
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
-			Yii::app()->user->setFlash('rightsSuccess', Yii::t('RightsModule.core', ':name revoked.', array(':name'=>Rights::beautifyName($_GET['name']))));
+			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+				Yii::t('RightsModule.core', ':name revoked.', array(':name'=>Rights::beautifyName($_GET['name'])))
+			);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )

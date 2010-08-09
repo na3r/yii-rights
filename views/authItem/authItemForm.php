@@ -7,11 +7,6 @@
 */
 return array(
     'elements'=>array(
-    	'type'=>array(
-    		'type'=>'dropdownlist',
-    		'items'=>Rights::getAuthItemTypeSelectOptions(),
-    		'visible'=>$this->model->scenario==='create',
-    	),
         'name'=>array(
             'type'=>'text',
             'maxlength'=>64,

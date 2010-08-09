@@ -7,6 +7,8 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Tasks'); ?></h2>
 
+	<p><?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new task'), array('authItem/create', 'type'=>CAuthItem::TYPE_TASK)); ?></p>
+
 	<?php if( count($tasks)>0 ): ?>
 
 		<table class="rightsTable taskTable" border="0" cellpadding="0" cellspacing="0">
@@ -89,7 +91,7 @@
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.core', 'No tasks found.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No tasks found.'); ?></p>
 
 	<?php endif; ?>
 

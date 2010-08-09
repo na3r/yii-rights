@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 0.9.8
+* @version 0.9.9
 */
 class RightsModule extends CWebModule
 {
@@ -21,6 +21,10 @@ class RightsModule extends CWebModule
 	*/
 	public $userClass = 'User';
 	/**
+	* @var string the name of the id column in the user table.
+	*/
+	public $userIdColumn = 'id';
+	/**
 	* @var string the name of the username column in the user table.
 	*/
 	public $userNameColumn = 'username';
@@ -32,6 +36,18 @@ class RightsModule extends CWebModule
 	* @var boolean whether to enable data for business rules.
 	*/
 	public $enableBizRuleData = false;
+	/**
+	* @var string the flash message key to use for success messages.
+	*/
+	public $flashSuccessKey = 'RightsSuccess';
+	/**
+	* @var string the flash message key to use for error messages.
+	*/
+	public $flashErrorKey = 'RightsError';
+	/**
+	* @var boolean whether to install rights when accessed.
+	*/
+	public $install = false;
 	/**
 	* @var string the style sheet file to use for Rights.
 	*/
@@ -62,17 +78,27 @@ class RightsModule extends CWebModule
 				'superuserRole'=>$this->superuserRole,
 				'defaultRoles'=>$this->defaultRoles,
 				'user'=>$this->userClass,
+				'userIdColumn'=>$this->userIdColumn,
 				'userNameColumn'=>$this->userNameColumn,
-			),
-			'installer'=>array(
-				'class'=>'RightsInstaller',
-				'superuserRole'=>$this->superuserRole,
-				'defaultRoles'=>$this->defaultRoles,
 			),
 			'generator'=>array(
 				'class'=>'RightsGenerator',
 			),
 		));
+
+		// Set the installer if necessary
+		if( $this->install===true )
+		{
+			$this->setComponents(array(
+				'installer'=>array(
+					'class'=>'RightsInstaller',
+					'superuserRole'=>$this->superuserRole,
+					'defaultRoles'=>$this->defaultRoles,
+				),
+			));
+
+			$this->defaultController = 'install';
+		}
 
 		// Register the scripts
 		$this->registerScripts();
@@ -152,6 +178,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '0.9.8';
+		return '0.9.9';
 	}
 }

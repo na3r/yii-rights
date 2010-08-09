@@ -30,6 +30,7 @@ return array(
 	'Child :name added.'=>'Barn :name tillagd.',
 	'Child :name removed.'=>'Barn :name borttagen.',
 	':name deleted.'=>':name raderad.',
+	'Authorization items created.'=>'Auktoriserings elemented skapade.',
 	'The requested page does not exist.'=>'Förfrågade sidan finns inte.',
 	/**
 	* models/AuthItemForm.php
@@ -39,8 +40,7 @@ return array(
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Rättigheter',
-	'Description'=>'Beskrivning',
-	'No description'=>'Ingen beskrivning',
+	'Permission'=>'Rättighet',
 	'Revoke'=>'Upphäv',
 	'Inherited'=>'Ärvd',
 	'Assign'=>'Tilldela',
@@ -51,7 +51,9 @@ return array(
 	* views/default/operations.php
 	*/
 	'Operations'=>'Operationer',
+	'Create a new operation'=>'Skapa en ny operation',
 	'Name'=>'Namn',
+	'Description'=>'Beskrivning',
 	'Business rule'=>'Business regel',
 	'Data'=>'Data',
 	'Delete'=>'Radera',
@@ -62,15 +64,16 @@ return array(
 	* views/default/tasks.php
 	*/
 	'Tasks'=>'Uppgifter',
+	'Create a new task'=>'Skapa en ny uppgift',
 	'Are you sure you want to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
 	'No tasks found.'=>'Inga uppgifter hittades.',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'Roller',
+	'Create a new role'=>'Skapa en ny roll',
 	'superuser'=>'superanvändare',
 	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
-	'Roles can be organized by dragging and dropping.'=>'Roller kan organiseras genom att dra och slappa.',
 	'No roles found.'=>'Inga roller hittades.',
 	/**
 	* views/authItem/authChildForm.php
@@ -81,10 +84,22 @@ return array(
 	*/
 	'Save'=>'Spara',
 	/**
+	* views/authItem/_generateItems.php
+	*/
+	'Modules'=>'Moduler',
+	/**
 	* views/authItem/create.php
 	*/
-	'Create Auth Item'=>'Skapa Auktoriserings Element',
-	'Notice: Auth Item type cannot be changed afterwards.'=>'Notera: Auktoriserings elementets typ kan inte ändras i efterhand.',
+	'Create :type'=>'Skapa :type',
+	/**
+	* views/authItem/generate.php
+	*/
+	'Auth Item Generator'=>'Auktoriserings element Generator',
+	'Please select which authorization items you wish to generate.'=>'Välj vilka auktoriserings element du vill skapa.',
+	'Application'=>'Applikationen',
+	'Select all'=>'Välj alla',
+	'Select none'=>'Välj inga',
+	'Generate'=>'Generera',
 	/**
 	* views/authItem/update.php
 	*/

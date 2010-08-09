@@ -39,8 +39,7 @@ return array(
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Berechtigungen',
-	'Description'=>'Beschreibung',
-	'No description'=>'Keine Beschreibung',
+	'Permission'=>'Berechtigung', // Confirm
 	'Revoke'=>'Entziehen',
 	'Inherited'=>'Geerbt',
 	'Assign'=>'Zuweisen',
@@ -52,6 +51,7 @@ return array(
 	*/
 	'Operations'=>'Operationen',
 	'Name'=>'Name',
+	'Description'=>'Beschreibung',
 	'Business rule'=>'Geschäftsregel',
 	'Data'=>'Daten',
 	'Delete'=>'Löschen',

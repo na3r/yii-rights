@@ -9,6 +9,8 @@ $this->breadcrumbs = array(
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Roles'); ?></h2>
 
+	<p><?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new role'), array('authItem/create', 'type'=>CAuthItem::TYPE_ROLE)); ?></p>
+
 	<?php if( count($roles)>0 ): ?>
 
 		<table class="rightsTable roleTable" border="0" cellpadding="0" cellspacing="0">
@@ -103,7 +105,7 @@ $this->breadcrumbs = array(
 
 	<?php else: ?>
 
-		<p><?php echo Yii::t('RightsModule.core', 'No roles found.'); ?></p>
+		<p class="rightsInfo"><?php echo Yii::t('RightsModule.core', 'No roles found.'); ?></p>
 
 	<?php endif; ?>
 

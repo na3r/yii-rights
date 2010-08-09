@@ -25,10 +25,17 @@
 			'url'=>array('default/roles'),
 			'itemOptions'=>array('class'=>'roles'),
 		),
+		/*
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Create Auth Item'),
 			'url'=>array('authItem/create'),
 			'itemOptions'=>array('class'=>'authItem'),
+		),
+		*/
+		array(
+			'label'=>Yii::t('RightsModule.core', 'Generator'),
+			'url'=>array('authItem/generate'),
+			'itemOptions'=>array('class'=>'generator'),
 		),
 	)
 ));	?>
