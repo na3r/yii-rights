@@ -118,3 +118,6 @@
 .rights .pathColumn { color:#808080; font-style:italic; }
 
 .rights .exists * { color:#a0a0a0; }
+
+#installConfirm,
+#installReady { margin:30px 0; text-align:center; }

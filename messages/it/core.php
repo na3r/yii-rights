@@ -30,16 +30,17 @@ return array(
 	'Child :name added.'=>'Aggiunto il figlio :name',
 	'Child :name removed.'=>'Rimosso il figlio :name',
 	':name deleted.'=>'Rimosso :name',
+	'Authorization items created.'=>'', // FIXME: Translate
 	'The requested page does not exist.'=>'La pagina richiesta non esiste',
 	/**
 	* models/AuthItemForm.php
 	*/
-	'An item with this name already exists.'=>'', // ?
+	'An item with this name already exists.'=>'', // FIXME: Translate
 	/**
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Permessi',
-	'Permission'=>'', // ?
+	'Permission'=>'', // FIXME: Translate
 	'Revoke'=>'Revoca',
 	'Inherited'=>'Ereditato',
 	'Assign'=>'Assegna',
@@ -50,6 +51,7 @@ return array(
 	* views/default/operations.php
 	*/
 	'Operations'=>'Operazioni',
+	'Create a new operation'=>'', // FIXME: Translate
 	'Name'=>'Nome',
 	'Description'=>'Descrizione',
 	'Business rule'=>'Regola',
@@ -62,29 +64,42 @@ return array(
 	* views/default/tasks.php
 	*/
 	'Tasks'=>'Task',
+	'Create a new task'=>'', // FIXME: Translate
 	'Are you sure your want to delete this task?'=>'Sicuro di voler eliminare l\'elemento?',
 	'No tasks found.'=>'Non sono stati trovati task.',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'Ruoli',
+	'Create a new role'=>'', // FIXME: Translate
 	'superuser'=>'super utente',
 	'Are you sure your want to delete this role?'=>'Sicuro di voler eliminare l\'elemento?',
-	'Roles can be organized by dragging and dropping.'=>'È possibile organizzare i ruoli trascinandoli e rilasciandoli',
 	'No roles found.'=>'Non sono stati trovati ruoli.',
 	/**
 	* views/authItem/authChildForm.php
 	*/
-	'Add'=>'Aggiungi', // Check
+	'Add'=>'Aggiungi', // FIXME: Confirm
 	/**
 	* views/authItem/authItemForm.php
 	*/
 	'Save'=>'Salva',
 	/**
+	* views/authItem/_generateItems.php
+	*/
+	'Modules'=>'', // FIXME: Translate
+	/**
 	* views/authItem/create.php
 	*/
-	'Create Auth Item'=>'Nuovo Elemento',
-	'Notice: Auth Item type cannot be changed afterwards.'=>'Attenzione: in seguito sarà impossibile modificare il tipo di autorizzazione.',
+	'Create :type'=>'Nuovo :type', // FIXME: Confirm
+	/**
+	* views/authItem/generate.php
+	*/
+	'Auth Item Generator'=>'', // FIXME: Translate
+	'Please select which authorization items you wish to generate.'=>'', // FIXME: Translate
+	'Application'=>'', // FIXME: Translate
+	'Select all'=>'', // FIXME: Translate
+	'Select none'=>'', // FIXME: Translate
+	'Generate'=>'', // FIXME: Translate
 	/**
 	* views/authItem/update.php
 	*/

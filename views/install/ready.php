@@ -1,4 +1,4 @@
-<div style="text-align:center;">
+<div id="installReady">
 
 	<h2><?php echo Yii::t('RightsModule.install', 'Congratulations!'); ?></h2>
 

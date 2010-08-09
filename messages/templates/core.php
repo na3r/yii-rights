@@ -72,7 +72,7 @@ return array(
 	*/
 	'Roles'=>'',
 	'Create a new role'=>'',														// Added in 0.9.9
-	'superuser'=>'', // Added in 0.9.7
+	'superuser'=>'',																// Added in 0.9.7
 	'Are you sure you want to delete this role?'=>'',								// Corrected in 0.9.7
 	'No roles found.'=>'',
 	/**
