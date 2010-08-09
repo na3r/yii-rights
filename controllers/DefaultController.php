@@ -64,7 +64,7 @@ class DefaultController extends Controller
 	{
 		// Create the permissions tree
 		$roles = $this->_authorizer->getRoles(false);
-		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK), null, true);
+		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK), null, null, true);
 		$permissions = $this->_authorizer->getPermissions();
 
 		// Get the rights to items for each role
@@ -102,7 +102,7 @@ class DefaultController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION, null, true);
+		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION, null, null, true);
 
 		// Register the script to bind the sortable plugin to the operation table
 		Yii::app()->getClientScript()->registerScript('rightsOperationTableSort',
@@ -125,7 +125,7 @@ class DefaultController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$tasks = $this->_authorizer->getAuthItems(CAuthItem::TYPE_TASK, null, true);
+		$tasks = $this->_authorizer->getAuthItems(CAuthItem::TYPE_TASK, null, null, true);
 
 		// Register the script to bind the sortable plugin to the task table
 		Yii::app()->getClientScript()->registerScript('rightsTaskTableSort',

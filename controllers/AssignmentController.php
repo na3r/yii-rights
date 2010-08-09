@@ -107,7 +107,7 @@ class AssignmentController extends Controller
 			$assignedItems[] = $item->name;
 
 		// Get the assignment select options
-		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, $assignedItems);
+		$selectOptions = $this->_authorizer->getValidAuthItemSelectOptions(null, null, null, true, $assignedItems);
 
 		// Create a from to add a child for the authorization item
 	    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);

@@ -47,7 +47,7 @@ class Rights
 	public static function revoke($itemName, $userId)
 	{
 		$authorizer = self::getAuthorizer();
-		return $authorizer->authManager->assign($itemName, $userId);
+		return $authorizer->authManager->revoke($itemName, $userId);
 	}
 
 	/**

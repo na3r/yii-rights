@@ -35,7 +35,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getRoles($includeSuperuser=true, $sort=true)
 	{
 		$exclude = $includeSuperuser===false ? array($this->_superuserRole) : array();
-	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, $sort, $exclude);
+	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, null, $sort, $exclude);
 	}
 
 	/**
@@ -87,11 +87,12 @@ class RightsAuthorizer extends CApplicationComponent
 	 * meaning returning all items regardless of their type.
 	 * @param mixed the user ID. Defaults to null, meaning returning all items even if
 	 * they are not assigned to a user.
+	 * @param CAuthItem the item for which to get the select options.
 	 * @param boolean sort items by to weights.
 	 * @param array the items to be excluded.
 	 * @return array the authorization items of the specific type.
 	 */
-	public function getAuthItems($type=null, $userId=null, $sort=false, $exclude=array())
+	public function getAuthItems($type=null, $userId=null, $model=null, $sort=false, $exclude=array())
 	{
 		if( $type===null )
 		{
@@ -114,10 +115,7 @@ class RightsAuthorizer extends CApplicationComponent
 				$items = $this->mergeAuthItems($items, $ai);
 		}
 
-		// Unset items that should be excluded
-		foreach( $exclude as $name )
-		 	if( isset($items[ $name ])===true )
-		 		unset($items[ $name ]);
+		$items = $this->excludeInvalidAuthItems($items, $model, $exclude);
 
 		return $items;
 	}
@@ -185,24 +183,44 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the authorization item select options.
+	* Returns the valid authorization item select options for a type and/or model.
 	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
+	* @param mixed the user ID. Defaults to null, meaning returning all items even if
+	* they are not assigned to a user.
 	* @param CAuthItem the item for which to get the select options.
+	* @param boolean whether to sort the authorization items.
+	* @param array the items to be excluded.
 	* @return array the select options.
 	*/
-	public function getAuthItemSelectOptions($type=null, $model=null, $exclude=array())
+	public function getAuthItemSelectOptions($type=null, $userId=null, $model=null, $sort=true, $exclude=array())
 	{
 		// Get the valid authorization items
-		$validTypes = $type!==null ? Rights::getValidChildTypes($type) : null;
-		$items = $this->getAuthItems($validTypes);
-		$items = $this->excludeInvalidAuthItems($items, $model, $exclude);
+		$items = $this->getAuthItems($type, $userId, $model, $sort, $exclude);
 
 		$selectOptions = array();
 		foreach( $items as $item )
 			$selectOptions[ $item->name ] = Rights::beautifyName($item->name);
 
 		return $selectOptions;
+	}
+
+	/**
+	* Returns the valid authorization item select options for the type, user id and/or model.
+	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* meaning returning all items regardless of their type.
+	* @param mixed the user ID. Defaults to null, meaning returning all items even if
+	* they are not assigned to a user.
+	* @param CAuthItem the item for which to get the select options.
+	* @param boolean whether to sort the authorization items.
+	* @param array the items to be excluded.
+	* @return array the select options.
+	*/
+	public function getValidAuthItemSelectOptions($type=null, $userId=null, $model=null, $sort=true, $exclude=array())
+	{
+		// Get the valid authorization items
+		$type = $type!==null ? Rights::getValidChildTypes($type) : null;
+		$this->getAuthItemSelectOptions($type, $userId, $model, $sort, $exclude);
 	}
 
 	/**
