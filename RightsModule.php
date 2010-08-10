@@ -49,7 +49,7 @@ class RightsModule extends CWebModule
 	*/
 	public $install = false;
 	/**
-	* @var string the url to Rights. Override when module is nested.
+	* @var string the base url to Rights. Override when module is nested.
 	*/
 	public $baseUrl = '/rights';
 	/**

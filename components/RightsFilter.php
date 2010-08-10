@@ -40,7 +40,7 @@ class RightsFilter extends CFilter
 			$authItem .= strtolower($controller->id);
 
 			// Check if user has access to the controller
-			if( $user->checkAccess($authItem.'.All')!==true )
+			if( $user->checkAccess($authItem.'.all')!==true )
 			{
 				// Append the action id to the authorization item name
 				$authItem .= '.'.strtolower($action->id);

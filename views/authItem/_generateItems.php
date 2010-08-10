@@ -3,7 +3,7 @@
 	<?php if( isset($item['actions'])===true && $item['actions']!==array() ): ?>
 
 		<?php $controllerKey = isset($moduleName)===true ? $moduleName.'.'.$key : $key; ?>
-		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey.'.all') ]); ?>
+		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey).'.all' ]); ?>
 
 		<tr class="controllerRow <?php echo $controllerExists===true ? 'exists' : ''; ?>">
 			<td class="checkboxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.strtolower($controllerKey).'.all]') : ''; ?></td>
