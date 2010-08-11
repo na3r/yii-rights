@@ -15,6 +15,7 @@ return array(
 	'Operation'=>'Operazione',
 	'Task'=>'Task',
 	'Role'=>'Ruolo',
+	'Invalid authorization item type.'=>'', // FIXME: Translate
 	/**
 	* controllers/AssignmentController.php
 	*/

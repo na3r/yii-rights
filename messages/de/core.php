@@ -15,6 +15,7 @@ return array(
 	'Operation'=>'Operation',
 	'Task'=>'Tätigkeit',
 	'Role'=>'Rolle',
+	'Invalid authorization item type.'=>'Ungüligter Autorisierungselement-Typ.',
 	/**
 	* controllers/AssignmentController.php
 	*/
@@ -30,7 +31,7 @@ return array(
 	'Child :name added.'=>'Kindelement :name hinzugefügt.',
 	'Child :name removed.'=>'Kindelement :name entfernt.',
 	':name deleted.'=>':name gelöscht.',
-	'Authorization items created.'=>'', // FIXME: Translate
+	'Authorization items created.'=>'Autorisierungselement erzeugt.',
 	'The requested page does not exist.'=>'The angeforderte Seite existiert nicht.',
 	/**
 	* models/AuthItemForm.php
@@ -40,7 +41,7 @@ return array(
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Berechtigungen',
-	'Permission'=>'Berechtigung', // FIXME: Translate
+	'Permission'=>'Berechtigung',
 	'Revoke'=>'Entziehen',
 	'Inherited'=>'Geerbt',
 	'Assign'=>'Zuweisen',
@@ -51,7 +52,7 @@ return array(
 	* views/default/operations.php
 	*/
 	'Operations'=>'Operationen',
-	'Create a new operation'=>'', // FIXME: Translate
+	'Create a new operation'=>'Neue Operation erzeugen',
 	'Name'=>'Name',
 	'Description'=>'Beschreibung',
 	'Business rule'=>'Geschäftsregel',
@@ -64,14 +65,14 @@ return array(
 	* views/default/tasks.php
 	*/
 	'Tasks'=>'Tätigkeiten',
-	'Create a new task'=>'', // FIXME: Translate
+	'Create a new task'=>'Neue Tätigkeit erzeugen',
 	'Are you sure to delete this task?'=>'Sind Sie sicher, dass Sie diese Tätigkeit löschen möchten?',
 	'No tasks found.'=>'Keine Tätigkeiten gefunden.',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'Rollen',
-	'Create a new role'=>'', // FIXME: Translate
+	'Create a new role'=>'Neue Rolle erzeugen',
 	'superuser'=>'Super User',
 	'Are you sure to delete this role?'=>'Sind Sie sicher, dass Sie diese Rolle löschen möchten?',
 	'No roles found.'=>'Keine Rollen gefunden.',
@@ -86,20 +87,20 @@ return array(
 	/**
 	* views/authItem/_generateItems.php
 	*/
-	'Modules'=>'', // FIXME: Translate
+	'Modules'=>'Module',
 	/**
 	* views/authItem/create.php
 	*/
-	'Create :type'=>':type erzeugen', // FIXME: Confirm
+	'Create :type'=>':type erzeugen',
 	/**
 	* views/authItem/generate.php
 	*/
-	'Auth Item Generator'=>'', // FIXME: Translate
-	'Please select which authorization items you wish to generate.'=>'', // FIXME: Translate
-	'Application'=>'', // FIXME: Translate
-	'Select all'=>'', // FIXME: Translate
-	'Select none'=>'', // FIXME: Translate
-	'Generate'=>'', // FIXME: Translate
+	'Auth Item Generator'=>'Autorisierungselement-Generator',
+	'Please select which authorization items you wish to generate.'=>'Selektieren Sie die Autorisierungselemente, die Sie erzeugen lassen wollen.',
+	'Application'=>'Anwendung',
+	'Select all'=>'Alle auswählen',
+	'Select none'=>'Keines auswählen',
+	'Generate'=>'Erzeugen',
 	/**
 	* views/authItem/update.php
 	*/
@@ -128,5 +129,5 @@ return array(
 	/**
 	* views/_menu.php
 	*/
-	'Generator'=>'', // FIXME: Translate
+	'Generator'=>'Generator',
 );

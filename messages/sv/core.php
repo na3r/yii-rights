@@ -15,12 +15,13 @@ return array(
 	'Operation'=>'Operation',
 	'Task'=>'Uppgift',
 	'Role'=>'Roll',
+	'Invalid authorization item type.'=>'Ogiltig auktoriserings element typ.',
 	/**
 	* controllers/AssignmentController.php
 	*/
 	':name assigned.'=>':name tilldelad.',
 	':name revoked.'=>':name upphävd',
-	'Invalid request. Please do not repeat this request again.'=>'Ogiltigt förfrågan. Upprepa inte förfrågan pånytt.',
+	'Invalid request. Please do not repeat this request again.'=>'Ogiltig förfrågan. Upprepa inte förfrågan pånytt.',
 	'You are not authorized to perform this action.'=>'Du har inte rätt att utföra denna funktion.',
 	/**
 	* controllers/AuthItemController.php

@@ -72,18 +72,26 @@ class AuthItemController extends Controller
 	*/
 	public function actionCreate()
 	{
-		// Create the authorization item form
-	    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('create'));
-
-	    // Form is submitted and data is valid, redirect the user
-	    if( $form->submitted()===true && $form->validate()===true )
+		// Make sure that we have a type
+		if( isset($_GET['type'])===true )
 		{
-			// Create item, set success message and redirect
-			$this->_authorizer->createAuthItem($form->model->name, $_GET['type'], $form->model->description, $form->model->bizRule, $form->model->data);
-			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
-				Yii::t('RightsModule.core', ':name created.', array(':name'=>Rights::beautifyName($form->model->name)))
-			);
-			$this->redirect(array('authItem/update', 'name'=>$form->model->name));
+			// Create the authorization item form
+		    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('create'));
+
+		    // Form is submitted and data is valid, redirect the user
+		    if( $form->submitted()===true && $form->validate()===true )
+			{
+				// Create item, set success message and redirect
+				$this->_authorizer->createAuthItem($form->model->name, $_GET['type'], $form->model->description, $form->model->bizRule, $form->model->data);
+				Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+					Yii::t('RightsModule.core', ':name created.', array(':name'=>Rights::beautifyName($form->model->name)))
+				);
+				$this->redirect(array('authItem/update', 'name'=>$form->model->name));
+			}
+		}
+		else
+		{
+			throw new CHttpException(404, Yii::t('RightsModule.core', 'Invalid authorization item type.'));
 		}
 
 		// Render the view

@@ -15,6 +15,7 @@ return array(
 	'Operation'=>'',
 	'Task'=>'',
 	'Role'=>'',
+	'Invalid authorization item type.'=>'',											// Added in 0.9.9
 	/**
 	* controllers/AssignmentController.php
 	*/

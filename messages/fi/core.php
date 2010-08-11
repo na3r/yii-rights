@@ -15,6 +15,7 @@ return array(
 	'Operation'=>'Operaatio',
 	'Task'=>'Tehtävä',
 	'Role'=>'Rooli',
+	'Invalid authorization item type.'=>'Virheellinen auktorisointi elementti tyyppi.',
 	/**
 	* controllers/AssignmentController.php
 	*/
