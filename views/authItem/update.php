@@ -1,6 +1,6 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
-	Rights::getAuthItemTypeString($model->type),
+	Rights::getAuthItemTypeNamePlural($model->type)=>Rights::getAuthItemRoute($model->type),
 	Rights::beautifyName($model->name),
 ); ?>
 
@@ -10,7 +10,7 @@
 
 		<h2><?php echo Yii::t('RightsModule.core', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
 
-		<p class="info"><?php echo Rights::getAuthItemTypeString($model->type); ?></p>
+		<p class="info"><?php echo Rights::getAuthItemTypeName($model->type); ?></p>
 
 		<?php echo $form->render(); ?>
 

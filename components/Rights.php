@@ -118,17 +118,46 @@ class Rights
 	}
 
 	/**
-	* Returns a specific authorization item type as a string.
+	* Returns the name of a specific authorization item.
 	* @param integer the item type (0: operation, 1: task, 2: role).
-	* @return string the authorization item type string.
+	* @return string the authorization item type name.
 	*/
-	public static function getAuthItemTypeString($type)
+	public static function getAuthItemTypeName($type, $plural=false)
 	{
 		switch( (int)$type )
 		{
 			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.core', 'Operation');
 			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.core', 'Task');
 			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.core', 'Role');
+			// Invalid type
+			default: throw new CException('Invalid authorization item type.');
+		}
+	}
+
+	/**
+	* Returns the name of a specific authorization item in plural.
+	* @param integer the item type (0: operation, 1: task, 2: role).
+	* @return string the authorization item type name.
+	*/
+	public static function getAuthItemTypeNamePlural($type)
+	{
+		switch( (int)$type )
+		{
+			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.core', 'Operations');
+			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.core', 'Tasks');
+			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.core', 'Roles');
+			// Invalid type
+			default: throw new CException('Invalid authorization item type.');
+		}
+	}
+
+	public static function getAuthItemRoute($type)
+	{
+		switch( (int)$type )
+		{
+			case CAuthItem::TYPE_OPERATION: return array('default/operations');
+			case CAuthItem::TYPE_TASK: return array('default/tasks');
+			case CAuthItem::TYPE_ROLE: return array('default/roles');
 			// Invalid type
 			default: throw new CException('Invalid authorization item type.');
 		}
