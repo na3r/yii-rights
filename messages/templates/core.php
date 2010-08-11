@@ -125,4 +125,8 @@ return array(
 	'Assignments'=>'',
 	'Username'=>'',
 	'No users found.'=>'',
+	/**
+	* views/_menu.php
+	*/
+	'Generator'=>'',																// Added in 0.9.9
 );

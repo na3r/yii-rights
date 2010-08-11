@@ -3,7 +3,7 @@
 	<?php if( isset($item['actions'])===true && $item['actions']!==array() ): ?>
 
 		<?php $controllerKey = isset($moduleName)===true ? $moduleName.'.'.$key : $key; ?>
-		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey).'.all' ]); ?>
+		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey.'.all') ]); ?>
 
 		<tr class="controllerRow <?php echo $controllerExists===true ? 'exists' : ''; ?>">
 			<td class="checkboxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.strtolower($controllerKey).'.all]') : ''; ?></td>
@@ -26,19 +26,25 @@
 
 	<?php endif; ?>
 
-	<?php if( $key==='modules' ): ?>
+	<?php if( $key==='modules' && $items['modules']!==array() ): ?>
+
+		<?php if( $showModuleHeadingRow===true ): ?>
+
+			<tr><th class="moduleHeadingRow" colspan="3"><?php echo Yii::t('RightsModule.core', 'Modules'); ?></th></tr>
+
+		<?php endif; ?>
 
 		<?php foreach( $item as $moduleName=>$c ): ?>
 
-			<tr><th class="modulesRow" colspan="3"><?php echo Yii::t('RightsModule.core', 'Modules'); ?></th></tr>
 			<tr><th class="moduleRow" colspan="3"><?php echo ucfirst($moduleName).'Module'; ?></th></tr>
 
-			<?php $this->renderPartial('_generateItems', array(
+			<?php $this->renderPartial('_items', array(
 				'model'=>$model,
 				'form'=>$form,
 				'items'=>$c,
 				'existingItems'=>$existingItems,
 				'moduleName'=>$moduleName,
+				'showModuleHeadingRow'=>false,
 				'basePathLength'=>$basePathLength,
 			)); ?>
 

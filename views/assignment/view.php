@@ -9,7 +9,7 @@
 
 	<?php if( count($users)>0 ): ?>
 
-		<table class="table assignmentsTable" border="0" cellpadding="0" cellspacing="0">
+		<table class="assignmentsTable" border="0" cellpadding="0" cellspacing="0">
 
 			<thead>
 

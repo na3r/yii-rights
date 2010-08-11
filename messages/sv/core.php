@@ -125,4 +125,8 @@ return array(
 	'Assignments'=>'Uppdrag',
 	'Username'=>'Användarnamn',
 	'No users found.'=>'Inga användare hittades.',
+	/**
+	* views/_menu.php
+	*/
+	'Generator'=>'Generator',
 );

@@ -7,7 +7,11 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Operations'); ?></h2>
 
-	<p><?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION)); ?></p>
+	<p>
+		<?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION), array(
+			'class'=>'addOperationLink',
+		)); ?>
+	</p>
 
 	<?php if( count($operations)>0 ): ?>
 

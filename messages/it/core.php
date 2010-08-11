@@ -125,4 +125,8 @@ return array(
 	'Assignments'=>'Elementi Assegnati',
 	'Username'=>'Username',
 	'No users found.'=>'Non sono stati trovati utenti.',
+	/**
+	* views/_menu.php
+	*/
+	'Generator'=>'', // FIXME: Translate
 );

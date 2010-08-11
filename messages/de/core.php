@@ -125,4 +125,8 @@ return array(
 	'Assignments'=>'Zuweisung',
 	'Username'=>'Benutzername',
 	'No users found.'=>'Kein Benutzer gefunden.',
+	/**
+	* views/_menu.php
+	*/
+	'Generator'=>'', // FIXME: Translate
 );

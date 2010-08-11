@@ -7,7 +7,11 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Tasks'); ?></h2>
 
-	<p><?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new task'), array('authItem/create', 'type'=>CAuthItem::TYPE_TASK)); ?></p>
+	<p>
+		<?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new task'), array('authItem/create', 'type'=>CAuthItem::TYPE_TASK), array(
+			'class'=>'addTaskLink',
+		)); ?>
+	</p>
 
 	<?php if( count($tasks)>0 ): ?>
 

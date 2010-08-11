@@ -17,7 +17,7 @@
 
 				<tbody>
 
-					<tr class="applicationRow">
+					<tr class="applicationHeadingRow">
 						<th colspan="3"><?php echo Yii::t('RightsModule.core', 'Application'); ?></th>
 					</tr>
 
@@ -26,6 +26,7 @@
 						'form'=>$form,
 						'items'=>$items,
 						'existingItems'=>$existingItems,
+						'showModuleHeadingRow'=>true,
 						'basePathLength'=>strlen(Yii::app()->basePath),
 					)); ?>
 

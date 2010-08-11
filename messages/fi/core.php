@@ -125,4 +125,8 @@ return array(
 	'Assignments'=>'Toimeksiannot',
 	'Username'=>'Käyttäjänimi',
 	'No users found.'=>'Yhtään käyttäjää ei löytynyt.',
+	/**
+	* views/_menu.php
+	*/
+	'Generator'=>'Generaattori',
 );
