@@ -3,10 +3,10 @@
 	<?php if( isset($item['actions'])===true && $item['actions']!==array() ): ?>
 
 		<?php $controllerKey = isset($moduleName)===true ? $moduleName.'.'.$key : $key; ?>
-		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey.'.all') ]); ?>
+		<?php $controllerExists = isset($existingItems[ strtolower($controllerKey.'.*') ]); ?>
 
 		<tr class="controllerRow <?php echo $controllerExists===true ? 'exists' : ''; ?>">
-			<td class="checkboxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.strtolower($controllerKey).'.all]') : ''; ?></td>
+			<td class="checkboxColumn"><?php echo $controllerExists===false ? $form->checkBox($model, 'items['.strtolower($controllerKey).'.*]') : ''; ?></td>
 			<td class="nameColumn"><?php echo ucfirst($key).'Controller'; ?></td>
 			<td class="pathColumn"><?php echo substr($item['path'], $basePathLength+1); ?></td>
 		</tr>
@@ -38,7 +38,7 @@
 
 			<tr><th class="moduleRow" colspan="3"><?php echo ucfirst($moduleName).'Module'; ?></th></tr>
 
-			<?php $this->renderPartial('_items', array(
+			<?php $this->renderPartial('_generateItems', array(
 				'model'=>$model,
 				'form'=>$form,
 				'items'=>$c,

@@ -14,8 +14,8 @@
 #rights a { color:#666699; font-weight:bold; text-decoration:none; }
 #rights a:hover { color:#666699; text-decoration:underline; }
 #rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
-#rights .green { color:#00aa00; }
-#rights .red { color:#ff0000; }
+#rights .greenText { color:#00aa00; }
+#rights .redText { color:#ff0000; }
 
 #rights .menu { margin:20px 0; }
 #rights .menu ul { margin:0; padding:0; list-style-type:none; }
