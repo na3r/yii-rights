@@ -34,19 +34,19 @@ class RightsFilter extends CFilter
 			// Append the module id to the authorization item name
 			// in case the controller called belongs to a module
 			if( ($module = $controller->getModule())!==null )
-				$authItem .= strtolower($module->id).'.';
+				$authItem .= $module->id.'.';
 
 			// Append the controller id to the authorization item name
-			$authItem .= strtolower($controller->id);
+			$authItem .= $controller->id;
 
 			// Check if user has access to the controller
-			if( $user->checkAccess($authItem.'.*')!==true )
+			if( $user->checkAccess(strtolower($authItem).'.*')!==true )
 			{
 				// Append the action id to the authorization item name
-				$authItem .= '.'.strtolower($action->id);
+				$authItem .= '.'.$action->id;
 
 				// Check if the user has access to the controller action
-				if( $user->checkAccess($authItem)!==true )
+				if( $user->checkAccess(strtolower($authItem))!==true )
 					$allow = false;
 			}
 		}
