@@ -13,7 +13,7 @@
 
 		// Default values
 		var defaults = {
-			title: '',
+			title: ''
 		};
 
 		// Merge the options with the defaults
@@ -76,7 +76,7 @@
             	});
             }
 		});
-	}
+	};
 
 	/**
 	* Rights sortable table plugin that uses of jui-sortable.
@@ -88,7 +88,7 @@
 		// Default settings
 		var defaults = {
 			handle: '',
-			placeholder: 'sortablePlaceholder',
+			placeholder: 'sortablePlaceholder'
 		};
 
 		// Merge the options with the defaults
@@ -139,7 +139,7 @@
 			})
 			.disableSelection();
 		});
-	}
+	};
 
 	/**
 	* Rights select table rows plugin.
@@ -176,7 +176,7 @@
 
 			$this.disableSelection();
 		});
-	}
+	};
 
 	/**
 	* Actions to be taken when the document is loaded.
@@ -197,18 +197,6 @@
 		*/
    		$('.rights .flash').animate({ opacity: 1.0 }, { duration: 3000 })
    		.fadeOut(650);
-
-   		/**
-   		* Checkbox functionality for the generate item table.
-   		*/
-   		/*
-   		$('.rights .generateItemTable').find('td.nameColumn, td.pathColumn').toggle(function(e) {
-			$(this).parent('tr').find('input[type=checkbox]').attr('checked', 'checked');
-		}, function(e) {
-			$(this).parent('tr').find('input[type=checkbox]').removeAttr('checked');
-		})
-		.disableSelection();
-		*/
 
 	});
 
