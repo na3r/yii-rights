@@ -34,7 +34,7 @@ class InstallController extends Controller
 		$this->_authorizer = $this->_module->getAuthorizer();
 		$this->_installer = $this->_module->getInstaller();
 		$this->layout = $this->_module->layout;
-		$this->defaultAction = $this->_installer->isInstalled===true ? 'confirm' : 'install';
+		$this->defaultAction = $this->_installer->isInstalled===true ? 'confirm' : 'run';
 	}
 
 	/**
