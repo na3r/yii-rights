@@ -63,11 +63,12 @@ class AssignmentController extends Controller
 	*/
 	public function actionView()
 	{
-		$idColumn = $this->_authorizer->userIdColumn;
-		$nameColumn = $this->_authorizer->userNameColumn;
+		$userClass = $this->_module->userClass;
+		$idColumn = $this->_module->userIdColumn;
+		$nameColumn = $this->_module->userNameColumn;
 
 		$criteria = new CDbCriteria();
-		$count = $this->_authorizer->user->count($criteria);
+		$count = CActiveRecord::model($userClass)->count($criteria);
 
 		// Create the pager
 		$pages = new CPagination($count);
@@ -75,7 +76,7 @@ class AssignmentController extends Controller
 		$pages->applyLimit($criteria);
 
 		// Get all users
-		$users = $this->_authorizer->user->findAll($criteria);
+		$users = CActiveRecord::model($userClass)->findAll($criteria);
 
 		// Collect the ids
 		$userIds = array();
@@ -107,9 +108,11 @@ class AssignmentController extends Controller
 	*/
 	public function actionUser()
 	{
-		$idColumn = $this->_authorizer->userIdColumn;
-		$nameColumn = $this->_authorizer->userNameColumn;
-		$model = $this->_authorizer->user->findByPk($_GET['id']);
+		$userClass = $this->_module->userClass;
+		$idColumn = $this->_module->userIdColumn;
+		$nameColumn = $this->_module->userNameColumn;
+		
+		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->$idColumn);
 
 		// Get the assigned items

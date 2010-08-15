@@ -72,7 +72,7 @@ class Rights
 	*/
 	public static function getBaseUrl()
 	{
-		$module = self::getModule();
+		$module = self::module();
 		return Yii::app()->createUrl($module->baseUrl);
 	}
 
@@ -83,7 +83,7 @@ class Rights
 	*/
 	public static function getConfig($name)
 	{
-		$module = self::getModule();
+		$module = self::module();
 		if( isset($module->$name)===true )
 			return $module->$name;
 		else
@@ -189,14 +189,14 @@ class Rights
 	*/
 	public static function powered()
 	{
-		$module = self::getModule();
+		$module = self::module();
 		return 'Access Control by <a href="http://code.google.com/p/yii-rights/" rel="external">Rights</a> version '.$module->getVersion().'.';
 	}
 
 	/**
 	* @return RightsModule the Rights module.
 	*/
-	public static function getModule()
+	public static function module()
 	{
 		return self::findModule();
 	}
@@ -229,7 +229,7 @@ class Rights
 	*/
 	public static function getAuthorizer()
 	{
-		$module = self::getModule();
+		$module = self::module();
 		return $module->getAuthorizer();
 	}
 }

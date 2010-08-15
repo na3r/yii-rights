@@ -81,9 +81,6 @@ class RightsModule extends CWebModule
 				'class'=>'RightsAuthorizer',
 				'superuserRole'=>$this->superuserRole,
 				'defaultRoles'=>$this->defaultRoles,
-				'user'=>$this->userClass,
-				'userIdColumn'=>$this->userIdColumn,
-				'userNameColumn'=>$this->userNameColumn,
 			),
 			'generator'=>array(
 				'class'=>'RightsGenerator',
@@ -154,7 +151,7 @@ class RightsModule extends CWebModule
 	}
 
 	/**
-	* @return RightsAuthorizer the authorizer component
+	* @return RightsAuthorizer the authorizer component.
 	*/
 	public function getAuthorizer()
 	{
@@ -162,7 +159,7 @@ class RightsModule extends CWebModule
 	}
 
 	/**
-	* @return RightsInstaller the installer component
+	* @return RightsInstaller the installer component.
 	*/
 	public function getInstaller()
 	{
@@ -170,7 +167,7 @@ class RightsModule extends CWebModule
 	}
 
 	/**
-	* @return RightsGenerator the generator component
+	* @return RightsGenerator the generator component.
 	*/
 	public function getGenerator()
 	{
@@ -178,7 +175,7 @@ class RightsModule extends CWebModule
 	}
 
 	/**
-	* @return the current version
+	* @return the current version.
 	*/
 	public function getVersion()
 	{

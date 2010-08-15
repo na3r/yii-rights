@@ -12,9 +12,6 @@ class RightsAuthorizer extends CApplicationComponent
 	private $_superuserRole;
 	private $_guestRole;
 	private $_defaultRoles;
-	private $_user;
-	private $_userIdColumn;
-	private $_userNameColumn;
 
 	/**
 	* Initializes the authorizer.
@@ -296,11 +293,15 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getSuperusers()
 	{
-		$nameColumn = $this->_userNameColumn;
+		$module = Rights::module();
+		$userClass = $module->userClass;
+		$idColumn = $module->userIdColumn;
+		$nameColumn = $module->userNameColumn;
+		$users = CActiveRecord::model($userClass)->findAll();
 		$superusers = array();
-		foreach( $this->_user->findAll() as $user )
+		foreach( $users as $user )
 		{
-			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->id);
+			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->$idColumn);
 			if( isset($items[ $this->_superuserRole ])===true )
 				$superusers[] = $user->$nameColumn;
 		}
@@ -489,66 +490,5 @@ class RightsAuthorizer extends CApplicationComponent
 	public function setDefaultRoles($roles)
 	{
 		$this->_defaultRoles = $roles;
-	}
-
-	/**
-	* @param string the name of the user class.
-	*/
-	public function setUser($class)
-	{
-		// Make sure the given class exists
-		if( class_exists($class)===false )
-			throw new CException('Cannot find the user model.');
-
-		// Create an instance of the model
-		$this->_user = new $class;
-	}
-
-	/**
-	* @return CActiveRecord the user model.
-	*/
-	public function getUser()
-	{
-	 	return $this->_user;
-	}
-
-	/**
-	* @param string the name of the user id column.
-	*/
-	public function setUserIdColumn($name)
-	{
-		// Make sure the given column name exists in the user table
-		if( $this->_user->hasAttribute($name)===false )
-			throw new CException('Cannot find the user id column.');
-
-		$this->_userIdColumn = $name;
-	}
-
-	/**
-	* @return string the name of the user id column.
-	*/
-	public function getUserIdColumn()
-	{
-		return $this->_userIdColumn;
-	}
-
-	/**
-	* @param string the name of the username column.
-	*/
-	public function setUserNameColumn($name)
-	{
-		// Make sure the given column name exists in the user table
-		if( $this->_user->hasAttribute($name)===false )
-			throw new CException('Cannot find the username column.');
-
-		$this->_userNameColumn = $name;
-	}
-
-	/**
-	* @return string the name of the username column.
-	*/
-	public function getUserNameColumn()
-	{
-		return $this->_userNameColumn;
 	}
 }

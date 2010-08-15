@@ -34,7 +34,7 @@ class InstallController extends Controller
 		$this->_authorizer = $this->_module->getAuthorizer();
 		$this->_installer = $this->_module->getInstaller();
 		$this->layout = $this->_module->layout;
-		$this->defaultAction = $this->_installer->isInstalled===true ? 'confirm' : 'run';
+		$this->defaultAction = 'run';
 	}
 
 	/**
@@ -69,8 +69,7 @@ class InstallController extends Controller
 	}
 
 	/**
-	* Dislays the confirm install page.
-	*
+	* Dislays the confirm overwrite page.
 	*/
 	public function actionConfirm()
 	{
@@ -85,17 +84,27 @@ class InstallController extends Controller
 		// Make sure the user is not a guest
 		if( Yii::app()->user->isGuest===false )
 		{
-			// Redirect to generate if install is succeeds
-			if( $this->_installer->run(true)===true )
-				$this->redirect(array('install/ready'));
+			// Make sure that the module is not already installed
+			if( $this->_installer->isInstalled===false )
+			{
+				// Redirect to generate if install is succeeds
+				if( $this->_installer->run(true)===true )
+					$this->redirect(array('install/ready'));
 
-			// Set an error message
-			Yii::app()->getUser()->setFlash($this->_module->flashErrorKey,
-				Yii::t('RightsModule.install', 'Installation failed.')
-			);
+				// Set an error message
+				Yii::app()->getUser()->setFlash($this->_module->flashErrorKey,
+					Yii::t('RightsModule.install', 'Installation failed.')
+				);
 
-			// Redirect to Rights default action
-			$this->redirect(Yii::app()->homeUrl);
+				// Redirect to Rights default action
+				$this->redirect(Yii::app()->homeUrl);
+			}
+			// Module is already installed
+			else
+			{
+				// Redirect to to the confirm overwrite page
+				$this->redirect(array('install/confirm'));
+			}
 		}
 		// User is guest, deny access
 		else
