@@ -105,6 +105,35 @@ class DefaultController extends Controller
 	public function actionOperations()
 	{
 		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION, null, null, true);
+		$childCounts = $this->_authorizer->getAuthItemChildCounts($operations);
+
+		$data = array();
+		foreach( $operations as $item )
+		{
+			$row = array();
+
+			$name = CHtml::link(Rights::beautifyName($item->name), array('authItem/update', 'name'=>$item->name, 'redirect'=>urlencode('default/operations')));
+			$name.= $childCounts[ $item->name ]>0 ? ' <span class="childCount">[ <span class="childCountNumber">'.$childCounts[ $item->name ].'</span> ]</span>' : '';
+
+			$row['name'] = $name;
+			$row['description'] = CHtml::encode($item->description);
+
+			if( isset($item->bizRule)===true )
+				$row['bizRule'] = CHtml::encode($item->bizRule);
+
+			if( isset($item->bizRuleData)===true )
+				$row['bizRuleData'] = CHtml::encode($item->bizRuleData);
+
+			$row['delete'] = CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
+				'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/operations')),
+				'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this operation?'),
+				'class'=>'deleteLink',
+			));
+
+			$data[] = $row;
+		}
+
+		$dataProvider = new RightsDataProvider('tasks', $data);
 
 		// Register the script to bind the sortable plugin to the operation table
 		Yii::app()->getClientScript()->registerScript('rightsOperationTableSort',
@@ -115,10 +144,7 @@ class DefaultController extends Controller
 
 		// Render the view
 		$this->render('operations', array(
-			'operations'=>$operations,
-			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($operations),
-			'isBizRuleEnabled'=>$this->_module->enableBizRule,
-			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -128,6 +154,35 @@ class DefaultController extends Controller
 	public function actionTasks()
 	{
 		$tasks = $this->_authorizer->getAuthItems(CAuthItem::TYPE_TASK, null, null, true);
+		$childCounts = $this->_authorizer->getAuthItemChildCounts($tasks);
+
+		$data = array();
+		foreach( $tasks as $item )
+		{
+			$row = array();
+
+			$name = CHtml::link(Rights::beautifyName($item->name), array('authItem/update', 'name'=>$item->name, 'redirect'=>urlencode('default/tasks')));
+			$name.= $childCounts[ $item->name ]>0 ? ' <span class="childCount">[ <span class="childCountNumber">'.$childCounts[ $item->name ].'</span> ]</span>' : '';
+
+			$row['name'] = $name;
+			$row['description'] = CHtml::encode($item->description);
+
+			if( isset($item->bizRule)===true )
+				$row['bizRule'] = CHtml::encode($item->bizRule);
+
+			if( isset($item->bizRuleData)===true )
+				$row['bizRuleData'] = CHtml::encode($item->bizRuleData);
+
+			$row['delete'] = CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
+				'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/tasks')),
+				'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this task?'),
+				'class'=>'deleteLink',
+			));
+
+			$data[] = $row;
+		}
+
+		$dataProvider = new RightsDataProvider('tasks', $data);
 
 		// Register the script to bind the sortable plugin to the task table
 		Yii::app()->getClientScript()->registerScript('rightsTaskTableSort',
@@ -138,10 +193,7 @@ class DefaultController extends Controller
 
 		// Render the view
 		$this->render('tasks', array(
-			'tasks'=>$tasks,
-			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($tasks),
-			'isBizRuleEnabled'=>$this->_module->enableBizRule,
-			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -151,6 +203,40 @@ class DefaultController extends Controller
 	public function actionRoles()
 	{
 		$roles = $this->_authorizer->getRoles();
+		$superuserRole = $this->_module->superuserRole;
+		$childCounts = $this->_authorizer->getAuthItemChildCounts($roles);
+
+		$data = array();
+		foreach( $roles as $item )
+		{
+			$row = array();
+
+			$name = CHtml::link(Rights::beautifyName($item->name), array('authItem/update', 'name'=>$item->name, 'redirect'=>urlencode('default/roles')));
+			$name.= $item->name===$superuserRole ? ' <span class="superuser">( <span class="superuserText">'.Yii::t('RightsModule.core', 'superuser').'</span> )</span>' : '';
+			$name.= $childCounts[ $item->name ]>0 ? ' <span class="childCount">[ <span class="childCountNumber">'.$childCounts[ $item->name ].'</span> ]</span>' : '';
+
+			$row['name'] = $name;
+			$row['description'] = CHtml::encode($item->description);
+
+			if( isset($item->bizRule)===true )
+				$row['bizRule'] = CHtml::encode($item->bizRule);
+
+			if( isset($item->bizRuleData)===true )
+				$row['bizRuleData'] = CHtml::encode($item->bizRuleData);
+
+			if( $item->name!==$superuserRole )
+			{
+				$row['delete'] = CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
+					'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/roles')),
+					'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this role?'),
+					'class'=>'deleteLink',
+				));
+			}
+
+			$data[] = $row;
+		}
+
+		$dataProvider = new RightsDataProvider('roles', $data);
 
 		// Register the script to bind the sortable plugin to the role table
 		Yii::app()->getClientScript()->registerScript('rightsRoleTableSort',
@@ -161,10 +247,7 @@ class DefaultController extends Controller
 
 		// Render the view
 		$this->render('roles', array(
-			'roles'=>$roles,
-			'childCounts'=>$this->_authorizer->getAuthItemChildCounts($roles),
-			'isBizRuleEnabled'=>$this->_module->enableBizRule,
-			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 }
