@@ -101,9 +101,6 @@ class RightsModule extends CWebModule
 			$this->defaultController = 'install';
 		}
 
-		// Register the scripts
-		$this->registerScripts();
-
 		// Default layout is used unless one is provided
 		if( $this->layout===null )
 			$this->layout = 'rights.views.layouts.rights';

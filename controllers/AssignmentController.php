@@ -26,6 +26,9 @@ class AssignmentController extends Controller
 		$this->_authorizer = $this->_module->getAuthorizer();
 		$this->layout = $this->_module->layout;
 		$this->defaultAction = 'view';
+
+		// Register the scripts
+		$this->_module->registerScripts();
 	}
 
 	/**
@@ -111,7 +114,7 @@ class AssignmentController extends Controller
 		$userClass = $this->_module->userClass;
 		$idColumn = $this->_module->userIdColumn;
 		$nameColumn = $this->_module->userNameColumn;
-		
+
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->$idColumn);
 

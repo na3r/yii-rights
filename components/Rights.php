@@ -54,16 +54,17 @@ class Rights
 	* Returns the roles assigned to a specific user.
 	* If no user id is provided the logged in user will be used.
 	* @param integer the user id of the user for which roles to get.
+	* @param boolean whether to sort the items by their weights.
 	* @return array the roles.
 	*/
-	public static function getAssignedRoles($userId=null)
+	public static function getAssignedRoles($userId=null, $sort=true)
 	{
 		$user = Yii::app()->getUser();
 		if( $userId===null && $user->isGuest===false )
 			$userId = $user->id;
 
 	 	$authorizer = self::getAuthorizer();
-	 	return $authorizer->getAuthItems(CAuthItem::TYPE_ROLE, $userId);
+	 	return $authorizer->getAuthItems(CAuthItem::TYPE_ROLE, $userId, null, $sort);
 	}
 
 	/**

@@ -30,6 +30,9 @@ class AuthItemController extends Controller
 		$this->_authorizer = $this->_module->getAuthorizer();
 		$this->layout = $this->_module->layout;
 		$this->defaultAction = 'create';
+
+		// Register the scripts
+		$this->_module->registerScripts();
 	}
 
 	/**

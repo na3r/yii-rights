@@ -35,6 +35,9 @@ class InstallController extends Controller
 		$this->_installer = $this->_module->getInstaller();
 		$this->layout = $this->_module->layout;
 		$this->defaultAction = 'run';
+
+		// Register the scripts
+		$this->_module->registerScripts();
 	}
 
 	/**
