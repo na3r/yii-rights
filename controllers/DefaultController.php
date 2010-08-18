@@ -145,6 +145,8 @@ class DefaultController extends Controller
 		// Render the view
 		$this->render('operations', array(
 			'dataProvider'=>$dataProvider,
+			'isBizRuleEnabled'=>$this->_module->enableBizRule,
+			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
 		));
 	}
 
@@ -194,6 +196,8 @@ class DefaultController extends Controller
 		// Render the view
 		$this->render('tasks', array(
 			'dataProvider'=>$dataProvider,
+			'isBizRuleEnabled'=>$this->_module->enableBizRule,
+			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
 		));
 	}
 
@@ -248,6 +252,8 @@ class DefaultController extends Controller
 		// Render the view
 		$this->render('roles', array(
 			'dataProvider'=>$dataProvider,
+			'isBizRuleEnabled'=>$this->_module->enableBizRule,
+			'isBizRuleDataEnabled'=>$this->_module->enableBizRuleData,
 		));
 	}
 }

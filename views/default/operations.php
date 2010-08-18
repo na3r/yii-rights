@@ -38,14 +38,14 @@ $this->breadcrumbs = array(
     			'header'=>Yii::t('RightsModule.core', 'Business rule'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'bizRuleColumn'),
-    			'visible'=>Rights::getConfig('enableBizRule')===true,
+    			'visible'=>$isBizRuleEnabled===true,
     		),
     		array(
     			'name'=>'bizRuleData',
     			'header'=>Yii::t('RightsModule.core', 'Data'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'bizRuleDataColumn'),
-    			'visible'=>Rights::getConfig('enableBizRule')===true && Rights::getConfig('enableBizRuleData')===true,
+    			'visible'=>$isBizRuleEnabled===true && $isBizRuleDataEnabled===true,
     		),
     		array(
     			'name'=>'delete',
