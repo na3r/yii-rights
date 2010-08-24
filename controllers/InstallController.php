@@ -88,7 +88,7 @@ class InstallController extends Controller
 		if( Yii::app()->user->isGuest===false )
 		{
 			// Make sure that the module is not already installed
-			if( $this->_installer->isInstalled===false )
+			if( isset($_GET['confirm'])===true || $this->_installer->isInstalled===false )
 			{
 				// Redirect to generate if install is succeeds
 				if( $this->_installer->run(true)===true )

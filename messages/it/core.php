@@ -15,7 +15,7 @@ return array(
 	'Operation'=>'Operazione',
 	'Task'=>'Task',
 	'Role'=>'Ruolo',
-	'Invalid authorization item type.'=>'', // FIXME: Translate
+	'Invalid authorization item type.'=>'Tipo di autorizzazione non valida',
 	/**
 	* controllers/AssignmentController.php
 	*/
@@ -31,17 +31,17 @@ return array(
 	'Child :name added.'=>'Aggiunto il figlio :name',
 	'Child :name removed.'=>'Rimosso il figlio :name',
 	':name deleted.'=>'Rimosso :name',
-	'Authorization items created.'=>'', // FIXME: Translate
+	'Authorization items created.'=>'Autorizzazioni create',
 	'The requested page does not exist.'=>'La pagina richiesta non esiste',
 	/**
 	* models/AuthItemForm.php
 	*/
-	'An item with this name already exists.'=>'', // FIXME: Translate
+	'An item with this name already exists.'=>'Un oggetto con questo nome esiste gi&agrave;',
 	/**
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Permessi',
-	'Permission'=>'', // FIXME: Translate
+	'Permission'=>'Permesso',
 	'Revoke'=>'Revoca',
 	'Inherited'=>'Ereditato',
 	'Assign'=>'Assegna',
@@ -52,7 +52,7 @@ return array(
 	* views/default/operations.php
 	*/
 	'Operations'=>'Operazioni',
-	'Create a new operation'=>'', // FIXME: Translate
+	'Create a new operation'=>'Crea una nuova operazione',
 	'Name'=>'Nome',
 	'Description'=>'Descrizione',
 	'Business rule'=>'Regola',
@@ -65,21 +65,21 @@ return array(
 	* views/default/tasks.php
 	*/
 	'Tasks'=>'Task',
-	'Create a new task'=>'', // FIXME: Translate
+	'Create a new task'=>'Crea un nuovo Task',
 	'Are you sure your want to delete this task?'=>'Sicuro di voler eliminare l\'elemento?',
 	'No tasks found.'=>'Non sono stati trovati task.',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'Ruoli',
-	'Create a new role'=>'', // FIXME: Translate
+	'Create a new role'=>'Crea un nuovo ruolo',
 	'superuser'=>'super utente',
 	'Are you sure your want to delete this role?'=>'Sicuro di voler eliminare l\'elemento?',
 	'No roles found.'=>'Non sono stati trovati ruoli.',
 	/**
 	* views/authItem/authChildForm.php
 	*/
-	'Add'=>'Aggiungi', // FIXME: Confirm
+	'Add'=>'Aggiungi',
 	/**
 	* views/authItem/authItemForm.php
 	*/
@@ -87,20 +87,20 @@ return array(
 	/**
 	* views/authItem/_generateItems.php
 	*/
-	'Modules'=>'', // FIXME: Translate
+	'Modules'=>'Moduli',
 	/**
 	* views/authItem/create.php
 	*/
-	'Create :type'=>'Nuovo :type', // FIXME: Confirm
+	'Create :type'=>'Nuovo :type',
 	/**
 	* views/authItem/generate.php
 	*/
-	'Auth Item Generator'=>'', // FIXME: Translate
-	'Please select which authorization items you wish to generate.'=>'', // FIXME: Translate
-	'Application'=>'', // FIXME: Translate
-	'Select all'=>'', // FIXME: Translate
-	'Select none'=>'', // FIXME: Translate
-	'Generate'=>'', // FIXME: Translate
+	'Auth Item Generator'=>'Generatore di Autorizzazioni',
+	'Please select which authorization items you wish to generate.'=>'Seleziona le autorizzazioni che vuoi generare',
+	'Application'=>'Applicazione',
+	'Select all'=>'Seleziona tutti',
+	'Select none'=>'Seleziona nessuno',
+	'Generate'=>'Genera',
 	/**
 	* views/authItem/update.php
 	*/
@@ -112,8 +112,8 @@ return array(
 	'Remove'=>'Rimuovi',
 	'This item has no children.'=>'Questo oggetto non ha figli.',
 	'Add Child'=>'Aggiungi figlio',
-	'No relations need to be set for the superuser role.'=>'Per il ruolo del super utente non è necessario inserire relazioni',
-	'Super users are always granted access implicitly.'=>'Ai super utenti è sempre consentito l\accesso.',
+	'No relations need to be set for the superuser role.'=>'Per il ruolo del super utente non &egrave; necessario inserire relazioni',
+	'Super users are always granted access implicitly.'=>'Ai super utenti &egrave; sempre consentito l\accesso.',
 	/**
 	* views/assignment/user.php
 	*/
@@ -129,5 +129,5 @@ return array(
 	/**
 	* views/_menu.php
 	*/
-	'Generator'=>'', // FIXME: Translate
+	'Generator'=>'Generatore',
 );

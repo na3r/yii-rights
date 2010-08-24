@@ -10,14 +10,15 @@ class RightsInstaller extends CApplicationComponent
 {
 	private $_authManager;
 	private $_defaultRoles;
-	private $_superuserRole;
+	private $_superuserName;
+	private $_authenticatedName;
+	private $_guestName;
 	private $_isInstalled;
 
 	/**
 	* @var CDbConnection
 	*/
 	public $db;
-
 
 	/**
 	* Initializes the installer.
@@ -102,7 +103,7 @@ class RightsInstaller extends CApplicationComponent
 				$command->execute();
 
 				// Insert the necessary roles
-				$roles = array_merge(array($this->_superuserRole, 'Authenticated'), $this->_defaultRoles);
+				$roles = $this->getUniqueRoles();
 				foreach( $roles as $roleName )
 				{
 					$sql = "insert into {$itemTable} (name, type, data) ";
@@ -118,7 +119,7 @@ class RightsInstaller extends CApplicationComponent
 				$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
 				$sql.= "values (:itemname, :userid, :data)";
 				$command = $this->db->createCommand($sql);
-				$command->bindValue(':itemname', $this->_superuserRole);
+				$command->bindValue(':itemname', $this->_superuserName);
 				$command->bindValue(':userid', Yii::app()->getUser()->id);
 				$command->bindValue(':data', 'N;');
 				$command->execute();
@@ -159,6 +160,17 @@ class RightsInstaller extends CApplicationComponent
 	}
 
 	/**
+	* Returns a list of unique roles names.
+	* @return array the list of roles.
+	*/
+	private function getUniqueRoles()
+	{
+		$roles = array($this->_superuserName, $this->_authenticatedName, $this->_guestName);
+		$roles = array_merge($roles, $this->_defaultRoles);
+		return array_unique($roles);
+	}
+
+	/**
 	* @return boolean whether Rights is installed.
 	*/
 	public function getIsInstalled()
@@ -195,20 +207,34 @@ class RightsInstaller extends CApplicationComponent
 	}
 
 	/**
-	* Sets the default roles.
-	* @param mixed the default roles.
+	* @param string the name of the superuser role.
 	*/
-	public function setDefaultRoles($roles)
+	public function setSuperuserName($value)
 	{
-		$this->_defaultRoles = $roles;
+		$this->_superuserName = $value;
 	}
 
 	/**
-	* Sets the superuser role name.
-	* @param string the name of the superuser role.
+	* @param string the name of the authenticated role.
 	*/
-	public function setSuperuserRole($roleName)
+	public function setAuthenticatedName($value)
 	{
-		$this->_superuserRole = $roleName;
+		$this->_authenticatedName = $value;
+	}
+
+	/**
+	* @param string the name of the guest role.
+	*/
+	public function setGuestName($value)
+	{
+		$this->_guestName = $value;
+	}
+
+	/**
+	* @param array the default roles.
+	*/
+	public function setDefaultRoles($value)
+	{
+		$this->_defaultRoles = $value;
 	}
 }

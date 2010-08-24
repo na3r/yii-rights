@@ -11,11 +11,19 @@ class RightsModule extends CWebModule
 	/**
 	* @var string the name of the role with superuser priviledges.
 	*/
-	public $superuserRole = 'Admin';
+	public $superuserName = 'Admin';
+	/**
+	* @var string the name of the guest role.
+	*/
+	public $authenticatedName = 'Authenticated';
+	/**
+	* @var string the name of the guest role.
+	*/
+	public $guestName = 'Guest';
 	/**
 	* @var array list of default roles.
 	*/
-	public $defaultRoles = array('Guest');
+	public $defaultRoles = null;
 	/**
 	* @var string the name of the user model class.
 	*/
@@ -75,11 +83,19 @@ class RightsModule extends CWebModule
 			'rights.controllers.*',
 		));
 
+		// Set the user identity guest name
+		Yii::app()->getUser()->guestName = $this->guestName;
+
+		// Set guest role as the default
+		// if the default roles are not set
+		if( $this->defaultRoles===null )
+			$this->defaultRoles = array($this->guestName);
+
 		// Set the components component
 		$this->setComponents(array(
 			'authorizer'=>array(
 				'class'=>'RightsAuthorizer',
-				'superuserRole'=>$this->superuserRole,
+				'superuserName'=>$this->superuserName,
 				'defaultRoles'=>$this->defaultRoles,
 			),
 			'generator'=>array(
@@ -93,7 +109,9 @@ class RightsModule extends CWebModule
 			$this->setComponents(array(
 				'installer'=>array(
 					'class'=>'RightsInstaller',
-					'superuserRole'=>$this->superuserRole,
+					'superuserName'=>$this->superuserName,
+					'authenticatedName'=>$this->authenticatedName,
+					'guestName'=>$this->guestName,
 					'defaultRoles'=>$this->defaultRoles,
 				),
 			));

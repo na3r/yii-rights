@@ -1,11 +1,18 @@
 <?php
+/**
+* Rights data provider class file.
+*
+* @author Christoffer Niska <cniska@live.com>
+* @copyright Copyright &copy; 2010 Christoffer Niska
+* @since 0.9.9
+*/
 class RightsDataProvider extends CDataProvider
 {
 	/**
 	* Constructs the data provider.
 	* @param string the unique ID that uniquely identifies the data provider among all data providers.
 	* @param array put the data items into this provider.
-	* @return SimpleDataProvider
+	* @return RightsDataProvider
 	*/
 	public function __construct($id, $data)
 	{

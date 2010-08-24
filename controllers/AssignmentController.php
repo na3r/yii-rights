@@ -61,14 +61,9 @@ class AssignmentController extends Controller
 		);
 	}
 
-	/**
-	* Displays the auth assignments overview.
-	*/
 	public function actionView()
 	{
 		$userClass = $this->_module->userClass;
-		$idColumn = $this->_module->userIdColumn;
-		$nameColumn = $this->_module->userNameColumn;
 
 		$criteria = new CDbCriteria();
 		$count = CActiveRecord::model($userClass)->count($criteria);
@@ -82,12 +77,15 @@ class AssignmentController extends Controller
 		$users = CActiveRecord::model($userClass)->findAll($criteria);
 
 		// Collect the ids
-		$userIds = array();
-		foreach( $users as $user )
-			$userIds[] = $user->$idColumn;
+		$userIdList = array();
+		foreach( $users as $u )
+		{
+			$u->attachBehavior('rights', new RightsUserBehavior);
+			$userIdList[] = $u->getId();
+		}
 
 		// Get the assigned authorization items for all user
-		$userAssignments = $this->_authorizer->getUserAssignments($userIds);
+		$userAssignments = $this->_authorizer->getUserAssignments($userIdList);
 
 		// Create a list of assignments with beautified names for each user
 		// and place them in a list of assignment with the user id as key
@@ -99,8 +97,6 @@ class AssignmentController extends Controller
 		// Render the view
 		$this->render('view', array(
 			'users'=>$users,
-			'idColumn'=>$idColumn,
-			'nameColumn'=>$nameColumn,
 			'assignments'=>$assignments,
 			'pages'=>$pages,
 		));
@@ -112,16 +108,15 @@ class AssignmentController extends Controller
 	public function actionUser()
 	{
 		$userClass = $this->_module->userClass;
-		$idColumn = $this->_module->userIdColumn;
-		$nameColumn = $this->_module->userNameColumn;
 
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
-		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->$idColumn);
+		$model->attachBehavior('rights', new RightsUserBehavior);
+		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->getId());
 
 		// Get the assigned items
 		$assignedItems = array();
 		foreach( $assignedAuthItems as $item )
-			$assignedItems[] = $item->name;
+			$assignedItems[] = $item->getName();
 
 		// Get the assignment select options
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignedItems);
@@ -134,11 +129,11 @@ class AssignmentController extends Controller
 	    if( $form->submitted()===true && $form->validate()===true )
 		{
 			// Update and redirect
-			$this->_authorizer->authManager->assign($form->model->authItem, $model->$idColumn);
+			$this->_authorizer->authManager->assign($form->model->authItem, $model->getId());
 			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
 				Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem)))
 			);
-			$this->redirect(array('assignment/user', 'id'=>$model->$idColumn));
+			$this->redirect(array('assignment/user', 'id'=>$model->getId()));
 		}
 
 		// Render the view
@@ -146,8 +141,6 @@ class AssignmentController extends Controller
 			'model'=>$model,
 			'form'=>$form,
 			'assignedItems'=>$assignedItems,
-			'idColumn'=>$idColumn,
-			'nameColumn'=>$nameColumn,
 		));
 	}
 

@@ -66,7 +66,7 @@
 
 	</table>
 
-	<p class="info">* <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
+	<p class="info">*) <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
 
 	<script type="text/javascript">
 

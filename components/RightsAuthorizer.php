@@ -9,8 +9,7 @@
 class RightsAuthorizer extends CApplicationComponent
 {
 	private $_authManager;
-	private $_superuserRole;
-	private $_guestRole;
+	private $_superuserName;
 	private $_defaultRoles;
 
 	/**
@@ -25,14 +24,14 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the roles.
+	* Returns the a list of all roles.
 	* @param boolean whether to include the superuser.
 	* @param boolean whether to sort the items by their weights.
 	* @return the roles.
 	*/
 	public function getRoles($includeSuperuser=true, $sort=true)
 	{
-		$exclude = $includeSuperuser===false ? array($this->_superuserRole) : array();
+		$exclude = $includeSuperuser===false ? array($this->_superuserName) : array();
 	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, null, $sort, $exclude);
 	}
 
@@ -51,7 +50,7 @@ class RightsAuthorizer extends CApplicationComponent
 		$bizRule = $bizRule!=='' ? $bizRule : null;
 
 		if( $data!==null )
-			$data = empty($data)===false ? $this->saferEval('return '.$data.';') : null;
+			$data = empty($data)===false ? $this->sanitizeExpression('return '.$data.';') : null;
 
 		return $this->_authManager->createAuthItem($name, $type, $description, $bizRule, $data);
 	}
@@ -74,7 +73,7 @@ class RightsAuthorizer extends CApplicationComponent
 
 		// Make sure that data is not already serialized
 		if( @unserialize($data)===false )
-			$authItem->data = $data!=='' ? $this->saferEval('return '.$data.';') : null;
+			$authItem->data = $data!=='' ? $this->sanitizeExpression('return '.$data.';') : null;
 
 		$this->_authManager->saveAuthItem($authItem, $oldName);
 	}
@@ -293,17 +292,15 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getSuperusers()
 	{
-		$module = Rights::module();
-		$userClass = $module->userClass;
-		$idColumn = $module->userIdColumn;
-		$nameColumn = $module->userNameColumn;
+		$userClass = Rights::module()->userClass;
 		$users = CActiveRecord::model($userClass)->findAll();
 		$superusers = array();
-		foreach( $users as $user )
+		foreach( $users as $u )
 		{
-			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->$idColumn);
-			if( isset($items[ $this->_superuserRole ])===true )
-				$superusers[] = $user->$nameColumn;
+			$u->attachBehavior('rights', new RightsUserBehavior);
+			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $u->getId());
+			if( isset($items[ $this->_superuserName ])===true )
+				$superusers[] = $u->getName();
 		}
 
 		return $superusers;
@@ -323,7 +320,7 @@ class RightsAuthorizer extends CApplicationComponent
 				$userId = $user->id;
 
 			$assignments = $this->_authManager->getAuthAssignments($userId);
-			return isset($assignments[ $this->_superuserRole ]);
+			return isset($assignments[ $this->_superuserName ]);
 		}
 
 		return false;
@@ -410,11 +407,11 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Makes code safer for use with eval().
+	* Tries to sanitize code to make it safe for execution.
 	* @param string the code to be execute.
-	* @return mixed the return value of eval() or null if the code was unsafe to run.
+	* @return mixed the return value of eval() or null if the code was unsafe to execute.
 	*/
-	protected function saferEval($code)
+	protected function sanitizeExpression($code)
 	{
 		// Language consturcts
 		$languageConstructs = array(
@@ -445,11 +442,11 @@ class RightsAuthorizer extends CApplicationComponent
 			if( preg_match('/'.$f.'\ *\({1}/', $code)>0 )
 				return null; // Function call found, not safe for eval
 
-		// Eval the safer code
-		$evaledCode = @eval($code);
+		// Evaluate the safer code
+		$result = @eval($code);
 
-		// Return the eval'ed code or null if the result was false
-		return $evaledCode!==false ? $evaledCode : null;
+		// Return the evaluated code or null if the result was false
+		return $result!==false ? $result : null;
 	}
 
 	/**
@@ -463,32 +460,32 @@ class RightsAuthorizer extends CApplicationComponent
 	/**
 	* @param CDbAuthManager the authorization manager
 	*/
-	public function setAuthManager($authManager)
+	public function setAuthManager($value)
 	{
-		$this->_authManager = $authManager;
+		$this->_authManager = $value;
 	}
 
 	/**
 	* @return string the name of the superuser role.
 	*/
-	public function getSuperuserRole()
+	public function getSuperuserName()
 	{
-		return $this->_superuserRole;
+		return $this->_superuserName;
 	}
 
 	/**
 	* @param string the name of the superuser role.
 	*/
-	public function setSuperuserRole($superuserRole)
+	public function setSuperuserName($value)
 	{
-		$this->_superuserRole = $superuserRole;
+		$this->_superuserName = $value;
 	}
 
 	/**
 	* @param string the default roles.
 	*/
-	public function setDefaultRoles($roles)
+	public function setDefaultRoles($value)
 	{
-		$this->_defaultRoles = $roles;
+		$this->_defaultRoles = $value;
 	}
 }

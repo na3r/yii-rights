@@ -68,7 +68,7 @@ class AuthItemForm extends CFormModel
 	*/
 	public function isSuperuser($attribute, $params)
 	{
-		if( $_GET['name']!==$this->name && strtolower($_GET['name'])===strtolower(Rights::getConfig('superuserRole')) )
+		if( $_GET['name']!==$this->name && strtolower($_GET['name'])===strtolower(Rights::getConfig('superuserName')) )
 			$this->addError('name', Yii::t('RightsModule.core', 'Name of the superuser cannot be changed.'));
 	}
 }

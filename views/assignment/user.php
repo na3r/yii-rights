@@ -1,12 +1,12 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Assignments')=>array('assignment/view'),
-	$model->$nameColumn,
+	$model->getName(),
 ); ?>
 
 <div id="userAssignments" class="span-12 first">
 
-	<h2><?php echo Yii::t('RightsModule.core', 'Assignments for :username', array(':username'=>$model->$nameColumn)); ?></h2>
+	<h2><?php echo Yii::t('RightsModule.core', 'Assignments for :username', array(':username'=>$model->getName())); ?></h2>
 
 	<?php if( count($assignedItems)>0 ): ?>
 
@@ -22,7 +22,7 @@
 
 						<td class="revokeColumn">
 							<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Revoke'), array(
-								'submit'=>array('assignment/revoke', 'id'=>$model->$idColumn, 'name'=>$itemName),
+								'submit'=>array('assignment/revoke', 'id'=>$model->getId(), 'name'=>$itemName),
 								'class'=>'revokeLink',
 							)); ?>
 						</td>

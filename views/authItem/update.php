@@ -20,7 +20,7 @@
 
 		<h2><?php echo Yii::t('RightsModule.core', 'Relations'); ?></h2>
 
-		<?php if( $model->name!==Rights::getConfig('superuserRole') ): ?>
+		<?php if( $model->name!==Rights::getConfig('superuserName') ): ?>
 
 			<div id="authItemParents">
 

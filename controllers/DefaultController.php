@@ -210,7 +210,7 @@ class DefaultController extends Controller
 	public function actionRoles()
 	{
 		$roles = $this->_authorizer->getRoles();
-		$superuserRole = $this->_module->superuserRole;
+		$superuserName = $this->_module->superuserName;
 		$childCounts = $this->_authorizer->getAuthItemChildCounts($roles);
 
 		$data = array();
@@ -219,7 +219,7 @@ class DefaultController extends Controller
 			$row = array();
 
 			$name = CHtml::link(Rights::beautifyName($item->name), array('authItem/update', 'name'=>$item->name, 'redirect'=>urlencode('default/roles')));
-			$name.= $item->name===$superuserRole ? ' <span class="superuser">( <span class="superuserText">'.Yii::t('RightsModule.core', 'superuser').'</span> )</span>' : '';
+			$name.= $item->name===$superuserName ? ' <span class="superuser">(<span class="superuserText">'.Yii::t('RightsModule.core', 'superuser').'</span>)</span>' : '';
 			$name.= $childCounts[ $item->name ]>0 ? ' <span class="childCount">[ <span class="childCountNumber">'.$childCounts[ $item->name ].'</span> ]</span>' : '';
 
 			$row['name'] = $name;
@@ -231,7 +231,7 @@ class DefaultController extends Controller
 			if( isset($item->bizRuleData)===true )
 				$row['bizRuleData'] = CHtml::encode($item->bizRuleData);
 
-			if( $item->name!==$superuserRole )
+			if( $item->name!==$superuserName )
 			{
 				$row['delete'] = CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
 					'submit'=>array('authItem/delete', 'name'=>$name, 'redirect'=>urlencode('default/roles')),
