@@ -26,6 +26,7 @@ $this->breadcrumbs = array(
     			'header'=>Yii::t('RightsModule.core', 'Name'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'nameColumn'),
+    			'value'=>'$data->nameColumn(true, true)',
     		),
     		array(
     			'name'=>'description',
@@ -38,20 +39,19 @@ $this->breadcrumbs = array(
     			'header'=>Yii::t('RightsModule.core', 'Business rule'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'bizRuleColumn'),
-    			'visible'=>$isBizRuleEnabled===true,
     		),
     		array(
-    			'name'=>'bizRuleData',
+    			'name'=>'data',
     			'header'=>Yii::t('RightsModule.core', 'Data'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'bizRuleDataColumn'),
-    			'visible'=>$isBizRuleEnabled===true && $isBizRuleDataEnabled===true,
+    			'htmlOptions'=>array('class'=>'dataColumn'),
     		),
     		array(
     			'name'=>'delete',
     			'header'=>'&nbsp;',
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'deleteColumn'),
+    			'value'=>'$data->deleteTaskColumn()',
     		),
 	    )
 	)); ?>

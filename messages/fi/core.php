@@ -38,11 +38,25 @@ return array(
 	*/
 	'An item with this name already exists.'=>'Nimi on jo käytössä.',
 	/**
+	* models/AuthItemModel.php
+	*/
+	'Name'=>'Nimi',
+	'Type'=>'Tyyppi',
+	'Description'=>'Kuvaus',
+	'Business rule'=>'Business sääntö',
+	'Data'=>'Data',
+	'superuser'=>'ylikäyttäjä',
+	'Delete'=>'Poista',
+	'Are you sure you want to delete this operation?'=>'Oletko varma että haluat poistaa tämän operaation?',
+	'Are you sure you want to delete this task?'=>'Oletko varma että haluat poistaa tämän tehtävän?',
+	'Are you sure you want to delete this role?'=>'Oletko varma että haluat poistaa tämän roolin?',
+	'Remove'=>'Poista',
+	'Revoke'=>'Evää',
+	/**
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Oikeudet',
 	'Permission'=>'Oikeus',
-	'Revoke'=>'Evää',
 	'Inherited'=>'Peritty',
 	'Assign'=>'Myönnä',
 	'Hover to see from where the permission is inherited.'=>'Vie hiiren kursori päälle nähdäksesi mistä oikeus on peritty.',
@@ -53,28 +67,19 @@ return array(
 	*/
 	'Operations'=>'Operaatiot',
 	'Create a new operation'=>'Luo operaatio',
-	'Name'=>'Nimi',
-	'Description'=>'Kuvaus',
-	'Business rule'=>'Business sääntö',
-	'Data'=>'Data',
-	'Delete'=>'Poista',
-	'Are you sure you want to delete this operation?'=>'Oletko varma että haluat poistaa tämän operaation?',
 	'Values within square brackets tell how many children each item has.'=>'Hakasuluissa olevat luvut kertovat monta lasta kullakin kohteella on.',
 	'No operations found.'=>'Yhtään operaatiota ei löytynyt.',
 	/**
 	* views/default/tasks.php
 	*/
 	'Tasks'=>'Tehtävät',
-	'Create a new task'=>'Luo  tehtävä',
-	'Are you sure you want to delete this task?'=>'Oletko varma että haluat poistaa tämän tehtävän?',
+	'Create a new task'=>'Luo tehtävä',
 	'No tasks found.'=>'Yhtään tehtävää ei löytynyt.',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'Roolit',
 	'Create a new role'=>'Luo rooli',
-	'superuser'=>'ylikäyttäjä',
-	'Are you sure you want to delete this role?'=>'Oletko varma että haluat poistaa tämän roolin?',
 	'No roles found.'=>'Yhtään roolia ei löytynyt.',
 	/**
 	* views/authItem/authChildForm.php
@@ -109,7 +114,6 @@ return array(
 	'Relations'=>'Yhteydet',
 	'This item has no parents.'=>'Tällä kohteella ei ole yhtään vanhempaa.',
 	'Children'=>'Lapset',
-	'Remove'=>'Poista',
 	'This item has no children.'=>'Tällä kohteella ei ole yhtään lasta.',
 	'Add Child'=>'Lisää Lapsi',
 	'No relations need to be set for the superuser role.'=>'Yhteyksiä ei tarvitse määrittää ylikäyttäjä-roolille.',

@@ -1,6 +1,6 @@
 /**
 * Anonymous function that is immediately called
-* makes sure that we can use the $-shortcut for jQuery.
+* for making sure that we can use the $-shortcut for jQuery.
 */
 (function($) {
 
@@ -99,6 +99,12 @@
 
 			var $this = $(this);
 			var $tbody = $this.find('tbody');
+
+			// Apply the id for sorting to the table rows
+			// (id can be found hidden in the name column).
+			$tbody.children().each(function() {
+				$(this).attr('id', $(this).find('.authItemName').html());
+			});
 
 			// Apply jui sortable on the element
 			$tbody.sortable({

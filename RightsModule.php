@@ -80,6 +80,7 @@ class RightsModule extends CWebModule
 		$this->setImport(array(
 			'rights.models.*',
 			'rights.components.*',
+			'rights.components.dataproviders.*',
 			'rights.controllers.*',
 		));
 

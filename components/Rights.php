@@ -152,13 +152,18 @@ class Rights
 		}
 	}
 
+	/**
+	* Returns the route to a specific authorization item list view.
+	* @param integer $type the item type (0: operation, 1: task, 2: role).
+	* @return array the route.
+	*/
 	public static function getAuthItemRoute($type)
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return array('default/operations');
-			case CAuthItem::TYPE_TASK: return array('default/tasks');
-			case CAuthItem::TYPE_ROLE: return array('default/roles');
+			case CAuthItem::TYPE_OPERATION: return 'default/operations';
+			case CAuthItem::TYPE_TASK: return 'default/tasks';
+			case CAuthItem::TYPE_ROLE: return 'default/roles';
 			// Invalid type
 			default: throw new CException(Yii::t('RightsModule.core', 'Invalid authorization item type.'));
 		}

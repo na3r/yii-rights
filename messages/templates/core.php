@@ -38,11 +38,25 @@ return array(
 	*/
 	'An item with this name already exists.'=>'',									// Added in 0.9.8
 	/**
+	* models/AuthItemModel.php
+	*/
+	'Name'=>'',																		// Moved in 0.9.10
+	'Type'=>'',																		// Added in 0.9.10
+	'Description'=>'',																// Moved in 0.9.10
+	'Business rule'=>'',															// Moved in 0.9.10
+	'Data'=>'',																		// Moved in 0.9.10
+	'superuser'=>'',																// Moved in 0.9.10
+	'Delete'=>'',																	// Moved in 0.9.10
+	'Are you sure you want to delete this operation?'=>'',							// Moved in 0.9.10
+	'Are you sure you want to delete this task?'=>'',								// Moved in 0.9.10
+	'Are you sure you want to delete this role?'=>'',								// Moved in 0.9.10
+	'Remove'=>'',																	// Moved in 0.9.10
+	'Revoke'=>'',																	// Moved in 0.9.10
+	/**
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'',
 	'Permission'=>'',																// Added in 0.9.9
-	'Revoke'=>'',
 	'Inherited'=>'',
 	'Assign'=>'',
 	'Hover to see from where the permission is inherited.'=>'',
@@ -53,12 +67,6 @@ return array(
 	*/
 	'Operations'=>'',
 	'Create a new operation'=>'',													// Added in 0.9.9
-	'Name'=>'',
-	'Description'=>'',																// Moved in 0.9.9
-	'Business rule'=>'',
-	'Data'=>'',
-	'Delete'=>'',
-	'Are you sure you want to delete this operation?'=>'',							// Corrected in 0.9.7
 	'Values within square brackets tell how many children each item has.'=>'',
 	'No operations found.'=>'',
 	/**
@@ -66,15 +74,12 @@ return array(
 	*/
 	'Tasks'=>'',
 	'Create a new task'=>'',														// Added in 0.9.9
-	'Are you sure you want to delete this task?'=>'',								// Corrected in 0.9.7
 	'No tasks found.'=>'',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'',
 	'Create a new role'=>'',														// Added in 0.9.9
-	'superuser'=>'',																// Added in 0.9.7
-	'Are you sure you want to delete this role?'=>'',								// Corrected in 0.9.7
 	'No roles found.'=>'',
 	/**
 	* views/authItem/authChildForm.php
@@ -109,7 +114,6 @@ return array(
 	'Relations'=>'',																// Added in 0.9.7
 	'This item has no parents.'=>'',
 	'Children'=>'',
-	'Remove'=>'',
 	'This item has no children.'=>'',
 	'Add Child'=>'',
 	'No relations need to be set for the superuser role.'=>'',						// Added in 0.9.7

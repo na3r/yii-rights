@@ -77,7 +77,7 @@
 #rights .sortableTable .sortableHandle { cursor:pointer; }
 
 #rights .bizRuleColumn,
-#rights .bizRuleDataColumn {
+#rights .dataColumn {
 	color:#808080;
 	font-family:Consolas, Arial, san-serif !important;
 	font-size:11px;

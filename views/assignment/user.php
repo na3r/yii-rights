@@ -8,38 +8,35 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Assignments for :username', array(':username'=>$model->getName())); ?></h2>
 
-	<?php if( count($assignedItems)>0 ): ?>
-
-		<table class="miniTable userAssignmentTable" border="0" cellpadding="0" cellspacing="0">
-
-			<tbody>
-
-				<?php $i=0; foreach( $assignedItems as $itemName ): ?>
-
-					<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
-
-						<td><?php echo CHtml::link(Rights::beautifyName($itemName), array('authItem/update', 'name'=>$itemName)); ?></td>
-
-						<td class="revokeColumn">
-							<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Revoke'), array(
-								'submit'=>array('assignment/revoke', 'id'=>$model->getId(), 'name'=>$itemName),
-								'class'=>'revokeLink',
-							)); ?>
-						</td>
-
-					</tr>
-
-				<?php endforeach; ?>
-
-			</tbody>
-
-		</table>
-
-	<?php else: ?>
-
-		<p class="info"><?php echo Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'); ?></p>
-
-	<?php endif; ?>
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+		'dataProvider'=>$dataProvider,
+		'template'=>'{items}',
+		'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'),
+		'htmlOptions'=>array('class'=>'miniTable userAssignmentTable'),
+		'columns'=>array(
+    		array(
+    			'name'=>'name',
+    			'header'=>Yii::t('RightsModule.core', 'Name'),
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'nameColumn'),
+    			'value'=>'$data->nameColumn()',
+    		),
+    		array(
+    			'name'=>'type',
+    			'header'=>Yii::t('RightsModule.core', 'Type'),
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'typeColumn'),
+    			'value'=>'$data->typeColumn()',
+    		),
+    		array(
+    			'name'=>'revoke',
+    			'header'=>'&nbsp;',
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'revokeColumn'),
+    			'value'=>'$data->revokeAssignmentColumn()',
+    		),
+		)
+	)); ?>
 
 </div>
 

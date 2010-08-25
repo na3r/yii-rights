@@ -1,6 +1,6 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
-	Rights::getAuthItemTypeNamePlural($model->type)=>Rights::getAuthItemRoute($model->type),
+	Rights::getAuthItemTypeNamePlural($model->type)=>array(Rights::getAuthItemRoute($model->type)),
 	Rights::beautifyName($model->name),
 ); ?>
 
@@ -20,39 +20,34 @@
 
 		<h2><?php echo Yii::t('RightsModule.core', 'Relations'); ?></h2>
 
-		<?php if( $model->name!==Rights::getConfig('superuserName') ): ?>
+		<?php if( $model->name!==Rights::module()->superuserName ): ?>
 
 			<div id="authItemParents">
 
 				<h3><?php echo Yii::t('RightsModule.core', 'Parents'); ?></h3>
 
-				<?php if( count($parents)>0 ): ?>
-
-					<table class="miniTable parentTable" border="0" cellpadding="0" cellspacing="0">
-
-						<tbody>
-
-							<?php $i=0; foreach( $parents as $parentName ): ?>
-
-								<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
-
-									<td><?php echo CHtml::link(Rights::beautifyName($parentName), array('authItem/update', 'name'=>$parentName)); ?></td>
-
-									<td>&nbsp;</td>
-
-								</tr>
-
-							<?php endforeach; ?>
-
-						</tbody>
-
-			   		</table>
-
-				<?php else: ?>
-
-					<p class="info"><?php echo Yii::t('RightsModule.core', 'This item has no parents.'); ?></p>
-
-				<?php endif;?>
+				<?php $this->widget('zii.widgets.grid.CGridView', array(
+					'dataProvider'=>$parentDataProvider,
+					'template'=>'{items}',
+					'emptyText'=>Yii::t('RightsModule.core', 'This item has no parents.'),
+					'htmlOptions'=>array('class'=>'miniTable parentTable'),
+					'columns'=>array(
+    					array(
+    						'name'=>'name',
+    						'header'=>Yii::t('RightsModule.core', 'Name'),
+    						'type'=>'raw',
+    						'htmlOptions'=>array('class'=>'nameColumn'),
+    						'value'=>'$data->nameColumn()',
+    					),
+    					array(
+    						'name'=>'type',
+    						'header'=>Yii::t('RightsModule.core', 'Type'),
+    						'type'=>'raw',
+    						'htmlOptions'=>array('class'=>'typeColumn'),
+    						'value'=>'$data->typeColumn()',
+    					),
+					)
+				)); ?>
 
 			</div>
 
@@ -60,40 +55,35 @@
 
 				<h3><?php echo Yii::t('RightsModule.core', 'Children'); ?></h3>
 
-				<?php if( count($children)>0 ): ?>
-
-					<table class="miniTable childTable" border="0" cellpadding="0" cellspacing="0">
-
-						<tbody>
-
-							<?php $i=0; foreach( $children as $childName ): ?>
-
-								<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
-
-									<td><?php echo CHtml::link(Rights::beautifyName($childName), array('authItem/update', 'name'=>$childName)); ?></td>
-
-									<td class="removeColumn">
-
-										<?php echo CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
-											'submit'=>array('authItem/removeChild', 'name'=>$model->name, 'child'=>$childName),
-											'class'=>'removeLink',
-										)); ?>
-
-									</td>
-
-								</tr>
-
-							<?php endforeach; ?>
-
-						</tbody>
-
-					</table>
-
-				<?php else: ?>
-
-					<p class="info"><?php echo Yii::t('RightsModule.core', 'This item has no children.'); ?></p>
-
-				<?php endif; ?>
+				<?php $this->widget('zii.widgets.grid.CGridView', array(
+					'dataProvider'=>$childDataProvider,
+					'template'=>'{items}',
+					'emptyText'=>Yii::t('RightsModule.core', 'This item has no children.'),
+					'htmlOptions'=>array('class'=>'miniTable parentTable'),
+					'columns'=>array(
+    					array(
+    						'name'=>'name',
+    						'header'=>Yii::t('RightsModule.core', 'Name'),
+    						'type'=>'raw',
+    						'htmlOptions'=>array('class'=>'nameColumn'),
+    						'value'=>'$data->nameColumn()',
+    					),
+    					array(
+    						'name'=>'type',
+    						'header'=>Yii::t('RightsModule.core', 'Type'),
+    						'type'=>'raw',
+    						'htmlOptions'=>array('class'=>'typeColumn'),
+    						'value'=>'$data->typeColumn()',
+    					),
+    					array(
+    						'name'=>'remove',
+    						'header'=>'&nbsp;',
+    						'type'=>'raw',
+    						'htmlOptions'=>array('class'=>'removeColumn'),
+    						'value'=>'$data->removeChildColumn()',
+    					),
+					)
+				)); ?>
 
 			</div>
 

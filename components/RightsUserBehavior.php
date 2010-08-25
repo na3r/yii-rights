@@ -21,8 +21,7 @@ class RightsUserBehavior extends CModelBehavior
 		if( $this->idColumn===null )
 			$this->idColumn = Rights::module()->userIdColumn;
 
-		$attribute = $this->idColumn;
-		return $this->owner->$attribute;
+		return $this->owner->{$this->idColumn};
 	}
 
 	/**
@@ -35,8 +34,7 @@ class RightsUserBehavior extends CModelBehavior
 		if( $this->nameColumn===null )
 			$this->nameColumn = Rights::module()->userNameColumn;
 
-		$attribute = $this->nameColumn;
-		return $this->owner->$attribute;
+		return $this->owner->{$this->nameColumn};
 	}
 
 	/**

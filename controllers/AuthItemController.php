@@ -154,11 +154,14 @@ class AuthItemController extends Controller
 		$form->model->bizRule = $model->bizRule!=='NULL' ? $model->bizRule : '';
 		$form->model->data = $model->data!==null ? serialize($model->data) : '';
 
+		$childDataProvider = new RightsAuthItemChildDataProvider($model);
+		$parentDataProvider = new RightsAuthItemParentDataProvider($model);
+
 		// Render the view
 		$this->render('update', array(
 			'model'=>$model,
-			'children'=>$this->_authorizer->getAuthItemChildren($model, true),
-			'parents'=>$this->_authorizer->getAuthItemParents($model->name, null, true),
+			'childDataProvider'=>$childDataProvider,
+			'parentDataProvider'=>$parentDataProvider,
 			'form'=>$form,
 			'childForm'=>$childForm,
 		));

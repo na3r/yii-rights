@@ -38,11 +38,25 @@ return array(
 	*/
 	'An item with this name already exists.'=>'Ett element med detta namn finns redan.',
 	/**
+	* models/AuthItemModel.php
+	*/
+	'Name'=>'Namn',
+	'Type'=>'Typ',
+	'Description'=>'Beskrivning',
+	'Business rule'=>'Business regel',
+	'Data'=>'Data',
+	'superuser'=>'superanvändare',
+	'Delete'=>'Radera',
+	'Are you sure you want to delete this operation?'=>'Är du säker att du vill radera denna operation?',
+	'Are you sure you want to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
+	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
+	'Remove'=>'Ta bort',
+	'Revoke'=>'Upphäv',
+	/**
 	* views/default/(_)permissions.php
 	*/
 	'Permissions'=>'Rättigheter',
 	'Permission'=>'Rättighet',
-	'Revoke'=>'Upphäv',
 	'Inherited'=>'Ärvd',
 	'Assign'=>'Tilldela',
 	'Hover to see from where the permission is inherited.'=>'För musen ovan för att se varifrån rättigheten är ärvd.',
@@ -53,12 +67,6 @@ return array(
 	*/
 	'Operations'=>'Operationer',
 	'Create a new operation'=>'Skapa en ny operation',
-	'Name'=>'Namn',
-	'Description'=>'Beskrivning',
-	'Business rule'=>'Business regel',
-	'Data'=>'Data',
-	'Delete'=>'Radera',
-	'Are you sure you want to delete this operation?'=>'Är du säker att du vill radera denna operation?',
 	'Values within square brackets tell how many children each item has.'=>'Värden i hakparenteser berättar hur många barn varje element har.',
 	'No operations found.'=>'Inga operationer hittades.',
 	/**
@@ -66,15 +74,12 @@ return array(
 	*/
 	'Tasks'=>'Uppgifter',
 	'Create a new task'=>'Skapa en ny uppgift',
-	'Are you sure you want to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
 	'No tasks found.'=>'Inga uppgifter hittades.',
 	/**
 	* views/default/roles.php
 	*/
 	'Roles'=>'Roller',
 	'Create a new role'=>'Skapa en ny roll',
-	'superuser'=>'superanvändare',
-	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
 	'No roles found.'=>'Inga roller hittades.',
 	/**
 	* views/authItem/authChildForm.php
@@ -109,7 +114,6 @@ return array(
 	'Relations'=>'Relationer',
 	'This item has no parents.'=>'Detta element har inga föräldrar.',
 	'Children'=>'Barn',
-	'Remove'=>'Ta bort',
 	'This item has no children.'=>'Denna element har inga barn.',
 	'Add Child'=>'Lägg till Barn',
 	'No relations need to be set for the superuser role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',

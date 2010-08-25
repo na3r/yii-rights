@@ -86,9 +86,10 @@ class AssignmentController extends Controller
 	public function actionUser()
 	{
 		$userClass = $this->_module->userClass;
-		
+
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$model->attachBehavior('rights', new RightsUserBehavior);
+
 		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->getId());
 
 		// Get the assigned items
@@ -114,11 +115,15 @@ class AssignmentController extends Controller
 			$this->redirect(array('assignment/user', 'id'=>$model->getId()));
 		}
 
+		$dataProvider = new RightsAuthItemDataProvider('assignments', null, array(
+			'userId'=>$model->getId(),
+		));
+
 		// Render the view
 		$this->render('user', array(
 			'model'=>$model,
+			'dataProvider'=>$dataProvider,
 			'form'=>$form,
-			'assignedItems'=>$assignedItems,
 		));
 	}
 
