@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @since 0.9.9
+* @since 0.9.10
 */
 class RightsDataProvider extends CDataProvider
 {

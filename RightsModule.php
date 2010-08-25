@@ -194,6 +194,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '0.9.9';
+		return '0.9.10';
 	}
 }

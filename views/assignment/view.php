@@ -7,46 +7,27 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Assignments'); ?></h2>
 
-	<?php if( count($users)>0 ): ?>
-
-		<table class="assignmentsTable" border="0" cellpadding="0" cellspacing="0">
-
-			<thead>
-
-				<tr>
-
-					<th class="usernameColumnHeading"><?php echo Yii::t('RightsModule.core', 'Username'); ?></th>
-
-					<th class="assignmentColumnHeading"><?php echo Yii::t('RightsModule.core', 'Assignments'); ?></th>
-
-				</tr>
-
-			</thead>
-
-			<tbody>
-
-				<?php $i=0; foreach( $users as $i=>$user ): ?>
-
-					<tr class="<?php echo ($i % 2)===0 ? 'odd' : 'even'; ?>">
-
-						<td><?php echo CHtml::link($user->getName(), array('assignment/user', 'id'=>$user->getId())); ?></td>
-
-						<td class="assignmentColumn"><?php echo isset($assignments[ $user->getId() ])===true ? implode(', ', $assignments[ $user->getId() ]) : ''; ?></td>
-
-					</tr>
-
-				<?php endforeach; ?>
-
-			</tbody>
-
-		</table>
-
-		<?php $this->widget('CLinkPager', array('pages'=>$pages)); ?>
-
-	<?php else: ?>
-
-		<p class="info"><?php echo Yii::t('RightsModule.core', 'No users found.'); ?></p>
-
-	<?php endif; ?>
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+	    'dataProvider'=>$dataProvider,
+	    'template'=>'{items}',
+	    'emptyText'=>Yii::t('RightsModule.core', 'No users found.'),
+	    'htmlOptions'=>array('class'=>'assignmentTable'),
+	    'columns'=>array(
+    		array(
+    			'name'=>'name',
+    			'header'=>Yii::t('RightsModule.core', 'Name'),
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'nameColumn'),
+    			'value'=>'$data->getAssignmentNameLink()',
+    		),
+    		array(
+    			'name'=>'assignments',
+    			'header'=>Yii::t('RightsModule.core', 'Assignments'),
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'assignmentColumn'),
+    			'value'=>'$data->getAssignments()',
+    		),
+	    )
+	)); ?>
 
 </div>

@@ -65,40 +65,18 @@ class AssignmentController extends Controller
 	{
 		$userClass = $this->_module->userClass;
 
-		$criteria = new CDbCriteria();
-		$count = CActiveRecord::model($userClass)->count($criteria);
-
-		// Create the pager
-		$pages = new CPagination($count);
-		$pages->pageSize = 20;
-		$pages->applyLimit($criteria);
-
-		// Get all users
-		$users = CActiveRecord::model($userClass)->findAll($criteria);
-
-		// Collect the ids
-		$userIdList = array();
-		foreach( $users as $u )
-		{
-			$u->attachBehavior('rights', new RightsUserBehavior);
-			$userIdList[] = $u->getId();
-		}
-
-		// Get the assigned authorization items for all user
-		$userAssignments = $this->_authorizer->getUserAssignments($userIdList);
-
-		// Create a list of assignments with beautified names for each user
-		// and place them in a list of assignment with the user id as key
-		$assignments = array();
-		foreach( $userAssignments as $userId=>$items )
-			foreach( $items as $name=>$item )
-				$assignments[ $userId ][] = Rights::beautifyName($name);
+		$dataProvider = new RightsActiveDataProvider($userClass, array(
+			'pagination'=>array(
+				'pageSize'=>20,
+			),
+			'behaviors'=>array(
+				'rights'=>'RightsUserBehavior',
+			),
+		));
 
 		// Render the view
 		$this->render('view', array(
-			'users'=>$users,
-			'assignments'=>$assignments,
-			'pages'=>$pages,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -108,7 +86,7 @@ class AssignmentController extends Controller
 	public function actionUser()
 	{
 		$userClass = $this->_module->userClass;
-
+		
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$model->attachBehavior('rights', new RightsUserBehavior);
 		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->getId());

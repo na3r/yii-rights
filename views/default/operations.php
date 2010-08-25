@@ -2,8 +2,7 @@
 $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Operations'),
-);
-?>
+); ?>
 
 <div id="rightsOperations">
 
