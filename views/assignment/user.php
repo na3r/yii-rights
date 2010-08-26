@@ -42,12 +42,16 @@
 
 <div id="addUserAssignment" class="span-11 last">
 
-	<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
+	<?php if( $form!==null ): ?>
 
-	<div class="form">
+   		<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
 
-		<?php echo $form->render(); ?>
+		<div class="form">
 
-	</div>
+			<?php echo $form->render(); ?>
+
+		</div>
+
+	<?php endif; ?>
 
 </div>

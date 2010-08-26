@@ -79,19 +79,22 @@ class RightsAuthItemDataProvider extends CDataProvider
 		return $keys;
 	}
 
+	/**
+	* Applies jQuery UI sortable on the target element.
+	*/
 	protected function processSortable()
 	{
-		if( isset($this->sortable)===true
-			&& isset($this->sortable['id'])===true
-			&& isset($this->sortable['element'])===true
-			&& isset($this->sortable['url'])===true )
+		if( $this->sortable!==null )
 		{
-			// Register the script to bind the sortable plugin to the role table
-			Yii::app()->getClientScript()->registerScript($this->sortable['id'],
-				"jQuery('".$this->sortable['element']."').rightsSortableTable({
-					url:'".$this->sortable['url']."'
-				});"
-			);
+			if( isset($this->sortable['id'])===true && isset($this->sortable['element'])===true && isset($this->sortable['url'])===true )
+			{
+				// Register the script to bind the sortable plugin to the role table
+				Yii::app()->getClientScript()->registerScript($this->sortable['id'],
+					"jQuery('".$this->sortable['element']."').rightsSortableTable({
+						url:'".$this->sortable['url']."'
+					});"
+				);
+			}
 		}
 	}
 

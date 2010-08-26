@@ -37,6 +37,7 @@ return array(
 	* models/AuthItemForm.php
 	*/
 	'An item with this name already exists.'=>'',									// Added in 0.9.8
+	'Name of the superuser cannot be changed.'=>'',									// Added in 0.9.10
 	/**
 	* models/AuthItemModel.php
 	*/

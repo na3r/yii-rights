@@ -100,19 +100,26 @@ class AssignmentController extends Controller
 		// Get the assignment select options
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignedItems);
 
-		// Create a from to add a child for the authorization item
-	    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);
-	    $form->elements['authItem']->items = $selectOptions; // Populate authorization items
-
-		// Form is submitted and data is valid, redirect the user
-	    if( $form->submitted()===true && $form->validate()===true )
+		if( $selectOptions!==array() )
 		{
-			// Update and redirect
-			$this->_authorizer->authManager->assign($form->model->authItem, $model->getId());
-			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
-				Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem)))
-			);
-			$this->redirect(array('assignment/user', 'id'=>$model->getId()));
+			// Create a from to add a child for the authorization item
+		    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);
+		    $form->elements['authItem']->items = $selectOptions; // Populate authorization items
+
+		    		// Form is submitted and data is valid, redirect the user
+		    if( $form->submitted()===true && $form->validate()===true )
+			{
+				// Update and redirect
+				$this->_authorizer->authManager->assign($form->model->authItem, $model->getId());
+				Yii::app()->user->setFlash($this->_module->flashSuccessKey,
+					Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem)))
+				);
+				$this->redirect(array('assignment/user', 'id'=>$model->getId()));
+			}
+		}
+		else
+		{
+		 	$form = null;
 		}
 
 		$dataProvider = new RightsAuthItemDataProvider('assignments', null, array(

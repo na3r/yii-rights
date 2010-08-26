@@ -37,6 +37,7 @@ return array(
 	* models/AuthItemForm.php
 	*/
 	'An item with this name already exists.'=>'Ett element med detta namn finns redan.',
+	'Name of the superuser cannot be changed.'=>'Superanvändarens namn kan inte ändras.',
 	/**
 	* models/AuthItemModel.php
 	*/

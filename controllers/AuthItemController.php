@@ -126,10 +126,9 @@ class AuthItemController extends Controller
 		}
 
 		// Create a form to add children to the authorization item
-		$childForm = null;
 		$validTypes = Rights::getValidChildTypes($model->type);
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($validTypes, null, $model, true, array($this->_authorizer->superuserName));
-		if( count($selectOptions)>0 )
+		if( $selectOptions!==array() )
 		{
 			// Create the child form
 		    $childForm = new CForm('rights.views.authItem.authChildForm', new AuthChildForm);
@@ -145,6 +144,10 @@ class AuthItemController extends Controller
 				);
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
 			}
+		}
+		else
+		{
+			$childForm = null;
 		}
 
 		// Set the values for the form fields
