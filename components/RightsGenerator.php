@@ -135,7 +135,7 @@ class RightsGenerator extends CApplicationComponent
 	protected function getAllControllers()
 	{
 		$basePath = Yii::app()->basePath;
-		$controllers = $this->getControllersInPath($basePath);
+		$controllers = $this->getControllersInPath($basePath.DIRECTORY_SEPARATOR.'controllers');
 		$controllers['modules'] = $this->getControllersInModules($basePath);
 		return $controllers;
 	}
@@ -148,16 +148,27 @@ class RightsGenerator extends CApplicationComponent
 	{
 		$controllers = array();
 
-		$controllerPath = $path.DIRECTORY_SEPARATOR.'controllers';
-		if( file_exists($controllerPath)===true )
+		if( file_exists($path)===true )
 		{
-			$dir = opendir($controllerPath);
-			while( ($filename = readdir($dir))!==false )
-				if( strpos(strtolower($filename), 'controller')!==false )
-					$controllers[ substr($filename, 0, -14) ] = array(
-						'file'=>$filename,
-						'path'=>$controllerPath.DIRECTORY_SEPARATOR.$filename
-					);
+			$dir = opendir($path);
+			while( ($entry = readdir($dir))!==false )
+			{
+				if( strpos($entry, '.')!==0 )
+				{
+					$entryPath = $path.DIRECTORY_SEPARATOR.$entry;
+					if( strpos(strtolower($entry), 'controller')!==false )
+					{
+						$controllers[ substr($entry, 0, -14) ] = array(
+							'file'=>$entry,
+							'path'=>$entryPath,
+						);
+					}
+
+					if( is_dir($entryPath)===true )
+						foreach( $this->getControllersInPath($entryPath) as $k=>$v )
+							$controllers[ $k ] = $v;
+				}
+			}
 		}
 
 		return $controllers;
@@ -177,12 +188,12 @@ class RightsGenerator extends CApplicationComponent
 			$dir = opendir($modulePath);
 			while( ($entry = readdir($dir))!==false )
 			{
-				if( $entry!='.' && $entry!='..' && $entry!='rights' )
+				if( strpos($entry, '.')!==0 && $entry!=='rights' )
 				{
 					$subModulePath = $modulePath.DIRECTORY_SEPARATOR.$entry;
 					if( file_exists($subModulePath)===true )
 					{
-						if( ($moduleControllers = $this->getControllersInPath($subModulePath))!==array() )
+						if( ($moduleControllers = $this->getControllersInPath($subModulePath.DIRECTORY_SEPARATOR.'controllers'))!==array() )
 							$controllers[ $entry ] = $moduleControllers;
 
 						if( ($subModuleControllers = $this->getControllersInModules($subModulePath))!==array() )

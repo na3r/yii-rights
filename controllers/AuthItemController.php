@@ -228,10 +228,7 @@ class AuthItemController extends Controller
 		}
 
 		// We need operation names lowercase for comparason
-		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
-		$existingItems = array();
-		foreach( $operations as $name=>$item )
-			$existingItems[ strtolower($name) ] = $item;
+		$existingItems = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
 
 		Yii::app()->clientScript->registerScript('rightsGenerateItemTableSelectRows',
 			"jQuery('.generateItemTable').rightsSelectRows();"
