@@ -53,8 +53,8 @@ class RightsGenerator extends CApplicationComponent
 					if( $authManager->getAuthItem($name)===null )
 					{
 						// Insert item
-						$sql = "insert into {$itemTable} (name, type, data) ";
-						$sql.= "values (:name, :type, :data)";
+						$sql = "INSERT INTO {$itemTable} (name, type, data)
+							VALUES (:name, :type, :data)";
 						$command = $this->db->createCommand($sql);
 						$command->bindValue(':name', $name);
 						$command->bindValue(':type', $type);
@@ -153,7 +153,7 @@ class RightsGenerator extends CApplicationComponent
 			$dir = opendir($path);
 			while( ($entry = readdir($dir))!==false )
 			{
-				if( $entry(0)!=='.' )
+				if( $entry[0]!=='.' )
 				{
 					$entryPath = $path.DIRECTORY_SEPARATOR.$entry;
 					if( strpos(strtolower($entry), 'controller')!==false )
@@ -188,7 +188,7 @@ class RightsGenerator extends CApplicationComponent
 			$dir = opendir($modulePath);
 			while( ($entry = readdir($dir))!==false )
 			{
-				if( $entry(0)!=='.' && $entry!=='rights' )
+				if( $entry[0]!=='.' && $entry!=='rights' )
 				{
 					$subModulePath = $modulePath.DIRECTORY_SEPARATOR.$entry;
 					if( file_exists($subModulePath)===true )

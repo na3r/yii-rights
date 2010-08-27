@@ -82,6 +82,7 @@
 	font-family:Consolas, Arial, san-serif !important;
 	font-size:11px;
 }
+#rights .miniTable .nameColumn { width:200px; }
 #rights .deleteColumn,
 #rights .removeColumn,
 #rights .revokeColumn { width:80px; text-align:right; }

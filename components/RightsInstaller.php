@@ -57,48 +57,48 @@ class RightsInstaller extends CApplicationComponent
 					$this->dropTables();
 
 				// Create the AuthItem-table
-				$sql = "create table {$itemTable} ( ";
-				$sql.= "name varchar(64) not null, ";
-				$sql.= "type integer not null, ";
-				$sql.= "description text, ";
-				$sql.= "bizrule text, ";
-				$sql.= "data text, ";
-				$sql.= "primary key (name) ";
-				$sql.= ") type=InnoDB";
+				$sql = "CREATE TABLE {$itemTable} (
+					name varchar(64) not null,
+					type integer not null,
+					description text,
+					bizrule text,
+					data text,
+					primary key (name)
+					) type=InnoDB";
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
 				// Create the AuthChild-table
-				$sql = "create table {$itemChildTable} ( ";
-				$sql.= "parent varchar(64) not null, ";
-				$sql.= "child varchar(64) not null, ";
-				$sql.= "primary key (parent, child), ";
-				$sql.= "foreign key (parent) references {$itemTable} (name) on delete cascade on update cascade, ";
-				$sql.= "foreign key (child) references {$itemTable} (name) on delete cascade on update cascade ";
-				$sql.= ") type=InnoDB";
+				$sql = "CREATE TABLE {$itemChildTable} (
+					parent varchar(64) not null,
+					child varchar(64) not null,
+					primary key (parent, child),
+					foreign key (parent) references {$itemTable} (name) on delete cascade on update cascade,
+					foreign key (child) references {$itemTable} (name) on delete cascade on update cascade
+					) type=InnoDB";
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
 				// Create the AuthItemWeight-table
-				$sql = "create table {$itemWeightTable} ( ";
-				$sql.= "itemname varchar(64) not null, ";
-				$sql.= "type integer not null, ";
-				$sql.= "weight integer, ";
-				$sql.= "primary key (itemname), ";
-				$sql.= "foreign key (itemname) references {$itemTable} (name) on delete cascade on update cascade ";
-				$sql.= ") type=InnoDB";
+				$sql = "CREATE TABLE {$itemWeightTable} (
+					itemname varchar(64) not null,
+					type integer not null,
+					weight integer,
+					primary key (itemname),
+					foreign key (itemname) references {$itemTable} (name) on delete cascade on update cascade
+					) type=InnoDB";
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
 				// Create the AuthAssignment-table
-				$sql = "create table {$assignmentTable} ( ";
-				$sql.= "itemname varchar(64) not null, ";
-				$sql.= "userid varchar(64) not null, ";
-				$sql.= "bizrule text, ";
-				$sql.= "data text, ";
-				$sql.= "primary key (itemname, userid), ";
-				$sql.= "foreign key (itemname) references {$itemTable} (name) on delete cascade on update cascade ";
-				$sql.= ") type=InnoDB";
+				$sql = "CREATE TABLE {$assignmentTable} (
+					itemname varchar(64) not null,
+					userid varchar(64) not null,
+					bizrule text,
+					data text,
+					primary key (itemname, userid),
+					foreign key (itemname) references {$itemTable} (name) on delete cascade on update cascade
+					) type=InnoDB";
 				$command = $this->db->createCommand($sql);
 				$command->execute();
 
@@ -106,8 +106,8 @@ class RightsInstaller extends CApplicationComponent
 				$roles = $this->getUniqueRoles();
 				foreach( $roles as $roleName )
 				{
-					$sql = "insert into {$itemTable} (name, type, data) ";
-					$sql.= "values (:name, :type, :data)";
+					$sql = "INSERT INTO {$itemTable} (name, type, data)
+						VALUES (:name, :type, :data)";
 					$command = $this->db->createCommand($sql);
 					$command->bindValue(':name', $roleName);
 					$command->bindValue(':type', CAuthItem::TYPE_ROLE);
@@ -116,8 +116,8 @@ class RightsInstaller extends CApplicationComponent
 				}
 
 				// Assign the logged in user the superusers role
-				$sql = "insert into {$assignmentTable} (itemname, userid, data) ";
-				$sql.= "values (:itemname, :userid, :data)";
+				$sql = "INSERT INTO {$assignmentTable} (itemname, userid, data)
+					VALUES (:itemname, :userid, :data)";
 				$command = $this->db->createCommand($sql);
 				$command->bindValue(':itemname', $this->_superuserName);
 				$command->bindValue(':userid', Yii::app()->getUser()->id);
@@ -142,19 +142,19 @@ class RightsInstaller extends CApplicationComponent
 	*/
 	private function dropTables()
 	{
-		$sql = "drop table if exists {$this->_authManager->assignmentTable}";
+		$sql = "DROP TABLE IF EXISTS {$this->_authManager->assignmentTable}";
 		$command = $this->db->createCommand($sql);
 		$command->execute();
 
-		$sql = "drop table if exists {$this->_authManager->itemWeightTable}";
+		$sql = "DROP TABLE IF EXISTS {$this->_authManager->itemWeightTable}";
 		$command = $this->db->createCommand($sql);
 		$command->execute();
 
-		$sql = "drop table if exists {$this->_authManager->itemChildTable}";
+		$sql = "DROP TABLE IF EXISTS {$this->_authManager->itemChildTable}";
 		$command = $this->db->createCommand($sql);
 		$command->execute();
 
-		$sql = "drop table if exists {$this->_authManager->itemTable}";
+		$sql = "DROP TABLE IF EXISTS {$this->_authManager->itemTable}";
 		$command = $this->db->createCommand($sql);
 		$command->execute();
 	}

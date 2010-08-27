@@ -90,7 +90,7 @@ class AssignmentController extends Controller
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$model->attachBehavior('rights', new RightsUserBehavior);
 
-		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->getId());
+		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->getId(), null, true);
 
 		// Get the assigned items
 		$assignedItems = array();

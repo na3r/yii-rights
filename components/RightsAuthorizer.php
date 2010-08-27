@@ -89,12 +89,45 @@ class RightsAuthorizer extends CApplicationComponent
 	 * @param array the items to be excluded.
 	 * @return array the authorization items of the specific type.
 	 */
-	public function getAuthItems($type=null, $userId=null, $owner=null, $sort=false, $exclude=array())
+	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=false, $exclude=array())
 	{
-		$items = $this->_authManager->getAuthItems($type, $userId, $sort);
-		$items = $this->excludeInvalidAuthItems($items, $owner, $exclude);
+		// We have no or one type
+		if( $type!==(array)$type )
+		{
+			$items = $this->_authManager->getAuthItems($type, $userId, $sort);
+		}
+		// We have multiple types
+		else
+		{
+			$authItems = array();
+			foreach( $type as $t )
+				$authItems[ $t ] = $this->_authManager->getAuthItems($t, $userId, $sort);
+
+			// Merge the authorization items preserving the keys
+			$items = array();
+			foreach( $authItems as $ai )
+				$items = $this->mergeAuthItems($items, $ai);
+		}
+
+		// Exclude invalid items
+		$items = $this->excludeInvalidAuthItems($items, $parent, $exclude);
 
 		return $items;
+	}
+
+	/**
+	* Merges two arrays with authorization items preserving the keys.
+	* @param array the items to merge to.
+	* @param array the items to merge from.
+	* @return array the merged items.
+	*/
+	protected function mergeAuthItems($array1, $array2)
+	{
+		foreach( $array2 as $name=>$item )
+			if( isset($array1[ $name ])===false )
+				$array1[ $name ] = $item;
+
+		return $array1;
 	}
 
 	/**
@@ -105,28 +138,27 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param array additional items to be excluded.
 	* @return array valid authorization items.
 	*/
-	protected function excludeInvalidAuthItems($items, $owner=null, $exclude=array())
+	protected function excludeInvalidAuthItems($items, CAuthItem $parent=null, $exclude=array())
 	{
 		// We are getting authorization items valid for a certain item
 		// exclude its parents and children aswell
-		if( $owner!==null )
+		if( $parent!==null )
 		{
-		 	$exclude[] = $owner->name;
-		 	foreach( $owner->getChildren() as $child )
+		 	$exclude[] = $parent->name;
+		 	foreach( $parent->getChildren() as $child )
 		 		$exclude[] = $child->name;
 
 		 	// Exclude the parents recursively to avoid inheritance loops
-		 	$parents = $this->getAuthItemParents($owner->name);
-		 	$exclude = array_merge($parents, $exclude);
+		 	$parentNames = array_keys($this->getAuthItemParents($parent->name));
+		 	$exclude = array_merge($parentNames, $exclude);
 		}
 
-		// Get the valid authorization items
-		$validAuthItems = array();
-		foreach( $items as $name=>$item )
-			if( in_array($name, $exclude)===false )
-				$validAuthItems[ $name ] = $item;
+		// Unset the items that are supposed to be excluded
+		foreach( $exclude as $name )
+			if( isset($items[ $name ])===true )
+				unset($items[ $name ]);
 
-		return $validAuthItems;
+		return $items;
 	}
 
 	/**
@@ -140,13 +172,13 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param array the items to be excluded.
 	* @return array the select options.
 	*/
-	public function getAuthItemSelectOptions($type=null, $userId=null, $owner=null, $sort=true, $exclude=array())
+	public function getAuthItemSelectOptions($type=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
 	{
-		$items = $this->getAuthItems($type, $userId, $owner, $sort, $exclude);
+		$items = $this->getAuthItems($type, $userId, $parent, $sort, $exclude);
 
 		$selectOptions = array();
-		foreach( $items as $item )
-			$selectOptions[ $item->name ] = Rights::beautifyName($item->name);
+		foreach( $items as $i )
+			$selectOptions[ $i->name ] = Rights::beautifyName($i->name);
 
 		return $selectOptions;
 	}
@@ -154,19 +186,15 @@ class RightsAuthorizer extends CApplicationComponent
 	/**
 	* Returns the parents of the specified authorization item.
 	* @param string the item name for which to get its parents.
-	* @param string the name of the role in which permissions to search.
+	* @param string the name of the item in which permissions to search.
 	* @param boolean whether we want the specified items parent or all parents.
 	* @return array the names of the parent items.
 	*/
-	public function getAuthItemParents($itemName, $roleName=null, $direct=false, $sort=true)
+	public function getAuthItemParents($itemName, $parentName=null, $direct=false)
 	{
-		$permissions = $this->getPermissions($roleName);
-		$parents = $this->getAuthItemParentsRecursive($itemName, $permissions, $direct);
-
-		if( $sort===true )
-			$this->sortAuthItems($parents);
-
-		return $parents;
+		$permissions = $this->getPermissions($parentName);
+		$parentNames = $this->getAuthItemParentsRecursive($itemName, $permissions, $direct);
+		return $this->_authManager->getSortedAuthItems($parentNames);
 	}
 
 	/**
@@ -187,7 +215,7 @@ class RightsAuthorizer extends CApplicationComponent
 		 		if( isset($children[ $itemName ])===true )
 		 		{
 		 			if( isset($parents[ $name ])===false )
-		 				$parents[ $name ] = $this->_authManager->getAuthItem($name);
+		 				$parents[ $name ] = $name;
 				}
 				// Check if item is in the children recursively
 				else
@@ -195,7 +223,7 @@ class RightsAuthorizer extends CApplicationComponent
 		 			if( ($p = $this->getAuthItemParentsRecursive($itemName, $children, $direct))!==array() )
 		 			{
 		 				if( $direct===false && isset($parents[ $name ])===false )
-		 					$parents[ $name ] = $this->_authManager->getAuthItem($name);
+		 					$parents[ $name ] = $name;
 
 		 				$parents = array_merge($parents, $p);
 					}
@@ -208,43 +236,18 @@ class RightsAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the children for the specified authorization item recursively.
-	* @param CAuthItem the item for which to get its children.
-	* @param boolean whether to sort the children by type.
+	* @param mixed the item for which to get its children.
 	* @return array the names of the item's children.
 	*/
-	public function getAuthItemChildren(CAuthItem $item, $sort=true)
+	public function getAuthItemChildren($itemName)
 	{
-		$children = $item->getChildren();
+		$item = $this->_authManager->getAuthItem($itemName);
 
-		if( $sort===true )
-			$this->sortAuthItems($children);
+		$childrenNames = array();
+		foreach( $item->getChildren() as $name=>$child )
+			$childrenNames[] = $name;
 
-		return $children;
-	}
-
-	/**
-	* Sorts the authorization items by type and name.
-	* @param array the items to sort.
-	* @return the sorted items.
-	*/
-	protected function sortAuthItems($items)
-	{
-		usort($items, array('self', 'sortAuthItemsByType'));
-		return $items;
-	}
-
-	/**
-	* Sorts authorization items by their type.
-	* @param CAuthItem the first item to compare.
-	* @param CAuthItem the second item to compare.
-	* @return integer the result of the comparison.
-	*/
-	protected function sortAuthItemsByType(CAuthItem $item1, CAuthItem $item2)
-	{
-		if( $item1->type!==$item2->type )
-        	return $item1->type>$item2->type ? -1 : 1;
-		else
-        	return 0;
+		return $this->_authManager->getSortedAuthItems($childrenNames);
 	}
 
 	/**
@@ -411,7 +414,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return CDbAuthManager the authorization manager
+	* @return RightsAuthManager the authorization manager
 	*/
 	public function getAuthManager()
 	{
@@ -419,7 +422,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @param CDbAuthManager the authorization manager
+	* @param RightsAuthManager the authorization manager
 	*/
 	public function setAuthManager($value)
 	{

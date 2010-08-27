@@ -46,7 +46,7 @@ class RightsAuthItemDataProvider extends CDataProvider
 			$this->processSortable();
 
 		if( $this->items===null )
-			$this->items = Rights::getAuthorizer()->getAuthItems($this->type, $this->userId, $this->owner, isset($this->sortable));
+			$this->items = Rights::getAuthorizer()->getAuthItems($this->type, $this->userId, $this->owner, true);
 
 		$data = array();
 		foreach( $this->items as $name=>$item )

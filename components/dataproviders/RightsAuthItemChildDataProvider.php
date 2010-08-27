@@ -30,7 +30,7 @@ class RightsAuthItemChildDataProvider extends RightsAuthItemDataProvider
 	*/
 	public function fetchData()
 	{
-		$this->items = Rights::getAuthorizer()->getAuthItemChildren($this->owner);
+		$this->items = Rights::getAuthorizer()->getAuthItemChildren($this->owner->name);
 		return parent::fetchData();
 	}
 }
