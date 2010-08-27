@@ -91,45 +91,10 @@ class RightsAuthorizer extends CApplicationComponent
 	 */
 	public function getAuthItems($type=null, $userId=null, $owner=null, $sort=false, $exclude=array())
 	{
-		if( $type===null )
-		{
-			$items = $this->_authManager->getAuthItems($type, $userId, $sort);
-		}
-		else
-		{
-			// Make sure type is an array
-			if( $type!==(array)$type )
-				$type = array($type);
-
-			// Get the authorization items for the given types
-			$authItems = array();
-			foreach( $type as $t )
-				$authItems[] = $this->_authManager->getAuthItems($t, $userId, $sort);
-
-			// Merge the authorization items preserving the keys
-			$items = array();
-			foreach( $authItems as $ai )
-				$items = $this->mergeAuthItems($items, $ai);
-		}
-
+		$items = $this->_authManager->getAuthItems($type, $userId, $sort);
 		$items = $this->excludeInvalidAuthItems($items, $owner, $exclude);
 
 		return $items;
-	}
-
-	/**
-	* Merges two arrays with authorization items preserving the keys.
-	* @param array the items to merge to.
-	* @param array the items to merge from.
-	* @return array the merged items.
-	*/
-	protected function mergeAuthItems($array1, $array2)
-	{
-		foreach( $array2 as $name=>$authItem )
-			if( isset($array1[ $name ])===false )
-				$array1[ $name ] = $authItem;
-
-		return $array1;
 	}
 
 	/**
@@ -265,7 +230,6 @@ class RightsAuthorizer extends CApplicationComponent
 	protected function sortAuthItems($items)
 	{
 		usort($items, array('self', 'sortAuthItemsByType'));
-		usort($items, array('self', 'sortAuthItemsByName'));
 		return $items;
 	}
 
@@ -279,20 +243,6 @@ class RightsAuthorizer extends CApplicationComponent
 	{
 		if( $item1->type!==$item2->type )
         	return $item1->type>$item2->type ? -1 : 1;
-		else
-        	return 0;
-	}
-
-	/**
-	* Sorts authorization items by their type.
-	* @param CAuthItem the first item to compare.
-	* @param CAuthItem the second item to compare.
-	* @return integer the result of the comparison.
-	*/
-	protected function sortAuthItemsByName(CAuthItem $item1, CAuthItem $item2)
-	{
-		if( $item1->name!==$item2->name )
-        	return strcmp($item1->name, $item2->name) ? -1 : 1;
 		else
         	return 0;
 	}

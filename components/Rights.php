@@ -179,7 +179,7 @@ class Rights
 	 	switch( (int)$type )
 		{
 			// Roles can consist of any type of authorization items
-			case CAuthItem::TYPE_ROLE: return self::$authItemTypes;
+			case CAuthItem::TYPE_ROLE: return null;
 			// Tasks can consist of other tasks and operations
 			case CAuthItem::TYPE_TASK: return array(CAuthItem::TYPE_TASK, CAuthItem::TYPE_OPERATION);
 			// Operations can consist of other operations

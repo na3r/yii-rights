@@ -153,7 +153,7 @@ class RightsGenerator extends CApplicationComponent
 			$dir = opendir($path);
 			while( ($entry = readdir($dir))!==false )
 			{
-				if( strpos($entry, '.')!==0 )
+				if( $entry(0)!=='.' )
 				{
 					$entryPath = $path.DIRECTORY_SEPARATOR.$entry;
 					if( strpos(strtolower($entry), 'controller')!==false )
@@ -188,7 +188,7 @@ class RightsGenerator extends CApplicationComponent
 			$dir = opendir($modulePath);
 			while( ($entry = readdir($dir))!==false )
 			{
-				if( strpos($entry, '.')!==0 && $entry!=='rights' )
+				if( $entry(0)!=='.' && $entry!=='rights' )
 				{
 					$subModulePath = $modulePath.DIRECTORY_SEPARATOR.$entry;
 					if( file_exists($subModulePath)===true )
