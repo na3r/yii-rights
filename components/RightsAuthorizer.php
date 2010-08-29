@@ -89,19 +89,19 @@ class RightsAuthorizer extends CApplicationComponent
 	 * @param array the items to be excluded.
 	 * @return array the authorization items of the specific type.
 	 */
-	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=false, $exclude=array())
+	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
 	{
 		// We have no or one type
 		if( $type!==(array)$type )
 		{
-			$items = $this->_authManager->getAuthItems($type, $userId, $sort);
+			$items = $this->_authManager->getAuthItems($type, $userId, $parent, $sort);
 		}
 		// We have multiple types
 		else
 		{
 			$authItems = array();
 			foreach( $type as $t )
-				$authItems[ $t ] = $this->_authManager->getAuthItems($t, $userId, $sort);
+				$authItems[ $t ] = $this->_authManager->getAuthItems($t, $userId, $parent, $sort);
 
 			// Merge the authorization items preserving the keys
 			$items = array();
@@ -185,16 +185,19 @@ class RightsAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the parents of the specified authorization item.
-	* @param string the item name for which to get its parents.
+	* @param mixed the item name for which to get its parents.
 	* @param string the name of the item in which permissions to search.
 	* @param boolean whether we want the specified items parent or all parents.
 	* @return array the names of the parent items.
 	*/
-	public function getAuthItemParents($itemName, $parentName=null, $direct=false)
+	public function getAuthItemParents($item, $parentName=null, $direct=false)
 	{
+		if( ($item instanceof CAuthItem)===false )
+			$item = $this->_authManager->getAuthItem($item);
+
 		$permissions = $this->getPermissions($parentName);
-		$parentNames = $this->getAuthItemParentsRecursive($itemName, $permissions, $direct);
-		return $this->_authManager->getSortedAuthItems($parentNames);
+		$parentNames = $this->getAuthItemParentsRecursive($item->name, $permissions, $direct);
+		return $this->_authManager->getAuthItemsByNames($parentNames, $item);
 	}
 
 	/**
@@ -239,15 +242,16 @@ class RightsAuthorizer extends CApplicationComponent
 	* @param mixed the item for which to get its children.
 	* @return array the names of the item's children.
 	*/
-	public function getAuthItemChildren($itemName)
+	public function getAuthItemChildren($item)
 	{
-		$item = $this->_authManager->getAuthItem($itemName);
+		if( ($item instanceof CAuthItem)===false )
+			$item = $this->_authManager->getAuthItem($item);
 
 		$childrenNames = array();
 		foreach( $item->getChildren() as $name=>$child )
 			$childrenNames[] = $name;
 
-		return $this->_authManager->getSortedAuthItems($childrenNames);
+		return $this->_authManager->getAuthItemsByNames($childrenNames, $item);
 	}
 
 	/**
@@ -301,7 +305,7 @@ class RightsAuthorizer extends CApplicationComponent
 		if( $itemName!==null )
 		{
 			$item = $this->_authManager->getAuthItem($itemName);
-			$permissions[ $itemName ] = $this->getPermissionsRecursive($item);
+			$permissions = $this->getPermissionsRecursive($item);
 		}
 		else
 		{
@@ -331,19 +335,23 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Check if a specific role has permissions to a specific authorization item.
-	* @param string the name of the role for which to check permissions.
-	* @param string the name of the item to check for.
+	* Returns the permission type for an authorization item.
+	* @param string the name of the item to check permission for.
+	* @param string the name of the item in which permissions to look.
+	* @param array the permissions.
 	* @return integer the permission type (0: None, 1: Direct, 2: Inherited).
 	*/
-	public function hasPermission($itemName, $permissions)
+	public function hasPermission($itemName, $parentName=null, $permissions=array())
 	{
+		if( $parentName!==null )
+			$permissions = $this->getPermissions($parentName);
+
 		if( isset($permissions[ $itemName ])===true )
 			return 1;
 
 		foreach( $permissions as $children )
 			if( $children!==array() )
-				if( $this->hasPermission($itemName, $children)>0 )
+				if( $this->hasPermission($itemName, null, $children)>0 )
 					return 2;
 
 		return 0;
@@ -353,6 +361,7 @@ class RightsAuthorizer extends CApplicationComponent
 	* Returns the assignments for a specific user.
 	* @param mixed one or many user ids.
 	* @return array the assignments.
+	* FIXME: Check if we need to support many user ids.
 	*/
 	public function getUserAssignments($userId=null)
 	{

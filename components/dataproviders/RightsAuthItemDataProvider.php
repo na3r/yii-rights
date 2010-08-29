@@ -16,7 +16,7 @@ class RightsAuthItemDataProvider extends CDataProvider
 
 	public $type;
 	public $userId;
-	public $owner;
+	public $parent;
 	public $items;
 	public $sortable;
 
@@ -46,22 +46,11 @@ class RightsAuthItemDataProvider extends CDataProvider
 			$this->processSortable();
 
 		if( $this->items===null )
-			$this->items = Rights::getAuthorizer()->getAuthItems($this->type, $this->userId, $this->owner, true);
+			$this->items = Rights::getAuthorizer()->getAuthItems($this->type, $this->userId, $this->parent, true);
 
 		$data = array();
 		foreach( $this->items as $name=>$item )
-		{
-			$model = new $this->modelClass;
-			$model->name = $item->name;
-			$model->description = $item->description;
-			$model->type = $item->type;
-			$model->bizRule = $item->bizRule;
-			$model->data = $item->data;
-			$model->userId = $this->userId;
-			$model->owner = $this->owner;
-			$model->childCount = count($item->getChildren());
-			$data[] = $model;
-		}
+			$data[] = $item;
 
 		return $data;
 	}

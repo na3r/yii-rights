@@ -70,33 +70,16 @@ class DefaultController extends Controller
 		// Create the permissions tree
 		$roles = $this->_authorizer->getRoles(false);
 		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK), null, null, true);
-		$permissions = $this->_authorizer->getPermissions();
-
-		// Get the rights to items for each role
-		$rights = array();
-		foreach( $roles as $roleName=>$role )
-			foreach( $items as $name=>$item )
-				$rights[ $roleName ][ $name ] = $this->_authorizer->hasPermission($name, $permissions[ $roleName ]);
-
-		// Get the item parents
-		$parents = array();
-		foreach( $rights as $roleName=>$perm )
-			foreach( $perm as $name=>$right )
-				if( $right===Rights::PERM_INHERITED )
-					if( ($p = $this->_authorizer->getAuthItemParents($name, $roleName, true))!==array() && $p===(array)$p )
-						$parents[ $roleName ][ $name ] = implode(', ', array_map(array('Rights', 'beautifyName'), array_keys($p)));
 
 		// View parameters
 		$params = array(
 			'roles'=>$roles,
-			'roleColumnWidth'=>$roles!==array() ? 75/count($roles) : 0,
 			'items'=>$items,
-			'rights'=>$rights,
-			'parents'=>$parents,
+			'roleColumnWidth'=>$roles!==array() ? 75/count($roles) : 0,
 		);
 
 		// Render the view
-		if( isset($_POST['ajax'])===true )
+		if( Yii::app()->request->isPostRequest===true && isset($_POST['ajax'])===true )
 			$this->renderPartial('_permissions', $params);
 		else
 			$this->render('permissions', $params);

@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 0.9.9
+* @version 0.9.11
 */
 class RightsModule extends CWebModule
 {
@@ -198,6 +198,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '0.9.10';
+		return '0.9.11';
 	}
 }

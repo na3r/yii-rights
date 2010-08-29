@@ -13,10 +13,10 @@ class RightsAuthItemParentDataProvider extends RightsAuthItemDataProvider
 	* @param array configuration (name=>value) to be applied as the initial property values of this class.
 	* @return RightsAuthItemDataProvider
 	*/
-	public function __construct($owner, $config=array())
+	public function __construct($parent, $config=array())
 	{
-		$this->owner = $owner;
-		$this->setId($owner->name);
+		$this->parent = $parent;
+		$this->setId($parent->name);
 
 		foreach($config as $key=>$value)
 			$this->$key=$value;
@@ -28,7 +28,7 @@ class RightsAuthItemParentDataProvider extends RightsAuthItemDataProvider
 	*/
 	public function fetchData()
 	{
-		$this->items = Rights::getAuthorizer()->getAuthItemParents($this->owner->name, null, true);
+		$this->items = Rights::getAuthorizer()->getAuthItemParents($this->parent->name, null, true);
 		return parent::fetchData();
 	}
 }

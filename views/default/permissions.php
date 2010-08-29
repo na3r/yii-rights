@@ -9,8 +9,6 @@
 		'roles'=>$roles,
 		'roleColumnWidth'=>$roleColumnWidth,
 		'items'=>$items,
-		'rights'=>$rights,
-		'parents'=>$parents,
 	)); ?>
 
 </div>

@@ -1,4 +1,12 @@
 <?php
+/**
+* Rights authorization manager class file.
+* Implements support for sorting of authorization items.
+*
+* @author Christoffer Niska <cniska@live.com>
+* @copyright Copyright &copy; 2010 Christoffer Niska
+* @since 0.9.7
+*/
 class RightsAuthManager extends CDbAuthManager
 {
 	public $itemWeightTable = 'AuthItemWeight';
@@ -9,12 +17,14 @@ class RightsAuthManager extends CDbAuthManager
 	* meaning returning all items regardless of their type.
 	* @param mixed the user ID. Defaults to null, meaning returning all items even if
 	* they are not assigned to a user.
-	* @param boolean whether to sort the results according to item weights.
-	* Sort is not supported when type is provided.
+	* @param CAuthItem the authorization item the items belong to.
+	* parent for the authorization item
+	* @param boolean whether to sort the items according to their weights.
 	* @return array the authorization items of the specific type.
 	*/
-	public function getAuthItems($type=null, $userId=null, $sort=false)
+	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=false)
 	{
+		// We need to sort the items
 		if( $sort===true )
 		{
 			if( $type===null && $userId===null )
@@ -49,7 +59,7 @@ class RightsAuthManager extends CDbAuthManager
 			else
 			{
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
-					FROM {$this->itemTable} t1,
+					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
 					LEFT JOIN {$this->itemWeightTable} t3 ON name=t3.itemname
 					WHERE t1.type=:type AND userid=:userid
@@ -63,10 +73,14 @@ class RightsAuthManager extends CDbAuthManager
 			foreach($command->queryAll() as $row)
 				$items[ $row['name'] ] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], unserialize($row['data']));
 		}
+		// No sorting required
 		else
 		{
 			$items = parent::getAuthItems($type, $userId);
 		}
+
+		// Process the items and attach necessary behaviors
+		$items = $this->processItems($items, $userId, $parent);
 
 		return $items;
 	}
@@ -76,31 +90,59 @@ class RightsAuthManager extends CDbAuthManager
 	* @param array the names of the authorization items to get.
 	* @return array the authorization items.
 	*/
-	public function getSortedAuthItems($names)
+	public function getAuthItemsByNames($names, CAuthItem $parent=null, $sort=false)
 	{
 		$items = array();
 
 		if( $names!==array() )
 		{
-			$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
-				FROM {$this->itemTable} t1
-				LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
-				WHERE name IN ('".implode("','",$names)."')
-				ORDER BY t1.type DESC, weight ASC";
-			$command=$this->db->createCommand($sql);
+			if( $sort===true )
+			{
+				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
+					FROM {$this->itemTable} t1
+					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
+					WHERE name IN ('".implode("','",$names)."')
+					ORDER BY t1.type DESC, weight ASC";
+				$command=$this->db->createCommand($sql);
+			}
+			else
+			{
+				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data
+					FROM {$this->itemTable} t1
+					WHERE name IN ('".implode("','",$names)."')";
+				$command=$this->db->createCommand($sql);
+			}
 
 			foreach($command->queryAll() as $row)
 				$items[ $row['name'] ]=new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], unserialize($row['data']));
 		}
 
+		$items = $this->processItems($items, $parent);
+
 		return $items;
 	}
 
 	/**
-	* Updates the authorization item weights.
+	* Processes the authorization items before returning them.
+	* @param array the items to process
+	* @param mixed the user ID. Defaults to null, meaning returning all items even if
+	* they are not assigned to a user.
+	* @param CAuthItem the authorization item the items belong to.
+	* @return the processed authorization items.
+	*/
+	public function processItems($items, $userId=null, CAuthItem $parent=null)
+	{
+		foreach( $items as $i )
+			$i->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+
+		return $items;
+	}
+
+	/**
+	* Updates the authorization items weight.
 	* @param array the result returned from jui-sortable.
 	*/
-	public function updateItemWeights($result)
+	public function updateItemWeight($result)
 	{
 		foreach( $result as $weight=>$itemname )
 		{

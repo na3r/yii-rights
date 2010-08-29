@@ -95,7 +95,7 @@ class AssignmentController extends Controller
 		// Get the assigned items
 		$assignedItems = array();
 		foreach( $assignedAuthItems as $item )
-			$assignedItems[] = $item->getName();
+			$assignedItems[] = $item->name;
 
 		// Get the assignment select options
 		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignedItems);

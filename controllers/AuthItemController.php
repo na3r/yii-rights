@@ -158,14 +158,14 @@ class AuthItemController extends Controller
 		$form->model->bizRule = $model->bizRule!=='NULL' ? $model->bizRule : '';
 		$form->model->data = $model->data!==null ? serialize($model->data) : '';
 
-		$childDataProvider = new RightsAuthItemChildDataProvider($model);
 		$parentDataProvider = new RightsAuthItemParentDataProvider($model);
+		$childDataProvider = new RightsAuthItemChildDataProvider($model);
 
 		// Render the view
 		$this->render('update', array(
 			'model'=>$model,
-			'childDataProvider'=>$childDataProvider,
 			'parentDataProvider'=>$parentDataProvider,
+			'childDataProvider'=>$childDataProvider,
 			'form'=>$form,
 			'childForm'=>$childForm,
 		));
@@ -321,7 +321,7 @@ class AuthItemController extends Controller
 		// We only allow sorting via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
-			$this->_authorizer->authManager->updateItemWeights($_POST['result']);
+			$this->_authorizer->authManager->updateItemWeight($_POST['result']);
 		}
 		else
 		{
