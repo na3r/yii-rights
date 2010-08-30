@@ -30,6 +30,7 @@
 #rights .menu a { color:#ffffff; font-size:12px; text-decoration:none; }
 #rights .menu a:hover { color:#ffffff; text-decoration:none; }
 
+#rights .flashes { height:40px; }
 #rights .flash {
 	margin:0 0 20px 0;
 	padding:8px 12px;
@@ -100,6 +101,7 @@
 #rights .childCount .childCountNumber { font-weight:bold; }
 
 #rights .info { color:#808080; font-size:12px; font-style:italic; }
+#rights .hint { width:320px; color:#808080; font-size:11px; font-style:italic; }
 
 #rights .generateItemTable { margin:0; }
 #rights .generateItemTable tr td { cursor:pointer; }

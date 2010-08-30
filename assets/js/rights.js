@@ -192,7 +192,7 @@
 		/**
 		* Hover functionality for rights' tables.
 		*/
-		$('.rights tbody tr').hover(function() {
+		$('#rights tbody tr').hover(function() {
 			$(this).addClass('hover'); // On mouse over
 		}, function() {
 			$(this).removeClass('hover'); // On mouse out
@@ -201,7 +201,7 @@
 		/**
 		* Fade effect for flash messages.
 		*/
-   		$('.rights .flash').animate({ opacity: 1.0 }, { duration: 3000 })
+   		$('#rights .flash').animate({ opacity: 1.0 }, { duration: 3000 })
    		.fadeOut(650);
 
 	});

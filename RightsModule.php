@@ -162,8 +162,8 @@ class RightsModule extends CWebModule
 	{
 		if( $this->_assetsUrl===null )
 		{
-			//$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets'), false, -1, true);
-			$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets')); // For release
+			$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets'), false, -1, true);
+			//$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets')); // For release
 		}
 
 		return $this->_assetsUrl;

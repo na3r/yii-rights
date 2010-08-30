@@ -39,7 +39,7 @@ class RightsUserBehavior extends CModelBehavior
 
 	/**
 	* Returns a link labeled with the username pointing to the users assignments.
-	* @return string the link html.
+	* @return string the link markup.
 	*/
 	public function getAssignmentNameLink()
 	{
@@ -48,12 +48,29 @@ class RightsUserBehavior extends CModelBehavior
 
 	/**
 	* Gets the users assignments.
-	* @return string the assignments.
+	* @param boolean whether to include the authorization item type.
+	* @return string the assignments markup.
 	*/
-	public function getAssignments()
+	public function getAssignments($includeType=false)
 	{
-		$items = Rights::getAuthorizer()->authManager->getAuthAssignments($this->getId());
-		$assignments = $items!==array() ? implode(', ', array_map(array('Rights', 'beautifyName'), array_keys($items))) : '';
-		return $assignments;
+		$assignedItems = array();
+
+		$authorizer = Rights::getAuthorizer();
+		$assignments = $authorizer->authManager->getAuthAssignments($this->getId());
+
+		// We need to include the type in the markup
+		if( $includeType===true )
+		{
+			$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
+			foreach( $items as $n=>$i )
+				$assignedItems[] = Rights::beautifyName($n).' (<span class="typeText">'.Rights::getAuthItemTypeName($i->type).'</span>)';
+		}
+		else
+		{
+			foreach( $assignments as $n=>$a )
+				$assignedItems[] = Rights::beautifyName($n);
+		}
+
+		return implode(', ', $assignedItems);
 	}
 }

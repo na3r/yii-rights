@@ -32,7 +32,7 @@ class RightsAuthManager extends CDbAuthManager
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
-					ORDER BY t1.type DESC, weight ASC";
+					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 			}
 			else if( $userId===null )
@@ -41,7 +41,7 @@ class RightsAuthManager extends CDbAuthManager
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
 					WHERE t1.type=:type
-					ORDER BY t1.type DESC, weight ASC";
+					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 				$command->bindValue(':type', $type);
 			}
@@ -52,7 +52,7 @@ class RightsAuthManager extends CDbAuthManager
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
 					LEFT JOIN {$this->itemWeightTable} t3 ON name=t3.itemname
 					WHERE userid=:userid
-					ORDER BY t1.type DESC, weight ASC";
+					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 				$command->bindValue(':userid', $userId);
 			}
@@ -63,7 +63,7 @@ class RightsAuthManager extends CDbAuthManager
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
 					LEFT JOIN {$this->itemWeightTable} t3 ON name=t3.itemname
 					WHERE t1.type=:type AND userid=:userid
-					ORDER BY t1.type DESC, weight ASC";
+					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 				$command->bindValue(':type', $type);
 				$command->bindValue(':userid', $userId);
@@ -102,7 +102,7 @@ class RightsAuthManager extends CDbAuthManager
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
 					WHERE name IN ('".implode("','",$names)."')
-					ORDER BY t1.type DESC, weight ASC";
+					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 			}
 			else

@@ -42,15 +42,19 @@
 
 <div id="addUserAssignment" class="span-11 last">
 
-	<?php if( $form!==null ): ?>
+	<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
 
-   		<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
+	<?php if( $form!==null ): ?>
 
 		<div class="form">
 
 			<?php echo $form->render(); ?>
 
 		</div>
+
+	<?php else: ?>
+
+		<p class="info"><?php echo Yii::t('RightsModule.core', 'No assignments available to be assigned to this user.'); ?>
 
 	<?php endif; ?>
 

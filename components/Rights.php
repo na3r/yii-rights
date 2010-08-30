@@ -15,15 +15,6 @@ class Rights
 	const PERM_INHERITED = 2;
 
 	/**
-	* @var array the authorization item types
-	*/
-	public static $authItemTypes = array(
-		CAuthItem::TYPE_OPERATION,
-		CAuthItem::TYPE_TASK,
-		CAuthItem::TYPE_ROLE,
-	);
-
-	/**
 	* Assigns an authorization item to a specific user.
 	* @param string the name of the item to assign.
 	* @param integer the user id of the user for which to assign the item.
@@ -78,20 +69,6 @@ class Rights
 	}
 
 	/**
-	* Returns a specific Rights configuration variable.
-	* @param string the name of the variable to get.
-	* @return mixed the value of the variable or null if not set.
-	*/
-	public static function getConfig($name)
-	{
-		$module = self::module();
-		if( isset($module->$name)===true )
-			return $module->$name;
-		else
-			return null;
-	}
-
-	/**
 	* Beautifies authorization item names.
 	* @param string the name to beautify.
 	* @return string the beautified name.
@@ -106,24 +83,11 @@ class Rights
 	}
 
 	/**
-	* Returns the authorization item type select options.
-	* @return array the select options.
-	*/
-	public static function getAuthItemTypeSelectOptions()
-	{
-	 	return array(
-	 		CAuthItem::TYPE_OPERATION=>Yii::t('RightsModule.core', 'Operation'),
-	 		CAuthItem::TYPE_TASK=>Yii::t('RightsModule.core', 'Task'),
-	 		CAuthItem::TYPE_ROLE=>Yii::t('RightsModule.core', 'Role'),
-		);
-	}
-
-	/**
 	* Returns the name of a specific authorization item.
 	* @param integer the item type (0: operation, 1: task, 2: role).
 	* @return string the authorization item type name.
 	*/
-	public static function getAuthItemTypeName($type, $plural=false)
+	public static function getAuthItemTypeName($type)
 	{
 		switch( (int)$type )
 		{

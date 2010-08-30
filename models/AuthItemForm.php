@@ -24,6 +24,7 @@ class AuthItemForm extends CFormModel
 			array('name', 'nameIsAvailable', 'on'=>'create'),
 			array('name', 'newNameIsAvailable', 'on'=>'update'),
 			array('name', 'isSuperuser', 'on'=>'update'),
+			array('data', 'bizRuleNotEmpty'),
 		   	array('bizRule, data', 'safe'),
 		);
 	}
@@ -70,6 +71,12 @@ class AuthItemForm extends CFormModel
 	{
 		if( strtolower($_GET['name'])!==strtolower($this->name) && strtolower($_GET['name'])===strtolower(Rights::module()->superuserName) )
 			$this->addError('name', Yii::t('RightsModule.core', 'Name of the superuser cannot be changed.'));
+	}
+
+	public function bizRuleNotEmpty($attribute, $params)
+	{
+		if( empty($this->data)===false && empty($this->bizRule)===true )
+			$this->addError('data', Yii::t('RightsModule.core', 'Business rule cannot be empty.'));
 	}
 }
 

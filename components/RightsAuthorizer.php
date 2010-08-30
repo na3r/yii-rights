@@ -177,8 +177,8 @@ class RightsAuthorizer extends CApplicationComponent
 		$items = $this->getAuthItems($type, $userId, $parent, $sort, $exclude);
 
 		$selectOptions = array();
-		foreach( $items as $i )
-			$selectOptions[ $i->name ] = Rights::beautifyName($i->name);
+		foreach( $items as $n=>$i )
+			$selectOptions[ Rights::getAuthItemTypeNamePlural($i->type) ][ $n ] = Rights::beautifyName($i->name);
 
 		return $selectOptions;
 	}

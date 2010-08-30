@@ -14,15 +14,18 @@ return array(
         ),
         'description'=>array(
             'type'=>'text',
+            'hint'=>Yii::t('RightsModule.core', 'A human readable name for this item.'),
             'style'=>'width:320px',
         ),
         'bizRule'=>array(
     		'type'=>'text',
+    		'hint'=>Yii::t('RightsModule.core', 'Code that will be executed when performing access checking.'),
     		'style'=>'width:320px',
     		'visible'=>Rights::module()->enableBizRule===true,
     	),
     	'data'=>array(
 	        'type'=>'text',
+	        'hint'=>Yii::t('RightsModule.core', 'Additional data available when executing the business rule.'),
 	        'style'=>'width:320px',
 	        'visible'=>Rights::module()->enableBizRule===true && Rights::module()->enableBizRuleData===true,
 	    ),

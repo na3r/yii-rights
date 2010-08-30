@@ -61,10 +61,15 @@ class AssignmentController extends Controller
 		);
 	}
 
+	/**
+	* Displays an overview of the users and their assignments.
+	*/
 	public function actionView()
 	{
+		// Get the user model class
 		$userClass = $this->_module->userClass;
 
+		// Create a data provider for listing the users
 		$dataProvider = new RightsActiveDataProvider($userClass, array(
 			'pagination'=>array(
 				'pageSize'=>20,
@@ -81,32 +86,39 @@ class AssignmentController extends Controller
 	}
 
 	/**
-	* Displays the auth assignments for an user.
+	* Displays the authorization assignments for an user.
 	*/
 	public function actionUser()
 	{
+		// Create the user model and attach the required behavior
 		$userClass = $this->_module->userClass;
-
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$model->attachBehavior('rights', new RightsUserBehavior);
 
-		$assignedAuthItems = $this->_authorizer->getAuthItems(null, $model->getId(), null, true);
+		$assignedItems = $this->_authorizer->getAuthItems(null, $model->getId(), null, true);
+		$assignments = array_keys($assignedItems);
 
-		// Get the assigned items
-		$assignedItems = array();
-		foreach( $assignedAuthItems as $item )
-			$assignedItems[] = $item->name;
-
-		// Get the assignment select options
-		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignedItems);
-
+		// Make sure we have items to be selected
+		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignments);
 		if( $selectOptions!==array() )
 		{
 			// Create a from to add a child for the authorization item
-		    $form = new CForm('rights.views.assignment.assignmentForm', new AssignmentForm);
-		    $form->elements['authItem']->items = $selectOptions; // Populate authorization items
+		    $form = new CForm(array(
+				'elements'=>array(
+					'authItem'=>array(
+					    'type'=>'dropdownlist',
+					    'items'=>$selectOptions,
+					),
+				),
+				'buttons'=>array(
+					'submit'=>array(
+					    'type'=>'submit',
+					    'label'=>Yii::t('RightsModule.core', 'Assign'),
+					),
+				),
+			), new AssignmentForm);
 
-		    		// Form is submitted and data is valid, redirect the user
+		    // Form is submitted and data is valid, redirect the user
 		    if( $form->submitted()===true && $form->validate()===true )
 			{
 				// Update and redirect
@@ -117,11 +129,13 @@ class AssignmentController extends Controller
 				$this->redirect(array('assignment/user', 'id'=>$model->getId()));
 			}
 		}
+		// No items available
 		else
 		{
 		 	$form = null;
 		}
 
+		// Create a data provider for listing the assignments
 		$dataProvider = new RightsAuthItemDataProvider('assignments', null, array(
 			'userId'=>$model->getId(),
 		));
