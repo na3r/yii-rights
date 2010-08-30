@@ -1,6 +1,11 @@
 <?php $this->widget('zii.widgets.CMenu', array(
 	'items'=>array(
 		array(
+			'label'=>Yii::t('RightsModule.core', 'Assignments'),
+			'url'=>array('assignment/view'),
+			'itemOptions'=>array('class'=>'assignments'),
+		),
+		array(
 			'label'=>Yii::t('RightsModule.core', 'Permissions'),
 			'url'=>array('default/permissions'),
 			'itemOptions'=>array('class'=>'permissions'),
@@ -19,11 +24,6 @@
 			'label'=>Yii::t('RightsModule.core', 'Roles'),
 			'url'=>array('default/roles'),
 			'itemOptions'=>array('class'=>'roles'),
-		),
-		array(
-			'label'=>Yii::t('RightsModule.core', 'Assignments'),
-			'url'=>array('assignment/view'),
-			'itemOptions'=>array('class'=>'assignments'),
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Generator'),

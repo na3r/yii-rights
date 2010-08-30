@@ -160,23 +160,25 @@ class RightsAuthItemBehavior extends CBehavior
 	*/
 	public function permissionColumn($role)
 	{
-		$this->parent = $role;
-
-		$app = Yii::app();
-		$module = Rights::module();
-		$baseUrl = $module->baseUrl.'/';
-
-		$authorizer = $module->getAuthorizer();
-		$permission = $authorizer->hasPermission($this->owner->name, $this->parent->name);
-
-		$csrf = $this->getCsrfValidation();
-		$csrf = $csrf!==null ? ', '.$csrf : '';
-
-		// Permission is directly assigned
-		if( $permission===Rights::PERM_DIRECT )
+		if( $role->name!==$this->owner->name )
 		{
-			// Onclick script for the revoke link
-			$onclick = <<<EOD
+			$this->parent = $role;
+
+			$app = Yii::app();
+			$module = Rights::module();
+			$baseUrl = $module->baseUrl.'/';
+
+			$authorizer = $module->getAuthorizer();
+			$permission = $authorizer->hasPermission($this->owner->name, $this->parent->name);
+
+			$csrf = $this->getCsrfValidationParam();
+			$csrf = $csrf!==null ? ', '.$csrf : '';
+
+			// Permission is directly assigned
+			if( $permission===Rights::PERM_DIRECT )
+			{
+				// Onclick script for the revoke link
+				$onclick = <<<EOD
 jQuery.ajax({
 	type:'POST',
 	url:'{$app->createUrl($baseUrl.'authItem/revoke', array('name'=>$this->parent->name, 'child'=>$this->owner->name))}',
@@ -194,23 +196,27 @@ jQuery.ajax({
 
 return false;
 EOD;
-			return CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
-				'onclick'=>$onclick,
-				'class'=>'revokeLink',
-			));
-		}
-		// Permission is inherited from another permission
-		else if( $permission===Rights::PERM_INHERITED )
-		{
-			$parents = $module->getAuthorizer()->getAuthItemParents($this->owner->name, $this->parent->name, true);
-			$title = implode(', ', array_map(array('Rights', 'beautifyName'), array_keys($parents)));
-			return '<span class="inheritedItem" title="'.$title.'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
-		}
-		// Permission is not assigned
-		else
-		{
-			// Onclick script for the assign link
-			$onclick = <<<EOD
+				return CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
+					'onclick'=>$onclick,
+					'class'=>'revokeLink',
+				));
+			}
+			// Permission is inherited from another permission
+			else if( $permission===Rights::PERM_INHERITED )
+			{
+				$parents = $authorizer->getAuthItemParents($this->owner->name, $this->parent->name, true);
+				$items = array();
+				foreach( $parents as $name=>$item )
+					$items[] = Rights::beautifyName($name).' ('.Rights::getAuthItemTypeName($item->type).')';
+
+				$title = implode(', ', $items);
+				return '<span class="inheritedItem" title="'.$title.'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
+			}
+			// Permission is not assigned
+			else
+			{
+				// Onclick script for the assign link
+				$onclick = <<<EOD
 jQuery.ajax({
 	type:'POST',
 	url:'{$app->createUrl($baseUrl.'authItem/assign', array('name'=>$this->parent->name, 'child'=>$this->owner->name))}',
@@ -228,10 +234,15 @@ jQuery.ajax({
 
 return false;
 EOD;
-			return CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
-				'onclick'=>$onclick,
-				'class'=>'assignLink',
-			));
+				return CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
+					'onclick'=>$onclick,
+					'class'=>'assignLink',
+				));
+			}
+		}
+		else
+		{
+			return '';
 		}
 	}
 
@@ -240,7 +251,7 @@ EOD;
 	* if csrf-validation is enabled.
 	* @return string the csrf parameter.
 	*/
-	public static function getCsrfValidation()
+	public static function getCsrfValidationParam()
 	{
 		if( Yii::app()->request->enableCsrfValidation===true )
 		{

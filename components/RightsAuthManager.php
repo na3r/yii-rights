@@ -117,7 +117,7 @@ class RightsAuthManager extends CDbAuthManager
 				$items[ $row['name'] ]=new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], unserialize($row['data']));
 		}
 
-		$items = $this->processItems($items, $parent);
+		$items = $this->processItems($items, null, $parent);
 
 		return $items;
 	}

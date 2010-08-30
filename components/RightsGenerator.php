@@ -112,9 +112,14 @@ class RightsGenerator extends CApplicationComponent
 				{
 					++$lineNumber;
 					$line = fgets($file);
-					preg_match('/public function action([A-Z]{1}[a-zA-Z]+)\(/', $line, $matches);
+					preg_match('/public[ \t]+function[ \t]+action([A-Z]{1}[a-zA-Z0-9]+)[ \t]*\(/', $line, $matches);
 					if( $matches!==array() )
-						$actions[] = array('name'=>$matches[1], 'line'=>$lineNumber);
+					{
+						$actions[] = array(
+							'name'=>$matches[1],
+							'line'=>$lineNumber
+						);
+					}
 				}
 
 				$controllers[ $key ]['actions'] = $actions;

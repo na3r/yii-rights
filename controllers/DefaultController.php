@@ -69,7 +69,7 @@ class DefaultController extends Controller
 	{
 		// Create the permissions tree
 		$roles = $this->_authorizer->getRoles(false);
-		$items = $this->_authorizer->getAuthItems(array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK), null, null, true);
+		$items = $this->_authorizer->getAuthItems();
 
 		// View parameters
 		$params = array(

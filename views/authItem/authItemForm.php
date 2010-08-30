@@ -19,12 +19,12 @@ return array(
         'bizRule'=>array(
     		'type'=>'text',
     		'style'=>'width:320px',
-    		'visible'=>Rights::getConfig('enableBizRule')===true,
+    		'visible'=>Rights::module()->enableBizRule===true,
     	),
     	'data'=>array(
 	        'type'=>'text',
 	        'style'=>'width:320px',
-	        'visible'=>Rights::getConfig('enableBizRule')===true && Rights::getConfig('enableBizRuleData')===true,
+	        'visible'=>Rights::module()->enableBizRule===true && Rights::module()->enableBizRuleData===true,
 	    ),
     ),
     'buttons'=>array(
@@ -32,19 +32,19 @@ return array(
             'type'=>'submit',
             'label'=>Yii::t('RightsModule.core', 'Save'),
         ),
-        /*
+		/*
         // FIXME: This should work as a form link but doesn't.
         'delete'=>array(
         	'type'=>'link',
         	'label'=>Yii::t('RightsModule.core', 'Delete'),
         	'attributes'=>array(
-        		//'submit'=>'authItem/delete',
-        		//'params'=>array('name'=>isset($_GET['name'])===true ? $_GET['name'] : ''),
+        		'submit'=>'authItem/delete',
+        		'params'=>array('name'=>isset($_GET['name'])===true ? $_GET['name'] : ''),
         		//'return'=>true,
         		'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this item?'),
         	),
-        	'visible'=>$this->model->scenario!=='create',
+        	'visible'=>$this->model->scenario==='update',
         ),
-        */
+		*/
     ),
 );
