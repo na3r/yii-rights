@@ -1,5 +1,5 @@
 /**
-* Rights module style sheet file.
+* Rights module default style sheet file.
 *
 * @author Christoffer Niska
 * @copyright Copyright &copy; 2008 Christoffer Niska
@@ -7,7 +7,7 @@
 */
 
 /**
-* Core style.
+* Default style.
 */
 
 #rights * { font-family:Trebuchet MS, Verdana, san-serif !important; }
@@ -71,13 +71,10 @@
 
 #rights .miniTable { border:0; }
 #rights .miniTable * { font-size:11px; }
-#rights .miniTable th, .rightsMiniTable td { padding:8px; }
+#rights .miniTable th, #rights .miniTable td { padding:8px; }
 #rights .miniTable .odd td { background-color:#e8edff; }
 
 #rights .hover td { background-color:#ffffdd; }
-
-#rights .sortableTable .sortablePlaceholder { height:38px; background-color:#000000; }
-#rights .sortableTable .sortableHandle { cursor:pointer; }
 
 #rights .bizRuleColumn,
 #rights .dataColumn {
@@ -85,53 +82,11 @@
 	font-family:Consolas, Arial, san-serif !important;
 	font-size:11px;
 }
-#rights .miniTable .nameColumn { width:200px; }
-#rights .deleteColumn,
-#rights .removeColumn,
-#rights .revokeColumn { width:80px; text-align:right; }
-
-#rights #authItemParents,
-#rights #authItemChildren,
-#rights #userAssignments { margin-bottom:30px; }
-
-#rights .parentTable,
-#rights .childTable,
-#rights .userAssignmentTable { width:420px; }
-#rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
-
-#rights .superUser .superUserText { font-style:italic; }
-#rights .childCount .childCountNumber { font-weight:bold; }
 
 #rights .info { color:#808080; font-size:12px; font-style:italic; }
 #rights .hint { width:320px; color:#808080; font-size:11px; font-style:italic; }
-
-#rights .generateItemTable { margin:0; }
-#rights .generateItemTable tr td { cursor:pointer; }
-#rights .moduleRow { background-color:#bdc1d1; }
-#rights .controllerRow { background-color:#d3d7e8; }
-#rights .controllerNameColumn { font-size:12px; }
-#rights .checkboxColumn { width:20px; }
-#rights .pathColumn { color:#808080; font-style:italic; }
 
 #rights .exists * { color:#a0a0a0; }
 
 #rights #installConfirm,
 #rights #installReady { margin:30px 0; text-align:center; }
-
-/**
-* Tooltip style.
-*/
-
-#rightsTooltip {
-	max-width:500px;
-	padding:8px;
-    position:absolute;
-	background:url('../images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
-    border:1px solid #c0c0c0;
-    font-family:Consolas, Arial, san-serif !important;
-    font-size:11px;
-    -moz-border-radius:6px;
-    -webkit-border-radius:6px;
-}
-#rightsTooltip .heading { font-weight:bold; }
-#rightsTooltip .content { color:#808080; }

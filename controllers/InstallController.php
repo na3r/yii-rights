@@ -112,7 +112,7 @@ class InstallController extends Controller
 		// User is guest, deny access
 		else
 		{
-			throw new CHttpException(403, Yii::t('RightModule.install', 'You must be logged in to install Rights.'));
+			throw new CHttpException(403, Yii::t('RightsModule.install', 'You must be logged in to install Rights.'));
 		}
 	}
 

@@ -1,9 +1,10 @@
 <?php $this->widget('zii.widgets.CMenu', array(
+	'htmlOptions'=>array('class'=>'actions'),
 	'items'=>array(
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Assignments'),
 			'url'=>array('assignment/view'),
-			'itemOptions'=>array('class'=>'assignments'),
+			'itemOptions'=>array('class'=>'first assignments'),
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Permissions'),
@@ -28,7 +29,7 @@
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Generator'),
 			'url'=>array('authItem/generate'),
-			'itemOptions'=>array('class'=>'generator'),
+			'itemOptions'=>array('class'=>'last generator'),
 		),
 	)
 ));	?>

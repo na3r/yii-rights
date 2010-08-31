@@ -18,7 +18,7 @@ $this->breadcrumbs = array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No operations found.'),
-	    'htmlOptions'=>array('class'=>'operationTable'),
+	    'htmlOptions'=>array('class'=>'grid-view operationTable'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',

@@ -1,59 +1,49 @@
-<h2><?php echo Yii::t('RightsModule.core', 'Permissions'); ?></h2>
+<table class="permissionTable" border="0" cellpadding="0" cellspacing="0">
 
-<?php if( $items!==array() ): ?>
+	<thead>
 
-	<table class="permissionTable" border="0" cellpadding="0" cellspacing="0">
+		<tr>
 
-		<thead>
+			<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.core', 'Permission'); ?></th>
 
-			<tr>
+			<?php foreach( $roles as $roleName=>$role ): ?>
 
-				<th class="descriptionColumnHeading" style="width:25%;"><?php echo Yii::t('RightsModule.core', 'Permission'); ?></th>
+				<th class="roleColumnHeading" style="width:<?php echo $roleColumnWidth; ?>%"><?php echo CHtml::encode($roleName); ?></th>
+
+			<?php endforeach; ?>
+
+		</tr>
+
+	</thead>
+
+	<tbody>
+
+		<?php $i=0; foreach( $items as $name => $item ): ?>
+
+			<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+
+				<td><?php echo $item->description!='' ? CHtml::encode($item->description) : CHtml::encode($name); ?></td>
 
 				<?php foreach( $roles as $roleName=>$role ): ?>
 
-					<th class="roleColumnHeading" style="width:<?php echo $roleColumnWidth; ?>%"><?php echo CHtml::encode($roleName); ?></th>
+					<td><?php echo $item->permissionColumn($role); ?></td>
 
 				<?php endforeach; ?>
 
 			</tr>
 
-		</thead>
+		<?php endforeach; ?>
 
-		<tbody>
+	</tbody>
 
-			<?php $i=0; foreach( $items as $name => $item ): ?>
+</table>
 
-				<tr class="<?php echo ($i++ % 2)===0 ? 'odd' : 'even'; ?>">
+<p class="info">*) <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
 
-					<td><?php echo $item->description!='' ? CHtml::encode($item->description) : CHtml::encode($name); ?></td>
+<script type="text/javascript">
 
-					<?php foreach( $roles as $roleName=>$role ): ?>
+	jQuery('.inheritedItem').rightsTooltip({
+		title:'<?php echo Yii::t('RightsModule.core', 'Parents'); ?>: '
+	});
 
-						<td><?php echo $item->permissionColumn($role); ?></td>
-
-					<?php endforeach; ?>
-
-				</tr>
-
-			<?php endforeach; ?>
-
-		</tbody>
-
-	</table>
-
-	<p class="info">*) <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
-
-	<script type="text/javascript">
-
-		jQuery('.inheritedItem').rightsTooltip({
-			title:'<?php echo Yii::t('RightsModule.core', 'Parents'); ?>: '
-		});
-
-	</script>
-
-<?php else: ?>
-
-	<p><?php echo Yii::t('RightsModule.core', 'No authorization items found.'); ?></p>
-
-<?php endif; ?>
+</script>

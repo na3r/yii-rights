@@ -140,6 +140,7 @@ class RightsModule extends CWebModule
 		$cs->registerCoreScript('jquery');
 		$cs->registerScriptFile($juiUrl.'/js/jquery-ui.min.js');
 		$cs->registerScriptFile($assetsUrl.'/js/rights.js');
+		$cs->registerCssFile($assetsUrl.'/css/core.css');
 
 		// Make sure we want to register a style sheet
 		if( $this->cssFile!==false )

@@ -1,0 +1,74 @@
+/**
+* Rights module core style sheet file.
+*
+* @author Christoffer Niska
+* @copyright Copyright &copy; 2008 Christoffer Niska
+* @since 0.9.11
+*/
+
+/**
+* Core style.
+*/
+
+#rights .greenText { color:#00aa00; }
+#rights .redText { color:#ff0000; }
+
+#rights .deleteColumn,
+#rights .removeColumn,
+#rights .revokeColumn { width:80px; text-align:right; }
+
+#rights .parentTable,
+#rights .childTable,
+#rights .userAssignmentTable { width:420px; }
+
+#rights #authItemParents,
+#rights #authItemChildren,
+#rights #userAssignments { margin-bottom:30px; }
+
+#rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
+#rights .superUser .superUserText { font-style:italic; }
+#rights .childCount .childCountNumber { font-weight:bold; }
+
+/**
+* Installer style.
+*/
+
+#rights #installConfirm,
+#rights #installReady { margin:30px 0; text-align:center; }
+
+/**
+* Generator style.
+*/
+
+#rights .generateItemTable { margin:0; }
+#rights .generateItemTable tr td { cursor:pointer; }
+#rights .moduleRow { background-color:#bdc1d1; }
+#rights .controllerRow { background-color:#d3d7e8; }
+#rights .controllerNameColumn { font-size:12px; }
+#rights .checkboxColumn { width:20px; }
+#rights .pathColumn { color:#808080; font-style:italic; }
+
+/**
+* Sortable style.
+*/
+
+#rights .sortableTable .sortablePlaceholder { height:38px; background-color:#000000; }
+#rights .sortableTable .sortableHandle { cursor:pointer; }
+
+/**
+* Tooltip style.
+*/
+
+#rightsTooltip {
+	max-width:500px;
+	padding:8px;
+    position:absolute;
+	background:url('../images/bg_tooltip.gif') 100% 100% repeat-x #ffffff;
+    border:1px solid #c0c0c0;
+    font-family:Consolas, Arial, san-serif !important;
+    font-size:11px;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+}
+#rightsTooltip .heading { font-weight:bold; }
+#rightsTooltip .content { color:#808080; }

@@ -19,7 +19,7 @@ $this->breadcrumbs = array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No tasks found.'),
-	    'htmlOptions'=>array('class'=>'taskTable'),
+	    'htmlOptions'=>array('class'=>'grid-view taskTable'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',
