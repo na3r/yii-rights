@@ -8,12 +8,6 @@
 */
 class RightsAuthItemDataProvider extends CDataProvider
 {
-	/**
-	* @var string the AuthItemModel class name. The {@link getData()} method
-	* will return a list of objects of this class.
-	*/
-	public $modelClass = 'AuthItemModel';
-
 	public $type;
 	public $userId;
 	public $parent;
@@ -27,10 +21,9 @@ class RightsAuthItemDataProvider extends CDataProvider
 	* @param array configuration (name=>value) to be applied as the initial property values of this class.
 	* @return RightsAuthItemDataProvider
 	*/
-	public function __construct($id, $type, $config=array())
+	public function __construct($id, $config=array())
 	{
-		$this->type = $type;
-		$this->setId($this->modelClass);
+		$this->setId($id);
 
 		foreach($config as $key=>$value)
 			$this->$key=$value;

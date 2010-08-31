@@ -11,7 +11,6 @@ class RightsAuthItemChildDataProvider extends RightsAuthItemDataProvider
 	/**
 	* Constructs the data provider.
 	* @param string the data provider identifier.
-	* @param integer the item type(s). (0: operation, 1: task, 2: role)
 	* @param array configuration (name=>value) to be applied as the initial property values of this class.
 	* @return RightsAuthItemDataProvider
 	*/
@@ -21,7 +20,7 @@ class RightsAuthItemChildDataProvider extends RightsAuthItemDataProvider
 		$this->setId($parent->name);
 
 		foreach($config as $key=>$value)
-			$this->$key=$value;
+			$this->$key = $value;
 	}
 
 	/**
@@ -30,7 +29,7 @@ class RightsAuthItemChildDataProvider extends RightsAuthItemDataProvider
 	*/
 	public function fetchData()
 	{
-		$this->items = Rights::getAuthorizer()->getAuthItemChildren($this->parent->name);
+		$this->items = Rights::getAuthorizer()->getAuthItemChildren($this->parent->name, $this->type);
 		return parent::fetchData();
 	}
 }

@@ -29,6 +29,7 @@
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'dataProvider'=>$parentDataProvider,
 					'template'=>'{items}',
+					'hideHeader'=>true,
 					'emptyText'=>Yii::t('RightsModule.core', 'This item has no parents.'),
 					'htmlOptions'=>array('class'=>'miniTable parentTable'),
 					'columns'=>array(
@@ -58,6 +59,7 @@
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'dataProvider'=>$childDataProvider,
 					'template'=>'{items}',
+					'hideHeader'=>true,
 					'emptyText'=>Yii::t('RightsModule.core', 'This item has no children.'),
 					'htmlOptions'=>array('class'=>'miniTable parentTable'),
 					'columns'=>array(
@@ -87,11 +89,11 @@
 
 			</div>
 
-			<?php if( $childForm!==null ): ?>
+			<div id="authItemAddChild">
 
-				<div id="authItemAddChild">
+				<h4><?php echo Yii::t('RightsModule.core', 'Add Child'); ?></h4>
 
-					<h4><?php echo Yii::t('RightsModule.core', 'Add Child'); ?></h4>
+				<?php if( $childForm!==null ): ?>
 
 					<div class="form">
 
@@ -99,9 +101,13 @@
 
 					</div>
 
-				</div>
+				<?php else: ?>
 
-			<?php endif; ?>
+					<p class="info"><?php echo Yii::t('RightsModule.core', 'No children available to be added to this item.'); ?>
+
+				<?php endif; ?>
+
+			</div>
 
 		<?php else: ?>
 

@@ -186,18 +186,27 @@ class RightsAuthorizer extends CApplicationComponent
 	/**
 	* Returns the parents of the specified authorization item.
 	* @param mixed the item name for which to get its parents.
+	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* meaning returning all items regardless of their type.
 	* @param string the name of the item in which permissions to search.
 	* @param boolean whether we want the specified items parent or all parents.
 	* @return array the names of the parent items.
 	*/
-	public function getAuthItemParents($item, $parentName=null, $direct=false)
+	public function getAuthItemParents($item, $type=null, $parentName=null, $direct=false)
 	{
 		if( ($item instanceof CAuthItem)===false )
 			$item = $this->_authManager->getAuthItem($item);
 
 		$permissions = $this->getPermissions($parentName);
 		$parentNames = $this->getAuthItemParentsRecursive($item->name, $permissions, $direct);
-		return $this->_authManager->getAuthItemsByNames($parentNames, $item);
+		$parents = $this->_authManager->getAuthItemsByNames($parentNames, $item);
+
+		if( $type!==null )
+			foreach( $parents as $n=>$i )
+				if( (int)$i->type!==$type )
+					unset($parents[ $n ]);
+
+		return $parents;
 	}
 
 	/**
@@ -240,16 +249,19 @@ class RightsAuthorizer extends CApplicationComponent
 	/**
 	* Returns the children for the specified authorization item recursively.
 	* @param mixed the item for which to get its children.
+	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* meaning returning all items regardless of their type.
 	* @return array the names of the item's children.
 	*/
-	public function getAuthItemChildren($item)
+	public function getAuthItemChildren($item, $type=null)
 	{
 		if( ($item instanceof CAuthItem)===false )
 			$item = $this->_authManager->getAuthItem($item);
 
 		$childrenNames = array();
 		foreach( $item->getChildren() as $name=>$child )
-			$childrenNames[] = $name;
+			if( $type===null || (int)$child->type===$type )
+				$childrenNames[] = $name;
 
 		return $this->_authManager->getAuthItemsByNames($childrenNames, $item);
 	}

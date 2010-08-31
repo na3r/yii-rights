@@ -105,7 +105,7 @@ class AssignmentController extends Controller
 			// Create a from to add a child for the authorization item
 		    $form = new CForm(array(
 				'elements'=>array(
-					'authItem'=>array(
+					'itemname'=>array(
 					    'type'=>'dropdownlist',
 					    'items'=>$selectOptions,
 					),
@@ -122,9 +122,9 @@ class AssignmentController extends Controller
 		    if( $form->submitted()===true && $form->validate()===true )
 			{
 				// Update and redirect
-				$this->_authorizer->authManager->assign($form->model->authItem, $model->getId());
+				$this->_authorizer->authManager->assign($form->model->itemname, $model->getId());
 				Yii::app()->user->setFlash($this->_module->flashSuccessKey,
-					Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->authItem)))
+					Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->itemname)))
 				);
 				$this->redirect(array('assignment/user', 'id'=>$model->getId()));
 			}
@@ -136,7 +136,7 @@ class AssignmentController extends Controller
 		}
 
 		// Create a data provider for listing the assignments
-		$dataProvider = new RightsAuthItemDataProvider('assignments', null, array(
+		$dataProvider = new RightsAuthItemDataProvider('assignments', array(
 			'userId'=>$model->getId(),
 		));
 

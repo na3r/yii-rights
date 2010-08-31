@@ -11,6 +11,7 @@
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider'=>$dataProvider,
 		'template'=>'{items}',
+		'hideHeader'=>true,
 		'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'),
 		'htmlOptions'=>array('class'=>'miniTable userAssignmentTable'),
 		'columns'=>array(

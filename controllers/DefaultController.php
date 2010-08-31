@@ -90,7 +90,8 @@ class DefaultController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$dataProvider = new RightsAuthItemDataProvider('operationTable', CAuthItem::TYPE_OPERATION, array(
+		$dataProvider = new RightsAuthItemDataProvider('operationTable', array(
+			'type'=>CAuthItem::TYPE_OPERATION,
 			'sortable'=>array(
 				'id'=>'RightsOperationTableSort',
 				'element'=>'.operationTable',
@@ -111,7 +112,8 @@ class DefaultController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$dataProvider = new RightsAuthItemDataProvider('taskTable', CAuthItem::TYPE_TASK, array(
+		$dataProvider = new RightsAuthItemDataProvider('taskTable', array(
+			'type'=>CAuthItem::TYPE_TASK,
 			'sortable'=>array(
 				'id'=>'RightsTaskTableSort',
 				'element'=>'.taskTable',
@@ -132,7 +134,8 @@ class DefaultController extends Controller
 	*/
 	public function actionRoles()
 	{
-		$dataProvider = new RightsAuthItemDataProvider('roleTable', CAuthItem::TYPE_ROLE, array(
+		$dataProvider = new RightsAuthItemDataProvider('roleTable', array(
+			'type'=>CAuthItem::TYPE_ROLE,
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
 				'element'=>'.roleTable',

@@ -16,7 +16,7 @@ class AuthChildForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('name', 'required'),
+			array('name', 'safe'),
 		);
 	}
 
@@ -26,7 +26,7 @@ class AuthChildForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'name' => Yii::t('RightsModule.core', 'Name'),
+			'name' => Yii::t('RightsModule.core', 'Authorization item'),
 		);
 	}
 }

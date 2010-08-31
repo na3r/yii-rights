@@ -19,7 +19,7 @@ class RightsAuthItemParentDataProvider extends RightsAuthItemDataProvider
 		$this->setId($parent->name);
 
 		foreach($config as $key=>$value)
-			$this->$key=$value;
+			$this->$key = $value;
 	}
 
 	/**
@@ -28,7 +28,7 @@ class RightsAuthItemParentDataProvider extends RightsAuthItemDataProvider
 	*/
 	public function fetchData()
 	{
-		$this->items = Rights::getAuthorizer()->getAuthItemParents($this->parent->name, null, true);
+		$this->items = Rights::getAuthorizer()->getAuthItemParents($this->parent->name, $this->type, null, true);
 		return parent::fetchData();
 	}
 }

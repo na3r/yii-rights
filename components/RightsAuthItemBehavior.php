@@ -130,6 +130,18 @@ class RightsAuthItemBehavior extends CBehavior
 	}
 
 	/**
+	* Returns the markup for the remove parent column.
+	* @return string the markup.
+	*/
+	public function removeParentColumn()
+	{
+		return CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
+			'submit'=>array('authItem/removeChild', 'name'=>$this->owner->name, 'child'=>$this->parent->name),
+			'class'=>'removeLink',
+		));
+	}
+
+	/**
 	* Returns the markup for the remove child column.
 	* @return string the markup.
 	*/
@@ -156,9 +168,10 @@ class RightsAuthItemBehavior extends CBehavior
 	/**
 	* Returns the markup for the permission column.
 	* @param CAuthItem the role for which the permission is.
+	* @param boolean whether to include the type when listing parents.
 	* @return string the markup.
 	*/
-	public function permissionColumn($role)
+	public function permissionColumn($role, $includeType=false)
 	{
 		if( $role->name!==$this->owner->name )
 		{
@@ -204,10 +217,10 @@ EOD;
 			// Permission is inherited from another permission
 			else if( $permission===Rights::PERM_INHERITED )
 			{
-				$parents = $authorizer->getAuthItemParents($this->owner->name, $this->parent->name, true);
+				$parents = $authorizer->getAuthItemParents($this->owner->name, null, $this->parent->name, true);
 				$items = array();
 				foreach( $parents as $name=>$item )
-					$items[] = Rights::beautifyName($name).' ('.Rights::getAuthItemTypeName($item->type).')';
+					$items[] = Rights::beautifyName($name).($includeType===true ? ' ('.Rights::getAuthItemTypeName($item->type).')' : '');
 
 				$title = implode(', ', $items);
 				return '<span class="inheritedItem" title="'.$title.'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';

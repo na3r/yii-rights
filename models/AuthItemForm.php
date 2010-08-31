@@ -73,6 +73,10 @@ class AuthItemForm extends CFormModel
 			$this->addError('name', Yii::t('RightsModule.core', 'Name of the superuser cannot be changed.'));
 	}
 
+	/**
+	* Makes sure that the business rule is not empty when data is specified.
+	* This is the 'bizRuleNotEmpty' validator as declared in rules().
+	*/
 	public function bizRuleNotEmpty($attribute, $params)
 	{
 		if( empty($this->data)===false && empty($this->bizRule)===true )

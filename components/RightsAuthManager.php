@@ -12,6 +12,38 @@ class RightsAuthManager extends CDbAuthManager
 	public $itemWeightTable = 'AuthItemWeight';
 
 	/**
+	* Adds an item as a child of another item making sure that
+	* the item doesn't already have this child.
+	* @param string the parent item name
+	* @param string the child item name
+	* @throws CException if either parent or child doesn't exist or if a loop has been detected.
+	*/
+	public function addItemChild($itemName, $childName)
+	{
+		// Make sure that the item doesn't already have this child
+		if( $this->hasItemChild($itemName, $childName)===false )
+			return parent::addItemChild($itemName, $childName);
+	}
+
+	/**
+	* Assigns an authorization item to a user making sure that
+	* the user doesn't already have this assignment.
+	* @param string the item name
+	* @param mixed the user ID (see {@link IWebUser::getId})
+	* @param string the business rule to be executed when {@link checkAccess} is called
+	* for this particular authorization item.
+	* @param mixed additional data associated with this assignment
+	* @return CAuthAssignment the authorization assignment information.
+	* @throws CException if the item does not exist or if the item has already been assigned to the user
+	*/
+	public function assign($itemName, $userId, $bizRule=null, $data=null)
+	{
+		// Make sure that this user doesn't already have this assignment
+		if( $this->getAuthAssignment($itemName, $userId)===null )
+			return parent::assign($itemName, $userId, $bizRule, $data);
+	}
+
+	/**
 	* Returns the authorization items of the specific type and user.
 	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
@@ -90,7 +122,7 @@ class RightsAuthManager extends CDbAuthManager
 	* @param array the names of the authorization items to get.
 	* @return array the authorization items.
 	*/
-	public function getAuthItemsByNames($names, CAuthItem $parent=null, $sort=false)
+	public function getAuthItemsByNames($names, CAuthItem $parent=null, $sort=true)
 	{
 		$items = array();
 

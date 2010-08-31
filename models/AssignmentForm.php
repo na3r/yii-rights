@@ -8,7 +8,7 @@
 */
 class AssignmentForm extends CFormModel
 {
-	public $authItem;
+	public $itemname;
 
 	/**
 	 * Declares the validation rules.
@@ -16,7 +16,7 @@ class AssignmentForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('authItem', 'required'),
+			array('itemname', 'safe'),
 		);
 	}
 
@@ -26,7 +26,7 @@ class AssignmentForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'authItem' => Yii::t('RightModule.core', 'Authorization item'),
+			'itemname' => Yii::t('RightModule.core', 'Authorization item'),
 		);
 	}
 }

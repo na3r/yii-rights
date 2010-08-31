@@ -14,10 +14,12 @@
 #rights a { color:#666699; font-weight:bold; text-decoration:none; }
 #rights a:hover { color:#666699; text-decoration:underline; }
 #rights hr { height:0; border-style:none; border-bottom:1px dashed #f0f0f0; }
+
+#rights #content { position:relative; }
 #rights .greenText { color:#00aa00; }
 #rights .redText { color:#ff0000; }
 
-#rights .menu { margin:20px 0; }
+#rights .menu { margin:0 0 20px 0; }
 #rights .menu ul { margin:0; padding:0; list-style-type:none; }
 #rights .menu li {
 	display:inline;
@@ -30,9 +32,9 @@
 #rights .menu a { color:#ffffff; font-size:12px; text-decoration:none; }
 #rights .menu a:hover { color:#ffffff; text-decoration:none; }
 
-#rights .flashes { height:40px; }
+#rights .flashes { width:910px; height:40px; position:absolute; top:55px; left:20px; }
 #rights .flash {
-	margin:0 0 20px 0;
+	margin:0;
 	padding:8px 12px;
 	font-size:12px;
 	font-style:italic;
