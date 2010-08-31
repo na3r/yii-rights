@@ -11,7 +11,7 @@
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No users found.'),
-	    'htmlOptions'=>array('class'=>'grid-view assignmentTable'),
+	    'htmlOptions'=>array('class'=>'assignmentTable'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',

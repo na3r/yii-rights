@@ -19,7 +19,7 @@ $this->breadcrumbs = array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No roles found.'),
-	    'htmlOptions'=>array('class'=>'grid-view roleTable'),
+	    'htmlOptions'=>array('class'=>'roleTable'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',

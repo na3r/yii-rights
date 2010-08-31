@@ -31,7 +31,7 @@
 					'template'=>'{items}',
 					'hideHeader'=>true,
 					'emptyText'=>Yii::t('RightsModule.core', 'This item has no parents.'),
-					'htmlOptions'=>array('class'=>'grid-view miniTable parentTable'),
+					'htmlOptions'=>array('class'=>'miniTable parentTable'),
 					'columns'=>array(
     					array(
     						'name'=>'name',
@@ -47,12 +47,14 @@
     						'htmlOptions'=>array('class'=>'typeColumn'),
     						'value'=>'$data->typeColumn()',
     					),
+    					/*
     					array(
-    						'name'=>'',
     						'header'=>'&nbsp;',
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'removeColumn'),
+    						'value'=>'',
     					),
+    					*/
 					)
 				)); ?>
 
@@ -67,7 +69,7 @@
 					'template'=>'{items}',
 					'hideHeader'=>true,
 					'emptyText'=>Yii::t('RightsModule.core', 'This item has no children.'),
-					'htmlOptions'=>array('class'=>'grid-view miniTable parentTable'),
+					'htmlOptions'=>array('class'=>'miniTable parentTable'),
 					'columns'=>array(
     					array(
     						'name'=>'name',

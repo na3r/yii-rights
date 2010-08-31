@@ -13,7 +13,7 @@
 		'template'=>'{items}',
 		'hideHeader'=>true,
 		'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'),
-		'htmlOptions'=>array('class'=>'grid-view miniTable userAssignmentTable'),
+		'htmlOptions'=>array('class'=>'miniTable userAssignmentTable'),
 		'columns'=>array(
     		array(
     			'name'=>'name',
