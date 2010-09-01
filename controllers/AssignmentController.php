@@ -55,6 +55,14 @@ class AssignmentController extends Controller
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
 			),
+			array('allow',  // Allow to view and revoke assignments if the user can manage them
+				'actions'=>array(
+					'view',
+					'user',
+					'revoke',
+				),
+				'expression'=>"Yii::app()->user->checkAccess('Rights_Assignments')",
+			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
 			),

@@ -5,31 +5,37 @@
 			'label'=>Yii::t('RightsModule.core', 'Assignments'),
 			'url'=>array('assignment/view'),
 			'itemOptions'=>array('class'=>'first assignments'),
+			'visible'=>Yii::app()->user->checkAccess('Rights_Assignments')===true,
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Permissions'),
 			'url'=>array('default/permissions'),
 			'itemOptions'=>array('class'=>'permissions'),
+			'visible'=>Yii::app()->user->checkAccess('Rights_Permissions')===true,
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Operations'),
 			'url'=>array('default/operations'),
 			'itemOptions'=>array('class'=>'operations'),
+			'visible'=>Yii::app()->user->checkAccess('Rights_Administration')===true,
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Tasks'),
 			'url'=>array('default/tasks'),
 			'itemOptions'=>array('class'=>'tasks'),
+			'visible'=>Yii::app()->user->checkAccess('Rights_Administration')===true,
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Roles'),
 			'url'=>array('default/roles'),
 			'itemOptions'=>array('class'=>'roles'),
+			'visible'=>Yii::app()->user->checkAccess('Rights_Administration')===true,
 		),
 		array(
 			'label'=>Yii::t('RightsModule.core', 'Generator'),
 			'url'=>array('authItem/generate'),
 			'itemOptions'=>array('class'=>'last generator'),
+			'visible'=>Yii::app()->user->checkAccess('Rights_Administration')===true,
 		),
 	)
 ));	?>

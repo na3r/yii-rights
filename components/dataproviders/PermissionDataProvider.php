@@ -121,7 +121,7 @@ class PermissionDataProvider extends CDataProvider
 		foreach( $this->_items as $itemName=>$item )
 		{
 			$row = array();
-			$row['description'] = empty($item->description)===false ? CHtml::encode($item->description) : CHtml::encode($itemName);
+			$row['description'] = empty($item->description)===false ? $item->description : $itemName;
 
 			foreach( $this->_roles as $roleName=>$role )
 			{

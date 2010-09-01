@@ -64,6 +64,13 @@ class AuthItemController extends Controller
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
 			),
+			array('allow', // Allow assign and revoke if the user can manage permission
+				'actions'=>array(
+					'assign',
+					'revoke'
+				),
+				'expression'=>"Yii::app()->user->checkAccess('Rights_Permissions')",
+			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
@@ -89,7 +96,7 @@ class AuthItemController extends Controller
 				Yii::app()->user->setFlash($this->_module->flashSuccessKey,
 					Yii::t('RightsModule.core', ':name created.', array(':name'=>Rights::beautifyName($form->model->name)))
 				);
-				$this->redirect(array('authItem/update', 'name'=>$form->model->name));
+				$this->redirect(array(Rights::getAuthItemRoute($form->model->type)));
 			}
 		}
 		else

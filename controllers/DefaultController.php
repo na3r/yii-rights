@@ -56,6 +56,10 @@ class DefaultController extends Controller
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
 			),
+			array('allow', // Allow permissions if the user can manage them
+				'actions'=>array('permissions'),
+				'expression'=>"Yii::app()->user->checkAccess('Rights_Assignments')",
+			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
