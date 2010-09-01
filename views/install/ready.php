@@ -1,8 +1,8 @@
-<div id="installReady">
+<div id="installer" class="ready">
 
 	<h2><?php echo Yii::t('RightsModule.install', 'Congratulations!'); ?></h2>
 
-	<p class="greenText">
+	<p class="green-text">
 		<?php echo Yii::t('RightsModule.install', 'Rights has been installed succesfully.'); ?>
 	</p>
 

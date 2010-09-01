@@ -6,54 +6,68 @@
 * @since 0.9.11
 */
 
+#rights #updateAuthItem .parents,
+#rights #updateAuthItem .children { margin-bottom:30px; }
+
+#rights .delete-column,
+#rights .remove-column,
+#rights .revoke-column { width:80px; text-align:right; }
+
+#rights .parent-table,
+#rights .child-table,
+#rights .user-assignment-table { width:420px; }
+
+#rights .permission-table .inherited-item { cursor:pointer; }
+
 /**
-* Core style.
+* Flash message style.
 */
 
-#rights .greenText { color:#00aa00; }
-#rights .redText { color:#ff0000; }
-
-#rights .deleteColumn,
-#rights .removeColumn,
-#rights .revokeColumn { width:80px; text-align:right; }
-
-#rights .parentTable,
-#rights .childTable,
-#rights .userAssignmentTable { width:420px; }
-
-#rights #authItemParents,
-#rights #authItemChildren,
-#rights #userAssignments { margin-bottom:30px; }
-
-#rights .permissionTable .inheritedItem { cursor:pointer; font-style:italic; }
-#rights .superUser .superUserText { font-style:italic; }
-#rights .childCount .childCountNumber { font-weight:bold; }
+#rights .flashes {
+	width:910px;
+	height:40px;
+	position:absolute;
+	top:55px;
+	left:20px;
+}
+#rights .flash {
+	margin:0;
+	padding:8px 12px;
+	font-size:12px;
+	font-style:italic;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+#rights .flash.success { color:#007700; background-color:#e0f8dd; }
+#rights .flash.error { color:#7a0000; background-color:#fdd9d9; }
 
 /**
 * Installer style.
 */
 
-#rights #installConfirm,
-#rights #installReady { margin:30px 0; text-align:center; }
+#rights #installer { margin:30px 0; text-align:center; }
+
+#rights .green-text { color:#00aa00; }
+#rights .red-text { color:#ff0000; }
 
 /**
 * Generator style.
 */
 
-#rights .generateItemTable { margin:0; }
-#rights .generateItemTable tr td { cursor:pointer; }
-#rights .moduleRow { background-color:#bdc1d1; }
-#rights .controllerRow { background-color:#d3d7e8; }
-#rights .controllerNameColumn { font-size:12px; }
-#rights .checkboxColumn { width:20px; }
-#rights .pathColumn { color:#808080; font-style:italic; }
+#rights #generator table.items { margin:0; }
+#rights #generator table.items tr td { cursor:pointer; }
+#rights #generator table.items .module-row { background-color:#bdc1d1; }
+#rights #generator table.items .controller-row { background-color:#d3d7e8; }
+#rights #generator table.items .controller-name-column { font-size:12px; }
+#rights #generator table.items .checkbox-column { width:20px; }
+#rights #generator table.items .path-column { color:#808080; font-style:italic; }
+#rights #generator table.items tr.exists * { color:#a0a0a0; }
 
 /**
 * Sortable style.
 */
 
-#rights .sortableTable .sortablePlaceholder { height:38px; background-color:#000000; }
-#rights .sortableTable .sortableHandle { cursor:pointer; }
+#rights .sortable-table .sortable-placeholder { height:38px; background-color:#000000; }
 
 /**
 * Tooltip style.

@@ -3,7 +3,7 @@
 	Yii::t('RightsModule.core', 'Permissions'),
 ); ?>
 
-<div id="rightsPermissions">
+<div id="permissions">
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Permissions'); ?></h2>
 

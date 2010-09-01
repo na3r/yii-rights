@@ -4,13 +4,13 @@ $this->breadcrumbs = array(
 	Yii::t('RightsModule.core', 'Operations'),
 ); ?>
 
-<div id="rightsOperations">
+<div id="operations">
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Operations'); ?></h2>
 
 	<p>
 		<?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION), array(
-			'class'=>'addOperationLink',
+			'class'=>'add-operation-link',
 		)); ?>
 	</p>
 
@@ -18,38 +18,38 @@ $this->breadcrumbs = array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No operations found.'),
-	    'htmlOptions'=>array('class'=>'operationTable'),
+	    'htmlOptions'=>array('class'=>'grid-view operation-table sortable-table'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',
     			'header'=>Yii::t('RightsModule.core', 'Name'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'nameColumn'),
+    			'htmlOptions'=>array('class'=>'name-column'),
     			'value'=>'$data->nameColumn(true, true)',
     		),
     		array(
     			'name'=>'description',
     			'header'=>Yii::t('RightsModule.core', 'Description'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'descriptionColumn'),
+    			'htmlOptions'=>array('class'=>'description-column'),
     		),
     		array(
     			'name'=>'bizRule',
     			'header'=>Yii::t('RightsModule.core', 'Business rule'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'bizRuleColumn'),
+    			'htmlOptions'=>array('class'=>'bizrule-column'),
     		),
     		array(
     			'name'=>'data',
     			'header'=>Yii::t('RightsModule.core', 'Data'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'dataColumn'),
+    			'htmlOptions'=>array('class'=>'data-column'),
     		),
     		array(
     			'name'=>'delete',
     			'header'=>'&nbsp;',
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'deleteColumn'),
+    			'htmlOptions'=>array('class'=>'delete-column'),
     			'value'=>'$data->deleteOperationColumn()',
     		),
 	    )

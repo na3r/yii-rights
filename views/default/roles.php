@@ -5,13 +5,13 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<div id="rightsRoles">
+<div id="roles">
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Roles'); ?></h2>
 
 	<p>
 		<?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new role'), array('authItem/create', 'type'=>CAuthItem::TYPE_ROLE), array(
-			'class'=>'addRoleLink',
+			'class'=>'add-role-link',
 		)); ?>
 	</p>
 
@@ -19,38 +19,38 @@ $this->breadcrumbs = array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No roles found.'),
-	    'htmlOptions'=>array('class'=>'roleTable'),
+	    'htmlOptions'=>array('class'=>'grid-view role-table'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',
     			'header'=>Yii::t('RightsModule.core', 'Name'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'nameColumn'),
+    			'htmlOptions'=>array('class'=>'name-column'),
     			'value'=>'$data->nameRoleColumn(true, true, true)',
     		),
     		array(
     			'name'=>'description',
     			'header'=>Yii::t('RightsModule.core', 'Description'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'descriptionColumn'),
+    			'htmlOptions'=>array('class'=>'description-column'),
     		),
     		array(
     			'name'=>'bizRule',
     			'header'=>Yii::t('RightsModule.core', 'Business rule'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'bizRuleColumn'),
+    			'htmlOptions'=>array('class'=>'bizrule-column'),
     		),
     		array(
     			'name'=>'data',
     			'header'=>Yii::t('RightsModule.core', 'Data'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'dataColumn'),
+    			'htmlOptions'=>array('class'=>'data-column'),
     		),
     		array(
     			'name'=>'delete',
     			'header'=>'&nbsp;',
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'deleteColumn'),
+    			'htmlOptions'=>array('class'=>'delete-column'),
     			'value'=>'$data->deleteRoleColumn()',
     		),
 	    )

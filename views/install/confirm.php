@@ -1,8 +1,8 @@
-<div id="installConfirm">
+<div id="installer" class="confirm">
 
 	<h2><?php echo Yii::t('RightsModule.install', 'Install Rights'); ?></h2>
 
-	<p class="redText">
+	<p class="red-text">
 		<?php echo Yii::t('RightsModule.install', 'Rights is already installed!'); ?>
 	</p>
 

@@ -94,7 +94,7 @@ class DefaultController extends Controller
 			'type'=>CAuthItem::TYPE_OPERATION,
 			'sortable'=>array(
 				'id'=>'RightsOperationTableSort',
-				'element'=>'.operationTable',
+				'element'=>'.operation-table',
 				'url'=>$this->createUrl('authItem/processSortable'),
 			),
 		));
@@ -116,7 +116,7 @@ class DefaultController extends Controller
 			'type'=>CAuthItem::TYPE_TASK,
 			'sortable'=>array(
 				'id'=>'RightsTaskTableSort',
-				'element'=>'.taskTable',
+				'element'=>'.task-table',
 				'url'=>$this->createUrl('authItem/processSortable'),
 			),
 		));
@@ -138,7 +138,7 @@ class DefaultController extends Controller
 			'type'=>CAuthItem::TYPE_ROLE,
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
-				'element'=>'.roleTable',
+				'element'=>'.role-table',
 				'url'=>$this->createUrl('authItem/processSortable'),
 			),
 		));

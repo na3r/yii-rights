@@ -57,7 +57,7 @@ class RightsAuthItemBehavior extends CBehavior
 	*/
 	public function superuserIndicator()
 	{
-		return '<span class="superuser">(<span class="superuserText">'.Yii::t('RightsModule.core', 'superuser').'</span>)</span>';
+		return '<span class="superuser">(<span class="superuser-text">'.Yii::t('RightsModule.core', 'superuser').'</span>)</span>';
 	}
 
 	/**
@@ -69,7 +69,7 @@ class RightsAuthItemBehavior extends CBehavior
 		if( $this->childCount===null )
 			$this->childCount = count($this->owner->getChildren());
 
-		return $this->childCount>0 ? ' <span class="childCount">[ <span class="childCountNumber">'.$this->childCount.'</span> ]</span>' : '';
+		return $this->childCount>0 ? ' <span class="child-count">[ <span class="child-count-number">'.$this->childCount.'</span> ]</span>' : '';
 	}
 
 	/**
@@ -78,7 +78,7 @@ class RightsAuthItemBehavior extends CBehavior
 	*/
 	public function sortableId()
 	{
-	 	return ' <span class="authItemName" style="display:none;">'.$this->owner->name.'</span>';
+	 	return ' <span class="auth-item-name" style="display:none;">'.$this->owner->name.'</span>';
 	}
 
 	/**
@@ -99,7 +99,7 @@ class RightsAuthItemBehavior extends CBehavior
 		return CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
 			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('default/operations')),
 			'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this operation?'),
-			'class'=>'deleteLink',
+			'class'=>'delete-link',
 		));
 	}
 
@@ -112,7 +112,7 @@ class RightsAuthItemBehavior extends CBehavior
 		return CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
 			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('default/tasks')),
 			'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this task?'),
-			'class'=>'deleteLink',
+			'class'=>'delete-link',
 		));
 	}
 
@@ -125,7 +125,7 @@ class RightsAuthItemBehavior extends CBehavior
 		return CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
 			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('default/roles')),
 			'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this role?'),
-			'class'=>'deleteLink',
+			'class'=>'delete-link',
 		));
 	}
 
@@ -137,7 +137,7 @@ class RightsAuthItemBehavior extends CBehavior
 	{
 		return CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
 			'submit'=>array('authItem/removeChild', 'name'=>$this->owner->name, 'child'=>$this->parent->name),
-			'class'=>'removeLink',
+			'class'=>'remove-link',
 		));
 	}
 
@@ -149,7 +149,7 @@ class RightsAuthItemBehavior extends CBehavior
 	{
 		return CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
 			'submit'=>array('authItem/removeChild', 'name'=>$this->parent->name, 'child'=>$this->owner->name),
-			'class'=>'removeLink',
+			'class'=>'remove-link',
 		));
 	}
 
@@ -161,7 +161,7 @@ class RightsAuthItemBehavior extends CBehavior
 	{
 		return CHtml::linkButton(Yii::t('RightsModule.core', 'Revoke'), array(
 			'submit'=>array('assignment/revoke', 'id'=>$this->userId, 'name'=>$this->owner->name),
-			'class'=>'revokeLink',
+			'class'=>'revoke-link',
 		));
 	}
 
@@ -200,7 +200,7 @@ jQuery.ajax({
 		$csrf
 	},
 	success:function() {
-		$("#rightsPermissions").load('{$app->createUrl($baseUrl.'default/permissions')}', {
+		$("#permissions").load('{$app->createUrl($baseUrl.'default/permissions')}', {
 			ajax:1
 			$csrf
 		});
@@ -211,7 +211,7 @@ return false;
 EOD;
 				return CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
 					'onclick'=>$onclick,
-					'class'=>'revokeLink',
+					'class'=>'revoke-link',
 				));
 			}
 			// Permission is inherited from another permission
@@ -223,7 +223,7 @@ EOD;
 					$items[] = Rights::beautifyName($name).($includeType===true ? ' ('.Rights::getAuthItemTypeName($item->type).')' : '');
 
 				$title = implode(', ', $items);
-				return '<span class="inheritedItem" title="'.$title.'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
+				return '<span class="inherited-item" title="'.$title.'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
 			}
 			// Permission is not assigned
 			else
@@ -238,7 +238,7 @@ jQuery.ajax({
 		$csrf
 	},
 	success:function() {
-		$("#rightsPermissions").load('{$app->createUrl($baseUrl.'default/permissions')}', {
+		$("#permissions").load('{$app->createUrl($baseUrl.'default/permissions')}', {
 			ajax:1
 			$csrf
 		});
@@ -249,7 +249,7 @@ return false;
 EOD;
 				return CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
 					'onclick'=>$onclick,
-					'class'=>'assignLink',
+					'class'=>'assign-link',
 				));
 			}
 		}

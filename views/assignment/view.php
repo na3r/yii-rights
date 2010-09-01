@@ -11,20 +11,20 @@
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
 	    'emptyText'=>Yii::t('RightsModule.core', 'No users found.'),
-	    'htmlOptions'=>array('class'=>'assignmentTable'),
+	    'htmlOptions'=>array('class'=>'grid-view assignment-table'),
 	    'columns'=>array(
     		array(
     			'name'=>'name',
     			'header'=>Yii::t('RightsModule.core', 'Name'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'nameColumn'),
+    			'htmlOptions'=>array('class'=>'name-column'),
     			'value'=>'$data->getAssignmentNameLink()',
     		),
     		array(
     			'name'=>'assignments',
     			'header'=>Yii::t('RightsModule.core', 'Assignments'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'assignmentColumn'),
+    			'htmlOptions'=>array('class'=>'assignment-column'),
     			'value'=>'$data->getAssignments()',
     		),
 	    )

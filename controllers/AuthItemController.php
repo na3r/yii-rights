@@ -132,8 +132,20 @@ class AuthItemController extends Controller
 		if( $selectOptions!==array() )
 		{
 			// Create the child form
-		    $childForm = new CForm('rights.views.authItem.authChildForm', new AuthChildForm);
-		    $childForm->elements['name']->items = $selectOptions; // Populate name items
+		    $childForm = new CForm(array(
+				'elements'=>array(
+					'name'=>array(
+						'type'=>'dropdownlist',
+						'items'=>$selectOptions,
+					),
+				),
+				'buttons'=>array(
+					'submit'=>array(
+						'type'=>'submit',
+						'label'=>Yii::t('RightsModule.core', 'Add'),
+					),
+				),
+			), new AuthChildForm);
 
 			// Child form is submitted and data is valid
 			if( $childForm->submitted()===true && $childForm->validate()===true )

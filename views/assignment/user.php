@@ -4,59 +4,63 @@
 	$model->getName(),
 ); ?>
 
-<div id="userAssignments" class="span-12 first">
+<div id="userAssignments">
 
-	<h2><?php echo Yii::t('RightsModule.core', 'Assignments for :username', array(':username'=>$model->getName())); ?></h2>
+	<div class="assignments span-12 first">
 
-	<?php $this->widget('zii.widgets.grid.CGridView', array(
-		'dataProvider'=>$dataProvider,
-		'template'=>'{items}',
-		'hideHeader'=>true,
-		'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'),
-		'htmlOptions'=>array('class'=>'miniTable userAssignmentTable'),
-		'columns'=>array(
-    		array(
-    			'name'=>'name',
-    			'header'=>Yii::t('RightsModule.core', 'Name'),
-    			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'nameColumn'),
-    			'value'=>'$data->nameColumn()',
-    		),
-    		array(
-    			'name'=>'type',
-    			'header'=>Yii::t('RightsModule.core', 'Type'),
-    			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'typeColumn'),
-    			'value'=>'$data->typeColumn()',
-    		),
-    		array(
-    			'name'=>'revoke',
-    			'header'=>'&nbsp;',
-    			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'revokeColumn'),
-    			'value'=>'$data->revokeAssignmentColumn()',
-    		),
-		)
-	)); ?>
+		<h2><?php echo Yii::t('RightsModule.core', 'Assignments for :username', array(':username'=>$model->getName())); ?></h2>
 
-</div>
+		<?php $this->widget('zii.widgets.grid.CGridView', array(
+			'dataProvider'=>$dataProvider,
+			'template'=>'{items}',
+			'hideHeader'=>true,
+			'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'),
+			'htmlOptions'=>array('class'=>'grid-view user-assignment-table mini'),
+			'columns'=>array(
+    			array(
+    				'name'=>'name',
+    				'header'=>Yii::t('RightsModule.core', 'Name'),
+    				'type'=>'raw',
+    				'htmlOptions'=>array('class'=>'name-column'),
+    				'value'=>'$data->nameColumn()',
+    			),
+    			array(
+    				'name'=>'type',
+    				'header'=>Yii::t('RightsModule.core', 'Type'),
+    				'type'=>'raw',
+    				'htmlOptions'=>array('class'=>'type-column'),
+    				'value'=>'$data->typeColumn()',
+    			),
+    			array(
+    				'name'=>'revoke',
+    				'header'=>'&nbsp;',
+    				'type'=>'raw',
+    				'htmlOptions'=>array('class'=>'revoke-column'),
+    				'value'=>'$data->revokeAssignmentColumn()',
+    			),
+			)
+		)); ?>
 
-<div id="addUserAssignment" class="span-11 last">
+	</div>
 
-	<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
+	<div class="add-user-assignment span-11 last">
 
-	<?php if( $form!==null ): ?>
+		<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
 
-		<div class="form">
+		<?php if( $form!==null ): ?>
 
-			<?php echo $form->render(); ?>
+			<div class="form">
 
-		</div>
+				<?php echo $form->render(); ?>
 
-	<?php else: ?>
+			</div>
 
-		<p class="info"><?php echo Yii::t('RightsModule.core', 'No assignments available to be assigned to this user.'); ?>
+		<?php else: ?>
 
-	<?php endif; ?>
+			<p class="info"><?php echo Yii::t('RightsModule.core', 'No assignments available to be assigned to this user.'); ?>
+
+		<?php endif; ?>
+
+	</div>
 
 </div>

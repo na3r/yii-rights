@@ -3,7 +3,7 @@
 	Yii::t('RightsModule.core', 'Create :type', array(':type'=>Rights::getAuthItemTypeName($_GET['type']))),
 ); ?>
 
-<div class="authItem">
+<div class="createAuthItem">
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Create :type', array(':type'=>Rights::getAuthItemTypeName($_GET['type']))); ?></h2>
 
