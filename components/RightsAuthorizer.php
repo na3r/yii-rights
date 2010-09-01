@@ -345,8 +345,8 @@ class RightsAuthorizer extends CApplicationComponent
 		}
 		else
 		{
-			foreach( $this->getRoles() as $name=>$item )
-				$permissions[ $name ] = $this->getPermissionsRecursive($item);
+			foreach( $this->getRoles() as $roleName=>$role )
+				$permissions[ $roleName ] = $this->getPermissionsRecursive($role);
 		}
 
 		return $permissions;

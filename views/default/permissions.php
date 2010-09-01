@@ -1,4 +1,4 @@
-<?php $this->breadcrumbs=array(
+<?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
 	Yii::t('RightsModule.core', 'Permissions'),
 ); ?>
@@ -7,18 +7,34 @@
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Permissions'); ?></h2>
 
-	<?php if( $items!==array() ): ?>
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+		'dataProvider'=>$dataProvider,
+		'template'=>'{items}',
+		'emptyText'=>Yii::t('RightsModule.core', 'No authorization items found.'),
+		'htmlOptions'=>array('class'=>'grid-view permission-table'),
+		'columns'=>$columns,
+	)); ?>
 
-		<?php $this->renderPartial('_permissions', array(
-			'roles'=>$roles,
-			'roleColumnWidth'=>$roleColumnWidth,
-			'items'=>$items,
-		)); ?>
+	<p class="info">*) <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
 
-	<?php else: ?>
+	<script type="text/javascript">
 
-		<p><?php echo Yii::t('RightsModule.core', 'No authorization items found.'); ?></p>
+		/**
+		* Attach the tooltip to the inherited items.
+		*/
+		jQuery('.inherited-item').rightsTooltip({
+			title:'<?php echo Yii::t('RightsModule.core', 'Parents'); ?>: '
+		});
 
-	<?php endif; ?>
+		/**
+		* Hover functionality for rights' tables.
+		*/
+		$('#rights tbody tr').hover(function() {
+			$(this).addClass('hover'); // On mouse over
+		}, function() {
+			$(this).removeClass('hover'); // On mouse out
+		});
+
+	</script>
 
 </div>

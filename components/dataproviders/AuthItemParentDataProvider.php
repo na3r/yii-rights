@@ -1,12 +1,12 @@
 <?php
 /**
-* Rights authorization item parent data provider class file.
+* Authorization item parent data provider class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.10
 */
-class RightsAuthItemParentDataProvider extends RightsAuthItemDataProvider
+class AuthItemParentDataProvider extends AuthItemDataProvider
 {
 	/**
 	* Constructs the data provider.

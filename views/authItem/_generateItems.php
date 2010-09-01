@@ -28,7 +28,7 @@
 
 	<?php if( $key==='modules' && $items['modules']!==array() ): ?>
 
-		<?php if( $showModuleHeadingRow===true ): ?>
+		<?php if( $moduleHeadingRowVisible===true ): ?>
 
 			<tr><th class="module-heading-row" colspan="3"><?php echo Yii::t('RightsModule.core', 'Modules'); ?></th></tr>
 

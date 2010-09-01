@@ -166,32 +166,18 @@ class RightsAuthItemBehavior extends CBehavior
 	}
 
 	/**
-	* Returns the markup for the permission column.
-	* @param CAuthItem the role for which the permission is.
-	* @param boolean whether to include the type when listing parents.
+	* Returns the markup for the revoke permission column.
+	* @param CAuthItem $role the role the permission is for.
 	* @return string the markup.
 	*/
-	public function permissionColumn($role, $includeType=false)
+	public function revokePermissionColumn($role)
 	{
-		if( $role->name!==$this->owner->name )
-		{
-			$this->parent = $role;
+		$this->parent = $role;
 
-			$app = Yii::app();
-			$module = Rights::module();
-			$baseUrl = $module->baseUrl.'/';
-
-			$authorizer = $module->getAuthorizer();
-			$permission = $authorizer->hasPermission($this->owner->name, $this->parent->name);
-
-			$csrf = $this->getCsrfValidationParam();
-			$csrf = $csrf!==null ? ', '.$csrf : '';
-
-			// Permission is directly assigned
-			if( $permission===Rights::PERM_DIRECT )
-			{
-				// Onclick script for the revoke link
-				$onclick = <<<EOD
+		$app = Yii::app();
+		$baseUrl = Rights::module()->baseUrl.'/';
+		$csrf = ($csrf = $this->getCsrfValidationParam())!==null ? ', '.$csrf : '';
+		$onclick = <<<EOD
 jQuery.ajax({
 	type:'POST',
 	url:'{$app->createUrl($baseUrl.'authItem/revoke', array('name'=>$this->parent->name, 'child'=>$this->owner->name))}',
@@ -209,27 +195,26 @@ jQuery.ajax({
 
 return false;
 EOD;
-				return CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
-					'onclick'=>$onclick,
-					'class'=>'revoke-link',
-				));
-			}
-			// Permission is inherited from another permission
-			else if( $permission===Rights::PERM_INHERITED )
-			{
-				$parents = $authorizer->getAuthItemParents($this->owner->name, null, $this->parent->name, true);
-				$items = array();
-				foreach( $parents as $name=>$item )
-					$items[] = Rights::beautifyName($name).($includeType===true ? ' ('.Rights::getAuthItemTypeName($item->type).')' : '');
 
-				$title = implode(', ', $items);
-				return '<span class="inherited-item" title="'.$title.'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
-			}
-			// Permission is not assigned
-			else
-			{
-				// Onclick script for the assign link
-				$onclick = <<<EOD
+		return CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
+			'onclick'=>$onclick,
+			'class'=>'revoke-link',
+		));
+	}
+
+	/**
+	* Returns the markup for the assign permission column.
+	* @param CAuthItem $role the role the permission is for.
+	* @return string the markup.
+	*/
+	public function assignPermissionColumn($role)
+	{
+		$this->parent = $role;
+
+		$app = Yii::app();
+		$baseUrl = Rights::module()->baseUrl.'/';
+		$csrf = ($csrf = $this->getCsrfValidationParam())!==null ? ', '.$csrf : '';
+		$onclick = <<<EOD
 jQuery.ajax({
 	type:'POST',
 	url:'{$app->createUrl($baseUrl.'authItem/assign', array('name'=>$this->parent->name, 'child'=>$this->owner->name))}',
@@ -247,16 +232,25 @@ jQuery.ajax({
 
 return false;
 EOD;
-				return CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
-					'onclick'=>$onclick,
-					'class'=>'assign-link',
-				));
-			}
-		}
-		else
-		{
-			return '';
-		}
+		return CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
+			'onclick'=>$onclick,
+			'class'=>'assign-link',
+		));
+	}
+
+	/**
+	* Returns the markup for the inherited permission column.
+	* @param array the parents for this item.
+	* @param boolean whether to display the parent item type.
+	* @return string the markup.
+	*/
+	public function inheritedPermissionColumn($parents, $typeVisible=false)
+	{
+		$items = array();
+		foreach( $parents as $name=>$item )
+			$items[] = Rights::beautifyName($name).($typeVisible===true ? ' ('.Rights::getAuthItemTypeName($item->type).')' : '');
+
+		return '<span class="inherited-item" title="'.implode(', ', $items).'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
 	}
 
 	/**

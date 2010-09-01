@@ -16,7 +16,7 @@
 
 	</div>
 
-	<div class="relations" class="span-11 last">
+	<div class="relations span-11 last">
 
 		<h2><?php echo Yii::t('RightsModule.core', 'Relations'); ?></h2>
 
@@ -47,14 +47,12 @@
     						'htmlOptions'=>array('class'=>'type-column'),
     						'value'=>'$data->typeColumn()',
     					),
-    					/*
     					array(
     						'header'=>'&nbsp;',
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'empty-column'),
     						'value'=>'',
     					),
-    					*/
 					)
 				)); ?>
 

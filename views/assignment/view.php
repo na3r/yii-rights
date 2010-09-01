@@ -3,7 +3,7 @@
 	Yii::t('RightsModule.core', 'Assignments'),
 ); ?>
 
-<div id="rightsAssignments">
+<div id="assignments">
 
 	<h2><?php echo Yii::t('RightsModule.core', 'Assignments'); ?></h2>
 

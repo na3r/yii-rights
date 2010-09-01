@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.10
 */
-class RightsAuthItemDataProvider extends CDataProvider
+class AuthItemDataProvider extends CDataProvider
 {
 	public $type;
 	public $userId;
@@ -17,7 +17,6 @@ class RightsAuthItemDataProvider extends CDataProvider
 	/**
 	* Constructs the data provider.
 	* @param string the data provider identifier.
-	* @param integer the item type(s). (0: operation, 1: task, 2: role)
 	* @param array configuration (name=>value) to be applied as the initial property values of this class.
 	* @return RightsAuthItemDataProvider
 	*/

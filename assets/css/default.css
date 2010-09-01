@@ -63,15 +63,16 @@
 	font-size:13px;
 	text-align:left;
 }
+#rights .grid-view table.items thead th { background:#ffffff; }
 #rights .grid-view table.items th,
 #rights .grid-view table.items td { padding:10px; border-style:none; }
-#rights .grid-view table.items .even { background-color:transparent; }
-#rights .grid-view table.items .odd { background-color:#e8edff; }
+#rights .grid-view table.items .even { background:transparent; }
+#rights .grid-view table.items .odd { background:#e8edff; }
 
 #rights .grid-view table.mini { border:0; }
 #rights .grid-view table.mini * { font-size:11px; }
 #rights .grid-view table.mini th, #rights .miniTable td { padding:8px; }
-#rights .grid-view table.mini .odd td { background-color:#e8edff; }
+#rights .grid-view table.mini .odd td { background:#e8edff; }
 
 #rights .bizrule-column,
 #rights .data-column {

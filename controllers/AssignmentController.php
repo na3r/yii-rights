@@ -136,7 +136,7 @@ class AssignmentController extends Controller
 		}
 
 		// Create a data provider for listing the assignments
-		$dataProvider = new RightsAuthItemDataProvider('assignments', array(
+		$dataProvider = new AuthItemDataProvider('assignments', array(
 			'userId'=>$model->getId(),
 		));
 

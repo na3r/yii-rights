@@ -67,22 +67,45 @@ class DefaultController extends Controller
 	*/
 	public function actionPermissions()
 	{
-		// Create the permissions tree
-		$roles = $this->_authorizer->getRoles(false);
-		$items = $this->_authorizer->getAuthItems();
+		$dataProvider = new PermissionDataProvider('permissions', array(
+			'parentTypeVisible'=>true,
+		));
 
-		// View parameters
+		$roles = $dataProvider->getRoles();
+		$roleColumnWidth = $roles!==array() ? 75/count($roles) : 0;
+
+		$columns = array();
+		$columns[] = array(
+    		'name'=>'description',
+    		'header'=>Yii::t('RightsModule.core', 'Permission'),
+    		'htmlOptions'=>array(
+    			'class'=>'permission-column',
+    			'style'=>'width:25%',
+    		),
+    	);
+
+    	foreach( $roles as $roleName=>$role )
+    	{
+    		$columns[] = array(
+				'name'=>strtolower($roleName),
+    			'header'=>$roleName,
+    			'type'=>'raw',
+    			'htmlOptions'=>array(
+    				'class'=>'role-column',
+    				'style'=>'width:'.$roleColumnWidth.'%',
+    			),
+    		);
+		}
+
+		$view = 'permissions';
+
 		$params = array(
-			'roles'=>$roles,
-			'items'=>$items,
-			'roleColumnWidth'=>$roles!==array() ? 75/count($roles) : 0,
+			'dataProvider'=>$dataProvider,
+			'columns'=>$columns,
 		);
 
 		// Render the view
-		if( Yii::app()->request->isPostRequest===true && isset($_POST['ajax'])===true )
-			$this->renderPartial('_permissions', $params);
-		else
-			$this->render('permissions', $params);
+		isset($_POST['ajax'])===true ? $this->renderPartial($view, $params) : $this->render($view, $params);
 	}
 
 	/**
@@ -90,7 +113,7 @@ class DefaultController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$dataProvider = new RightsAuthItemDataProvider('operationTable', array(
+		$dataProvider = new AuthItemDataProvider('operationTable', array(
 			'type'=>CAuthItem::TYPE_OPERATION,
 			'sortable'=>array(
 				'id'=>'RightsOperationTableSort',
@@ -112,7 +135,7 @@ class DefaultController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$dataProvider = new RightsAuthItemDataProvider('taskTable', array(
+		$dataProvider = new AuthItemDataProvider('taskTable', array(
 			'type'=>CAuthItem::TYPE_TASK,
 			'sortable'=>array(
 				'id'=>'RightsTaskTableSort',
@@ -134,7 +157,7 @@ class DefaultController extends Controller
 	*/
 	public function actionRoles()
 	{
-		$dataProvider = new RightsAuthItemDataProvider('roleTable', array(
+		$dataProvider = new AuthItemDataProvider('roleTable', array(
 			'type'=>CAuthItem::TYPE_ROLE,
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',

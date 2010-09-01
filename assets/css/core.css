@@ -9,6 +9,9 @@
 #rights #updateAuthItem .parents,
 #rights #updateAuthItem .children { margin-bottom:30px; }
 
+#rights .type-column { width:100px; }
+
+#rights .empty-column,
 #rights .delete-column,
 #rights .remove-column,
 #rights .revoke-column { width:80px; text-align:right; }
