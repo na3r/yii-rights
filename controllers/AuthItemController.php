@@ -135,6 +135,7 @@ class AuthItemController extends Controller
 		    $childForm = new CForm(array(
 				'elements'=>array(
 					'name'=>array(
+						'label'=>false,
 						'type'=>'dropdownlist',
 						'items'=>$selectOptions,
 					),
@@ -247,7 +248,7 @@ class AuthItemController extends Controller
 		$existingItems = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
 
 		Yii::app()->clientScript->registerScript('rightsGenerateItemTableSelectRows',
-			"jQuery('.generateItemTable').rightsSelectRows();"
+			"jQuery('.generate-item-table').rightsSelectRows();"
 		);
 
 		// Render the view

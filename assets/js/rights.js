@@ -43,15 +43,15 @@
 					// Check if we have a title
 					if( settings.title.length>0 ) {
 						// If so, append it to the tooltip
-						$('<span class="heading" />')
+						$('<div class="heading" />')
 						.appendTo($tooltip)
-						.text(settings.title);
+						.html(settings.title);
 					}
 
 					// Append the content to the tooltip
-					$('<span class="content" />')
+					$('<div class="content" />')
 					.appendTo($tooltip)
-					.text(title);
+					.html(title);
 
 					// Set the tooltip position and fade it in
 					$tooltip.css({

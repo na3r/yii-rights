@@ -106,6 +106,7 @@ class AssignmentController extends Controller
 		    $form = new CForm(array(
 				'elements'=>array(
 					'itemname'=>array(
+						'label'=>false,
 					    'type'=>'dropdownlist',
 					    'items'=>$selectOptions,
 					),

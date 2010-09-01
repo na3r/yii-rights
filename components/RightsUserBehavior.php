@@ -48,10 +48,10 @@ class RightsUserBehavior extends CModelBehavior
 
 	/**
 	* Gets the users assignments.
-	* @param boolean whether to include the authorization item type.
+	* @param boolean whether to display the authorization item type.
 	* @return string the assignments markup.
 	*/
-	public function getAssignments($includeType=false)
+	public function getAssignments($typeVisible=false)
 	{
 		$assignedItems = array();
 
@@ -59,18 +59,17 @@ class RightsUserBehavior extends CModelBehavior
 		$assignments = $authorizer->authManager->getAuthAssignments($this->getId());
 
 		// We need to include the type in the markup
-		if( $includeType===true )
+		$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
+		foreach( $items as $itemName=>$item )
 		{
-			$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
-			foreach( $items as $n=>$i )
-				$assignedItems[] = Rights::beautifyName($n).' (<span class="typeText">'.Rights::getAuthItemTypeName($i->type).'</span>)';
-		}
-		else
-		{
-			foreach( $assignments as $n=>$a )
-				$assignedItems[] = Rights::beautifyName($n);
+			$itemMarkup = $item->getHumanReadableName();
+
+			if( $typeVisible===true )
+				$itemMarkup .= ' (<span class="typeText">'.Rights::getAuthItemTypeName($item->type).'</span>)';
+
+			$assignedItems[] = $itemMarkup;
 		}
 
-		return implode(', ', $assignedItems);
+		return implode('<br />', $assignedItems);
 	}
 }

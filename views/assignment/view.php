@@ -22,7 +22,7 @@
     		),
     		array(
     			'name'=>'assignments',
-    			'header'=>Yii::t('RightsModule.core', 'Assignments'),
+    			'header'=>Yii::t('RightsModule.core', 'Assigned items'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'assignment-column'),
     			'value'=>'$data->getAssignments()',

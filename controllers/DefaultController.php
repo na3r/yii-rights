@@ -67,9 +67,7 @@ class DefaultController extends Controller
 	*/
 	public function actionPermissions()
 	{
-		$dataProvider = new PermissionDataProvider('permissions', array(
-			'parentTypeVisible'=>true,
-		));
+		$dataProvider = new PermissionDataProvider('permissions');
 
 		$roles = $dataProvider->getRoles();
 		$roleColumnWidth = $roles!==array() ? 75/count($roles) : 0;
@@ -77,7 +75,7 @@ class DefaultController extends Controller
 		$columns = array();
 		$columns[] = array(
     		'name'=>'description',
-    		'header'=>Yii::t('RightsModule.core', 'Permission'),
+    		'header'=>Yii::t('RightsModule.core', 'Item'),
     		'htmlOptions'=>array(
     			'class'=>'permission-column',
     			'style'=>'width:25%',

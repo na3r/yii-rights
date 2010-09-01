@@ -5,7 +5,7 @@
 
 <div id="generator">
 
-	<h2><?php echo Yii::t('RightsModule.core', 'Auth Item Generator'); ?></h2>
+	<h2><?php echo Yii::t('RightsModule.core', 'Authorization Item Generator'); ?></h2>
 
 	<div class="form">
 
@@ -45,11 +45,11 @@
 			<div class="row">
 
    				<?php echo CHtml::link(Yii::t('RightsModule.core', 'Select all'), '#', array(
-   					'onclick'=>"jQuery('.generateItemTable').find(':checkbox').attr('checked', 'checked'); return false;",
+   					'onclick'=>"jQuery('.generate-item-table').find(':checkbox').attr('checked', 'checked'); return false;",
    					'class'=>'selectAllLink')); ?>
    				/
 				<?php echo CHtml::link(Yii::t('RightsModule.core', 'Select none'), '#', array(
-					'onclick'=>"jQuery('.generateItemTable').find(':checkbox').removeAttr('checked'); return false;",
+					'onclick'=>"jQuery('.generate-item-table').find(':checkbox').removeAttr('checked'); return false;",
 					'class'=>'selectNoneLink')); ?>
 
 			</div>

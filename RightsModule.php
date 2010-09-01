@@ -68,6 +68,10 @@ class RightsModule extends CWebModule
 	* @var string the style sheet file to use for Rights.
 	*/
 	public $cssFile;
+	/**
+	* @var boolean whether ot enable debug mode.
+	*/
+	public $debug = false;
 
 	private $_assetsUrl;
 
@@ -163,8 +167,13 @@ class RightsModule extends CWebModule
 	{
 		if( $this->_assetsUrl===null )
 		{
-			$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets'), false, -1, true);
-			//$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('rights.assets')); // For release
+			$assetsPath = Yii::getPathOfAlias('rights.assets');
+
+			// We need to republish the assets if debug mode is enabled
+			if( $this->debug===true )
+				$this->_assetsUrl = Yii::app()->getAssetManager()->publish($assetsPath, false, -1, true);
+			else
+				$this->_assetsUrl = Yii::app()->getAssetManager()->publish($assetsPath);
 		}
 
 		return $this->_assetsUrl;
@@ -202,3 +211,4 @@ class RightsModule extends CWebModule
 		return '0.9.11';
 	}
 }
+

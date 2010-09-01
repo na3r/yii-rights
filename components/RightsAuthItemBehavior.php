@@ -24,6 +24,19 @@ class RightsAuthItemBehavior extends CBehavior
 	}
 
 	/**
+	* Returns the human readable name for a specific item.
+	* @param CAuthItem the item.
+	* @return string the name.
+	*/
+	public function getHumanReadableName($item=null)
+	{
+		if( $item===null )
+			$item = $this->owner;
+
+		return empty($item->description)===false ? $item->description : Rights::beautifyName($item->name);
+	}
+
+	/**
 	* Returns the markup for the name column.
 	* @param boolean whether to show the child count.
 	* @param boolean whether to show the sortable id.
@@ -248,9 +261,16 @@ EOD;
 	{
 		$items = array();
 		foreach( $parents as $name=>$item )
-			$items[] = Rights::beautifyName($name).($typeVisible===true ? ' ('.Rights::getAuthItemTypeName($item->type).')' : '');
+		{
+			$itemMarkup = $this->getHumanReadableName($item);
 
-		return '<span class="inherited-item" title="'.implode(', ', $items).'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
+			if( $typeVisible===true )
+				$itemMarkup .= ' ('.Rights::getAuthItemTypeName($item->type).')';
+
+			$items[] = $itemMarkup;
+		}
+
+		return '<span class="inherited-item" title="'.implode('<br />', $items).'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
 	}
 
 	/**

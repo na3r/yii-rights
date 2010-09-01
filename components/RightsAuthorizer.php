@@ -50,7 +50,7 @@ class RightsAuthorizer extends CApplicationComponent
 		$bizRule = $bizRule!=='' ? $bizRule : null;
 
 		if( $data!==null )
-			$data = empty($data)===false ? $this->sanitizeExpression('return '.$data.';') : null;
+			$data = $data!=='' ? $this->sanitizeExpression($data.';') : null;
 
 		return $this->_authManager->createAuthItem($name, $type, $description, $bizRule, $data);
 	}
@@ -73,7 +73,7 @@ class RightsAuthorizer extends CApplicationComponent
 
 		// Make sure that data is not already serialized
 		if( @unserialize($data)===false )
-			$authItem->data = $data!=='' ? $this->sanitizeExpression('return '.$data.';') : null;
+			$authItem->data = $data!=='' ? $this->sanitizeExpression($data.';') : null;
 
 		$this->_authManager->saveAuthItem($authItem, $oldName);
 	}
@@ -123,9 +123,9 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	protected function mergeAuthItems($array1, $array2)
 	{
-		foreach( $array2 as $name=>$item )
-			if( isset($array1[ $name ])===false )
-				$array1[ $name ] = $item;
+		foreach( $array2 as $itemName=>$item )
+			if( isset($array1[ $itemName ])===false )
+				$array1[ $itemName ] = $item;
 
 		return $array1;
 	}
@@ -154,9 +154,9 @@ class RightsAuthorizer extends CApplicationComponent
 		}
 
 		// Unset the items that are supposed to be excluded
-		foreach( $exclude as $name )
-			if( isset($items[ $name ])===true )
-				unset($items[ $name ]);
+		foreach( $exclude as $itemName )
+			if( isset($items[ $itemName ])===true )
+				unset($items[ $itemName ]);
 
 		return $items;
 	}
@@ -178,8 +178,8 @@ class RightsAuthorizer extends CApplicationComponent
 		$items = $this->getAuthItems($type, $userId, $parent, $sort, $exclude);
 
 		$selectOptions = array();
-       	foreach( $items as $n=>$i )
-			$selectOptions[ Rights::getAuthItemTypeNamePlural($i->type) ][ $n ] = Rights::beautifyName($i->name);
+       	foreach( $items as $itemName=>$item )
+			$selectOptions[ Rights::getAuthItemTypeNamePlural($item->type) ][ $itemName ] = $item->getHumanReadableName();
 
 		return $selectOptions;
 	}
@@ -201,8 +201,8 @@ class RightsAuthorizer extends CApplicationComponent
 		$items = $this->getAuthItems($type, $userId, $parent, $sort, $exclude);
 
 		$selectOptions = array();
-		foreach( $items as $n=>$i )
-        	$selectOptions[ $n ] = Rights::beautifyName($i->name);
+		foreach( $items as $itemName=>$item )
+        	$selectOptions[ $itemName ] = $item->getHumanReadableName();
 
         return $selectOptions;
 	}
@@ -226,9 +226,9 @@ class RightsAuthorizer extends CApplicationComponent
 		$parents = $this->_authManager->getAuthItemsByNames($parentNames, $item);
 
 		if( $type!==null )
-			foreach( $parents as $n=>$i )
-				if( (int)$i->type!==$type )
-					unset($parents[ $n ]);
+			foreach( $parents as $parentName=>$parent )
+				if( (int)$parent->type!==$type )
+					unset($parents[ $parentName ]);
 
 		return $parents;
 	}
@@ -243,23 +243,23 @@ class RightsAuthorizer extends CApplicationComponent
 	private function getAuthItemParentsRecursive($itemName, $items, $direct)
 	{
 		$parents = array();
-		foreach( $items as $name=>$children )
+		foreach( $items as $childName=>$children )
 		{
 		 	if( $children!==array() )
 		 	{
 		 		// Item found
 		 		if( isset($children[ $itemName ])===true )
 		 		{
-		 			if( isset($parents[ $name ])===false )
-		 				$parents[ $name ] = $name;
+		 			if( isset($parents[ $childName ])===false )
+		 				$parents[ $childName ] = $childName;
 				}
 				// Check if item is in the children recursively
 				else
 				{
 		 			if( ($p = $this->getAuthItemParentsRecursive($itemName, $children, $direct))!==array() )
 		 			{
-		 				if( $direct===false && isset($parents[ $name ])===false )
-		 					$parents[ $name ] = $name;
+		 				if( $direct===false && isset($parents[ $childName ])===false )
+		 					$parents[ $childName ] = $childName;
 
 		 				$parents = array_merge($parents, $p);
 					}
@@ -283,9 +283,9 @@ class RightsAuthorizer extends CApplicationComponent
 			$item = $this->_authManager->getAuthItem($item);
 
 		$childrenNames = array();
-		foreach( $item->getChildren() as $name=>$child )
+		foreach( $item->getChildren() as $childName=>$child )
 			if( $type===null || (int)$child->type===$type )
-				$childrenNames[] = $name;
+				$childrenNames[] = $childName;
 
 		return $this->_authManager->getAuthItemsByNames($childrenNames, $item);
 	}

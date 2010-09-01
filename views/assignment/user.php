@@ -14,7 +14,7 @@
 			'dataProvider'=>$dataProvider,
 			'template'=>'{items}',
 			'hideHeader'=>true,
-			'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any authorization items.'),
+			'emptyText'=>Yii::t('RightsModule.core', 'This user has not been assigned any items.'),
 			'htmlOptions'=>array('class'=>'grid-view user-assignment-table mini'),
 			'columns'=>array(
     			array(
@@ -22,7 +22,7 @@
     				'header'=>Yii::t('RightsModule.core', 'Name'),
     				'type'=>'raw',
     				'htmlOptions'=>array('class'=>'name-column'),
-    				'value'=>'$data->nameColumn()',
+    				'value'=>'$data->getHumanReadableName()',
     			),
     			array(
     				'name'=>'type',
@@ -45,7 +45,7 @@
 
 	<div class="add-user-assignment span-11 last">
 
-		<h3><?php echo Yii::t('RightsModule.core', 'Add Assignment'); ?></h3>
+		<h3><?php echo Yii::t('RightsModule.core', 'Assign item'); ?></h3>
 
 		<?php if( $form!==null ): ?>
 

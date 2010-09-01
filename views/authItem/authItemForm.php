@@ -9,12 +9,13 @@ return array(
     'elements'=>array(
         'name'=>array(
             'type'=>'text',
+            'hint'=>Yii::t('RightsModule.core', 'Do not change the name unless you know what you are doing!'),
             'maxlength'=>64,
             'style'=>'width:320px',
         ),
         'description'=>array(
             'type'=>'text',
-            'hint'=>Yii::t('RightsModule.core', 'A human readable name for this item.'),
+            'hint'=>Yii::t('RightsModule.core', 'A descriptive name for this item.'),
             'style'=>'width:320px',
         ),
         'bizRule'=>array(
