@@ -43,6 +43,17 @@ class RightsAuthManager extends CDbAuthManager
 			return parent::assign($itemName, $userId, $bizRule, $data);
 	}
 
+	public function getAuthItem($name)
+	{
+		if( ($item = parent::getAuthItem($name))!==null )
+		{
+			$items = $this->processItems(array($item));
+			$item = $items===(array)$items ? array_pop($items) : null;
+		}
+		
+		return $item;
+	}
+
 	/**
 	* Returns the authorization items of the specific type and user.
 	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,

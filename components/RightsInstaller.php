@@ -16,7 +16,7 @@ class RightsInstaller extends CApplicationComponent
 	private $_isInstalled;
 
 	/**
-	* @var CDbConnection
+	* @property CDbConnection
 	*/
 	public $db;
 

@@ -12,7 +12,7 @@ class PermissionDataProvider extends CDataProvider
 	* @property boolean whether to show the parent type
 	* in the inherited item tooltip.
 	*/
-	public $parentTypeVisible = false;
+	public $displayParentType = false;
 
 	private $_authorizer;
 	private $_roles;
@@ -121,24 +121,24 @@ class PermissionDataProvider extends CDataProvider
 		foreach( $this->_items as $itemName=>$item )
 		{
 			$row = array();
-			$row['description'] = empty($item->description)===false ? $item->description : $itemName;
+			$row['description'] = $item->getNameText();
 
 			foreach( $this->_roles as $roleName=>$role )
 			{
 				// Item is directly assigned to the role
 				if( $permissions[ $roleName ][ $itemName ]===Rights::PERM_DIRECT )
 				{
-					$permissionColumn = $item->revokePermissionColumn($role);
+					$permissionColumn = $item->getRevokePermissionLink($role);
 				}
 				// Item is inherited by the role from one of its children
 				else if( $permissions[ $roleName ][ $itemName ]===Rights::PERM_INHERITED && isset($parents[ $roleName ][ $itemName ])===true )
 				{
-					$permissionColumn = $item->inheritedPermissionColumn($parents[ $roleName ][ $itemName ], $this->parentTypeVisible);
+					$permissionColumn = $item->getInheritedPermissionText($parents[ $roleName ][ $itemName ], $this->displayParentType);
 				}
 				// Item is not assigned to the role
 				else
 				{
-					$permissionColumn = $item->assignPermissionColumn($role);
+					$permissionColumn = $item->getAssignPermissionLink($role);
 				}
 
 				// Populate role column

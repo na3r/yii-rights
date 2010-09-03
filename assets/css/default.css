@@ -87,5 +87,4 @@
 #rights .hint { width:320px; color:#808080; font-size:11px; font-style:italic; }
 
 #rights .permission-table .inherited-item { cursor:pointer; font-style:italic; }
-#rights .superuser .superuser-text { font-style:italic; }
-#rights .child-count .child-count-number { font-weight:bold; }
+#rights .child-count { font-weight:bold; }

@@ -14,6 +14,9 @@ class Rights
 	const PERM_DIRECT = 1;
 	const PERM_INHERITED = 2;
 
+	private static $_m;
+	private static $_a;
+
 	/**
 	* Assigns an authorization item to a specific user.
 	* @param string the name of the item to assign.
@@ -69,20 +72,6 @@ class Rights
 	}
 
 	/**
-	* Beautifies authorization item names.
-	* @param string the name to beautify.
-	* @return string the beautified name.
-	*/
-	public static function beautifyName($name)
-	{
-		$name = str_replace('*', 'Controller', $name);
-		$name = str_replace('.', ' ', $name);
-		$name = str_replace('_', ' ', $name);
-		$name = ucwords($name);
-		return $name;
-	}
-
-	/**
 	* Returns the name of a specific authorization item.
 	* @param integer the item type (0: operation, 1: task, 2: role).
 	* @return string the authorization item type name.
@@ -91,11 +80,11 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.core', 'Operation');
-			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.core', 'Task');
-			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.core', 'Role');
+			case CAuthItem::TYPE_OPERATION: return Rights::t('core', 'Operation');
+			case CAuthItem::TYPE_TASK: return Rights::t('core', 'Task');
+			case CAuthItem::TYPE_ROLE: return Rights::t('core', 'Role');
 			// Invalid type
-			default: throw new CException(Yii::t('RightsModule.core', 'Invalid authorization item type.'));
+			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
 
@@ -108,11 +97,11 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return Yii::t('RightsModule.core', 'Operations');
-			case CAuthItem::TYPE_TASK: return Yii::t('RightsModule.core', 'Tasks');
-			case CAuthItem::TYPE_ROLE: return Yii::t('RightsModule.core', 'Roles');
+			case CAuthItem::TYPE_OPERATION: return Rights::t('core', 'Operations');
+			case CAuthItem::TYPE_TASK: return Rights::t('core', 'Tasks');
+			case CAuthItem::TYPE_ROLE: return Rights::t('core', 'Roles');
 			// Invalid type
-			default: throw new CException(Yii::t('RightsModule.core', 'Invalid authorization item type.'));
+			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
 
@@ -125,11 +114,11 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return 'default/operations';
-			case CAuthItem::TYPE_TASK: return 'default/tasks';
-			case CAuthItem::TYPE_ROLE: return 'default/roles';
+			case CAuthItem::TYPE_OPERATION: return 'authItem/operations';
+			case CAuthItem::TYPE_TASK: return 'authItem/tasks';
+			case CAuthItem::TYPE_ROLE: return 'authItem/roles';
 			// Invalid type
-			default: throw new CException(Yii::t('RightsModule.core', 'Invalid authorization item type.'));
+			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
 
@@ -149,7 +138,7 @@ class Rights
 			// Operations can consist of other operations
 			case CAuthItem::TYPE_OPERATION: return array(CAuthItem::TYPE_OPERATION);
 			// Invalid type
-			default: throw new CException(Yii::t('RightsModule.core', 'Invalid authorization item type.'));
+			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
 
@@ -168,7 +157,10 @@ class Rights
 	*/
 	public static function module()
 	{
-		return self::findModule();
+		if( isset(self::$_m)===false )
+			self::$_m = self::findModule();
+
+		return self::$_m;
 	}
 
 	/**
@@ -199,7 +191,24 @@ class Rights
 	*/
 	public static function getAuthorizer()
 	{
-		$module = self::module();
-		return $module->getAuthorizer();
+		if( isset(self::$_a)===false )
+			self::$_a = self::module()->getAuthorizer();
+
+		return self::$_a;
+	}
+
+	/**
+	* Translates a message to the specified language.
+	* Wrapper class for setting the category correctly.
+	* @param string message category.
+	* @param string the original message.
+	* @param array parameters to be applied to the message using <code>strtr</code>.
+	* @param string which message source application component to use.
+	* @param string the target language.
+	* @return string the translated message.
+	*/
+	public static function t($category, $message, $params=array(), $source=null, $language=null)
+	{
+		return Yii::t('RightsModule.'.$category, $message, $params, $source, $language);
 	}
 }

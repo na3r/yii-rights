@@ -179,7 +179,7 @@ class RightsAuthorizer extends CApplicationComponent
 
 		$selectOptions = array();
        	foreach( $items as $itemName=>$item )
-			$selectOptions[ Rights::getAuthItemTypeNamePlural($item->type) ][ $itemName ] = $item->getHumanReadableName();
+			$selectOptions[ Rights::getAuthItemTypeNamePlural($item->type) ][ $itemName ] = $item->getNameText();
 
 		return $selectOptions;
 	}
@@ -202,7 +202,7 @@ class RightsAuthorizer extends CApplicationComponent
 
 		$selectOptions = array();
 		foreach( $items as $itemName=>$item )
-        	$selectOptions[ $itemName ] = $item->getHumanReadableName();
+        	$selectOptions[ $itemName ] = $item->getNameText();
 
         return $selectOptions;
 	}

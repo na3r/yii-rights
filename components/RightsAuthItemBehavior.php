@@ -8,14 +8,23 @@
 */
 class RightsAuthItemBehavior extends CBehavior
 {
+	/**
+	* @property integer the id of the user to whom this item is assigned.
+	*/
 	public $userId;
+	/**
+	* @property CAuthItem the parent item.
+	*/
 	public $parent;
+	/**
+	* @property integer the child count.
+	*/
 	public $childCount;
 
 	/**
 	* Constructs the behavior.
+	* @param integer the id of the user to whom this item is assigned
 	* @param CAuthItem the parent item.
-	* @return RightsAuthItemBehavior
 	*/
 	public function __construct($userId=null, CAuthItem $parent=null)
 	{
@@ -24,53 +33,37 @@ class RightsAuthItemBehavior extends CBehavior
 	}
 
 	/**
-	* Returns the human readable name for a specific item.
-	* @param CAuthItem the item.
-	* @return string the name.
+	* Returns the markup for the item name.
+	* @param boolean whether to display the human readable or system name.
+	* @return string the markup.
 	*/
-	public function getHumanReadableName($item=null)
+	public function getNameText($humanReadable=true)
 	{
-		if( $item===null )
-			$item = $this->owner;
-
-		return empty($item->description)===false ? $item->description : Rights::beautifyName($item->name);
+		return ($humanReadable===true && $this->owner->description!==null) ? $this->owner->description : $this->owner->name;
 	}
 
 	/**
-	* Returns the markup for the name column.
-	* @param boolean whether to show the child count.
-	* @param boolean whether to show the sortable id.
+	* Returns the markup for the name link.
+	* @param boolean whether to display the human readable or system name.
+	* @param boolean whether to display the child count.
+	* @param boolean whether to display the sortable id.
 	* @return string the markup.
 	*/
-	public function nameColumn($childCount=false, $sortableId=false)
+	public function getNameLink($humanReadable=true, $displayChildCount=false, $displaySortableId=false)
 	{
-		$markup = CHtml::link(Rights::beautifyName($this->owner->name), array('authItem/update', 'name'=>$this->owner->name, 'redirect'=>urlencode(Rights::getAuthItemRoute($this->owner->type))));
-		$markup.= $childCount===true ? $this->childCount() : '';
-		$markup.= $sortableId===true ? $this->sortableId() : '';
+		$markup = CHtml::link($this->getNameText($humanReadable), array(
+			'authItem/update',
+			'name'=>$this->owner->name,
+			'redirect'=>urlencode(Rights::getAuthItemRoute($this->owner->type))
+		));
+
+		if( $displayChildCount===true )
+			$markup .= $this->childCount();
+
+		if( $displaySortableId===true )
+			$markup .= $this->sortableId();
+
 		return $markup;
-	}
-
-	/**
-	* Returns the markup for the name column.
-	* @param boolean whether to show the child count.
-	* @param boolean whether to show the sortable id.
-	* @param boolean whether to show the super user indicator.
-	* @return string the markup.
-	*/
-	public function nameRoleColumn($childCount=false, $sortableId=false, $superuserIndicator=false)
-	{
-		$markup = $this->nameColumn($childCount, $sortableId);
-		$markup.= $this->owner->name===Rights::module()->superuserName ? $this->superuserIndicator() : '';
-		return $markup;
-	}
-
-	/**
-	* Returns the markup for the super user indicator.
-	* @return string the markup.
-	*/
-	public function superuserIndicator()
-	{
-		return '<span class="superuser">(<span class="superuser-text">'.Yii::t('RightsModule.core', 'superuser').'</span>)</span>';
 	}
 
 	/**
@@ -82,11 +75,11 @@ class RightsAuthItemBehavior extends CBehavior
 		if( $this->childCount===null )
 			$this->childCount = count($this->owner->getChildren());
 
-		return $this->childCount>0 ? ' <span class="child-count">[ <span class="child-count-number">'.$this->childCount.'</span> ]</span>' : '';
+		return $this->childCount>0 ? ' [ <span class="child-count">'.$this->childCount.'</span> ]' : '';
 	}
 
 	/**
-	* Returns the markup for the id required by jQuery UI sortable.
+	* Returns the markup for the id required by jui sortable.
 	* @return string the markup.
 	*/
 	public function sortableId()
@@ -95,95 +88,95 @@ class RightsAuthItemBehavior extends CBehavior
 	}
 
 	/**
-	* Returns the markup for the type column.
+	* Returns the markup for the item type.
 	* @return string the markup.
 	*/
-	public function typeColumn()
+	public function getTypeText()
 	{
 		return Rights::getAuthItemTypeName($this->owner->type);
 	}
 
 	/**
-	* Returns the markup for the delete operation column.
+	* Returns the markup for the delete operation link.
 	* @return string the markup.
 	*/
-	public function deleteOperationColumn()
+	public function getDeleteOperationLink()
 	{
-		return CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
-			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('default/operations')),
-			'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this operation?'),
+		return CHtml::linkButton(Rights::t('core', 'Delete'), array(
+			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('authItem/operations')),
+			'confirm'=>Rights::t('core', 'Are you sure you want to delete this operation?'),
 			'class'=>'delete-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the delete task column.
+	* Returns the markup for the delete task link.
 	* @return string the markup.
 	*/
-	public function deleteTaskColumn()
+	public function getDeleteTaskLink()
 	{
-		return CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
-			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('default/tasks')),
-			'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this task?'),
+		return CHtml::linkButton(Rights::t('core', 'Delete'), array(
+			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('authItem/tasks')),
+			'confirm'=>Rights::t('core', 'Are you sure you want to delete this task?'),
 			'class'=>'delete-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the delete role column.
+	* Returns the markup for the delete role link.
 	* @return string the markup.
 	*/
-	public function deleteRoleColumn()
+	public function getDeleteRoleLink()
 	{
-		return CHtml::linkButton(Yii::t('RightsModule.core', 'Delete'), array(
-			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('default/roles')),
-			'confirm'=>Yii::t('RightsModule.core', 'Are you sure you want to delete this role?'),
+		return CHtml::linkButton(Rights::t('core', 'Delete'), array(
+			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('authItem/roles')),
+			'confirm'=>Rights::t('core', 'Are you sure you want to delete this role?'),
 			'class'=>'delete-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the remove parent column.
+	* Returns the markup for the remove parent link.
 	* @return string the markup.
 	*/
-	public function removeParentColumn()
+	public function getRemoveParentLink()
 	{
-		return CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
+		return CHtml::linkButton(Rights::t('core', 'Remove'), array(
 			'submit'=>array('authItem/removeChild', 'name'=>$this->owner->name, 'child'=>$this->parent->name),
 			'class'=>'remove-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the remove child column.
+	* Returns the markup for the remove child link.
 	* @return string the markup.
 	*/
-	public function removeChildColumn()
+	public function getRemoveChildLink()
 	{
-		return CHtml::linkButton(Yii::t('RightsModule.core', 'Remove'), array(
+		return CHtml::linkButton(Rights::t('core', 'Remove'), array(
 			'submit'=>array('authItem/removeChild', 'name'=>$this->parent->name, 'child'=>$this->owner->name),
 			'class'=>'remove-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the revoke assignment column.
+	* Returns the markup for the revoke assignment link.
 	* @return string the markup.
 	*/
-	public function revokeAssignmentColumn()
+	public function getRevokeAssignmentLink()
 	{
-		return CHtml::linkButton(Yii::t('RightsModule.core', 'Revoke'), array(
+		return CHtml::linkButton(Rights::t('core', 'Revoke'), array(
 			'submit'=>array('assignment/revoke', 'id'=>$this->userId, 'name'=>$this->owner->name),
 			'class'=>'revoke-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the revoke permission column.
+	* Returns the markup for the revoke permission link.
 	* @param CAuthItem $role the role the permission is for.
 	* @return string the markup.
 	*/
-	public function revokePermissionColumn($role)
+	public function getRevokePermissionLink(CAuthItem $role)
 	{
 		$this->parent = $role;
 
@@ -199,7 +192,7 @@ jQuery.ajax({
 		$csrf
 	},
 	success:function() {
-		$("#permissions").load('{$app->createUrl($baseUrl.'default/permissions')}', {
+		$("#permissions").load('{$app->createUrl($baseUrl.'authItem/permissions')}', {
 			ajax:1
 			$csrf
 		});
@@ -208,19 +201,18 @@ jQuery.ajax({
 
 return false;
 EOD;
-
-		return CHtml::link(Yii::t('RightsModule.core', 'Revoke'), '#', array(
+		return CHtml::link(Rights::t('core', 'Revoke'), '#', array(
 			'onclick'=>$onclick,
 			'class'=>'revoke-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the assign permission column.
+	* Returns the markup for the assign permission link.
 	* @param CAuthItem $role the role the permission is for.
 	* @return string the markup.
 	*/
-	public function assignPermissionColumn($role)
+	public function getAssignPermissionLink(CAuthItem $role)
 	{
 		$this->parent = $role;
 
@@ -236,7 +228,7 @@ jQuery.ajax({
 		$csrf
 	},
 	success:function() {
-		$("#permissions").load('{$app->createUrl($baseUrl.'default/permissions')}', {
+		$("#permissions").load('{$app->createUrl($baseUrl.'authItem/permissions')}', {
 			ajax:1
 			$csrf
 		});
@@ -245,37 +237,37 @@ jQuery.ajax({
 
 return false;
 EOD;
-		return CHtml::link(Yii::t('RightsModule.core', 'Assign'), '#', array(
+		return CHtml::link(Rights::t('core', 'Assign'), '#', array(
 			'onclick'=>$onclick,
 			'class'=>'assign-link',
 		));
 	}
 
 	/**
-	* Returns the markup for the inherited permission column.
+	* Returns the markup for a inherited permission.
 	* @param array the parents for this item.
 	* @param boolean whether to display the parent item type.
 	* @return string the markup.
 	*/
-	public function inheritedPermissionColumn($parents, $typeVisible=false)
+	public function getInheritedPermissionText($parents, $displayType=false)
 	{
 		$items = array();
 		foreach( $parents as $name=>$item )
 		{
-			$itemMarkup = $this->getHumanReadableName($item);
+			$itemMarkup = $item->getNameText();
 
-			if( $typeVisible===true )
+			if( $displayType===true )
 				$itemMarkup .= ' ('.Rights::getAuthItemTypeName($item->type).')';
 
 			$items[] = $itemMarkup;
 		}
 
-		return '<span class="inherited-item" title="'.implode('<br />', $items).'">'.Yii::t('RightsModule.core', 'Inherited').' *</span>';
+		return '<span class="inherited-item" title="'.implode('<br />', $items).'">'.Rights::t('core', 'Inherited').' *</span>';
 	}
 
 	/**
-	* Returns the cross-site request forgery parameter
-	* if csrf-validation is enabled.
+	* Returns the cross-site request forgery parameter for Ajax-requests.
+	* Null is returned if csrf-validation is disabled.
 	* @return string the csrf parameter.
 	*/
 	public static function getCsrfValidationParam()

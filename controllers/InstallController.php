@@ -9,15 +9,11 @@
 class InstallController extends Controller
 {
 	/**
-	* @var RightsModule
-	*/
-	private $_module;
-	/**
-	* @var RightsAuthorizer
+	* @property RightsAuthorizer
 	*/
 	private $_authorizer;
 	/**
-	* @var RightsInstaller
+	* @property RightsInstaller
 	*/
 	private $_installer;
 
@@ -26,18 +22,16 @@ class InstallController extends Controller
 	*/
 	public function init()
 	{
-		$this->_module = $this->getModule();
-
-		if( $this->_module->install!==true )
+		if( $this->module->install!==true )
 			$this->redirect(Yii::app()->homeUrl);
 
-		$this->_authorizer = $this->_module->getAuthorizer();
-		$this->_installer = $this->_module->getInstaller();
-		$this->layout = $this->_module->layout;
+		$this->_authorizer = $this->module->getAuthorizer();
+		$this->_installer = $this->module->getInstaller();
+		$this->layout = $this->module->layout;
 		$this->defaultAction = 'run';
 
 		// Register the scripts
-		$this->_module->registerScripts();
+		$this->module->registerScripts();
 	}
 
 	/**
@@ -95,8 +89,8 @@ class InstallController extends Controller
 					$this->redirect(array('install/ready'));
 
 				// Set an error message
-				Yii::app()->getUser()->setFlash($this->_module->flashErrorKey,
-					Yii::t('RightsModule.install', 'Installation failed.')
+				Yii::app()->getUser()->setFlash($this->module->flashErrorKey,
+					Rights::t('install', 'Installation failed.')
 				);
 
 				// Redirect to Rights default action
@@ -112,7 +106,7 @@ class InstallController extends Controller
 		// User is guest, deny access
 		else
 		{
-			throw new CHttpException(403, Yii::t('RightsModule.install', 'You must be logged in to install Rights.'));
+			throw new CHttpException(403, Rights::t('install', 'You must be logged in to install Rights.'));
 		}
 	}
 

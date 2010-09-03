@@ -1,14 +1,14 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
 	Rights::getAuthItemTypeNamePlural($model->type)=>array(Rights::getAuthItemRoute($model->type)),
-	Rights::beautifyName($model->name),
+	$model->name,
 ); ?>
 
 <div id="updatedAuthItem">
 
 	<div class="form span-12 first">
 
-		<h2><?php echo Yii::t('RightsModule.core', 'Update :name', array(':name'=>Rights::beautifyName($model->name))); ?></h2>
+		<h2><?php echo Rights::t('core', 'Update :name', array(':name'=>$model->name)); ?></h2>
 
 		<p class="info"><?php echo Rights::getAuthItemTypeName($model->type); ?></p>
 
@@ -18,34 +18,34 @@
 
 	<div class="relations span-11 last">
 
-		<h2><?php echo Yii::t('RightsModule.core', 'Relations'); ?></h2>
+		<h2><?php echo Rights::t('core', 'Relations'); ?></h2>
 
 		<?php if( $model->name!==Rights::module()->superuserName ): ?>
 
 			<div class="parents">
 
-				<h3><?php echo Yii::t('RightsModule.core', 'Parents'); ?></h3>
+				<h3><?php echo Rights::t('core', 'Parents'); ?></h3>
 
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'dataProvider'=>$parentDataProvider,
 					'template'=>'{items}',
 					'hideHeader'=>true,
-					'emptyText'=>Yii::t('RightsModule.core', 'This item has no parents.'),
+					'emptyText'=>Rights::t('core', 'This item has no parents.'),
 					'htmlOptions'=>array('class'=>'grid-view parent-table mini'),
 					'columns'=>array(
     					array(
     						'name'=>'name',
-    						'header'=>Yii::t('RightsModule.core', 'Name'),
+    						'header'=>Rights::t('core', 'Name'),
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'name-column'),
-    						'value'=>'$data->nameColumn()',
+    						'value'=>'$data->getNameLink()',
     					),
     					array(
     						'name'=>'type',
-    						'header'=>Yii::t('RightsModule.core', 'Type'),
+    						'header'=>Rights::t('core', 'Type'),
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'type-column'),
-    						'value'=>'$data->typeColumn()',
+    						'value'=>'$data->getTypeText()',
     					),
     					array(
     						'header'=>'&nbsp;',
@@ -60,35 +60,35 @@
 
 			<div class="children">
 
-				<h3><?php echo Yii::t('RightsModule.core', 'Children'); ?></h3>
+				<h3><?php echo Rights::t('core', 'Children'); ?></h3>
 
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'dataProvider'=>$childDataProvider,
 					'template'=>'{items}',
 					'hideHeader'=>true,
-					'emptyText'=>Yii::t('RightsModule.core', 'This item has no children.'),
+					'emptyText'=>Rights::t('core', 'This item has no children.'),
 					'htmlOptions'=>array('class'=>'grid-view parent-table mini'),
 					'columns'=>array(
     					array(
     						'name'=>'name',
-    						'header'=>Yii::t('RightsModule.core', 'Name'),
+    						'header'=>Rights::t('core', 'Name'),
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'name-column'),
-    						'value'=>'$data->nameColumn()',
+    						'value'=>'$data->getNameLink()',
     					),
     					array(
     						'name'=>'type',
-    						'header'=>Yii::t('RightsModule.core', 'Type'),
+    						'header'=>Rights::t('core', 'Type'),
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'type-column'),
-    						'value'=>'$data->typeColumn()',
+    						'value'=>'$data->getTypeText()',
     					),
     					array(
     						'name'=>'remove',
     						'header'=>'&nbsp;',
     						'type'=>'raw',
     						'htmlOptions'=>array('class'=>'remove-column'),
-    						'value'=>'$data->removeChildColumn()',
+    						'value'=>'$data->getRemoveChildLink()',
     					),
 					)
 				)); ?>
@@ -97,7 +97,7 @@
 
 			<div class="addChild">
 
-				<h4><?php echo Yii::t('RightsModule.core', 'Add Child'); ?></h4>
+				<h4><?php echo Rights::t('core', 'Add Child'); ?></h4>
 
 				<?php if( $childForm!==null ): ?>
 
@@ -109,7 +109,7 @@
 
 				<?php else: ?>
 
-					<p class="info"><?php echo Yii::t('RightsModule.core', 'No children available to be added to this item.'); ?>
+					<p class="info"><?php echo Rights::t('core', 'No children available to be added to this item.'); ?>
 
 				<?php endif; ?>
 
@@ -119,8 +119,8 @@
 
 			<p class="info">
 
-				<?php echo Yii::t('RightsModule.core', 'No relations need to be set for the superuser role.'); ?><br />
-				<?php echo Yii::t('RightsModule.core', 'Super users are always granted access implicitly.'); ?>
+				<?php echo Rights::t('core', 'No relations need to be set for the superuser role.'); ?><br />
+				<?php echo Rights::t('core', 'Super users are always granted access implicitly.'); ?>
 
 			</p>
 

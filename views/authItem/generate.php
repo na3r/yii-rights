@@ -1,11 +1,13 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
-	Yii::t('RightsModule.core', 'Auth Item Generator'),
+	Rights::t('core', 'Generator'),
 ); ?>
 
 <div id="generator">
 
-	<h2><?php echo Yii::t('RightsModule.core', 'Authorization Item Generator'); ?></h2>
+	<h2><?php echo Rights::t('core', 'Generator'); ?></h2>
+
+	<p><?php echo Rights::t('core', 'Please select which operations you wish to generate.'); ?></p>
 
 	<div class="form">
 
@@ -13,42 +15,36 @@
 
 			<div class="row">
 
-				<p><?php echo Yii::t('RightsModule.core', 'Please select which authorization items you wish to generate.'); ?></p>
+				<table class="items generate-item-table" border="0" cellpadding="0" cellspacing="0">
 
-				<div class="grid-view">
+					<tbody>
 
-					<table class="items generate-item-table" border="0" cellpadding="0" cellspacing="0">
+						<tr class="application-heading-row">
+							<th colspan="3"><?php echo Rights::t('core', 'Application'); ?></th>
+						</tr>
 
-						<tbody>
+						<?php $this->renderPartial('_generateItems', array(
+							'model'=>$model,
+							'form'=>$form,
+							'items'=>$items,
+							'existingItems'=>$existingItems,
+							'displayModuleHeadingRow'=>true,
+							'basePathLength'=>strlen(Yii::app()->basePath),
+						)); ?>
 
-							<tr class="application-heading-row">
-								<th colspan="3"><?php echo Yii::t('RightsModule.core', 'Application'); ?></th>
-							</tr>
+					</tbody>
 
-							<?php $this->renderPartial('_generateItems', array(
-								'model'=>$model,
-								'form'=>$form,
-								'items'=>$items,
-								'existingItems'=>$existingItems,
-								'moduleHeadingRowVisible'=>true,
-								'basePathLength'=>strlen(Yii::app()->basePath),
-							)); ?>
-
-						</tbody>
-
-					</table>
-
-				</div>
+				</table>
 
 			</div>
 
 			<div class="row">
 
-   				<?php echo CHtml::link(Yii::t('RightsModule.core', 'Select all'), '#', array(
+   				<?php echo CHtml::link(Rights::t('core', 'Select all'), '#', array(
    					'onclick'=>"jQuery('.generate-item-table').find(':checkbox').attr('checked', 'checked'); return false;",
    					'class'=>'selectAllLink')); ?>
    				/
-				<?php echo CHtml::link(Yii::t('RightsModule.core', 'Select none'), '#', array(
+				<?php echo CHtml::link(Rights::t('core', 'Select none'), '#', array(
 					'onclick'=>"jQuery('.generate-item-table').find(':checkbox').removeAttr('checked'); return false;",
 					'class'=>'selectNoneLink')); ?>
 
@@ -56,7 +52,7 @@
 
    			<div class="row">
 
-				<?php echo CHtml::submitButton(Yii::t('RightsModule.core', 'Generate')); ?>
+				<?php echo CHtml::submitButton(Rights::t('core', 'Generate')); ?>
 
 			</div>
 

@@ -9,7 +9,7 @@
 class RightsWebUser extends CWebUser
 {
 	/**
-	* @var boolean whether the user is a superuser.
+	* @property boolean whether the user is a superuser.
 	*/
 	public $isSuperuser;
 

@@ -1,21 +1,21 @@
 <?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
-	Yii::t('RightsModule.core', 'Permissions'),
+	Rights::t('core', 'Permissions'),
 ); ?>
 
 <div id="permissions">
 
-	<h2><?php echo Yii::t('RightsModule.core', 'Permissions'); ?></h2>
+	<h2><?php echo Rights::t('core', 'Permissions'); ?></h2>
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider'=>$dataProvider,
 		'template'=>'{items}',
-		'emptyText'=>Yii::t('RightsModule.core', 'No authorization items found.'),
+		'emptyText'=>Rights::t('core', 'No authorization items found.'),
 		'htmlOptions'=>array('class'=>'grid-view permission-table'),
 		'columns'=>$columns,
 	)); ?>
 
-	<p class="info">*) <?php echo Yii::t('RightsModule.core', 'Hover to see from where the permission is inherited.'); ?></p>
+	<p class="info">*) <?php echo Rights::t('core', 'Hover to see from where the permission is inherited.'); ?></p>
 
 	<script type="text/javascript">
 
@@ -23,7 +23,7 @@
 		* Attach the tooltip to the inherited items.
 		*/
 		jQuery('.inherited-item').rightsTooltip({
-			title:'<?php echo Yii::t('RightsModule.core', 'Parents'); ?>: '
+			title:'<?php echo Rights::t('core', 'Parents'); ?>: '
 		});
 
 		/**

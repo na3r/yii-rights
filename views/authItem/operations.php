@@ -1,15 +1,14 @@
-<?php
-$this->breadcrumbs = array(
+<?php $this->breadcrumbs = array(
 	'Rights'=>Rights::getBaseUrl(),
-	Yii::t('RightsModule.core', 'Operations'),
+	Rights::t('core', 'Operations'),
 ); ?>
 
 <div id="operations">
 
-	<h2><?php echo Yii::t('RightsModule.core', 'Operations'); ?></h2>
+	<h2><?php echo Rights::t('core', 'Operations'); ?></h2>
 
 	<p>
-		<?php echo CHtml::link(Yii::t('RightsModule.core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION), array(
+		<?php echo CHtml::link(Rights::t('core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION), array(
 			'class'=>'add-operation-link',
 		)); ?>
 	</p>
@@ -17,31 +16,31 @@ $this->breadcrumbs = array(
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
-	    'emptyText'=>Yii::t('RightsModule.core', 'No operations found.'),
+	    'emptyText'=>Rights::t('core', 'No operations found.'),
 	    'htmlOptions'=>array('class'=>'grid-view operation-table sortable-table'),
 	    'columns'=>array(
-    		array(
+	    	array(
     			'name'=>'name',
-    			'header'=>Yii::t('RightsModule.core', 'Name'),
+    			'header'=>Rights::t('core', 'Name'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'name-column'),
-    			'value'=>'$data->nameColumn(true, true)',
+    			'value'=>'$data->getNameLink(false, true, true)',
     		),
     		array(
     			'name'=>'description',
-    			'header'=>Yii::t('RightsModule.core', 'Description'),
+    			'header'=>Rights::t('core', 'Description'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'description-column'),
     		),
     		array(
     			'name'=>'bizRule',
-    			'header'=>Yii::t('RightsModule.core', 'Business rule'),
+    			'header'=>Rights::t('core', 'Business rule'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'bizrule-column'),
     		),
     		array(
     			'name'=>'data',
-    			'header'=>Yii::t('RightsModule.core', 'Data'),
+    			'header'=>Rights::t('core', 'Data'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'data-column'),
     		),
@@ -50,11 +49,11 @@ $this->breadcrumbs = array(
     			'header'=>'&nbsp;',
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'delete-column'),
-    			'value'=>'$data->deleteOperationColumn()',
+    			'value'=>'$data->getDeleteOperationLink()',
     		),
 	    )
 	)); ?>
 
-	<p class="info"><?php echo Yii::t('RightsModule.core', 'Values within square brackets tell how many children each item has.'); ?></p>
+	<p class="info"><?php echo Rights::t('core', 'Values within square brackets tell how many children each item has.'); ?></p>
 
 </div>

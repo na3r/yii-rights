@@ -1,6 +1,6 @@
 <?php
 /**
-* Rights authorization item data provider class file.
+* Authorization item data provider class file.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
@@ -11,6 +11,7 @@ class AuthItemDataProvider extends CDataProvider
 	public $type;
 	public $userId;
 	public $parent;
+	public $exclude = array();
 	public $items;
 	public $sortable;
 
@@ -38,7 +39,7 @@ class AuthItemDataProvider extends CDataProvider
 			$this->processSortable();
 
 		if( $this->items===null )
-			$this->items = Rights::getAuthorizer()->getAuthItems($this->type, $this->userId, $this->parent, true);
+			$this->items = Rights::getAuthorizer()->getAuthItems($this->type, $this->userId, $this->parent, true, $this->exclude);
 
 		$data = array();
 		foreach( $this->items as $name=>$item )

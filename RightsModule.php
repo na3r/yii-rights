@@ -9,67 +9,67 @@
 class RightsModule extends CWebModule
 {
 	/**
-	* @var string the name of the role with superuser priviledges.
+	* @property string the name of the role with superuser priviledges.
 	*/
 	public $superuserName = 'Admin';
 	/**
-	* @var string the name of the guest role.
+	* @property string the name of the guest role.
 	*/
 	public $authenticatedName = 'Authenticated';
 	/**
-	* @var string the name of the guest role.
+	* @property string the name of the guest role.
 	*/
 	public $guestName = 'Guest';
 	/**
-	* @var array list of default roles.
+	* @property array list of default roles.
 	*/
 	public $defaultRoles = null;
 	/**
-	* @var string the name of the user model class.
+	* @property string the name of the user model class.
 	*/
 	public $userClass = 'User';
 	/**
-	* @var string the name of the id column in the user table.
+	* @property string the name of the id column in the user table.
 	*/
 	public $userIdColumn = 'id';
 	/**
-	* @var string the name of the username column in the user table.
+	* @property string the name of the username column in the user table.
 	*/
 	public $userNameColumn = 'username';
 	/**
-	* @var boolean whether to enable business rules.
+	* @property boolean whether to enable business rules.
 	*/
 	public $enableBizRule = true;
 	/**
-	* @var boolean whether to enable data for business rules.
+	* @property boolean whether to enable data for business rules.
 	*/
 	public $enableBizRuleData = false;
 	/**
-	* @var string the flash message key to use for success messages.
+	* @property string the flash message key to use for success messages.
 	*/
 	public $flashSuccessKey = 'RightsSuccess';
 	/**
-	* @var string the flash message key to use for error messages.
+	* @property string the flash message key to use for error messages.
 	*/
 	public $flashErrorKey = 'RightsError';
 	/**
-	* @var boolean whether to install rights when accessed.
+	* @property boolean whether to install rights when accessed.
 	*/
 	public $install = false;
 	/**
-	* @var string the base url to Rights. Override when module is nested.
+	* @property string the base url to Rights. Override when module is nested.
 	*/
 	public $baseUrl = '/rights';
 	/**
-	* @var string that path to the layout file to use for displaying Rights.
+	* @property string that path to the layout file to use for displaying Rights.
 	*/
 	public $layout;
 	/**
-	* @var string the style sheet file to use for Rights.
+	* @property string the style sheet file to use for Rights.
 	*/
 	public $cssFile;
 	/**
-	* @var boolean whether ot enable debug mode.
+	* @property boolean whether ot enable debug mode.
 	*/
 	public $debug = false;
 
@@ -107,6 +107,8 @@ class RightsModule extends CWebModule
 				'class'=>'RightsGenerator',
 			),
 		));
+
+		$this->defaultController = 'assignment';
 
 		// Set the installer if necessary
 		if( $this->install===true )
@@ -211,4 +213,3 @@ class RightsModule extends CWebModule
 		return '0.9.11';
 	}
 }
-

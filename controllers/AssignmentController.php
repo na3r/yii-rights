@@ -9,11 +9,7 @@
 class AssignmentController extends Controller
 {
 	/**
-	* @var RightsModule
-	*/
-	private $_module;
-	/**
-	* @var RightsAuthorizer
+	* @property RightsAuthorizer
 	*/
 	private $_authorizer;
 
@@ -22,13 +18,12 @@ class AssignmentController extends Controller
 	*/
 	public function init()
 	{
-		$this->_module = $this->getModule();
-		$this->_authorizer = $this->_module->getAuthorizer();
-		$this->layout = $this->_module->layout;
+		$this->_authorizer = $this->module->getAuthorizer();
+		$this->layout = $this->module->layout;
 		$this->defaultAction = 'view';
 
 		// Register the scripts
-		$this->_module->registerScripts();
+		$this->module->registerScripts();
 	}
 
 	/**
@@ -61,7 +56,7 @@ class AssignmentController extends Controller
 					'user',
 					'revoke',
 				),
-				'expression'=>"Yii::app()->user->checkAccess('Rights_Assignments')",
+				'roles'=>array('RightsAssignments'),
 			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
@@ -75,7 +70,7 @@ class AssignmentController extends Controller
 	public function actionView()
 	{
 		// Get the user model class
-		$userClass = $this->_module->userClass;
+		$userClass = $this->module->userClass;
 
 		// Create a data provider for listing the users
 		$dataProvider = new RightsActiveDataProvider($userClass, array(
@@ -99,7 +94,7 @@ class AssignmentController extends Controller
 	public function actionUser()
 	{
 		// Create the user model and attach the required behavior
-		$userClass = $this->_module->userClass;
+		$userClass = $this->module->userClass;
 		$model = CActiveRecord::model($userClass)->findByPk($_GET['id']);
 		$model->attachBehavior('rights', new RightsUserBehavior);
 
@@ -122,7 +117,7 @@ class AssignmentController extends Controller
 				'buttons'=>array(
 					'submit'=>array(
 					    'type'=>'submit',
-					    'label'=>Yii::t('RightsModule.core', 'Assign'),
+					    'label'=>Rights::t('core', 'Assign'),
 					),
 				),
 			), new AssignmentForm);
@@ -132,9 +127,12 @@ class AssignmentController extends Controller
 			{
 				// Update and redirect
 				$this->_authorizer->authManager->assign($form->model->itemname, $model->getId());
-				Yii::app()->user->setFlash($this->_module->flashSuccessKey,
-					Yii::t('RightsModule.core', ':name assigned.', array(':name'=>Rights::beautifyName($form->model->itemname)))
+				$item = $this->_authorizer->authManager->getAuthItem($form->model->itemname);
+
+				Yii::app()->user->setFlash($this->module->flashSuccessKey,
+					Rights::t('core', ':name assigned.', array(':name'=>$item->getNameText()))
 				);
+
 				$this->redirect(array('assignment/user', 'id'=>$model->getId()));
 			}
 		}
@@ -165,9 +163,13 @@ class AssignmentController extends Controller
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
+			// Revoke the item from the user and load it
 			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
-			Yii::app()->user->setFlash($this->_module->flashSuccessKey,
-				Yii::t('RightsModule.core', ':name revoked.', array(':name'=>Rights::beautifyName($_GET['name'])))
+			$item = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+
+			// Set flash message for revoking the item
+			Yii::app()->user->setFlash($this->module->flashSuccessKey,
+				Rights::t('core', ':name revoked.', array(':name'=>$item->getNameText()))
 			);
 
 			// if AJAX request, we should not redirect the browser
@@ -176,7 +178,7 @@ class AssignmentController extends Controller
 		}
 		else
 		{
-			throw new CHttpException(400, Yii::t('RightsModule.core', 'Invalid request. Please do not repeat this request again.'));
+			throw new CHttpException(400, Rights::t('core', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
 }

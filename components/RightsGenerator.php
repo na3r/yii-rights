@@ -12,7 +12,7 @@ class RightsGenerator extends CApplicationComponent
 	private $_items;
 
 	/**
-	* @var CDbConnection
+	* @property CDbConnection
 	*/
 	public $db;
 
@@ -95,6 +95,7 @@ class RightsGenerator extends CApplicationComponent
 	/**
 	* Returns all the controllers and their actions.
 	* @param array the controllers and actions.
+	* FIXME: Rewrite with directory iteratiors.
 	*/
 	public function getControllerActions($controllers=null)
 	{
@@ -115,7 +116,7 @@ class RightsGenerator extends CApplicationComponent
 					preg_match('/public[ \t]+function[ \t]+action([A-Z]{1}[a-zA-Z0-9]+)[ \t]*\(/', $line, $matches);
 					if( $matches!==array() )
 					{
-						$actions[] = array(
+						$actions[ strtolower($matches[1]) ] = array(
 							'name'=>$matches[1],
 							'line'=>$lineNumber
 						);
@@ -163,7 +164,7 @@ class RightsGenerator extends CApplicationComponent
 					$entryPath = $path.DIRECTORY_SEPARATOR.$entry;
 					if( strpos(strtolower($entry), 'controller')!==false )
 					{
-						$controllers[ substr($entry, 0, -14) ] = array(
+						$controllers['controllers'][ substr(strtolower($entry), 0, -14) ] = array(
 							'file'=>$entry,
 							'path'=>$entryPath,
 						);
@@ -201,8 +202,7 @@ class RightsGenerator extends CApplicationComponent
 						if( ($moduleControllers = $this->getControllersInPath($subModulePath.DIRECTORY_SEPARATOR.'controllers'))!==array() )
 							$controllers[ $entry ] = $moduleControllers;
 
-						if( ($subModuleControllers = $this->getControllersInModules($subModulePath))!==array() )
-							$controllers[ $entry ]['modules'] = $subModuleControllers;
+						$controllers[ $entry ]['modules'] = $this->getControllersInModules($subModulePath);
 					}
 				}
 			}

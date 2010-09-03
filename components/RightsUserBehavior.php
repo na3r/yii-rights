@@ -8,7 +8,13 @@
 */
 class RightsUserBehavior extends CModelBehavior
 {
+	/**
+	* @property the name of the id column.
+	*/
 	public $idColumn;
+	/**
+	* @property the name of the name column.
+	*/
 	public $nameColumn;
 
 	/**
@@ -51,21 +57,20 @@ class RightsUserBehavior extends CModelBehavior
 	* @param boolean whether to display the authorization item type.
 	* @return string the assignments markup.
 	*/
-	public function getAssignments($typeVisible=false)
+	public function getAssignments($displayType=false)
 	{
-		$assignedItems = array();
-
 		$authorizer = Rights::getAuthorizer();
 		$assignments = $authorizer->authManager->getAuthAssignments($this->getId());
 
 		// We need to include the type in the markup
 		$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
+		$assignedItems = array();
 		foreach( $items as $itemName=>$item )
 		{
-			$itemMarkup = $item->getHumanReadableName();
+			$itemMarkup = $item->getNameText();
 
-			if( $typeVisible===true )
-				$itemMarkup .= ' (<span class="typeText">'.Rights::getAuthItemTypeName($item->type).'</span>)';
+			if( $displayType===true )
+				$itemMarkup .= ' (<span class="type-text">'.Rights::getAuthItemTypeName($item->type).'</span>)';
 
 			$assignedItems[] = $itemMarkup;
 		}
