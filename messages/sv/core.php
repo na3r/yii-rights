@@ -7,132 +7,86 @@
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.3
+*
+* NOTE, this file must be saved in UTF-8 encoding.
 */
-return array(
-	/**
-	* components/Rights.php
-	*/
-	'Operation'=>'Operation',
-	'Task'=>'Uppgift',
-	'Role'=>'Roll',
-	'Invalid authorization item type.'=>'Ogiltig auktoriserings element typ.',
-	/**
-	* controllers/AssignmentController.php
-	*/
-	':name assigned.'=>':name tilldelad.',
-	':name revoked.'=>':name upphävd',
-	'Invalid request. Please do not repeat this request again.'=>'Ogiltig förfrågan. Upprepa inte förfrågan pånytt.',
-	'You are not authorized to perform this action.'=>'Du har inte rätt att utföra denna funktion.',
-	/**
-	* controllers/AuthItemController.php
-	*/
-	':name created.'=>':name skapad.',
-	':name updated.'=>':name uppdaterad.',
-	'Child :name added.'=>'Barn :name tillagd.',
-	'Child :name removed.'=>'Barn :name borttagen.',
-	':name deleted.'=>':name raderad.',
-	'Authorization items created.'=>'Auktoriserings elemented skapade.',
-	'The requested page does not exist.'=>'Förfrågade sidan finns inte.',
-	/**
-	* models/AuthItemForm.php
-	*/
-	'An item with this name already exists.'=>'Ett element med detta namn finns redan.',
-	'Name of the superuser cannot be changed.'=>'Superanvändarens namn kan inte ändras.',
-	/**
-	* models/AuthItemModel.php
-	*/
-	'Name'=>'Namn',
-	'Type'=>'Typ',
-	'Description'=>'Beskrivning',
-	'Business rule'=>'Business regel',
-	'Data'=>'Data',
-	'superuser'=>'superanvändare',
-	'Delete'=>'Radera',
-	'Are you sure you want to delete this operation?'=>'Är du säker att du vill radera denna operation?',
-	'Are you sure you want to delete this task?'=>'Är du säker att du vill radera denna uppgift?',
-	'Are you sure you want to delete this role?'=>'Är du säker att du vill radera denna roll?',
-	'Remove'=>'Ta bort',
-	'Revoke'=>'Upphäv',
-	/**
-	* views/default/(_)permissions.php
-	*/
-	'Permissions'=>'Rättigheter',
-	'Permission'=>'Rättighet',
-	'Inherited'=>'Ärvd',
-	'Assign'=>'Tilldela',
-	'Hover to see from where the permission is inherited.'=>'För musen ovan för att se varifrån rättigheten är ärvd.',
-	'Parents'=>'Föräldrar',
-	'No authorization items found.'=>'Inga auktoriserings element hittades.',
-	/**
-	* views/default/operations.php
-	*/
-	'Operations'=>'Operationer',
-	'Create a new operation'=>'Skapa en ny operation',
-	'Values within square brackets tell how many children each item has.'=>'Värden i hakparenteser berättar hur många barn varje element har.',
-	'No operations found.'=>'Inga operationer hittades.',
-	/**
-	* views/default/tasks.php
-	*/
-	'Tasks'=>'Uppgifter',
-	'Create a new task'=>'Skapa en ny uppgift',
-	'No tasks found.'=>'Inga uppgifter hittades.',
-	/**
-	* views/default/roles.php
-	*/
-	'Roles'=>'Roller',
-	'Create a new role'=>'Skapa en ny roll',
-	'No roles found.'=>'Inga roller hittades.',
-	/**
-	* views/authItem/authChildForm.php
-	*/
-	'Add'=>'Lägg till',
-	/**
-	* views/authItem/authItemForm.php
-	*/
-	'Save'=>'Spara',
-	/**
-	* views/authItem/_generateItems.php
-	*/
-	'Modules'=>'Moduler',
-	/**
-	* views/authItem/create.php
-	*/
-	'Create :type'=>'Skapa :type',
-	/**
-	* views/authItem/generate.php
-	*/
-	'Auth Item Generator'=>'Auktoriserings element Generator',
-	'Please select which authorization items you wish to generate.'=>'Välj vilka auktoriserings element du vill skapa.',
-	'Application'=>'Applikationen',
-	'Select all'=>'Välj alla',
-	'Select none'=>'Välj inga',
-	'Generate'=>'Generera',
-	/**
-	* views/authItem/update.php
-	*/
-	'Auth Item'=>'Auktoriserings Element',
-	'Update :name'=>'Uppdatera :name',
-	'Relations'=>'Relationer',
-	'This item has no parents.'=>'Detta element har inga föräldrar.',
-	'Children'=>'Barn',
-	'This item has no children.'=>'Denna element har inga barn.',
-	'Add Child'=>'Lägg till Barn',
-	'No relations need to be set for the superuser role.'=>'Inga relationer behöver ställas in för superanvändar-rollen.',
-	'Super users are always granted access implicitly.'=>'Superanvändare beviljas ankomst alltid implicit.',
-	/**
-	* views/assignment/user.php
-	*/
-	'Assignments for :username'=>'Uppdrag för användare :username',
-	'This user has not been assigned any authorization items.'=>'Denna användare har inte tilldelats några auktoriserings element.',
-	'Add Assignment'=>'Lägg till Uppdrag',
-	/**
-	* views/assignments/view.php
-	*/
-	'Assignments'=>'Uppdrag',
-	'Username'=>'Användarnamn',
-	'No users found.'=>'Inga användare hittades.',
-	/**
-	* views/_menu.php
-	*/
-	'Generator'=>'Generator',
+return array (
+  'A descriptive name for this item.' => '',
+  'Additional data available when executing the business rule.' => '',
+  'Are you sure you want to delete this item?' => '',
+  'Assign item' => '',
+  'Assigned items' => '',
+  'Authorization item' => '',
+  'Business rule cannot be empty.' => '',
+  'Code that will be executed when performing access checking.' => '',
+  'Do not change the name unless you know what you are doing.' => '',
+  'Item' => '',
+  'No assignments available to be assigned to this user.' => '',
+  'No children available to be added to this item.' => '',
+  'Please select which operations you wish to generate.' => '',
+  'This user has not been assigned any items.' => '',
+  'Update :name (:type)' => '',
+  ':name assigned.' => ':name tilldelad.',
+  ':name created.' => ':name skapad.',
+  ':name deleted.' => ':name raderad.',
+  ':name revoked.' => ':name upphävd',
+  ':name updated.' => ':name uppdaterad.',
+  'Add' => 'Lägg till',
+  'Add Child' => 'Lägg till Barn',
+  'An item with this name already exists.' => 'Ett element med detta namn finns redan.',
+  'Application' => 'Applikationen',
+  'Are you sure you want to delete this operation?' => 'Är du säker att du vill radera denna operation?',
+  'Are you sure you want to delete this role?' => 'Är du säker att du vill radera denna roll?',
+  'Are you sure you want to delete this task?' => 'Är du säker att du vill radera denna uppgift?',
+  'Assign' => 'Tilldela',
+  'Assignments' => 'Uppdrag',
+  'Assignments for :username' => 'Uppdrag för användare :username',
+  'Authorization items created.' => 'Auktoriserings elemented skapade.',
+  'Business rule' => 'Business regel',
+  'Child :name added.' => 'Barn :name tillagd.',
+  'Child :name removed.' => 'Barn :name borttagen.',
+  'Children' => 'Barn',
+  'Create :type' => 'Skapa :type',
+  'Create a new operation' => 'Skapa en ny operation',
+  'Create a new role' => 'Skapa en ny roll',
+  'Create a new task' => 'Skapa en ny uppgift',
+  'Data' => 'Data',
+  'Delete' => 'Radera',
+  'Description' => 'Beskrivning',
+  'Generate' => 'Generera',
+  'Generator' => 'Generator',
+  'Hover to see from where the permission is inherited.' => 'För musen ovan för att se varifrån rättigheten är ärvd.',
+  'Inherited' => 'Ärvd',
+  'Invalid authorization item type.' => 'Ogiltig auktoriserings element typ.',
+  'Invalid request. Please do not repeat this request again.' => 'Ogiltig förfrågan. Upprepa inte förfrågan pånytt.',
+  'Modules' => 'Moduler',
+  'Name' => 'Namn',
+  'Name of the superuser cannot be changed.' => 'Superanvändarens namn kan inte ändras.',
+  'No authorization items found.' => 'Inga auktoriserings element hittades.',
+  'No operations found.' => 'Inga operationer hittades.',
+  'No relations need to be set for the superuser role.' => 'Inga relationer behöver ställas in för superanvändar-rollen.',
+  'No roles found.' => 'Inga roller hittades.',
+  'No tasks found.' => 'Inga uppgifter hittades.',
+  'No users found.' => 'Inga användare hittades.',
+  'Operation' => 'Operation',
+  'Operations' => 'Operationer',
+  'Parents' => 'Föräldrar',
+  'Permissions' => 'Rättigheter',
+  'Relations' => 'Relationer',
+  'Remove' => 'Ta bort',
+  'Revoke' => 'Upphäv',
+  'Role' => 'Roll',
+  'Roles' => 'Roller',
+  'Save' => 'Spara',
+  'Select all' => 'Välj alla',
+  'Select none' => 'Välj inga',
+  'Super users are always granted access implicitly.' => 'Superanvändare beviljas ankomst alltid implicit.',
+  'Task' => 'Uppgift',
+  'Tasks' => 'Uppgifter',
+  'The requested page does not exist.' => 'Förfrågade sidan finns inte.',
+  'This item has no children.' => 'Denna element har inga barn.',
+  'This item has no parents.' => 'Detta element har inga föräldrar.',
+  'Type' => 'Typ',
+  'Values within square brackets tell how many children each item has.' => 'Värden i hakparenteser berättar hur många barn varje element har.',
+  'You are not authorized to perform this action.' => 'Du har inte rätt att utföra denna funktion.',
 );

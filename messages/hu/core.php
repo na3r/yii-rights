@@ -7,127 +7,86 @@
 * @author Zsolti Győri <gyori.zsolt@gmail.com>
 * @copyright Copyright &copy; 2010 Zsolti Győri
 * @since 0.9.9
+*
+* NOTE, this file must be saved in UTF-8 encoding.
 */
-return array(
-	/**
-	* components/Rights.php
-	*/
-	'Operation'=>'Művelet',
-	'Task'=>'Feladat',
-	'Role'=>'Szerepkör',
-	'Invalid authorization item type.'=>'Érvénytelen hitelesítési elem típus.',
-	/**
-	* controllers/AssignmentController.php
-	*/
-	':name assigned.'=>':name hozzárendelve.',
-	':name revoked.'=>':name visszavonva.',
-	'Invalid request. Please do not repeat this request again.'=>'Érvénytelen kérés. Kérlek ne ismételd meg mégegyszer.',
-	'You are not authorized to perform this action.'=>'Nincs jogosultságod a kért művelet végrehajtására.',
-	/**
-	* controllers/AuthItemController.php
-	*/
-	':name created.'=>':name létrehozva.',
-	':name updated.'=>':name frissítve.',
-	'Child :name added.'=>':name gyermek létrehozva.',
-	'Child :name removed.'=>':name gyermek eltávolítva.',
-	':name deleted.'=>':name törölve.',
-	'Authorization items created.'=>'Létrehozott hitelesítési elemek.',
-	'The requested page does not exist.'=>'A kért oldal nem létezik.',
-	/**
-	* models/AuthItemForm.php
-	*/
-	'An item with this name already exists.'=>'Ezzel a névvel már létezik elem.',
-	/**
-	* views/default/(_)permissions.php
-	*/
-	'Permissions'=>'Jogosultságok',
-	'Permission'=>'Jogosultság',
-	'Revoke'=>'Visszavon',
-	'Inherited'=>'Örökölt',
-	'Assign'=>'Hozzárendel',
-	'Hover to see from where the permission is inherited.'=>'Vidd fölé az egeret, hogy meglásd honnan örökölt.',
-	'Parents'=>'Szülők',
-	'No authorization items found.'=>'Nincs megjeleníthető hitelesítési elem.',
-	/**
-	* views/default/operations.php
-	*/
-	'Operations'=>'Műveletek',
-	'Create a new operation'=>'Új művelet',
-	'Name'=>'Megnevezés',
-	'Description'=>'Leírás',
-	'Business rule'=>'Business rule',
-	'Data'=>'Adat',
-	'Delete'=>'Törlés',
-	'Are you sure you want to delete this operation?'=>'Biztosan törölni szeretnéd ezt a műveletet?',
-	'Values within square brackets tell how many children each item has.'=>'A szögletes zárójelben lévő értékek a gyermekek számát jelentik.',
-	'No operations found.'=>'Nem található művelet.',
-	/**
-	* views/default/tasks.php
-	*/
-	'Tasks'=>'Feladatok',
-	'Create a new task'=>'Új feladat létrehozása',
-	'Are you sure you want to delete this task?'=>'Biztosan törölni szeretnéd ezt a műveletet?',
-	'No tasks found.'=>'Nincs megjeleníthető feladat.',
-	/**
-	* views/default/roles.php
-	*/
-	'Roles'=>'Szerepkörök',
-	'Create a new role'=>'Új szerepkör',
-	'superuser'=>'szuper felhasználó',
-	'Are you sure you want to delete this role?'=>'Biztosan törölni szeretnéd ezt a szerepkört?',
-	'No roles found.'=>'Nem található szerepkör.',
-	/**
-	* views/authItem/authChildForm.php
-	*/
-	'Add'=>'Új',
-	/**
-	* views/authItem/authItemForm.php
-	*/
-	'Save'=>'Ment',
-	/**
-	* views/authItem/_generateItems.php
-	*/
-	'Modules'=>'Modulok',
-	/**
-	* views/authItem/create.php
-	*/
-	'Create :type'=>':type létrehozása',
-	/**
-	* views/authItem/generate.php
-	*/
-	'Auth Item Generator'=>'Hitelesítési elem generátor',
-	'Please select which authorization items you wish to generate.'=>'Kérlek válaszd ki mely hitelesítési elemeket szeretnéd generálni.',
-	'Application'=>'Alkalmazás',
-	'Select all'=>'Mindet kiválaszt',
-	'Select none'=>'Egyiket sem',
-	'Generate'=>'Generál',
-	/**
-	* views/authItem/update.php
-	*/
-	'Auth Item'=>'Hitelesítési elem',
-	'Update :name'=>':name frissítése',
-	'Relations'=>'Kapcsolatok',
-	'This item has no parents.'=>'Ennek az elemnek nincs szülője.',
-	'Children'=>'Gyermekek',
-	'Remove'=>'Eltávolít',
-	'This item has no children.'=>'Ennek az elemnek nincsenek gyermekei.',
-	'Add Child'=>'Új gyermek',
-	'No relations need to be set for the superuser role.'=>'A szuper felhasználó szerepköréhez nem kell hozzárendelned semmit.',
-	'Super users are always granted access implicitly.'=>'A szuper felhasználóknak automatikusan korlátlan hozzáférésük van.',
-	/**
-	* views/assignment/user.php
-	*/
-	'Assignments for :username'=>':username hozzárendelései',
-	'This user has not been assigned any authorization items.'=>'Ehhez a felhasználóhoz nincs hozzárendelve egy hitelesítési elem sem.',
-	'Add Assignment'=>'Új hozzárendelés',
-	/**
-	* views/assignment/view.php
-	*/
-	'Assignments'=>'Hozzárendelések',
-	'Username'=>'Felhasználónév',
-	'No users found.'=>'Nincs megjeleníthető felhasználó.',
-	/**
-	* views/_menu.php
-	*/
-	'Generator'=>'Generátor',
+return array (
+  'A descriptive name for this item.' => '',
+  'Additional data available when executing the business rule.' => '',
+  'Are you sure you want to delete this item?' => '',
+  'Assign item' => '',
+  'Assigned items' => '',
+  'Authorization item' => '',
+  'Business rule cannot be empty.' => '',
+  'Code that will be executed when performing access checking.' => '',
+  'Do not change the name unless you know what you are doing.' => '',
+  'Item' => '',
+  'Name of the superuser cannot be changed.' => '',
+  'No assignments available to be assigned to this user.' => '',
+  'No children available to be added to this item.' => '',
+  'Please select which operations you wish to generate.' => '',
+  'This user has not been assigned any items.' => '',
+  'Type' => '',
+  'Update :name (:type)' => '',
+  ':name assigned.' => ':name hozzárendelve.',
+  ':name created.' => ':name létrehozva.',
+  ':name deleted.' => ':name törölve.',
+  ':name revoked.' => ':name visszavonva.',
+  ':name updated.' => ':name frissítve.',
+  'Add' => 'Új',
+  'Add Child' => 'Új gyermek',
+  'An item with this name already exists.' => 'Ezzel a névvel már létezik elem.',
+  'Application' => 'Alkalmazás',
+  'Are you sure you want to delete this operation?' => 'Biztosan törölni szeretnéd ezt a műveletet?',
+  'Are you sure you want to delete this role?' => 'Biztosan törölni szeretnéd ezt a szerepkört?',
+  'Are you sure you want to delete this task?' => 'Biztosan törölni szeretnéd ezt a műveletet?',
+  'Assign' => 'Hozzárendel',
+  'Assignments' => 'Hozzárendelések',
+  'Assignments for :username' => ':username hozzárendelései',
+  'Authorization items created.' => 'Létrehozott hitelesítési elemek.',
+  'Business rule' => 'Business rule',
+  'Child :name added.' => ':name gyermek létrehozva.',
+  'Child :name removed.' => ':name gyermek eltávolítva.',
+  'Children' => 'Gyermekek',
+  'Create :type' => ':type létrehozása',
+  'Create a new operation' => 'Új művelet',
+  'Create a new role' => 'Új szerepkör',
+  'Create a new task' => 'Új feladat létrehozása',
+  'Data' => 'Adat',
+  'Delete' => 'Törlés',
+  'Description' => 'Leírás',
+  'Generate' => 'Generál',
+  'Generator' => 'Generátor',
+  'Hover to see from where the permission is inherited.' => 'Vidd fölé az egeret, hogy meglásd honnan örökölt.',
+  'Inherited' => 'Örökölt',
+  'Invalid authorization item type.' => 'Érvénytelen hitelesítési elem típus.',
+  'Invalid request. Please do not repeat this request again.' => 'Érvénytelen kérés. Kérlek ne ismételd meg mégegyszer.',
+  'Modules' => 'Modulok',
+  'Name' => 'Megnevezés',
+  'No authorization items found.' => 'Nincs megjeleníthető hitelesítési elem.',
+  'No operations found.' => 'Nem található művelet.',
+  'No relations need to be set for the superuser role.' => 'A szuper felhasználó szerepköréhez nem kell hozzárendelned semmit.',
+  'No roles found.' => 'Nem található szerepkör.',
+  'No tasks found.' => 'Nincs megjeleníthető feladat.',
+  'No users found.' => 'Nincs megjeleníthető felhasználó.',
+  'Operation' => 'Művelet',
+  'Operations' => 'Műveletek',
+  'Parents' => 'Szülők',
+  'Permissions' => 'Jogosultságok',
+  'Relations' => 'Kapcsolatok',
+  'Remove' => 'Eltávolít',
+  'Revoke' => 'Visszavon',
+  'Role' => 'Szerepkör',
+  'Roles' => 'Szerepkörök',
+  'Save' => 'Ment',
+  'Select all' => 'Mindet kiválaszt',
+  'Select none' => 'Egyiket sem',
+  'Super users are always granted access implicitly.' => 'A szuper felhasználóknak automatikusan korlátlan hozzáférésük van.',
+  'Task' => 'Feladat',
+  'Tasks' => 'Feladatok',
+  'The requested page does not exist.' => 'A kért oldal nem létezik.',
+  'This item has no children.' => 'Ennek az elemnek nincsenek gyermekei.',
+  'This item has no parents.' => 'Ennek az elemnek nincs szülője.',
+  'Values within square brackets tell how many children each item has.' => 'A szögletes zárójelben lévő értékek a gyermekek számát jelentik.',
+  'You are not authorized to perform this action.' => 'Nincs jogosultságod a kért művelet végrehajtására.',
 );
