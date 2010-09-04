@@ -175,7 +175,7 @@ class AuthItemController extends Controller
 	{
 		$dataProvider = new AuthItemDataProvider('roleTable', array(
 			'type'=>CAuthItem::TYPE_ROLE,
-			'exclude'=>array($this->module->superuserName),
+			//'exclude'=>array($this->module->superuserName),
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
 				'element'=>'.role-table',

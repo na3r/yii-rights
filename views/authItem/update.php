@@ -6,11 +6,12 @@
 
 <div id="updatedAuthItem">
 
+	<h2><?php echo Rights::t('core', 'Update :name (:type)', array(
+		':name'=>$model->name,
+		':type'=>Rights::getAuthItemTypeName($model->type),
+	)); ?></h2>
+
 	<div class="form span-12 first">
-
-		<h2><?php echo Rights::t('core', 'Update :name', array(':name'=>$model->name)); ?></h2>
-
-		<p class="info"><?php echo Rights::getAuthItemTypeName($model->type); ?></p>
 
 		<?php echo $form->render(); ?>
 
@@ -18,13 +19,13 @@
 
 	<div class="relations span-11 last">
 
-		<h2><?php echo Rights::t('core', 'Relations'); ?></h2>
+		<h3><?php echo Rights::t('core', 'Relations'); ?></h3>
 
 		<?php if( $model->name!==Rights::module()->superuserName ): ?>
 
 			<div class="parents">
 
-				<h3><?php echo Rights::t('core', 'Parents'); ?></h3>
+				<h4><?php echo Rights::t('core', 'Parents'); ?></h4>
 
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'dataProvider'=>$parentDataProvider,
@@ -60,7 +61,7 @@
 
 			<div class="children">
 
-				<h3><?php echo Rights::t('core', 'Children'); ?></h3>
+				<h4><?php echo Rights::t('core', 'Children'); ?></h4>
 
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'dataProvider'=>$childDataProvider,
@@ -97,7 +98,7 @@
 
 			<div class="addChild">
 
-				<h4><?php echo Rights::t('core', 'Add Child'); ?></h4>
+				<h5><?php echo Rights::t('core', 'Add Child'); ?></h5>
 
 				<?php if( $childForm!==null ): ?>
 
