@@ -34,7 +34,7 @@ class RightsAuthManager extends CDbAuthManager
 	* for this particular authorization item.
 	* @param mixed additional data associated with this assignment
 	* @return CAuthAssignment the authorization assignment information.
-	* @throws CException if the item does not exist or if the item has already been assigned to the user
+	* @throws CException if the item does not exist or if the item has already been assigned to the user.
 	*/
 	public function assign($itemName, $userId, $bizRule=null, $data=null)
 	{
@@ -43,6 +43,11 @@ class RightsAuthManager extends CDbAuthManager
 			return parent::assign($itemName, $userId, $bizRule, $data);
 	}
 
+	/**
+	* Returns the authorization item with the specified name.
+	* @param string the name of the item
+	* @return CAuthItem the authorization item. Null if the item cannot be found.
+	*/
 	public function getAuthItem($name)
 	{
 		if( ($item = parent::getAuthItem($name))!==null )
@@ -50,7 +55,7 @@ class RightsAuthManager extends CDbAuthManager
 			$items = $this->processItems(array($item));
 			$item = $items===(array)$items ? array_pop($items) : null;
 		}
-		
+
 		return $item;
 	}
 
@@ -139,12 +144,17 @@ class RightsAuthManager extends CDbAuthManager
 
 		if( $names!==array() )
 		{
+			foreach( $names as &$name )
+				$name = $this->db->quoteValue($name);
+
+			$condition = 'name IN ('.implode(', ',$names).')';
+
 			if( $sort===true )
 			{
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
-					WHERE name IN ('".implode("','",$names)."')
+					WHERE $condition
 					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 			}
@@ -152,7 +162,7 @@ class RightsAuthManager extends CDbAuthManager
 			{
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data
 					FROM {$this->itemTable} t1
-					WHERE name IN ('".implode("','",$names)."')";
+					WHERE $condition";
 				$command=$this->db->createCommand($sql);
 			}
 

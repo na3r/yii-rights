@@ -1,6 +1,6 @@
 <?php
 /**
-* Rights class file.
+* Rights helper class file.
 *
 * Provides static functions for interaction with Rights from outside of the module.
 *
@@ -83,7 +83,6 @@ class Rights
 			case CAuthItem::TYPE_OPERATION: return Rights::t('core', 'Operation');
 			case CAuthItem::TYPE_TASK: return Rights::t('core', 'Task');
 			case CAuthItem::TYPE_ROLE: return Rights::t('core', 'Role');
-			// Invalid type
 			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
@@ -100,7 +99,6 @@ class Rights
 			case CAuthItem::TYPE_OPERATION: return Rights::t('core', 'Operations');
 			case CAuthItem::TYPE_TASK: return Rights::t('core', 'Tasks');
 			case CAuthItem::TYPE_ROLE: return Rights::t('core', 'Roles');
-			// Invalid type
 			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
@@ -117,7 +115,6 @@ class Rights
 			case CAuthItem::TYPE_OPERATION: return 'authItem/operations';
 			case CAuthItem::TYPE_TASK: return 'authItem/tasks';
 			case CAuthItem::TYPE_ROLE: return 'authItem/roles';
-			// Invalid type
 			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}

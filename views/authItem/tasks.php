@@ -7,11 +7,9 @@
 
 	<h2><?php echo Rights::t('core', 'Tasks'); ?></h2>
 
-	<p>
-		<?php echo CHtml::link(Rights::t('core', 'Create a new task'), array('authItem/create', 'type'=>CAuthItem::TYPE_TASK), array(
-			'class'=>'add-task-link',
-		)); ?>
-	</p>
+	<p><?php echo CHtml::link(Rights::t('core', 'Create a new task'), array('authItem/create', 'type'=>CAuthItem::TYPE_TASK), array(
+		'class'=>'add-task-link',
+	)); ?></p>
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 	    'dataProvider'=>$dataProvider,

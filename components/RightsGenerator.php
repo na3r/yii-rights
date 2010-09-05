@@ -95,43 +95,39 @@ class RightsGenerator extends CApplicationComponent
 	/**
 	* Returns all the controllers and their actions.
 	* @param array the controllers and actions.
-	* FIXME: Rewrite with directory iteratiors.
 	*/
-	public function getControllerActions($controllers=null)
+	public function getControllerActions($items=null)
 	{
-		if( $controllers===null )
-			$controllers = $this->getAllControllers();
+		if( $items===null )
+			$items = $this->getAllControllers();
 
-		foreach( $controllers as $key=>$c )
+		foreach( $items['controllers'] as $controllerName=>$controller )
 		{
-			if( $key!=='modules' && isset($c['path'])===true )
+			$actions = array();
+			$file = fopen($controller['path'], 'r');
+			$lineNumber = 0;
+			while( feof($file)===false )
 			{
-				$actions = array();
-				$file = fopen($c['path'], 'r');
-				$lineNumber = 0;
-				while( feof($file)===false )
+				++$lineNumber;
+				$line = fgets($file);
+				preg_match('/public[ \t]+function[ \t]+action([A-Z]{1}[a-zA-Z0-9]+)[ \t]*\(/', $line, $matches);
+				if( $matches!==array() )
 				{
-					++$lineNumber;
-					$line = fgets($file);
-					preg_match('/public[ \t]+function[ \t]+action([A-Z]{1}[a-zA-Z0-9]+)[ \t]*\(/', $line, $matches);
-					if( $matches!==array() )
-					{
-						$actions[ strtolower($matches[1]) ] = array(
-							'name'=>$matches[1],
-							'line'=>$lineNumber
-						);
-					}
+					$name = $matches[1];
+					$actions[ strtolower($name) ] = array(
+						'name'=>$name,
+						'line'=>$lineNumber
+					);
 				}
+			}
 
-				$controllers[ $key ]['actions'] = $actions;
-			}
-			else
-			{
-				$controllers[ $key ] = $this->getControllerActions($c);
-			}
+			$items['controllers'][ $controllerName ]['actions'] = $actions;
 		}
 
-		return $controllers;
+		foreach( $items['modules'] as $moduleName=>$module )
+			$items['modules'][ $moduleName ] = $this->getControllerActions($module);
+
+		return $items;
 	}
 
 	/**
@@ -141,9 +137,9 @@ class RightsGenerator extends CApplicationComponent
 	protected function getAllControllers()
 	{
 		$basePath = Yii::app()->basePath;
-		$controllers = $this->getControllersInPath($basePath.DIRECTORY_SEPARATOR.'controllers');
-		$controllers['modules'] = $this->getControllersInModules($basePath);
-		return $controllers;
+		$items['controllers'] = $this->getControllersInPath($basePath.DIRECTORY_SEPARATOR.'controllers');
+		$items['modules'] = $this->getControllersInModules($basePath);
+		return $items;
 	}
 
 	/**
@@ -156,23 +152,25 @@ class RightsGenerator extends CApplicationComponent
 
 		if( file_exists($path)===true )
 		{
-			$dir = opendir($path);
-			while( ($entry = readdir($dir))!==false )
+			$controllerDirectory = scandir($path);
+			foreach( $controllerDirectory as $entry )
 			{
-				if( $entry[0]!=='.' )
+				if( $entry{0}!=='.' )
 				{
 					$entryPath = $path.DIRECTORY_SEPARATOR.$entry;
 					if( strpos(strtolower($entry), 'controller')!==false )
 					{
-						$controllers['controllers'][ substr(strtolower($entry), 0, -14) ] = array(
+						$name = substr($entry, 0, -14);
+						$controllers[ strtolower($name) ] = array(
+							'name'=>$name,
 							'file'=>$entry,
 							'path'=>$entryPath,
 						);
 					}
 
 					if( is_dir($entryPath)===true )
-						foreach( $this->getControllersInPath($entryPath) as $k=>$v )
-							$controllers[ $k ] = $v;
+						foreach( $this->getControllersInPath($entryPath) as $controllerName=>$controller )
+							$controllers[ $controllerName ] = $controller;
 				}
 			}
 		}
@@ -186,28 +184,26 @@ class RightsGenerator extends CApplicationComponent
 	*/
 	protected function getControllersInModules($path)
 	{
-		$controllers = array();
+		$items = array();
 
 		$modulePath = $path.DIRECTORY_SEPARATOR.'modules';
 		if( file_exists($modulePath)===true )
 		{
-			$dir = opendir($modulePath);
-			while( ($entry = readdir($dir))!==false )
+			$moduleDirectory = scandir($modulePath);
+			foreach( $moduleDirectory as $entry )
 			{
-				if( $entry[0]!=='.' && $entry!=='rights' )
+				if( $entry{0}!=='.' && $entry!=='rights' )
 				{
 					$subModulePath = $modulePath.DIRECTORY_SEPARATOR.$entry;
 					if( file_exists($subModulePath)===true )
 					{
-						if( ($moduleControllers = $this->getControllersInPath($subModulePath.DIRECTORY_SEPARATOR.'controllers'))!==array() )
-							$controllers[ $entry ] = $moduleControllers;
-
-						$controllers[ $entry ]['modules'] = $this->getControllersInModules($subModulePath);
+						$items[ $entry ]['controllers'] = $this->getControllersInPath($subModulePath.DIRECTORY_SEPARATOR.'controllers');
+						$items[ $entry ]['modules'] = $this->getControllersInModules($subModulePath);
 					}
 				}
 			}
 		}
 
-		return $controllers;
+		return $items;
 	}
 }

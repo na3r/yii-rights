@@ -7,11 +7,9 @@
 
 	<h2><?php echo Rights::t('core', 'Operations'); ?></h2>
 
-	<p>
-		<?php echo CHtml::link(Rights::t('core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION), array(
-			'class'=>'add-operation-link',
-		)); ?>
-	</p>
+	<p><?php echo CHtml::link(Rights::t('core', 'Create a new operation'), array('authItem/create', 'type'=>CAuthItem::TYPE_OPERATION), array(
+		'class'=>'add-operation-link',
+	)); ?></p>
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 	    'dataProvider'=>$dataProvider,

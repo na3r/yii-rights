@@ -119,10 +119,8 @@
 		<?php else: ?>
 
 			<p class="info">
-
 				<?php echo Rights::t('core', 'No relations need to be set for the superuser role.'); ?><br />
 				<?php echo Rights::t('core', 'Super users are always granted access implicitly.'); ?>
-
 			</p>
 
 		<?php endif; ?>

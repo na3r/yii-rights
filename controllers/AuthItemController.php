@@ -129,7 +129,7 @@ class AuthItemController extends Controller
 	*/
 	public function actionOperations()
 	{
-		$dataProvider = new AuthItemDataProvider('operationTable', array(
+		$dataProvider = new AuthItemDataProvider('operations', array(
 			'type'=>CAuthItem::TYPE_OPERATION,
 			'sortable'=>array(
 				'id'=>'RightsOperationTableSort',
@@ -151,7 +151,7 @@ class AuthItemController extends Controller
 	*/
 	public function actionTasks()
 	{
-		$dataProvider = new AuthItemDataProvider('taskTable', array(
+		$dataProvider = new AuthItemDataProvider('tasks', array(
 			'type'=>CAuthItem::TYPE_TASK,
 			'sortable'=>array(
 				'id'=>'RightsTaskTableSort',
@@ -173,9 +173,9 @@ class AuthItemController extends Controller
 	*/
 	public function actionRoles()
 	{
-		$dataProvider = new AuthItemDataProvider('roleTable', array(
+		$dataProvider = new AuthItemDataProvider('roles', array(
 			'type'=>CAuthItem::TYPE_ROLE,
-			//'exclude'=>array($this->module->superuserName),
+			'exclude'=>array($this->module->superuserName),
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
 				'element'=>'.role-table',
@@ -222,17 +222,19 @@ class AuthItemController extends Controller
 					Yii::app()->getUser()->setFlash($this->module->flashSuccessKey,
 						Rights::t('core', 'Authorization items created.')
 					);
-					$this->redirect(array('default/permissions'));
+					$this->redirect(array('authItem/permissions'));
 				}
 			}
 		}
 
+		// Get all items that are available to be generated
 		$items = $generator->getControllerActions();
 
-		//CVarDumper::dump($items,5,true);die;
-
-		// We need operation names lowercase for comparason
-		$existingItems = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		// We need the existing operations for comparason
+		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		$existingItems = array();
+		foreach( $operations as $itemName=>$item )
+			$existingItems[ $itemName ] = $itemName;
 
 		Yii::app()->clientScript->registerScript('rightsGenerateItemTableSelectRows',
 			"jQuery('.generate-item-table').rightsSelectRows();"
@@ -260,11 +262,15 @@ class AuthItemController extends Controller
 		    // Form is submitted and data is valid, redirect the user
 		    if( $form->submitted()===true && $form->validate()===true )
 			{
-				// Create item, set success message and redirect
-				$this->_authorizer->createAuthItem($form->model->name, $_GET['type'], $form->model->description, $form->model->bizRule, $form->model->data);
+				// Create the item
+				$item = $this->_authorizer->createAuthItem($form->model->name, $_GET['type'], $form->model->description, $form->model->bizRule, $form->model->data);
+
+				// Set a flash message for creating the item
 				Yii::app()->user->setFlash($this->module->flashSuccessKey,
 					Rights::t('core', ':name created.', array(':name'=>$form->model->name))
 				);
+
+				// Redirect to the correct destination
 				$this->redirect(array(Rights::getAuthItemRoute($form->model->type)));
 			}
 		}
@@ -297,7 +303,7 @@ class AuthItemController extends Controller
 			$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
 			$item = $this->_authorizer->authManager->getAuthItem($form->model->name);
 
-			// Set flash message for updating the item
+			// Set a flash message for updating the item
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
 				Rights::t('core', ':name updated.', array(':name'=>$item->getNameText()))
 			);
@@ -336,7 +342,7 @@ class AuthItemController extends Controller
 				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
 				$child = $this->_authorizer->authManager->getAuthItem($childForm->model->name);
 
-				// Set flash message for adding the child
+				// Set a flash message for adding the child
 				Yii::app()->user->setFlash($this->module->flashSuccessKey,
 					Rights::t('core', 'Child :name added.', array(':name'=>$child->getNameText()))
 				);
@@ -378,17 +384,21 @@ class AuthItemController extends Controller
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
+			// Load the item and save the name for later use
 			$item = $this->_authorizer->authManager->getAuthItem($_GET['name']);
 			$name = $item->getNameText();
+
+			// Delete the item
 			$this->_authorizer->authManager->removeAuthItem($_GET['name']);
 
+			// Set a flash message for deleting the item
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
 				Rights::t('core', ':name deleted.', array(':name'=>$name))
 			);
 
-			// if AJAX request, we should not redirect the browser
+			// If AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'default/permissions'));
+				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'authItem/permissions'));
 		}
 		else
 		{
@@ -404,15 +414,16 @@ class AuthItemController extends Controller
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
-			$child = $this->_authorizer->authManager->getAuthItem($_GET['child']);
-			$name = $child->getNameText();
+			// Remove the child and load it
 			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
+			$child = $this->_authorizer->authManager->getAuthItem($_GET['child']);
 
+			// Set a flash message for removing the child
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
-				Rights::t('core', 'Child :name removed.', array(':name'=>$name))
+				Rights::t('core', 'Child :name removed.', array(':name'=>$child->getNameText()))
 			);
 
-			// if AJAX request, we should not redirect the browser
+			// If AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
 				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
 		}
@@ -437,7 +448,7 @@ class AuthItemController extends Controller
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array('default/permissions'));
+				$this->redirect(array('authItem/permissions'));
 		}
 		else
 		{
@@ -460,7 +471,7 @@ class AuthItemController extends Controller
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array('default/permissions'));
+				$this->redirect(array('authItem/permissions'));
 		}
 		else
 		{
@@ -468,6 +479,9 @@ class AuthItemController extends Controller
 		}
 	}
 
+	/**
+	* Processes the jui sortable.
+	*/
 	public function actionProcessSortable()
 	{
 		// We only allow sorting via POST request
@@ -482,9 +496,9 @@ class AuthItemController extends Controller
 	}
 
 	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 */
+	* Returns the data model based on the primary key given in the GET variable.
+	* If the data model is not found, an HTTP exception will be raised.
+	*/
 	public function loadModel()
 	{
 		if( $this->_model===null )

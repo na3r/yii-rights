@@ -7,11 +7,9 @@
 
 	<h2><?php echo Rights::t('core', 'Roles'); ?></h2>
 
-	<p>
-		<?php echo CHtml::link(Rights::t('core', 'Create a new role'), array('authItem/create', 'type'=>CAuthItem::TYPE_ROLE), array(
-			'class'=>'add-role-link',
-		)); ?>
-	</p>
+	<p><?php echo CHtml::link(Rights::t('core', 'Create a new role'), array('authItem/create', 'type'=>CAuthItem::TYPE_ROLE), array(
+	   	'class'=>'add-role-link',
+	)); ?></p>
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 	    'dataProvider'=>$dataProvider,

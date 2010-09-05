@@ -17,7 +17,7 @@ class RightsAuthItemBehavior extends CBehavior
 	*/
 	public $parent;
 	/**
-	* @property integer the child count.
+	* @property integer the amount of children this item has.
 	*/
 	public $childCount;
 
@@ -252,7 +252,7 @@ EOD;
 	public function getInheritedPermissionText($parents, $displayType=false)
 	{
 		$items = array();
-		foreach( $parents as $name=>$item )
+		foreach( $parents as $itemName=>$item )
 		{
 			$itemMarkup = $item->getNameText();
 

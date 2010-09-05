@@ -81,7 +81,7 @@
 	font-size:11px;
 }
 
-#rights .hover td { background-color:#ffffdd; }
+#rights .hover td { background-color:#ffffdd !important; }
 
 #rights .info { color:#808080; font-size:12px; font-style:italic; }
 #rights .hint { width:320px; color:#808080; font-size:11px; font-style:italic; }

@@ -145,8 +145,8 @@ class RightsAuthorizer extends CApplicationComponent
 		if( $parent!==null )
 		{
 		 	$exclude[] = $parent->name;
-		 	foreach( $parent->getChildren() as $child )
-		 		$exclude[] = $child->name;
+		 	foreach( $parent->getChildren() as $childName=>$child )
+		 		$exclude[] = $childName;
 
 		 	// Exclude the parents recursively to avoid inheritance loops
 		 	$parentNames = array_keys($this->getAuthItemParents($parent->name));
@@ -299,12 +299,12 @@ class RightsAuthorizer extends CApplicationComponent
 		$userClass = Rights::module()->userClass;
 		$users = CActiveRecord::model($userClass)->findAll();
 		$superusers = array();
-		foreach( $users as $u )
+		foreach( $users as $user )
 		{
-			$u->attachBehavior('rights', new RightsUserBehavior);
-			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $u->getId());
+			$user->attachBehavior('rights', new RightsUserBehavior);
+			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->getId());
 			if( isset($items[ $this->_superuserName ])===true )
-				$superusers[] = $u->getName();
+				$superusers[] = $user->getName();
 		}
 
 		return $superusers;
