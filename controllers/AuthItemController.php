@@ -175,7 +175,7 @@ class AuthItemController extends Controller
 	{
 		$dataProvider = new AuthItemDataProvider('roles', array(
 			'type'=>CAuthItem::TYPE_ROLE,
-			'exclude'=>array($this->module->superuserName),
+			//'exclude'=>array($this->module->superuserName),
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
 				'element'=>'.role-table',
@@ -271,7 +271,7 @@ class AuthItemController extends Controller
 				);
 
 				// Redirect to the correct destination
-				$this->redirect(array(Rights::getAuthItemRoute($form->model->type)));
+				$this->redirect(array(Rights::getAuthItemRoute($_GET['type'])));
 			}
 		}
 		else

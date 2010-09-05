@@ -35,12 +35,14 @@
     			'header'=>Rights::t('core', 'Business rule'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'bizrule-column'),
+    			'visible'=>Rights::module()->enableBizRule===true,
     		),
     		array(
     			'name'=>'data',
     			'header'=>Rights::t('core', 'Data'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'data-column'),
+    			'visible'=>Rights::module()->enableBizRuleData===true,
     		),
     		array(
     			'name'=>'delete',
