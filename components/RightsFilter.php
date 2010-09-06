@@ -26,7 +26,7 @@ class RightsFilter extends CFilter
 		$action = $filterChain->action;
 
 		// Check if the action should always be allowed
-		if( in_array(strtolower($action->id), $this->_allowedActions)===false )
+		if( in_array($action->id, $this->_allowedActions)===false )
 		{
 			// Initialize the authorization item as an empty string
 			$authItem = '';
