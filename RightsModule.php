@@ -136,15 +136,13 @@ class RightsModule extends CWebModule
 	*/
 	public function registerScripts()
 	{
-		// Publish the necessary paths
-		$app = Yii::app();
+		// Publish the asset path
 		$assetsUrl = $this->getAssetsUrl();
-		$juiUrl = $app->getAssetManager()->publish(Yii::getPathOfAlias('zii.vendors.jui'));
 
 		// Register the necessary scripts
-		$cs = $app->getClientScript();
+		$cs = Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
-		$cs->registerScriptFile($juiUrl.'/js/jquery-ui.min.js');
+		$cs->registerCoreScript('jquery.ui');
 		$cs->registerScriptFile($assetsUrl.'/js/rights.js');
 		$cs->registerCssFile($assetsUrl.'/css/core.css');
 
@@ -163,6 +161,7 @@ class RightsModule extends CWebModule
 	}
 
 	/**
+	* Publishes the module assets path.
 	* @return string the base URL that contains all published asset files of Rights.
 	*/
 	public function getAssetsUrl()
