@@ -139,6 +139,61 @@ class Rights
 		}
 	}
 
+/**
+	* Returns the authorization item select options.
+	* @param mixed the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* meaning returning all items regardless of their type.
+	* @param array the items to be excluded.
+	* @return array the select options.
+	*/
+	public static function getAuthItemSelectOptions($type=null, $exclude=array())
+	{
+		$authorizer = self::getAuthorizer();
+		$items = $authorizer->getAuthItems($type, null, null, true, $exclude);
+		return self::generateAuthItemSelectOptions($items, $type);
+	}
+
+	/**
+	* Returns the valid authorization item select options for a model.
+	* @param mixed the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* meaning returning all items regardless of their type.
+	* @param CAuthItem the item for which to get the select options.
+	* @param array the items to be excluded.
+	* @return array the select options.
+	*/
+	public static function getParentAuthItemSelectOptions(CAuthItem $parent, $type=null, $exclude=array())
+	{
+		$authorizer = self::getAuthorizer();
+		$items = $authorizer->getAuthItems($type, null, $parent, true, $exclude);
+		return self::generateAuthItemSelectOptions($items, $type);
+	}
+
+	/**
+	* Generates the authorization item select options.
+	* @param array the authorization items.
+	* @param mixed the item type (0: operation, 1: task, 2: role).
+	* @return array the select options.
+	*/
+	protected static function generateAuthItemSelectOptions($items, $type)
+	{
+		$selectOptions = array();
+
+		// We have multiple types, nest the items under their types
+       	if( $type===null || $type===(array)$type )
+       	{
+       		foreach( $items as $itemName=>$item )
+				$selectOptions[ self::getAuthItemTypeNamePlural($item->type) ][ $itemName ] = $item->getNameText();
+		}
+		// We have only one type
+		else
+		{
+			foreach( $items as $itemName=>$item )
+        		$selectOptions[ $itemName ] = $item->getNameText();
+		}
+
+		return $selectOptions;
+	}
+
 	/**
 	* @return string a string that can be displayed on your Web page
 	* showing Powered-by-Rights information.

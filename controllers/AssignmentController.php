@@ -102,7 +102,7 @@ class AssignmentController extends Controller
 		$assignments = array_keys($assignedItems);
 
 		// Make sure we have items to be selected
-		$selectOptions = $this->_authorizer->getAuthItemSelectOptions(null, null, null, true, $assignments);
+		$selectOptions = Rights::getAuthItemSelectOptions(null, $assignments);
 		if( $selectOptions!==array() )
 		{
 			// Create a from to add a child for the authorization item

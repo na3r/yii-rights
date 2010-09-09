@@ -162,52 +162,6 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the valid authorization item select options for a type and/or model.
-	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
-	* meaning returning all items regardless of their type.
-	* @param mixed the user ID. Defaults to null, meaning returning all items even if
-	* they are not assigned to a user.
-	* @param CAuthItem the item for which to get the select options.
-	* @param boolean whether to sort the authorization items.
-	* @param boolean whether to use the type as key.
-	* @param array the items to be excluded.
-	* @return array the select options.
-	*/
-	public function getAuthItemSelectOptions($type=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
-	{
-		$items = $this->getAuthItems($type, $userId, $parent, $sort, $exclude);
-
-		$selectOptions = array();
-       	foreach( $items as $itemName=>$item )
-			$selectOptions[ Rights::getAuthItemTypeNamePlural($item->type) ][ $itemName ] = $item->getNameText();
-
-		return $selectOptions;
-	}
-
-	/**
-	* Returns the valid authorization item select options for a type and/or model.
-	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
-	* meaning returning all items regardless of their type.
-	* @param mixed the user ID. Defaults to null, meaning returning all items even if
-	* they are not assigned to a user.
-	* @param CAuthItem the item for which to get the select options.
-	* @param boolean whether to sort the authorization items.
-	* @param boolean whether to use the type as key.
-	* @param array the items to be excluded.
-	* @return array the select options.
-	*/
-	public function getFlatAuthItemSelectOptions($type=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
-	{
-		$items = $this->getAuthItems($type, $userId, $parent, $sort, $exclude);
-
-		$selectOptions = array();
-		foreach( $items as $itemName=>$item )
-        	$selectOptions[ $itemName ] = $item->getNameText();
-
-        return $selectOptions;
-	}
-
-	/**
 	* Returns the parents of the specified authorization item.
 	* @param mixed the item name for which to get its parents.
 	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,

@@ -313,9 +313,9 @@ class AuthItemController extends Controller
 		}
 
 		// Create a form to add children to the authorization item
-		$validTypes = Rights::getValidChildTypes($model->type);
+		$type = Rights::getValidChildTypes($model->type);
 		$exclude = array($this->_authorizer->superuserName);
-		$selectOptions = $this->_authorizer->getAuthItemSelectOptions($validTypes, null, $model, true, $exclude);
+		$selectOptions = Rights::getParentAuthItemSelectOptions($model, $type, $exclude);
 		if( $selectOptions!==array() )
 		{
 			// Create the child form
