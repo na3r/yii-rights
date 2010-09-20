@@ -47,4 +47,12 @@ class RightsWebUser extends CWebUser
 
 		return $this->_isSuperuser;
 	}
+
+	/**
+	* @param boolean whether the user is a superuser.
+	*/
+	public function setIsSuperuser($value)
+	{
+		$this->_isSuperuser = $value;
+	}
 }

@@ -139,7 +139,7 @@ class Rights
 		}
 	}
 
-/**
+	/**
 	* Returns the authorization item select options.
 	* @param mixed the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
@@ -179,7 +179,7 @@ class Rights
 		$selectOptions = array();
 
 		// We have multiple types, nest the items under their types
-       	if( $type===null || $type===(array)$type )
+       	if( $type!==(int)$type )
        	{
        		foreach( $items as $itemName=>$item )
 				$selectOptions[ self::getAuthItemTypeNamePlural($item->type) ][ $itemName ] = $item->getNameText();

@@ -8,7 +8,7 @@
 */
 class RightsFilter extends CFilter
 {
-	protected $_allowedActions;
+	protected $_allowedActions = array();
 
 	/**
 	* Performs the pre-action filtering.

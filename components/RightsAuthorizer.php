@@ -334,7 +334,12 @@ class RightsAuthorizer extends CApplicationComponent
 	public function hasPermission($itemName, $parentName=null, $permissions=array())
 	{
 		if( $parentName!==null )
+		{
+			if( $parentName===$this->_superuserName )
+				return 1;
+
 			$permissions = $this->getPermissions($parentName);
+		}
 
 		if( isset($permissions[ $itemName ])===true )
 			return 1;
