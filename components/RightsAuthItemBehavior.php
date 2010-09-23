@@ -106,6 +106,7 @@ class RightsAuthItemBehavior extends CBehavior
 			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('authItem/operations')),
 			'confirm'=>Rights::t('core', 'Are you sure you want to delete this operation?'),
 			'class'=>'delete-link',
+			'csrf'=>true,
 		));
 	}
 
@@ -119,6 +120,7 @@ class RightsAuthItemBehavior extends CBehavior
 			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('authItem/tasks')),
 			'confirm'=>Rights::t('core', 'Are you sure you want to delete this task?'),
 			'class'=>'delete-link',
+			'csrf'=>true,
 		));
 	}
 
@@ -132,6 +134,7 @@ class RightsAuthItemBehavior extends CBehavior
 			'submit'=>array('authItem/delete', 'name'=>$this->owner->name, 'redirect'=>urlencode('authItem/roles')),
 			'confirm'=>Rights::t('core', 'Are you sure you want to delete this role?'),
 			'class'=>'delete-link',
+			'csrf'=>true,
 		));
 	}
 
@@ -144,6 +147,7 @@ class RightsAuthItemBehavior extends CBehavior
 		return CHtml::linkButton(Rights::t('core', 'Remove'), array(
 			'submit'=>array('authItem/removeChild', 'name'=>$this->owner->name, 'child'=>$this->parent->name),
 			'class'=>'remove-link',
+			'csrf'=>true,
 		));
 	}
 
@@ -156,6 +160,7 @@ class RightsAuthItemBehavior extends CBehavior
 		return CHtml::linkButton(Rights::t('core', 'Remove'), array(
 			'submit'=>array('authItem/removeChild', 'name'=>$this->parent->name, 'child'=>$this->owner->name),
 			'class'=>'remove-link',
+			'csrf'=>true,
 		));
 	}
 
@@ -168,6 +173,7 @@ class RightsAuthItemBehavior extends CBehavior
 		return CHtml::linkButton(Rights::t('core', 'Revoke'), array(
 			'submit'=>array('assignment/revoke', 'id'=>$this->userId, 'name'=>$this->owner->name),
 			'class'=>'revoke-link',
+			'csrf'=>true,
 		));
 	}
 
