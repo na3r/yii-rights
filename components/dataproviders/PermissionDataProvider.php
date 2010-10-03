@@ -167,6 +167,7 @@ class PermissionDataProvider extends CDataProvider
 	*/
 	protected function fetchKeys()
 	{
+		$keys = array();
 		foreach( $this->getData() as $key=>$value )
 			$keys[] = $key;
 

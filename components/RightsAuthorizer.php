@@ -265,23 +265,14 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Checks whether the user is a superuser.
-	* @param integer the user id. Defaults to null, meaning the logged in user.
+	* Returns whether the user is a superuser.
+	* @param integer the id of the user to do the check for.
 	* @return boolean whether the user is a superuser.
 	*/
-	public function isSuperuser($userId=null)
+	public function isSuperuser($userId)
 	{
-		$user = Yii::app()->getUser();
-		if( $user->isGuest===false )
-		{
-			if( $userId===null)
-				$userId = $user->id;
-
-			$assignments = $this->_authManager->getAuthAssignments($userId);
-			return isset($assignments[ $this->_superuserName ]);
-		}
-
-		return false;
+		$assignments = $this->_authManager->getAuthAssignments($userId);
+		return isset($assignments[ $this->_superuserName ]);
 	}
 
 	/**
@@ -354,24 +345,12 @@ class RightsAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the assignments for a specific user.
-	* @param mixed one or many user ids.
+	* @param integer the id of the user to get assignments for.
 	* @return array the assignments.
-	* FIXME: Check if we need to support many user ids.
 	*/
-	public function getUserAssignments($userId=null)
+	public function getUserAssignments($userId)
 	{
-		if( $userId!==(array)$userId )
-		{
-			$assignments = $this->_authManager->getAuthAssignments($userId);
-		}
-		else
-		{
-			$assignments = array();
-			foreach( $userId as $id )
-				$assignments[ $id ] = $this->_authManager->getAuthAssignments($id);
-		}
-
-		return $assignments;
+		return $this->_authManager->getAuthAssignments($userId);
 	}
 
 	/**
