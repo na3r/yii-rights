@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.1
 */
-class AssignmentController extends Controller
+class AssignmentController extends RightsBaseController
 {
 	/**
 	* @property RightsAuthorizer

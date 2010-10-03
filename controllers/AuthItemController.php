@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.5
 */
-class AuthItemController extends Controller
+class AuthItemController extends RightsBaseController
 {
 	/**
 	* @property RightsAuthorizer

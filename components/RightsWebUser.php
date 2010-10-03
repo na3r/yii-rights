@@ -43,7 +43,7 @@ class RightsWebUser extends CWebUser
 	public function getIsSuperuser()
 	{
 		if( isset($this->_isSuperuser)===false )
-			$this->_isSuperuser = Rights::getAuthorizer()->isSuperuser();
+			$this->_isSuperuser = Rights::getAuthorizer()->isSuperuser(Yii::app()->user->id);
 
 		return $this->_isSuperuser;
 	}
