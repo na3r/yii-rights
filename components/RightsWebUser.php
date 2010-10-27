@@ -9,9 +9,15 @@
 class RightsWebUser extends CWebUser
 {
 	/**
-	* @property boolean whether the user is a superuser.
+	* Actions to be taken after logging in.
+	* @param boolean whether the login is based on cookie.
 	*/
-	private $_isSuperuser;
+	public function afterLogin($fromCookie)
+	{
+		parent::init($fromCookie);
+		$isSuperuser = Rights::getAuthorizer()->isSuperuser(Yii::app()->user->id);
+		$this->isSuperuser = $isSuperuser;
+	}
 
 	/**
 	* Performs access check for this user.
@@ -30,7 +36,7 @@ class RightsWebUser extends CWebUser
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
 		// Allow access when the user is a superuser
-		if( $this->getIsSuperuser()===true )
+		if( $this->isSuperuser===true )
 			return true;
 
 		// Otherwise do CWebUser::checkAccess
@@ -38,21 +44,18 @@ class RightsWebUser extends CWebUser
 	}
 
 	/**
-	* @return boolean whether the user is a superuser.
-	*/
-	public function getIsSuperuser()
-	{
-		if( isset($this->_isSuperuser)===false )
-			$this->_isSuperuser = Rights::getAuthorizer()->isSuperuser(Yii::app()->user->id);
-
-		return $this->_isSuperuser;
-	}
-
-	/**
 	* @param boolean whether the user is a superuser.
 	*/
 	public function setIsSuperuser($value)
 	{
-		$this->_isSuperuser = $value;
+		$this->setState('__isSuperuser', $value);
+	}
+
+	/**
+	* @return boolean whether the user is a superuser.
+	*/
+	public function getIsSuperuser()
+	{
+		return $this->getState('__isSuperuser');
 	}
 }
