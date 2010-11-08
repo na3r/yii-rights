@@ -16,16 +16,29 @@
  * @version $Id: $
  */
 return array (
+  
   'Congratulations!' => '',
+  
   'Install Rights' => '',
+ 
   'Installation failed.' => '',
+ 
   'No' => '',
+  
   'Notice: All your existing data will be lost.' => '',
+  
   'Please confirm if you wish to reinstall.' => '',
+  
   'Rights has been installed succesfully.' => '',
+  
   'Rights is already installed!' => '',
+  
   'Yes' => '',
+  
   'You can start by generating your authorization items' => '',
+  
   'You must be logged in to install Rights.' => '',
+  
   'here' => '',
+
 );
