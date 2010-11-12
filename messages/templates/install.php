@@ -14,6 +14,7 @@
  * @version $Id: $
  */
 return array (
+  
   'Congratulations!' => '',
   'Install Rights' => '',
   'Installation failed.' => '',
@@ -26,4 +27,5 @@ return array (
   'You can start by generating your authorization items' => '',
   'You must be logged in to install Rights.' => '',
   'here' => '',
+
 );
