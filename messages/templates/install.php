@@ -14,7 +14,7 @@
  * @version $Id: $
  */
 return array (
-  
+  'Application web user must extend RightsWebUser.' => '',
   'Congratulations!' => '',
   'Install Rights' => '',
   'Installation failed.' => '',

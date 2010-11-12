@@ -26,7 +26,6 @@ return array (
   'Additional data available when executing the business rule.' => 'Datos disponibles adicionales cuando se ejecuta la regla de negocio',
   'An item with this name already exists.' => 'un objeto con el mismo nombre ya existe.',
   'Application' => 'Aplicación.',
-  'Are you sure you want to delete this item?' => '¿Está seguro que desea eliminar este objeto?',
   'Are you sure you want to delete this operation?' => '¿Está seguro que desea eliminar esta operación?',
   'Are you sure you want to delete this role?' => '¿Está seguro que desea eliminar este rol?',
   'Are you sure you want to delete this task?' => '¿Está seguro que desea eliminar esta tarea?',

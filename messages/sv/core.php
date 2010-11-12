@@ -17,7 +17,6 @@ return array (
   ':name module' => '',
   'A descriptive name for this item.' => '',
   'Additional data available when executing the business rule.' => '',
-  'Are you sure you want to delete this item?' => '',
   'Assign item' => '',
   'Assigned items' => '',
   'Authorization item' => '',

@@ -26,7 +26,6 @@ return array (
   'Additional data available when executing the business rule.' => '',
   'An item with this name already exists.' => '',
   'Application' => '',
-  'Are you sure you want to delete this item?' => '',
   'Are you sure you want to delete this operation?' => '',
   'Are you sure you want to delete this role?' => '',
   'Are you sure you want to delete this task?' => '',

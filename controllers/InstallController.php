@@ -81,26 +81,44 @@ class InstallController extends RightsBaseController
 		// Make sure the user is not a guest
 		if( Yii::app()->user->isGuest===false )
 		{
-			// Make sure that the module is not already installed
-			if( isset($_GET['confirm'])===true || $this->_installer->isInstalled===false )
+			// Get the application web user
+			$user = Yii::app()->getUser();
+
+			// Make sure the web user extends RightsWebUser
+			if( $user instanceof RightsWebUser )
 			{
-				// Redirect to generate if install is succeeds
-				if( $this->_installer->run(true)===true )
-					$this->redirect(array('install/ready'));
+				// Make sure that the module is not already installed
+				if( isset($_GET['confirm'])===true || $this->_installer->isInstalled===false )
+				{
+					// Run the installer and check for an error
+					if( $this->_installer->run(true)===true )
+					{
+						// Make the logged in user as a superuser
+						$user->setIsSuperuser(true);
 
-				// Set an error message
-				Yii::app()->getUser()->setFlash($this->module->flashErrorKey,
-					Rights::t('install', 'Installation failed.')
-				);
+						// Redirect to generate if install is succeeds
+						$this->redirect(array('install/ready'));
+					}
 
-				// Redirect to Rights default action
-				$this->redirect(Yii::app()->homeUrl);
+					// Set an error message
+					$user->setFlash($this->module->flashErrorKey,
+						Rights::t('install', 'Installation failed.')
+					);
+
+					// Redirect to Rights default action
+					$this->redirect(Yii::app()->homeUrl);
+				}
+				// Module is already installed
+				else
+				{
+					// Redirect to to the confirm overwrite page
+					$this->redirect(array('install/confirm'));
+				}
 			}
-			// Module is already installed
+			// Web user does not extend RightsWebUser
 			else
 			{
-				// Redirect to to the confirm overwrite page
-				$this->redirect(array('install/confirm'));
+				throw new CException(Rights::t('install', 'Application web user must extend RightsWebUser.'));
 			}
 		}
 		// User is guest, deny access
