@@ -25,8 +25,8 @@ class RightsFilter extends CFilter
 		$controller = $filterChain->controller;
 		$action = $filterChain->action;
 
-		// Check if the action should always be allowed
-		if( in_array($action->id, $this->_allowedActions)===false )
+		// Check if the action should be allowed
+		if( $this->_allowedActions!=='*' && in_array($action->id, $this->_allowedActions)===false )
 		{
 			// Initialize the authorization item as an empty string
 			$authItem = '';
@@ -64,10 +64,14 @@ class RightsFilter extends CFilter
 
 	/**
 	* Sets the allowed actions.
-	* @param string the actions that are always allowed separated by commas.
+	* @param string the actions that are always allowed separated by commas,
+	* you may also use star (*) to represent all actions.
 	*/
 	public function setAllowedActions($allowedActions)
 	{
-		$this->_allowedActions = preg_split('/[\s,]+/', $allowedActions, -1, PREG_SPLIT_NO_EMPTY);
+		if( $allowedActions==='*' )
+			$this->_allowedActions = $allowedActions;
+		else
+			$this->_allowedActions = preg_split('/[\s,]+/', $allowedActions, -1, PREG_SPLIT_NO_EMPTY);
 	}
 }

@@ -201,13 +201,11 @@ class RightsAuthorizer extends CApplicationComponent
 		{
 		 	if( $children!==array() )
 		 	{
-		 		// Item found
 		 		if( isset($children[ $itemName ])===true )
 		 		{
 		 			if( isset($parents[ $childName ])===false )
 		 				$parents[ $childName ] = $childName;
 				}
-				// Check if item is in the children recursively
 				else
 				{
 		 			if( ($p = $this->getAuthItemParentsRecursive($itemName, $children, $direct))!==array() )

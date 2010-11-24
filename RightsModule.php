@@ -136,7 +136,7 @@ class RightsModule extends CWebModule
 	*/
 	public function registerScripts()
 	{
-		// Publish the asset path
+		// Get the url to the module assets
 		$assetsUrl = $this->getAssetsUrl();
 
 		// Register the necessary scripts
