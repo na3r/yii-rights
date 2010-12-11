@@ -21,7 +21,7 @@
 				<tr class="action-row<?php echo $actionExists===true ? ' exists' : ''; ?><?php echo ($i++ % 2)===0 ? ' odd' : ' even'; ?>">
 					<td class="checkbox-column"><?php echo $actionExists===false ? $form->checkBox($model, 'items['.$actionKey.']') : ''; ?></td>
 					<td class="name-column"><?php echo $action['name']; ?></td>
-					<td class="path-column"><?php echo substr($item['path'], $basePathLength+1).'('.$action['line'].')'; ?></td>
+					<td class="path-column"><?php echo substr($item['path'], $basePathLength+1).(isset($action['line'])===true?':'.$action['line']:'').(isset($action['info'])===true?' ('.$action['info'].')':''); ?></td>
 				</tr>
 
 			<?php endforeach; ?>

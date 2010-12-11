@@ -51,7 +51,7 @@
     					array(
     						'header'=>'&nbsp;',
     						'type'=>'raw',
-    						'htmlOptions'=>array('class'=>'empty-column'),
+    						'htmlOptions'=>array('class'=>'actions-column'),
     						'value'=>'',
     					),
 					)
@@ -85,10 +85,9 @@
     						'value'=>'$data->getTypeText()',
     					),
     					array(
-    						'name'=>'remove',
     						'header'=>'&nbsp;',
     						'type'=>'raw',
-    						'htmlOptions'=>array('class'=>'remove-column'),
+    						'htmlOptions'=>array('class'=>'actions-column'),
     						'value'=>'$data->getRemoveChildLink()',
     					),
 					)

@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 1.0.0
+* @version 1.1.0
 */
 class RightsModule extends CWebModule
 {
@@ -20,10 +20,6 @@ class RightsModule extends CWebModule
 	* @property string the name of the guest role.
 	*/
 	public $guestName = 'Guest';
-	/**
-	* @property array list of default roles.
-	*/
-	public $defaultRoles = null;
 	/**
 	* @property string the name of the user model class.
 	*/
@@ -80,7 +76,7 @@ class RightsModule extends CWebModule
 	*/
 	public function init()
 	{
-		// Set required classes for import
+		// Set required classes for import.
 		$this->setImport(array(
 			'rights.models.*',
 			'rights.components.*',
@@ -88,20 +84,14 @@ class RightsModule extends CWebModule
 			'rights.controllers.*',
 		));
 
-		// Set the user identity guest name
-		Yii::app()->getUser()->guestName = $this->guestName;
-
-		// Set guest role as the default
-		// if the default roles are not set
-		if( $this->defaultRoles===null )
-			$this->defaultRoles = array($this->guestName);
+		// Set the user identity guest name.
+		Yii::app()->user->guestName = $this->guestName;
 
 		// Set the components component
 		$this->setComponents(array(
 			'authorizer'=>array(
 				'class'=>'RightsAuthorizer',
 				'superuserName'=>$this->superuserName,
-				'defaultRoles'=>$this->defaultRoles,
 			),
 			'generator'=>array(
 				'class'=>'RightsGenerator',
@@ -119,7 +109,7 @@ class RightsModule extends CWebModule
 					'superuserName'=>$this->superuserName,
 					'authenticatedName'=>$this->authenticatedName,
 					'guestName'=>$this->guestName,
-					'defaultRoles'=>$this->defaultRoles,
+					'defaultRoles'=>Yii::app()->getAuthManager()->defaultRoles,
 				),
 			));
 
@@ -209,6 +199,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '1.0.0';
+		return '1.1.0';
 	}
 }

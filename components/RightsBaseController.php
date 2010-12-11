@@ -50,9 +50,10 @@ class RightsBaseController extends CController
 	*/
 	public function accessDenied()
 	{
-		$u = Yii::app()->getUser();
-		if( $u->getIsGuest()===true )
-			$u->loginRequired();
+		$user = Yii::app()->getUser();
+
+		if( $user->isGuest===true )
+			$user->loginRequired();
 		else
 			throw new CHttpException(403, Rights::t('core', 'You are not authorized to perform this action.'));
 	}

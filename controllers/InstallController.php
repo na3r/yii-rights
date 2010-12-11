@@ -40,7 +40,7 @@ class InstallController extends RightsBaseController
 	public function filters()
 	{
 		// Use access control when installed
-		return $this->_installer->isInstalled===true ? array('accessControl') : array();
+		return $this->_installer->installed===true ? array('accessControl') : array();
 	}
 
 	/**
@@ -88,7 +88,7 @@ class InstallController extends RightsBaseController
 			if( $user instanceof RightsWebUser )
 			{
 				// Make sure that the module is not already installed
-				if( isset($_GET['confirm'])===true || $this->_installer->isInstalled===false )
+				if( isset($_GET['confirm'])===true || $this->_installer->installed===false )
 				{
 					// Run the installer and check for an error
 					if( $this->_installer->run(true)===true )

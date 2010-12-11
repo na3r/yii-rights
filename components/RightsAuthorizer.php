@@ -8,9 +8,12 @@
 */
 class RightsAuthorizer extends CApplicationComponent
 {
+	/**
+	* @property string the name of the superuser role.
+	*/
+	public $superuserName;
+
 	private $_authManager;
-	private $_superuserName;
-	private $_defaultRoles;
 
 	/**
 	* Initializes the authorizer.
@@ -20,7 +23,6 @@ class RightsAuthorizer extends CApplicationComponent
 		parent::init();
 
 		$this->_authManager = Yii::app()->getAuthManager();
-		$this->_authManager->defaultRoles = $this->_defaultRoles;
 	}
 
 	/**
@@ -31,7 +33,7 @@ class RightsAuthorizer extends CApplicationComponent
 	*/
 	public function getRoles($includeSuperuser=true, $sort=true)
 	{
-		$exclude = $includeSuperuser===false ? array($this->_superuserName) : array();
+		$exclude = $includeSuperuser===false ? array($this->superuserName) : array();
 	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, null, $sort, $exclude);
 	}
 
@@ -71,7 +73,7 @@ class RightsAuthorizer extends CApplicationComponent
 		$authItem->description = $description!=='' ? $description : null;
 		$authItem->bizRule = $bizRule!=='' ? $bizRule : null;
 
-		// Make sure that data is not already serialized
+		// Make sure that data is not already serialized.
 		if( @unserialize($data)===false )
 			$authItem->data = $data!=='' ? $this->sanitizeExpression($data.';') : null;
 
@@ -91,25 +93,25 @@ class RightsAuthorizer extends CApplicationComponent
 	 */
 	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
 	{
-		// We have no or one type
+		// We have none or a single type.
 		if( $type!==(array)$type )
 		{
 			$items = $this->_authManager->getAuthItems($type, $userId, $parent, $sort);
 		}
-		// We have multiple types
+		// We have multiple types.
 		else
 		{
 			$authItems = array();
 			foreach( $type as $t )
 				$authItems[ $t ] = $this->_authManager->getAuthItems($t, $userId, $parent, $sort);
 
-			// Merge the authorization items preserving the keys
+			// Merge the authorization items preserving the keys.
 			$items = array();
 			foreach( $authItems as $ai )
 				$items = $this->mergeAuthItems($items, $ai);
 		}
 
-		// Exclude invalid items
+		// Exclude invalid items.
 		$items = $this->excludeInvalidAuthItems($items, $parent, $exclude);
 
 		return $items;
@@ -141,21 +143,21 @@ class RightsAuthorizer extends CApplicationComponent
 	protected function excludeInvalidAuthItems($items, CAuthItem $parent=null, $exclude=array())
 	{
 		// We are getting authorization items valid for a certain item
-		// exclude its parents and children aswell
+		// exclude its parents and children aswell.
 		if( $parent!==null )
 		{
 		 	$exclude[] = $parent->name;
 		 	foreach( $parent->getChildren() as $childName=>$child )
 		 		$exclude[] = $childName;
 
-		 	// Exclude the parents recursively to avoid inheritance loops
+		 	// Exclude the parents recursively to avoid inheritance loops.
 		 	$parentNames = array_keys($this->getAuthItemParents($parent->name));
 		 	$exclude = array_merge($parentNames, $exclude);
 		}
 
-		// Unset the items that are supposed to be excluded
+		// Unset the items that are supposed to be excluded.
 		foreach( $exclude as $itemName )
-			if( isset($items[ $itemName ])===true )
+			if( isset($items[ $itemName ]) )
 				unset($items[ $itemName ]);
 
 		return $items;
@@ -201,7 +203,7 @@ class RightsAuthorizer extends CApplicationComponent
 		{
 		 	if( $children!==array() )
 		 	{
-		 		if( isset($children[ $itemName ])===true )
+		 		if( isset($children[ $itemName ]) )
 		 		{
 		 			if( isset($parents[ $childName ])===false )
 		 				$parents[ $childName ] = $childName;
@@ -250,12 +252,13 @@ class RightsAuthorizer extends CApplicationComponent
 	{
 		$userClass = Rights::module()->userClass;
 		$users = CActiveRecord::model($userClass)->findAll();
+
 		$superusers = array();
 		foreach( $users as $user )
 		{
 			$user->attachBehavior('rights', new RightsUserBehavior);
 			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->getId());
-			if( isset($items[ $this->_superuserName ])===true )
+			if( isset($items[ $this->superuserName ]) )
 				$superusers[] = $user->getName();
 		}
 
@@ -270,7 +273,7 @@ class RightsAuthorizer extends CApplicationComponent
 	public function isSuperuser($userId)
 	{
 		$assignments = $this->_authManager->getAuthAssignments($userId);
-		return isset($assignments[ $this->_superuserName ]);
+		return isset($assignments[ $this->superuserName ]);
 	}
 
 	/**
@@ -324,13 +327,13 @@ class RightsAuthorizer extends CApplicationComponent
 	{
 		if( $parentName!==null )
 		{
-			if( $parentName===$this->_superuserName )
+			if( $parentName===$this->superuserName )
 				return 1;
 
 			$permissions = $this->getPermissions($parentName);
 		}
 
-		if( isset($permissions[ $itemName ])===true )
+		if( isset($permissions[ $itemName ]) )
 			return 1;
 
 		foreach( $permissions as $children )
@@ -342,23 +345,13 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the assignments for a specific user.
-	* @param integer the id of the user to get assignments for.
-	* @return array the assignments.
-	*/
-	public function getUserAssignments($userId)
-	{
-		return $this->_authManager->getAuthAssignments($userId);
-	}
-
-	/**
 	* Tries to sanitize code to make it safe for execution.
 	* @param string the code to be execute.
 	* @return mixed the return value of eval() or null if the code was unsafe to execute.
 	*/
 	protected function sanitizeExpression($code)
 	{
-		// Language consturcts
+		// Language consturcts.
 		$languageConstructs = array(
 			'echo',
 			'empty',
@@ -372,65 +365,33 @@ class RightsAuthorizer extends CApplicationComponent
 			'require_once',
 		);
 
-		// Loop through the language constructs
+		// Loop through the language constructs.
 		foreach( $languageConstructs as $lc )
 			if( preg_match('/'.$lc.'\ *\(?\ *[\"\']+/', $code)>0 )
-				return null; // Language construct found, not safe for eval
+				return null; // Language construct found, not safe for eval.
 
 		// Get a list of all defined functions
 		$definedFunctions = get_defined_functions();
 		$functions = array_merge($definedFunctions['internal'], $definedFunctions['user']);
 
-		// Loop through the functions and check the code for function calls
-		// Append a '(' to the functions to avoid confusion between e.g. array() and array_merge()
+		// Loop through the functions and check the code for function calls.
+		// Append a '(' to the functions to avoid confusion between e.g. array() and array_merge().
 		foreach( $functions as $f )
 			if( preg_match('/'.$f.'\ *\({1}/', $code)>0 )
-				return null; // Function call found, not safe for eval
+				return null; // Function call found, not safe for eval.
 
 		// Evaluate the safer code
 		$result = @eval($code);
 
-		// Return the evaluated code or null if the result was false
+		// Return the evaluated code or null if the result was false.
 		return $result!==false ? $result : null;
 	}
 
 	/**
-	* @return RightsAuthManager the authorization manager
+	* @return RightsAuthManager the authorization manager.
 	*/
 	public function getAuthManager()
 	{
 		return $this->_authManager;
-	}
-
-	/**
-	* @param RightsAuthManager the authorization manager
-	*/
-	public function setAuthManager($value)
-	{
-		$this->_authManager = $value;
-	}
-
-	/**
-	* @return string the name of the superuser role.
-	*/
-	public function getSuperuserName()
-	{
-		return $this->_superuserName;
-	}
-
-	/**
-	* @param string the name of the superuser role.
-	*/
-	public function setSuperuserName($value)
-	{
-		$this->_superuserName = $value;
-	}
-
-	/**
-	* @param string the default roles.
-	*/
-	public function setDefaultRoles($value)
-	{
-		$this->_defaultRoles = $value;
 	}
 }

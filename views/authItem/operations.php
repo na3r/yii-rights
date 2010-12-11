@@ -45,10 +45,9 @@
     			'visible'=>Rights::module()->enableBizRuleData===true,
     		),
     		array(
-    			'name'=>'delete',
     			'header'=>'&nbsp;',
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'delete-column'),
+    			'htmlOptions'=>array('class'=>'actions-column'),
     			'value'=>'$data->getDeleteOperationLink()',
     		),
 	    )

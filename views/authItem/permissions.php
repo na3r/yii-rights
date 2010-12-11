@@ -23,7 +23,7 @@
 		* Attach the tooltip to the inherited items.
 		*/
 		jQuery('.inherited-item').rightsTooltip({
-			title:'<?php echo Rights::t('core', 'Parents'); ?>: '
+			title:'<?php echo Rights::t('core', 'Source'); ?>: '
 		});
 
 		/**

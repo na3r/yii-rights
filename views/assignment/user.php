@@ -32,10 +32,9 @@
     				'value'=>'$data->getTypeText()',
     			),
     			array(
-    				'name'=>'revoke',
     				'header'=>'&nbsp;',
     				'type'=>'raw',
-    				'htmlOptions'=>array('class'=>'revoke-column'),
+    				'htmlOptions'=>array('class'=>'actions-column'),
     				'value'=>'$data->getRevokeAssignmentLink()',
     			),
 			)

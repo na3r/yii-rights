@@ -62,8 +62,8 @@ class RightsUserBehavior extends CModelBehavior
 		$authorizer = Rights::getAuthorizer();
 		$assignments = $authorizer->authManager->getAuthAssignments($this->getId());
 
-		$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
 		$assignedItems = array();
+		$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
 		foreach( $items as $itemName=>$item )
 		{
 			$itemMarkup = $item->getNameText();
