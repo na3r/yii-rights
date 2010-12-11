@@ -1,7 +1,6 @@
 <?php
 /**
 * Rights authorization manager class file.
-* Implements support for sorting of authorization items.
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
@@ -9,18 +8,22 @@
 */
 class RightsAuthManager extends CDbAuthManager
 {
-	public $itemWeightTable = 'AuthItemWeight';
+	public $rightsTable = 'Rights';
+
+	private $_items = array();
+	private $_itemChildren = array();
 
 	/**
-	* Adds an item as a child of another item making sure that
-	* the item doesn't already have this child.
-	* @param string the parent item name
-	* @param string the child item name
-	* @throws CException if either parent or child doesn't exist or if a loop has been detected.
-	*/
+	 * Adds an item as a child of another item.
+	 * Overloads the parent method to make sure that
+	 * we do not add already existing children.
+	 * @param string the child item name.
+	 * @param string $childName the child item name.
+	 * @throws CException if either parent or child doesn't exist or if a loop has been detected.
+	 */
 	public function addItemChild($itemName, $childName)
 	{
-		// Make sure that the item doesn't already have this child
+		// Make sure that the item doesn't already have this child.
 		if( $this->hasItemChild($itemName, $childName)===false )
 			return parent::addItemChild($itemName, $childName);
 	}
@@ -28,58 +31,106 @@ class RightsAuthManager extends CDbAuthManager
 	/**
 	* Assigns an authorization item to a user making sure that
 	* the user doesn't already have this assignment.
-	* @param string the item name
+	* Overloads the parent method to make sure that
+	* we do not assign already assigned items.
+	* @param string the item name.
 	* @param mixed the user ID (see {@link IWebUser::getId})
 	* @param string the business rule to be executed when {@link checkAccess} is called
 	* for this particular authorization item.
-	* @param mixed additional data associated with this assignment
+	* @param mixed additional data associated with this assignment.
 	* @return CAuthAssignment the authorization assignment information.
 	* @throws CException if the item does not exist or if the item has already been assigned to the user.
 	*/
 	public function assign($itemName, $userId, $bizRule=null, $data=null)
 	{
-		// Make sure that this user doesn't already have this assignment
+		// Make sure that this user doesn't already have this assignment.
 		if( $this->getAuthAssignment($itemName, $userId)===null )
 			return parent::assign($itemName, $userId, $bizRule, $data);
 	}
 
 	/**
 	* Returns the authorization item with the specified name.
-	* @param string the name of the item
+	* Overloads the parent method to allow for runtime caching
+	* and attaching of the necessary authorization item behavior.
+	* @param string the name of the item.
+	* @param integer the ID of the user to set as owner of the returned item.
+	* @param CAuthItem the parent item for the returned items.
+	* @param boolean whether to accept cached data.
 	* @return CAuthItem the authorization item. Null if the item cannot be found.
+	* @throws CException if the item does not exist.
 	*/
-	public function getAuthItem($name)
+	public function getAuthItem($name, $userId=null, CAuthItem $parent=null, $allowCaching=true)
 	{
-		if( ($item = parent::getAuthItem($name))!==null )
+		// Get all items if necessary and cache them.
+		if( $allowCaching && $this->_items===array() )
+			$this->_items = $this->getAuthItems();
+
+		// Get the items from cache if possible.
+		if( $allowCaching && isset($this->_items[ $name ]) )
 		{
-			$items = $this->processItems(array($item));
-			$item = $items===(array)$items ? array_pop($items) : null;
+			return $this->_items[ $name ];
+		}
+		// Attempt to get the item.
+		else if( ($item = parent::getAuthItem($name))!==null )
+		{
+			$item->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+			return $item;
 		}
 
-		return $item;
+		// Item does not exist.
+		throw new CException('"'.$name.'" does not exist.');
+	}
+
+
+	/**
+	* Returns the specified authorization items.
+	* @param array the names of the authorization items to get.
+	* @param CAuthItem the parent item for the returned items.
+	* @param boolean whether to sort the items according to their weights.
+	* @return array the authorization items.
+	*/
+	public function getAuthItemsByNames($names, CAuthItem $parent=null)
+	{
+		// Get all items if necessary and cache them.
+		if( $this->_items===array() )
+			$this->_items = $this->getAuthItems();
+
+		// Collect the items we want.
+		$items = array();
+		foreach( $this->_items as $name=>$item )
+		{
+			if( in_array($name, $names) )
+			{
+				$item->attachBehavior('rights', new RightsAuthItemBehavior(null, $parent));
+				$items[ $name ] = $item;
+			}
+		}
+
+		return $items;
 	}
 
 	/**
 	* Returns the authorization items of the specific type and user.
+	* Overloads the parent method to allow for sorting
+	* and attaching of the necessary authorization item behavior.
 	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
 	* @param mixed the user ID. Defaults to null, meaning returning all items even if
 	* they are not assigned to a user.
-	* @param CAuthItem the authorization item the items belong to.
-	* parent for the authorization item
+	* @param CAuthItem the parent item for the returned items.
 	* @param boolean whether to sort the items according to their weights.
 	* @return array the authorization items of the specific type.
 	*/
 	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=false)
 	{
-		// We need to sort the items
+		// We need to sort the items.
 		if( $sort===true )
 		{
 			if( $type===null && $userId===null )
 			{
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
-					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
+					LEFT JOIN {$this->rightsTable} t2 ON name=itemname
 					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
 			}
@@ -87,7 +138,7 @@ class RightsAuthManager extends CDbAuthManager
 			{
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
-					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
+					LEFT JOIN {$this->rightsTable} t2 ON name=itemname
 					WHERE t1.type=:type
 					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
@@ -98,7 +149,7 @@ class RightsAuthManager extends CDbAuthManager
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
-					LEFT JOIN {$this->itemWeightTable} t3 ON name=t3.itemname
+					LEFT JOIN {$this->rightsTable} t3 ON name=t3.itemname
 					WHERE userid=:userid
 					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
@@ -109,7 +160,7 @@ class RightsAuthManager extends CDbAuthManager
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
-					LEFT JOIN {$this->itemWeightTable} t3 ON name=t3.itemname
+					LEFT JOIN {$this->rightsTable} t3 ON name=t3.itemname
 					WHERE t1.type=:type AND userid=:userid
 					ORDER BY t1.type ASC, weight ASC";
 				$command=$this->db->createCommand($sql);
@@ -121,74 +172,72 @@ class RightsAuthManager extends CDbAuthManager
 			foreach($command->queryAll() as $row)
 				$items[ $row['name'] ] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], unserialize($row['data']));
 		}
-		// No sorting required
+		// No sorting required.
 		else
 		{
 			$items = parent::getAuthItems($type, $userId);
 		}
 
-		// Process the items and attach necessary behaviors
-		$items = $this->processItems($items, $userId, $parent);
+		// Attach the authorization item behavior.
+		foreach( $items as $item )
+			$item->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
 
 		return $items;
 	}
 
 	/**
-	* Returns the specified authorization items sorted by weights.
-	* @param array the names of the authorization items to get.
-	* @return array the authorization items.
-	*/
-	public function getAuthItemsByNames($names, CAuthItem $parent=null, $sort=true)
+	 * Returns the children of the specified item.
+	 * Overloads the parent method to allow for caching
+	 * and attaching of the necessary authorization item behavior.
+	 * @param mixed $names the parent item name. This can be either a string or an array.
+	 * The latter represents a list of item names (available since version 1.0.5).
+	 * @param boolean whether to accept cached data.
+	 * @return array all child items of the parent
+	 */
+	public function getItemChildren($names, $allowCaching=true)
 	{
-		$items = array();
+		// Resolve the key for runtime caching.
+		$key = $names===(array)$names ? implode('|', $names) : $names;
 
-		if( $names!==array() )
+		// Get the children from cache if possible.
+		if( $allowCaching && isset($this->_itemChildren[ $key ])===true )
 		{
-			foreach( $names as &$name )
-				$name = $this->db->quoteValue($name);
-
-			$condition = 'name IN ('.implode(', ',$names).')';
-
-			if( $sort===true )
-			{
-				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
-					FROM {$this->itemTable} t1
-					LEFT JOIN {$this->itemWeightTable} t2 ON name=itemname
-					WHERE $condition
-					ORDER BY t1.type ASC, weight ASC";
-				$command=$this->db->createCommand($sql);
-			}
-			else
-			{
-				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data
-					FROM {$this->itemTable} t1
-					WHERE $condition";
-				$command=$this->db->createCommand($sql);
-			}
-
-			foreach($command->queryAll() as $row)
-				$items[ $row['name'] ]=new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], unserialize($row['data']));
+			return $this->_itemChildren[ $key ];
 		}
+		// Children not cached or cached data is not accepted.
+		else
+		{
+			// We only have one name.
+			if( is_string($names) )
+			{
+				$condition = 'parent='.$this->db->quoteValue($names);
+			}
+			// We have multiple names.
+			else if( $names===(array)$names && $names!==array() )
+			{
+				foreach($names as &$name)
+					$name=$this->db->quoteValue($name);
 
-		$items = $this->processItems($items, null, $parent);
+				$condition = 'parent IN ('.implode(', ', $names).')';
+			}
 
-		return $items;
-	}
+			$sql = "SELECT name, type, description, bizrule, data FROM {$this->itemTable}, {$this->itemChildTable} WHERE $condition AND name=child";
+			$children = array();
+			foreach( $this->db->createCommand($sql)->queryAll() as $row )
+			{
+				if( ($data = @unserialize($row['data']))===false )
+					$data = null;
 
-	/**
-	* Processes the authorization items before returning them.
-	* @param array the items to process
-	* @param mixed the user ID. Defaults to null, meaning returning all items even if
-	* they are not assigned to a user.
-	* @param CAuthItem the authorization item the items belong to.
-	* @return the processed authorization items.
-	*/
-	public function processItems($items, $userId=null, CAuthItem $parent=null)
-	{
-		foreach( $items as $i )
-			$i->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+				$children[$row['name']] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], $data);
+			}
 
-		return $items;
+			// Attach the authorization item behavior.
+			foreach( $children as $item )
+				$item->attachBehavior('rights', new RightsAuthItemBehavior);
+
+			// Cache the result.
+			return $this->_itemChildren[ $key ] = $children;
+		}
 	}
 
 	/**
@@ -199,15 +248,15 @@ class RightsAuthManager extends CDbAuthManager
 	{
 		foreach( $result as $weight=>$itemname )
 		{
-			// Check if the item already has a weight
-			$sql = "SELECT COUNT(*) FROM {$this->itemWeightTable}
+			$sql = "SELECT COUNT(*) FROM {$this->rightsTable}
 				WHERE itemname=:itemname";
 			$command = $this->db->createCommand($sql);
 			$command->bindValue(':itemname', $itemname);
 
+			// Check if the item already has a weight.
 			if( $command->queryScalar()>0 )
 			{
-				$sql = "UPDATE {$this->itemWeightTable}
+				$sql = "UPDATE {$this->rightsTable}
 					SET weight=:weight
 					WHERE itemname=:itemname";
 				$command = $this->db->createCommand($sql);
@@ -215,12 +264,12 @@ class RightsAuthManager extends CDbAuthManager
 				$command->bindValue(':itemname', $itemname);
 				$command->execute();
 			}
-			// Item does not have a weight, insert it
+			// Item does not have a weight, insert it.
 			else
 			{
 				if( ($item = $this->getAuthItem($itemname))!==null )
 				{
-					$sql = "INSERT INTO {$this->itemWeightTable} (itemname, type, weight)
+					$sql = "INSERT INTO {$this->rightsTable} (itemname, type, weight)
 						VALUES (:itemname, :type, :weight)";
 					$command = $this->db->createCommand($sql);
 					$command->bindValue(':itemname', $itemname);
