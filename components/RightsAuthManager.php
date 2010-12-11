@@ -57,7 +57,6 @@ class RightsAuthManager extends CDbAuthManager
 	* @param CAuthItem the parent item for the returned items.
 	* @param boolean whether to accept cached data.
 	* @return CAuthItem the authorization item. Null if the item cannot be found.
-	* @throws CException if the item does not exist.
 	*/
 	public function getAuthItem($name, $userId=null, CAuthItem $parent=null, $allowCaching=true)
 	{
@@ -78,7 +77,7 @@ class RightsAuthManager extends CDbAuthManager
 		}
 
 		// Item does not exist.
-		throw new CException('"'.$name.'" does not exist.');
+		return null;
 	}
 
 

@@ -84,41 +84,32 @@ class InstallController extends RightsBaseController
 			// Get the application web user
 			$user = Yii::app()->getUser();
 
-			// Make sure the web user extends RightsWebUser
-			if( $user instanceof RightsWebUser )
+			// Make sure that the module is not already installed
+			if( isset($_GET['confirm'])===true || $this->_installer->installed===false )
 			{
-				// Make sure that the module is not already installed
-				if( isset($_GET['confirm'])===true || $this->_installer->installed===false )
+				// Run the installer and check for an error
+				if( $this->_installer->run(true)===true )
 				{
-					// Run the installer and check for an error
-					if( $this->_installer->run(true)===true )
-					{
-						// Make the logged in user as a superuser
-						$user->setIsSuperuser(true);
+					// Make the logged in user as a superuser
+					$user->setIsSuperuser(true);
 
-						// Redirect to generate if install is succeeds
-						$this->redirect(array('install/ready'));
-					}
-
-					// Set an error message
-					$user->setFlash($this->module->flashErrorKey,
-						Rights::t('install', 'Installation failed.')
-					);
-
-					// Redirect to Rights default action
-					$this->redirect(Yii::app()->homeUrl);
+					// Redirect to generate if install is succeeds
+					$this->redirect(array('install/ready'));
 				}
-				// Module is already installed
-				else
-				{
-					// Redirect to to the confirm overwrite page
-					$this->redirect(array('install/confirm'));
-				}
+
+				// Set an error message
+				$user->setFlash($this->module->flashErrorKey,
+					Rights::t('install', 'Installation failed.')
+				);
+
+				// Redirect to Rights default action
+				$this->redirect(Yii::app()->homeUrl);
 			}
-			// Web user does not extend RightsWebUser
+			// Module is already installed
 			else
 			{
-				throw new CException(Rights::t('install', 'Application web user must extend RightsWebUser.'));
+				// Redirect to to the confirm overwrite page
+				$this->redirect(array('install/confirm'));
 			}
 		}
 		// User is guest, deny access

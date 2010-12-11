@@ -40,11 +40,17 @@ class RightsInstaller extends CApplicationComponent
 	{
 		parent::init();
 
-		// Get the authorization manager and make sure
-		// the application uses a valid authorization manager.
+		// Make sure the application is configured
+		// to use a valid authorization manager.
 		$authManager = Yii::app()->getAuthManager();
 		if( ($authManager instanceof RightsAuthManager)===false )
-			throw new CException(Rights::t('install', 'You must configure your application to use the "RightsAuthManager".'));
+			throw new CException(Rights::t('install', 'Application authorization manager must extend the RightsAuthManager class.'));
+
+		// Make sure the application is configured
+		// to use a valid web user.
+		$user = Yii::app()->getUser();
+		if( ($user instanceof RightsWebUser)===false )
+			throw new CException(Rights::t('install', 'Application web user must extend the RightsWebUser class.'));
 
 		$this->_authManager = $authManager;
 		$this->db = $this->_authManager->db;
@@ -59,7 +65,7 @@ class RightsInstaller extends CApplicationComponent
 	{
 		// Run the installer only if the module is not already installed
 		// or if we wish to overwrite the existing tables.
-		if( $this->isInstalled===false || $overwrite===true )
+		if( $this->installed===false || $overwrite===true )
 		{
 			$itemTable = $this->_authManager->itemTable;
 			$itemChildTable = $this->_authManager->itemChildTable;
