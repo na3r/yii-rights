@@ -26,10 +26,5 @@
 			'url'=>array('authItem/roles'),
 			'itemOptions'=>array('class'=>'item-roles'),
 		),
-		array(
-			'label'=>Rights::t('core', 'Generator'),
-			'url'=>array('authItem/generate'),
-			'itemOptions'=>array('class'=>'last item-generator'),
-		),
 	)
 ));	?>

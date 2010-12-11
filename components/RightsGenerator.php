@@ -192,7 +192,7 @@ class RightsGenerator extends CApplicationComponent
 			$moduleDirectory = scandir($modulePath);
 			foreach( $moduleDirectory as $entry )
 			{
-				if( $entry{0}!=='.' && $entry!=='rights' )
+				if( substr($entry, 0, 1)!=='.' && $entry!=='rights' )
 				{
 					$subModulePath = $modulePath.DIRECTORY_SEPARATOR.$entry;
 					if( file_exists($subModulePath)===true )

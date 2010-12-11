@@ -7,6 +7,10 @@
 
 	<h2><?php echo Rights::t('core', 'Permissions'); ?></h2>
 
+	<p><?php echo CHtml::link(Rights::t('core', 'Generate items for controller actions'), array('authItem/generate'), array(
+	   	'class'=>'generator-link',
+	)); ?></p>
+
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider'=>$dataProvider,
 		'template'=>'{items}',
