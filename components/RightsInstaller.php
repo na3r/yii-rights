@@ -35,6 +35,8 @@ class RightsInstaller extends CApplicationComponent
 
 	/**
 	* Initializes the installer.
+	* @throws CException if the authorization manager or the web user
+	* is not configured to use the correct class.
 	*/
 	public function init()
 	{
@@ -200,7 +202,11 @@ class RightsInstaller extends CApplicationComponent
 	*/
 	public function getInstalled()
 	{
-		if( $this->_installed===null )
+		if( $this->_installed!==null )
+		{
+			return $this->_installed;
+		}
+		else
 		{
 			try
 			{
@@ -220,14 +226,14 @@ class RightsInstaller extends CApplicationComponent
 				$command = $this->db->createCommand($sql);
 				$command->queryScalar();
 
-				$this->_installed = true;
+				$installed = true;
 			}
 			catch( CDbException $e )
 			{
-				$this->_installed = false;
+				$installed = false;
 			}
-		}
 
-		return $this->_installed;
+			return $this->_installed = $installed;
+		}
 	}
 }

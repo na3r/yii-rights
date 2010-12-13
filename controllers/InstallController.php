@@ -30,7 +30,7 @@ class InstallController extends RightsBaseController
 		$this->layout = $this->module->layout;
 		$this->defaultAction = 'run';
 
-		// Register the scripts
+		// Register the scripts.
 		$this->module->registerScripts();
 	}
 
@@ -39,7 +39,7 @@ class InstallController extends RightsBaseController
 	*/
 	public function filters()
 	{
-		// Use access control when installed
+		// Use access control when installed.
 		return $this->_installer->installed===true ? array('accessControl') : array();
 	}
 
@@ -75,47 +75,44 @@ class InstallController extends RightsBaseController
 
 	/**
 	* Installs the module.
+	* @throws CHttpException if the user is not logged in.
 	*/
 	public function actionRun()
 	{
-		// Make sure the user is not a guest
+		// Make sure the user is not a guest.
 		if( Yii::app()->user->isGuest===false )
 		{
-			// Get the application web user
+			// Get the application web user.
 			$user = Yii::app()->getUser();
 
-			// Make sure that the module is not already installed
+			// Make sure that the module is not already installed.
 			if( isset($_GET['confirm'])===true || $this->_installer->installed===false )
 			{
-				// Run the installer and check for an error
+				// Run the installer and check for an error.
 				if( $this->_installer->run(true)===true )
 				{
-					// Make the logged in user as a superuser
-					$user->setIsSuperuser(true);
-
-					// Redirect to generate if install is succeeds
+					// Mark the user to have superuser priviledges.
+					$user->isSuperuser = true;
 					$this->redirect(array('install/ready'));
 				}
 
-				// Set an error message
+				// Set an error message.
 				$user->setFlash($this->module->flashErrorKey,
 					Rights::t('install', 'Installation failed.')
 				);
 
-				// Redirect to Rights default action
 				$this->redirect(Yii::app()->homeUrl);
 			}
-			// Module is already installed
+			// Module is already installed.
 			else
 			{
-				// Redirect to to the confirm overwrite page
 				$this->redirect(array('install/confirm'));
 			}
 		}
-		// User is guest, deny access
+		// User is guest, deny access.
 		else
 		{
-			throw new CHttpException(403, Rights::t('install', 'You must be logged in to install Rights.'));
+			$this->accessDenied(Rights::t('install', 'You must be logged in to install Rights.'));
 		}
 	}
 

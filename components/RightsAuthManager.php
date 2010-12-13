@@ -50,15 +50,12 @@ class RightsAuthManager extends CDbAuthManager
 
 	/**
 	* Returns the authorization item with the specified name.
-	* Overloads the parent method to allow for runtime caching
-	* and attaching of the necessary authorization item behavior.
+	* Overloads the parent method to allow for runtime caching.
 	* @param string the name of the item.
-	* @param integer the ID of the user to set as owner of the returned item.
-	* @param CAuthItem the parent item for the returned items.
 	* @param boolean whether to accept cached data.
 	* @return CAuthItem the authorization item. Null if the item cannot be found.
 	*/
-	public function getAuthItem($name, $userId=null, CAuthItem $parent=null, $allowCaching=true)
+	public function getAuthItem($name, $allowCaching=true)
 	{
 		// Get all items if necessary and cache them.
 		if( $allowCaching && $this->_items===array() )
@@ -72,7 +69,6 @@ class RightsAuthManager extends CDbAuthManager
 		// Attempt to get the item.
 		else if( ($item = parent::getAuthItem($name))!==null )
 		{
-			$item->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
 			return $item;
 		}
 
@@ -84,11 +80,10 @@ class RightsAuthManager extends CDbAuthManager
 	/**
 	* Returns the specified authorization items.
 	* @param array the names of the authorization items to get.
-	* @param CAuthItem the parent item for the returned items.
 	* @param boolean whether to sort the items according to their weights.
 	* @return array the authorization items.
 	*/
-	public function getAuthItemsByNames($names, CAuthItem $parent=null)
+	public function getAuthItemsByNames($names)
 	{
 		// Get all items if necessary and cache them.
 		if( $this->_items===array() )
@@ -97,30 +92,23 @@ class RightsAuthManager extends CDbAuthManager
 		// Collect the items we want.
 		$items = array();
 		foreach( $this->_items as $name=>$item )
-		{
 			if( in_array($name, $names) )
-			{
-				$item->attachBehavior('rights', new RightsAuthItemBehavior(null, $parent));
 				$items[ $name ] = $item;
-			}
-		}
 
 		return $items;
 	}
 
 	/**
 	* Returns the authorization items of the specific type and user.
-	* Overloads the parent method to allow for sorting
-	* and attaching of the necessary authorization item behavior.
+	* Overloads the parent method to allow for sorting.
 	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
 	* @param mixed the user ID. Defaults to null, meaning returning all items even if
 	* they are not assigned to a user.
-	* @param CAuthItem the parent item for the returned items.
 	* @param boolean whether to sort the items according to their weights.
 	* @return array the authorization items of the specific type.
 	*/
-	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=false)
+	public function getAuthItems($type=null, $userId=null, $sort=false)
 	{
 		// We need to sort the items.
 		if( $sort===true )
@@ -177,17 +165,12 @@ class RightsAuthManager extends CDbAuthManager
 			$items = parent::getAuthItems($type, $userId);
 		}
 
-		// Attach the authorization item behavior.
-		foreach( $items as $item )
-			$item->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
-
 		return $items;
 	}
 
 	/**
 	 * Returns the children of the specified item.
-	 * Overloads the parent method to allow for caching
-	 * and attaching of the necessary authorization item behavior.
+	 * Overloads the parent method to allow for caching.
 	 * @param mixed $names the parent item name. This can be either a string or an array.
 	 * The latter represents a list of item names (available since version 1.0.5).
 	 * @param boolean whether to accept cached data.
@@ -231,8 +214,7 @@ class RightsAuthManager extends CDbAuthManager
 			}
 
 			// Attach the authorization item behavior.
-			foreach( $children as $item )
-				$item->attachBehavior('rights', new RightsAuthItemBehavior);
+			$children = Rights::getAuthorizer()->attachAuthItemBehavior($children);
 
 			// Cache the result.
 			return $this->_itemChildren[ $key ] = $children;

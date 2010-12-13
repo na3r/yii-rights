@@ -10,17 +10,21 @@ class RightsWebUser extends CWebUser
 {
 	/**
 	* Actions to be taken after logging in.
+	* Overloads the parent method in order to mark superusers.
 	* @param boolean whether the login is based on cookie.
 	*/
 	public function afterLogin($fromCookie)
 	{
 		parent::init($fromCookie);
-		$isSuperuser = Rights::getAuthorizer()->isSuperuser(Yii::app()->user->id);
-		$this->isSuperuser = $isSuperuser;
+
+		// Mark the user as a superuser if necessary.
+		if( Rights::getAuthorizer()->isSuperuser($this->getId())===true )
+			$this->isSuperuser = true;
 	}
 
 	/**
 	* Performs access check for this user.
+	* Overloads the parent method in order to allow superusers access implicitly.
 	* @param string the name of the operation that need access check.
 	* @param array name-value pairs that would be passed to business rules associated
 	* with the tasks and roles assigned to the user.
@@ -35,12 +39,8 @@ class RightsWebUser extends CWebUser
 	*/
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
-		// Allow access when the user is a superuser
-		if( $this->isSuperuser===true )
-			return true;
-
-		// Otherwise do CWebUser::checkAccess
-		return parent::checkAccess($operation, $params, $allowCaching);
+		// Allow superusers access implicitly and do CWebUser::checkAccess for others.
+		return $this->isSuperuser===true ? true : parent::checkAccess($operation, $params, $allowCaching);
 	}
 
 	/**

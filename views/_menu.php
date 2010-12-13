@@ -4,7 +4,7 @@
 		array(
 			'label'=>Rights::t('core', 'Assignments'),
 			'url'=>array('assignment/view'),
-			'itemOptions'=>array('class'=>'first item-assignments'),
+			'itemOptions'=>array('class'=>'item-assignments first'),
 		),
 		array(
 			'label'=>Rights::t('core', 'Permissions'),
@@ -12,9 +12,9 @@
 			'itemOptions'=>array('class'=>'item-permissions'),
 		),
 		array(
-			'label'=>Rights::t('core', 'Operations'),
-			'url'=>array('authItem/operations'),
-			'itemOptions'=>array('class'=>'item-operations'),
+			'label'=>Rights::t('core', 'Roles'),
+			'url'=>array('authItem/roles'),
+			'itemOptions'=>array('class'=>'item-roles'),
 		),
 		array(
 			'label'=>Rights::t('core', 'Tasks'),
@@ -22,9 +22,9 @@
 			'itemOptions'=>array('class'=>'item-tasks'),
 		),
 		array(
-			'label'=>Rights::t('core', 'Roles'),
-			'url'=>array('authItem/roles'),
-			'itemOptions'=>array('class'=>'item-roles'),
+			'label'=>Rights::t('core', 'Operations'),
+			'url'=>array('authItem/operations'),
+			'itemOptions'=>array('class'=>'item-operations last'),
 		),
 	)
 ));	?>

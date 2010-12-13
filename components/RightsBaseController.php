@@ -46,15 +46,19 @@ class RightsBaseController extends CController
 
 	/**
 	* Denies the access of the user.
+	* @param string the message to display to the user.
 	* This method may be invoked when access check fails.
+	* @throws CHttpException when called unless login is required.
 	*/
-	public function accessDenied()
+	public function accessDenied($message=null)
 	{
-		$user = Yii::app()->getUser();
+		if( $message===null )
+			$message = Rights::t('core', 'You are not authorized to perform this action.');
 
+		$user = Yii::app()->getUser();
 		if( $user->isGuest===true )
 			$user->loginRequired();
 		else
-			throw new CHttpException(403, Rights::t('core', 'You are not authorized to perform this action.'));
+			throw new CHttpException(403, $message);
 	}
 }

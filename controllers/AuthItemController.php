@@ -302,6 +302,7 @@ class AuthItemController extends RightsBaseController
 			// Update the item and load it
 			$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
 			$item = $this->_authorizer->authManager->getAuthItem($form->model->name);
+			$item = $this->_authorizer->attachAuthItemBehavior($item);
 
 			// Set a flash message for updating the item
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
@@ -341,6 +342,7 @@ class AuthItemController extends RightsBaseController
 				// Add the child and load it
 				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
 				$child = $this->_authorizer->authManager->getAuthItem($childForm->model->name);
+				$child = $this->_authorizer->attachAuthItemBehavior($child);
 
 				// Set a flash message for adding the child
 				Yii::app()->user->setFlash($this->module->flashSuccessKey,
@@ -386,6 +388,7 @@ class AuthItemController extends RightsBaseController
 		{
 			// Load the item and save the name for later use
 			$item = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+			$item = $this->_authorizer->attachAuthItemBehavior($item);
 			$name = $item->getNameText();
 
 			// Delete the item
@@ -417,6 +420,7 @@ class AuthItemController extends RightsBaseController
 			// Remove the child and load it
 			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
 			$child = $this->_authorizer->authManager->getAuthItem($_GET['child']);
+			$child = $this->_authorizer->attachAuthItemBehavior($child);
 
 			// Set a flash message for removing the child
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
@@ -504,7 +508,10 @@ class AuthItemController extends RightsBaseController
 		if( $this->_model===null )
 		{
 			if( isset($_GET['name'])===true )
+			{
 				$this->_model = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+				$this->_model = $this->_authorizer->attachAuthItemBehavior($this->_model);
+			}
 
 			if( $this->_model===null )
 				throw new CHttpException(404, Rights::t('core', 'The requested page does not exist.'));

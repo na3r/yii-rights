@@ -34,7 +34,9 @@ class RightsAuthorizer extends CApplicationComponent
 	public function getRoles($includeSuperuser=true, $sort=true)
 	{
 		$exclude = $includeSuperuser===false ? array($this->superuserName) : array();
-	 	return $this->getAuthItems(CAuthItem::TYPE_ROLE, null, null, $sort, $exclude);
+	 	$roles = $this->getAuthItems(CAuthItem::TYPE_ROLE, null, null, $sort, $exclude);
+	 	$roles = $this->attachAuthItemBehavior($roles);
+	 	return $roles;
 	}
 
 	/**
@@ -91,28 +93,28 @@ class RightsAuthorizer extends CApplicationComponent
 	 * @param array the items to be excluded.
 	 * @return array the authorization items of the specific type.
 	 */
-	public function getAuthItems($type=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
+	public function getAuthItems($types=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
 	{
 		// We have none or a single type.
-		if( $type!==(array)$type )
+		if( $types!==(array)$types )
 		{
-			$items = $this->_authManager->getAuthItems($type, $userId, $parent, $sort);
+			$items = $this->_authManager->getAuthItems($types, $userId, $sort);
 		}
 		// We have multiple types.
 		else
 		{
-			$authItems = array();
-			foreach( $type as $t )
-				$authItems[ $t ] = $this->_authManager->getAuthItems($t, $userId, $parent, $sort);
+			$typeItemList = array();
+			foreach( $types as $type )
+				$typeItemList[ $type ] = $this->_authManager->getAuthItems($type, $userId, $sort);
 
 			// Merge the authorization items preserving the keys.
 			$items = array();
-			foreach( $authItems as $ai )
-				$items = $this->mergeAuthItems($items, $ai);
+			foreach( $typeItemList as $typeItems )
+				$items = $this->mergeAuthItems($items, $typeItems);
 		}
 
-		// Exclude invalid items.
 		$items = $this->excludeInvalidAuthItems($items, $parent, $exclude);
+		$items = $this->attachAuthItemBehavior($items, $userId, $parent);
 
 		return $items;
 	}
@@ -179,7 +181,8 @@ class RightsAuthorizer extends CApplicationComponent
 
 		$permissions = $this->getPermissions($parentName);
 		$parentNames = $this->getAuthItemParentsRecursive($item->name, $permissions, $direct);
-		$parents = $this->_authManager->getAuthItemsByNames($parentNames, $item);
+		$parents = $this->_authManager->getAuthItemsByNames($parentNames);
+		$parents = $this->attachAuthItemBehavior($parents, null, $item);
 
 		if( $type!==null )
 			foreach( $parents as $parentName=>$parent )
@@ -241,7 +244,34 @@ class RightsAuthorizer extends CApplicationComponent
 			if( $type===null || (int)$child->type===$type )
 				$childrenNames[] = $childName;
 
-		return $this->_authManager->getAuthItemsByNames($childrenNames, $item);
+		$children = $this->_authManager->getAuthItemsByNames($childrenNames);
+		$children = $this->attachAuthItemBehavior($children, null, $item);
+
+		return $children;
+	}
+
+	/**
+	* Attaches the rights authorization item behavior to the given item.
+	* @param mixed the item or items to which attach the behavior.
+	* @param int the ID of the user to which the item is assigned.
+	* @param CAuthItem the parent of the given item.
+	* @return mixed the item or items with the behavior attached.
+	*/
+	public function attachAuthItemBehavior($items, $userId=null, CAuthItem $parent=null)
+	{
+		// We have a single item.
+		if( $items instanceof CAuthItem )
+		{
+			$items->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+		}
+		// We have multiple items.
+		else if( $items===(array)$items )
+		{
+			foreach( $items as $item )
+				$item->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+		}
+
+		return $items;
 	}
 
 	/**
@@ -252,17 +282,43 @@ class RightsAuthorizer extends CApplicationComponent
 	{
 		$userClass = Rights::module()->userClass;
 		$users = CActiveRecord::model($userClass)->findAll();
+		$users = $this->attachUserBehavior($users);
 
 		$superusers = array();
 		foreach( $users as $user )
 		{
-			$user->attachBehavior('rights', new RightsUserBehavior);
 			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->getId());
+			$items = $this->attachAuthItemBehavior($items, $user->id);
+
 			if( isset($items[ $this->superuserName ]) )
 				$superusers[] = $user->getName();
 		}
 
 		return $superusers;
+	}
+
+	/**
+	* Attaches the rights user behavior to the given users.
+	* @param mixed the user or users to which attach the behavior.
+	* @return mixed the user or users with the behavior attached.
+	*/
+	public function attachUserBehavior($users)
+	{
+		$userClass = Rights::module()->userClass;
+
+		// We have a single user.
+		if( $users instanceof $userClass )
+		{
+			$users->attachBehavior('rights', new RightsUserBehavior);
+		}
+		// We have multiple user.
+		else if( $users===(array)$users )
+		{
+			foreach( $users as $user )
+				$user->attachBehavior('rights', new RightsUserBehavior);
+		}
+
+		return $users;
 	}
 
 	/**

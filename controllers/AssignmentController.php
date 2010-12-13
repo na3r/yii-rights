@@ -128,9 +128,10 @@ class AssignmentController extends RightsBaseController
 				// Update and redirect
 				$this->_authorizer->authManager->assign($form->model->itemname, $model->getId());
 				$item = $this->_authorizer->authManager->getAuthItem($form->model->itemname);
+				$item = $this->_authorizer->attachAuthItemBehavior($item);
 
 				Yii::app()->user->setFlash($this->module->flashSuccessKey,
-					Rights::t('core', ':name assigned.', array(':name'=>$item->getNameText()))
+					Rights::t('core', 'Permission :name assigned.', array(':name'=>$item->getNameText()))
 				);
 
 				$this->redirect(array('assignment/user', 'id'=>$model->getId()));
@@ -166,10 +167,11 @@ class AssignmentController extends RightsBaseController
 			// Revoke the item from the user and load it
 			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
 			$item = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+			$item = $this->_authorizer->attachAuthItemBehavior($item);
 
 			// Set flash message for revoking the item
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
-				Rights::t('core', ':name revoked.', array(':name'=>$item->getNameText()))
+				Rights::t('core', 'Permission :name revoked.', array(':name'=>$item->getNameText()))
 			);
 
 			// if AJAX request, we should not redirect the browser

@@ -7,6 +7,11 @@
 
 	<h2><?php echo Rights::t('core', 'Roles'); ?></h2>
 
+	<p>
+		<?php echo Rights::t('core', 'A role is group of permissions to perform a variety of tasks and operations, for example the authenticated user.'); ?><br />
+		<?php echo Rights::t('core', 'Roles exist at the top of the authorization hierarchy and can therefore inherit from other roles, tasks and/or operations.'); ?>
+	</p>
+
 	<p><?php echo CHtml::link(Rights::t('core', 'Create a new role'), array('authItem/create', 'type'=>CAuthItem::TYPE_ROLE), array(
 	   	'class'=>'add-role-link',
 	)); ?></p>
