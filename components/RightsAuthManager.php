@@ -108,7 +108,7 @@ class RightsAuthManager extends CDbAuthManager
 	* @param boolean whether to sort the items according to their weights.
 	* @return array the authorization items of the specific type.
 	*/
-	public function getAuthItems($type=null, $userId=null, $sort=false)
+	public function getAuthItems($type=null, $userId=null, $sort=true)
 	{
 		// We need to sort the items.
 		if( $sort===true )

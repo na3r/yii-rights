@@ -8,7 +8,7 @@
 	<h2><?php echo Rights::t('core', 'Permissions'); ?></h2>
 
 	<p>
-		<?php echo Rights::t('core', 'Here you can easily view and manage the permissions assigned to each role.'); ?><br />
+		<?php echo Rights::t('core', 'Here you can view and manage the permissions assigned to each role.'); ?><br />
 		<?php echo Rights::t('core', 'Authorization items can be managed under {roleLink}, {taskLink} and {operationLink}.', array(
 			'{roleLink}'=>CHtml::link(Rights::t('core', 'Roles'), array('authIem/roles')),
 			'{taskLink}'=>CHtml::link(Rights::t('core', 'Tasks'), array('authIem/tasks')),

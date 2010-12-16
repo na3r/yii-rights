@@ -7,6 +7,10 @@
 
 	<h2><?php echo Rights::t('core', 'Assignments'); ?></h2>
 
+	<p>
+		<?php echo Rights::t('core', 'Here you can view which permissions has been assigned to each user.'); ?>
+	</p>
+
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 	    'dataProvider'=>$dataProvider,
 	    'template'=>'{items}',
