@@ -54,7 +54,7 @@ class RightsFilter extends CFilter
 		// User is not allowed access, deny access
 		if( $allow===false )
 		{
-			$controller->accessDenied($user);
+			$controller->accessDenied();
 		 	return false;
 		}
 
