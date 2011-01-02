@@ -25,7 +25,7 @@
 	display:inline;
 	margin:0;
 	padding:8px 12px;
-	background:url('../images/bg_menuButton.gif') repeat-x;
+	background:#666699;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
@@ -73,6 +73,17 @@
 #rights .grid-view table.mini * { font-size:11px; }
 #rights .grid-view table.mini th, #rights .miniTable td { padding:8px; }
 #rights .grid-view table.mini .odd td { background:#e8edff; }
+
+#rights .pager { color:#ffffff; }
+#rights .pager li { margin:0; padding:0; }
+#rights .pager li a { padding:5px 10px; border-style:none; text-decoration:none; }
+#rights .pager li.hidden a { color:#c0c0c0; }
+#rights .pager li.selected a { 
+	background:#666699;
+	color:#ffffff;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
 
 #rights .bizrule-column,
 #rights .data-column {

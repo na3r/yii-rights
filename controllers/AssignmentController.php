@@ -50,14 +50,6 @@ class AssignmentController extends RightsBaseController
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
 			),
-			array('allow',  // Allow to view and revoke assignments if the user can manage them
-				'actions'=>array(
-					'view',
-					'user',
-					'revoke',
-				),
-				'roles'=>array('RightsAssignments'),
-			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
@@ -75,7 +67,7 @@ class AssignmentController extends RightsBaseController
 		// Create a data provider for listing the users
 		$dataProvider = new RightsActiveDataProvider($userClass, array(
 			'pagination'=>array(
-				'pageSize'=>20,
+				'pageSize'=>50,
 			),
 			'behaviors'=>array(
 				'rights'=>'RightsUserBehavior',

@@ -13,7 +13,7 @@
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 	    'dataProvider'=>$dataProvider,
-	    'template'=>'{items}',
+	    'template'=>"{items}\n{pager}",
 	    'emptyText'=>Rights::t('core', 'No users found.'),
 	    'htmlOptions'=>array('class'=>'grid-view assignment-table'),
 	    'columns'=>array(

@@ -63,14 +63,6 @@ class AuthItemController extends RightsBaseController
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
 			),
-			array('allow', // Allow assign and revoke if the user can manage permission
-				'actions'=>array(
-					'permissions',
-					'assign',
-					'revoke'
-				),
-				'roles'=>array('RightsPermissions'),
-			),
 			array('deny', // Deny all users
 				'users'=>array('*'),
 			),
@@ -175,7 +167,6 @@ class AuthItemController extends RightsBaseController
 	{
 		$dataProvider = new AuthItemDataProvider('roles', array(
 			'type'=>CAuthItem::TYPE_ROLE,
-			//'exclude'=>array($this->module->superuserName),
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
 				'element'=>'.role-table',
