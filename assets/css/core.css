@@ -18,6 +18,10 @@
 #rights .child-table,
 #rights .user-assignment-table { width:420px; }
 
+#rights .assignment-table td { vertical-align:top; }
+#rights .assignment-table .role-column,
+#rights .assignment-table .task-column,
+#rights .assignment-table .operation-column { width:25%; }
 #rights .permission-table .inherited-item { cursor:pointer; }
 
 /**

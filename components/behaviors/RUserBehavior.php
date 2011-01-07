@@ -16,6 +16,8 @@ class RUserBehavior extends CModelBehavior
 	* @property the name of the name column.
 	*/
 	public $nameColumn;
+	
+	private $_assignments;
 
 	/**
 	* Returns the value of the owner's id column.
@@ -51,31 +53,54 @@ class RUserBehavior extends CModelBehavior
 	{
 		return CHtml::link($this->getName(), array('assignment/user', 'id'=>$this->getId()));
 	}
+	
+	/**
+	 * Returns a string with names of the authorization items
+	 * of the given type that are assigned to this user.
+	 * @param integer the item type (0: operation, 1: task, 2: role).
+	 * @return mixed the assigned items. 
+	 */
+	public function getAssignmentsText($type)
+	{
+		$assignedItems = $this->getAssignments();
+		
+		if( isset($assignedItems[ $type ])===true )
+		{
+			$items = $assignedItems[ $type ];
+			$names = array();
+			foreach( $items as $itemname=>$item )
+				$names[] = $item->getNameText();
+			
+			return implode('<br />', $names);
+		}
+	}
 
 	/**
-	* Gets the users assignments.
-	* @param boolean whether to display the authorization item type.
+	* Returns the authorization items assigned to the user.
 	* @return string the assignments markup.
 	*/
-	public function getAssignments($displayType=false)
+	public function getAssignments()
 	{
-		$authorizer = Rights::getAuthorizer();
-		$assignments = $authorizer->authManager->getAuthAssignments($this->getId());
-
-		$items = $authorizer->authManager->getAuthItemsByNames(array_keys($assignments));
-		$items = $authorizer->attachAuthItemBehavior($items);
-
-		$assignedItems = array();
-		foreach( $items as $itemName=>$item )
+		if( $this->_assignments!==null )
 		{
-			$itemMarkup = $item->getNameText();
-
-			if( $displayType===true )
-				$itemMarkup .= ' (<span class="type-text">'.Rights::getAuthItemTypeName($item->type).'</span>)';
-
-			$assignedItems[] = $itemMarkup;
+			return $this->_assignments;
 		}
+		else
+		{
+			$authorizer = Rights::getAuthorizer();
+			$authAssignments = $authorizer->authManager->getAuthAssignments($this->getId());
+			$nestedItems = $authorizer->authManager->getAuthItemsByNames(array_keys($authAssignments), true);
 
-		return implode('<br />', $assignedItems);
+			$assignments = array();
+			foreach( $nestedItems as $type=>$items )
+			{
+				$items = $authorizer->attachAuthItemBehavior($items);
+				$assignments[ $type ] = array();
+				foreach( $items as $itemName=>$item )
+					$assignments[ $type ][ $itemName ] = $item;
+			}
+
+			return $this->_assignments = $assignments;
+		}
 	}
 }

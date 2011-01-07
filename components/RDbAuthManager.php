@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.7
 */
-class RAuthManager extends CDbAuthManager
+class RDbAuthManager extends CDbAuthManager
 {
 	public $rightsTable = 'Rights';
 
@@ -80,10 +80,10 @@ class RAuthManager extends CDbAuthManager
 	/**
 	* Returns the specified authorization items.
 	* @param array the names of the authorization items to get.
-	* @param boolean whether to sort the items according to their weights.
+	* @param boolean whether to nest the items by type.
 	* @return array the authorization items.
 	*/
-	public function getAuthItemsByNames($names)
+	public function getAuthItemsByNames($names, $nested=false)
 	{
 		// Get all items if necessary and cache them.
 		if( $this->_items===array() )
@@ -92,8 +92,15 @@ class RAuthManager extends CDbAuthManager
 		// Collect the items we want.
 		$items = array();
 		foreach( $this->_items as $name=>$item )
+		{
 			if( in_array($name, $names) )
-				$items[ $name ] = $item;
+			{
+				if( $nested===true )
+					$items[ $item->getType() ][ $name ] = $item;
+				else
+					$items[ $name ] = $item;
+			}
+		}
 
 		return $items;
 	}
@@ -118,7 +125,7 @@ class RAuthManager extends CDbAuthManager
 				$sql = "SELECT name,t1.type,description,t1.bizrule,t1.data,weight
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->rightsTable} t2 ON name=itemname
-					ORDER BY t1.type ASC, weight ASC";
+					ORDER BY t1.type DESC, weight ASC";
 				$command=$this->db->createCommand($sql);
 			}
 			else if( $userId===null )
@@ -127,7 +134,7 @@ class RAuthManager extends CDbAuthManager
 					FROM {$this->itemTable} t1
 					LEFT JOIN {$this->rightsTable} t2 ON name=itemname
 					WHERE t1.type=:type
-					ORDER BY t1.type ASC, weight ASC";
+					ORDER BY t1.type DESC, weight ASC";
 				$command=$this->db->createCommand($sql);
 				$command->bindValue(':type', $type);
 			}
@@ -138,7 +145,7 @@ class RAuthManager extends CDbAuthManager
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
 					LEFT JOIN {$this->rightsTable} t3 ON name=t3.itemname
 					WHERE userid=:userid
-					ORDER BY t1.type ASC, weight ASC";
+					ORDER BY t1.type DESC, weight ASC";
 				$command=$this->db->createCommand($sql);
 				$command->bindValue(':userid', $userId);
 			}
@@ -149,7 +156,7 @@ class RAuthManager extends CDbAuthManager
 					LEFT JOIN {$this->assignmentTable} t2 ON name=t2.itemname
 					LEFT JOIN {$this->rightsTable} t3 ON name=t3.itemname
 					WHERE t1.type=:type AND userid=:userid
-					ORDER BY t1.type ASC, weight ASC";
+					ORDER BY t1.type DESC, weight ASC";
 				$command=$this->db->createCommand($sql);
 				$command->bindValue(':type', $type);
 				$command->bindValue(':userid', $userId);

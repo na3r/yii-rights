@@ -61,16 +61,10 @@ class AssignmentController extends RController
 	*/
 	public function actionView()
 	{
-		// Get the user model class
-		$userClass = $this->module->userClass;
-
 		// Create a data provider for listing the users
-		$dataProvider = new RActiveDataProvider($userClass, array(
+		$dataProvider = new RAssignmentDataProvider(array(
 			'pagination'=>array(
 				'pageSize'=>50,
-			),
-			'behaviors'=>array(
-				'rights'=>'RUserBehavior',
 			),
 		));
 

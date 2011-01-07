@@ -26,10 +26,24 @@
     		),
     		array(
     			'name'=>'assignments',
-    			'header'=>Rights::t('core', 'Assigned items'),
+    			'header'=>Rights::t('core', 'Roles'),
     			'type'=>'raw',
-    			'htmlOptions'=>array('class'=>'assignment-column'),
-    			'value'=>'$data->getAssignments()',
+    			'htmlOptions'=>array('class'=>'role-column'),
+    			'value'=>'$data->getAssignmentsText(CAuthItem::TYPE_ROLE)',
+    		),
+			array(
+    			'name'=>'assignments',
+    			'header'=>Rights::t('core', 'Tasks'),
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'task-column'),
+    			'value'=>'$data->getAssignmentsText(CAuthItem::TYPE_TASK)',
+    		),
+			array(
+    			'name'=>'assignments',
+    			'header'=>Rights::t('core', 'Operations'),
+    			'type'=>'raw',
+    			'htmlOptions'=>array('class'=>'operation-column'),
+    			'value'=>'$data->getAssignmentsText(CAuthItem::TYPE_OPERATION)',
     		),
 	    )
 	)); ?>
