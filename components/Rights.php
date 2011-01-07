@@ -231,7 +231,7 @@ class Rights
 	public static function powered()
 	{
 		$module = self::module();
-		return 'Access Control by <a href="http://code.google.com/p/yii-rights/" rel="external">Rights</a> version '.$module->getVersion().'.';
+		return 'Secured with <a href="http://www.yiiframework.com/extension/rights" rel="external">Rights</a> version '.$module->getVersion().'.';
 	}
 
 	/**
@@ -269,7 +269,7 @@ class Rights
 	}
 
 	/**
-	* @return RightsAuthorizer the authorizer component.
+	* @return RAuthorizer the authorizer component.
 	*/
 	public static function getAuthorizer()
 	{

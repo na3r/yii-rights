@@ -395,7 +395,7 @@ class AuthItemController extends RController
 
 			// If AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(Yii::app()->user->getReturnUrl(array('authItem/permissions')));
+				$this->redirect(Yii::app()->user->getRightsReturnUrl(array('authItem/permissions')));
 		}
 		else
 		{

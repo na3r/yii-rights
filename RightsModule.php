@@ -5,6 +5,19 @@
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @version 1.2.0
+* 
+* DO NOT CHANGE THE DEFAULT CONFIGURATION VALUES!
+* 
+* You may overload the module configuration values in your rights-module 
+* configuration like so:
+* 
+* 'modules'=>array(
+*     'rights'=>array(
+*         'userNameColumn'=>'name',
+*         'flashSuccessKey'=>'success',
+*         'flashErrorKey'=>'error',
+*     ),
+* ),
 */
 class RightsModule extends CWebModule
 {
@@ -90,7 +103,7 @@ class RightsModule extends CWebModule
 			'rights.models.*',
 		));
 
-		// Set the components component
+		// Set the required components.
 		$this->setComponents(array(
 			'authorizer'=>array(
 				'class'=>'RAuthorizer',
@@ -104,7 +117,7 @@ class RightsModule extends CWebModule
 		// Normally the default controller is Assignment.
 		$this->defaultController = 'assignment';
 
-		// Set the installer if necessary
+		// Set the installer if necessary.
 		if( $this->install===true )
 		{
 			$this->setComponents(array(
@@ -113,7 +126,7 @@ class RightsModule extends CWebModule
 					'superuserName'=>$this->superuserName,
 					'authenticatedName'=>$this->authenticatedName,
 					'guestName'=>Yii::app()->user->guestName,
-					'defaultRoles'=>Yii::app()->getAuthManager()->defaultRoles,
+					'defaultRoles'=>Yii::app()->authManager->defaultRoles,
 				),
 			));
 
@@ -137,10 +150,10 @@ class RightsModule extends CWebModule
 		$cs->registerScriptFile($assetsUrl.'/js/rights.js');
 		$cs->registerCssFile($assetsUrl.'/css/core.css');
 
-		// Make sure we want to register a style sheet
+		// Make sure we want to register a style sheet.
 		if( $this->cssFile!==false )
 		{
-			// Default style sheet is used unless one is provided
+			// Default style sheet is used unless one is provided.
 			if( $this->cssFile===null )
 				$this->cssFile = $assetsUrl.'/css/default.css';
 			else
@@ -161,7 +174,7 @@ class RightsModule extends CWebModule
 		{
 			$assetsPath = Yii::getPathOfAlias('rights.assets');
 
-			// We need to republish the assets if debug mode is enabled
+			// We need to republish the assets if debug mode is enabled.
 			if( $this->debug===true )
 				$this->_assetsUrl = Yii::app()->getAssetManager()->publish($assetsPath, false, -1, true);
 			else
