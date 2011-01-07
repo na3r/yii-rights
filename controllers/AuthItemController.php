@@ -121,7 +121,7 @@ class AuthItemController extends RController
 	*/
 	public function actionOperations()
 	{
-		Yii::app()->user->returnUrl = array('authItem/operations');
+		Yii::app()->user->rightsReturnUrl = array('authItem/operations');
 		
 		$dataProvider = new RAuthItemDataProvider('operations', array(
 			'type'=>CAuthItem::TYPE_OPERATION,
@@ -145,7 +145,7 @@ class AuthItemController extends RController
 	*/
 	public function actionTasks()
 	{
-		Yii::app()->user->returnUrl = array('authItem/tasks');
+		Yii::app()->user->rightsReturnUrl = array('authItem/tasks');
 		
 		$dataProvider = new RAuthItemDataProvider('tasks', array(
 			'type'=>CAuthItem::TYPE_TASK,
@@ -169,7 +169,7 @@ class AuthItemController extends RController
 	*/
 	public function actionRoles()
 	{
-		Yii::app()->user->returnUrl = array('authItem/roles');
+		Yii::app()->user->rightsReturnUrl = array('authItem/roles');
 		
 		$dataProvider = new RAuthItemDataProvider('roles', array(
 			'type'=>CAuthItem::TYPE_ROLE,
@@ -254,7 +254,7 @@ class AuthItemController extends RController
 		if( isset($_GET['type'])===true )
 		{			
 			// Create the authorization item form
-			$formModel = new AuthItemForm('update');
+			$formModel = new AuthItemForm('create');
 
 			if( isset($_POST['AuthItemForm'])===true )
 			{
@@ -271,7 +271,7 @@ class AuthItemController extends RController
 					);
 
 					// Redirect to the correct destination
-					$this->redirect(Yii::app()->user->getReturnUrl(array('authItem/permissions')));
+					$this->redirect(Yii::app()->user->getRightsReturnUrl(array('authItem/permissions')));
 				}
 			}
 			
@@ -313,7 +313,7 @@ class AuthItemController extends RController
 				);
 
 				// Redirect to the correct destination
-				$this->redirect(Yii::app()->user->getReturnUrl(array('authItem/permissions')));
+				$this->redirect(Yii::app()->user->getRightsReturnUrl(array('authItem/permissions')));
 			}
 		}
 		

@@ -48,7 +48,7 @@ class RWebUser extends CWebUser
 	*/
 	public function setIsSuperuser($value)
 	{
-		$this->setState('isSuperuser', $value);
+		$this->setState('Rights_isSuperuser', $value);
 	}
 
 	/**
@@ -56,27 +56,30 @@ class RWebUser extends CWebUser
 	*/
 	public function getIsSuperuser()
 	{
-		return $this->getState('isSuperuser');
+		return $this->getState('Rights_isSuperuser');
 	}
 	
 	/**
 	 * @param array return url.
 	 */
-	public function setReturnUrl($value)
+	public function setRightsReturnUrl($value)
 	{
-		$this->setState('returnUrl', $value);
+		$this->setState('Rights_returnUrl', $value);
 	}
 	
 	/**
-	 * Returns the url where the user should be returned.
-	 * @param array the url to return if no return url is set.
-	 * @return array return url.
+	 * Returns the URL that the user should be redirected to 
+	 * after updating an authorization item.
+	 * @param string $defaultUrl the default return URL in case it was not set previously. If this is null,
+	 * the application entry URL will be considered as the default return URL.
+	 * @return string the URL that the user should be redirected to 
+	 * after updating an authorization item.
 	 */
-	public function getReturnUrl($defaultValue=null)
+	public function getRightsReturnUrl($defaultUrl=null)
 	{
-		if( ($returnUrl = $this->getState('returnUrl'))!==null )
+		if( ($returnUrl = $this->getState('Rights_returnUrl'))!==null )
 			$this->returnUrl = null;
 		
-		return $returnUrl!==null ? $returnUrl : $defaultValue;
+		return $returnUrl!==null ? CHtml::normalizeUrl($returnUrl) : CHtml::normalizeUrl($defaultUrl);
 	}
 }
