@@ -6,10 +6,10 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.5
 */
-class AuthItemController extends RightsBaseController
+class AuthItemController extends RController
 {
 	/**
-	* @property RightsAuthorizer
+	* @property RAuthorizer
 	*/
 	private $_authorizer;
 	/**
@@ -59,7 +59,7 @@ class AuthItemController extends RightsBaseController
 					'removeChild',
 					'assign',
 					'revoke',
-					'processSortable',
+					'sortable',
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
 			),
@@ -74,7 +74,7 @@ class AuthItemController extends RightsBaseController
 	*/
 	public function actionPermissions()
 	{
-		$dataProvider = new PermissionDataProvider('permissions');
+		$dataProvider = new RPermissionDataProvider('permissions');
 
 		// Get the roles from the data provider
 		$roles = $dataProvider->getRoles();
@@ -121,12 +121,14 @@ class AuthItemController extends RightsBaseController
 	*/
 	public function actionOperations()
 	{
-		$dataProvider = new AuthItemDataProvider('operations', array(
+		Yii::app()->user->returnUrl = array('authItem/operations');
+		
+		$dataProvider = new RAuthItemDataProvider('operations', array(
 			'type'=>CAuthItem::TYPE_OPERATION,
 			'sortable'=>array(
 				'id'=>'RightsOperationTableSort',
 				'element'=>'.operation-table',
-				'url'=>$this->createUrl('authItem/processSortable'),
+				'url'=>$this->createUrl('authItem/sortable'),
 			),
 		));
 
@@ -143,12 +145,14 @@ class AuthItemController extends RightsBaseController
 	*/
 	public function actionTasks()
 	{
-		$dataProvider = new AuthItemDataProvider('tasks', array(
+		Yii::app()->user->returnUrl = array('authItem/tasks');
+		
+		$dataProvider = new RAuthItemDataProvider('tasks', array(
 			'type'=>CAuthItem::TYPE_TASK,
 			'sortable'=>array(
 				'id'=>'RightsTaskTableSort',
 				'element'=>'.task-table',
-				'url'=>$this->createUrl('authItem/processSortable'),
+				'url'=>$this->createUrl('authItem/sortable'),
 			),
 		));
 
@@ -165,12 +169,14 @@ class AuthItemController extends RightsBaseController
 	*/
 	public function actionRoles()
 	{
-		$dataProvider = new AuthItemDataProvider('roles', array(
+		Yii::app()->user->returnUrl = array('authItem/roles');
+		
+		$dataProvider = new RAuthItemDataProvider('roles', array(
 			'type'=>CAuthItem::TYPE_ROLE,
 			'sortable'=>array(
 				'id'=>'RightsRoleTableSort',
 				'element'=>'.role-table',
-				'url'=>$this->createUrl('authItem/processSortable'),
+				'url'=>$this->createUrl('authItem/sortable'),
 			),
 		));
 
@@ -191,7 +197,7 @@ class AuthItemController extends RightsBaseController
 		$generator = $this->module->getGenerator();
 
 		// Createh the form model
-		$model = Yii::createComponent('rights.models.GenerateForm');
+		$model = new GenerateForm();
 
 		// Form has been submitted
 		if( isset($_POST['GenerateForm'])===true )
@@ -246,34 +252,38 @@ class AuthItemController extends RightsBaseController
 	{
 		// Make sure that we have a type
 		if( isset($_GET['type'])===true )
-		{
+		{			
 			// Create the authorization item form
-		    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('create'));
+			$formModel = new AuthItemForm('update');
 
-		    // Form is submitted and data is valid, redirect the user
-		    if( $form->submitted()===true && $form->validate()===true )
+			if( isset($_POST['AuthItemForm'])===true )
 			{
-				// Create the item
-				$item = $this->_authorizer->createAuthItem($form->model->name, $_GET['type'], $form->model->description, $form->model->bizRule, $form->model->data);
+				$formModel->attributes = $_POST['AuthItemForm'];
+				if( $formModel->validate()===true )
+				{
+					// Create the item
+					$item = $this->_authorizer->createAuthItem($formModel->name, $_GET['type'], $formModel->description, $formModel->bizRule, $formModel->data);
+					$item = $this->_authorizer->attachAuthItemBehavior($item);
 
-				// Set a flash message for creating the item
-				Yii::app()->user->setFlash($this->module->flashSuccessKey,
-					Rights::t('core', ':name created.', array(':name'=>$form->model->name))
-				);
+					// Set a flash message for creating the item
+					Yii::app()->user->setFlash($this->module->flashSuccessKey,
+						Rights::t('core', ':name created.', array(':name'=>$item->getNameText()))
+					);
 
-				// Redirect to the correct destination
-				$this->redirect(array(Rights::getAuthItemRoute($_GET['type'])));
+					// Redirect to the correct destination
+					$this->redirect(Yii::app()->user->getReturnUrl(array('authItem/permissions')));
+				}
 			}
+			
+			// Render the view
+			$this->render('create', array(
+				'formModel'=>$formModel,
+			));
 		}
 		else
 		{
 			throw new CHttpException(404, Rights::t('core', 'Invalid authorization item type.'));
 		}
-
-		// Render the view
-		$this->render('create', array(
-			'form'=>$form,
-		));
 	}
 
 	/**
@@ -283,89 +293,82 @@ class AuthItemController extends RightsBaseController
 	{
 		// Get the authorization item
 		$model = $this->loadModel();
-
+		
 		// Create the authorization item form
-	    $form = new CForm('rights.views.authItem.authItemForm', new AuthItemForm('update'));
+		$formModel = new AuthItemForm('update');
 
-		// Form is submitted and data is valid
-		if( $form->submitted()===true && $form->validate()===true )
+		if( isset($_POST['AuthItemForm'])===true )
 		{
-			// Update the item and load it
-			$this->_authorizer->updateAuthItem($_GET['name'], $form->model->name, $form->model->description, $form->model->bizRule, $form->model->data);
-			$item = $this->_authorizer->authManager->getAuthItem($form->model->name);
-			$item = $this->_authorizer->attachAuthItemBehavior($item);
-
-			// Set a flash message for updating the item
-			Yii::app()->user->setFlash($this->module->flashSuccessKey,
-				Rights::t('core', ':name updated.', array(':name'=>$item->getNameText()))
-			);
-
-			// Redirect to the correct destination
-			$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'authItem/permissions'));
-		}
-
-		// Create a form to add children to the authorization item
-		$type = Rights::getValidChildTypes($model->type);
-		$exclude = array($this->module->superuserName);
-		$selectOptions = Rights::getParentAuthItemSelectOptions($model, $type, $exclude);
-		if( $selectOptions!==array() )
-		{
-			// Create the child form
-		    $childForm = new CForm(array(
-				'elements'=>array(
-					'name'=>array(
-						'label'=>false,
-						'type'=>'dropdownlist',
-						'items'=>$selectOptions,
-					),
-				),
-				'buttons'=>array(
-					'submit'=>array(
-						'type'=>'submit',
-						'label'=>Rights::t('core', 'Add'),
-					),
-				),
-			), new AuthChildForm);
-
-			// Child form is submitted and data is valid
-			if( $childForm->submitted()===true && $childForm->validate()===true )
+			$formModel->attributes = $_POST['AuthItemForm'];
+			if( $formModel->validate()===true )
 			{
-				// Add the child and load it
-				$this->_authorizer->authManager->addItemChild($_GET['name'], $childForm->model->name);
-				$child = $this->_authorizer->authManager->getAuthItem($childForm->model->name);
-				$child = $this->_authorizer->attachAuthItemBehavior($child);
+				// Update the item and load it
+				$this->_authorizer->updateAuthItem($_GET['name'], $formModel->name, $formModel->description, $formModel->bizRule, $formModel->data);
+				$item = $this->_authorizer->authManager->getAuthItem($formModel->name);
+				$item = $this->_authorizer->attachAuthItemBehavior($item);
 
-				// Set a flash message for adding the child
+				// Set a flash message for updating the item
 				Yii::app()->user->setFlash($this->module->flashSuccessKey,
-					Rights::t('core', 'Child :name added.', array(':name'=>$child->getNameText()))
+					Rights::t('core', ':name updated.', array(':name'=>$item->getNameText()))
 				);
 
-				// Reidrect to the same page
-				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
+				// Redirect to the correct destination
+				$this->redirect(Yii::app()->user->getReturnUrl(array('authItem/permissions')));
+			}
+		}
+		
+		$type = Rights::getValidChildTypes($model->type);
+		$exclude = array($this->module->superuserName);
+		$childSelectOptions = Rights::getParentAuthItemSelectOptions($model, $type, $exclude);
+		
+		if( $childSelectOptions!==array() )
+		{
+			$childFormModel = new AuthChildForm();
+		
+			// Child form is submitted and data is valid
+			if( isset($_POST['AuthChildForm'])===true )
+			{
+				$childFormModel->attributes = $_POST['AuthChildForm'];
+				if( $childFormModel->validate()===true )
+				{
+					// Add the child and load it
+					$this->_authorizer->authManager->addItemChild($_GET['name'], $childFormModel->itemname);
+					$child = $this->_authorizer->authManager->getAuthItem($childFormModel->itemname);
+					$child = $this->_authorizer->attachAuthItemBehavior($child);
+
+					// Set a flash message for adding the child
+					Yii::app()->user->setFlash($this->module->flashSuccessKey,
+						Rights::t('core', 'Child :name added.', array(':name'=>$child->getNameText()))
+					);
+
+					// Reidrect to the same page
+					$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
+				}
 			}
 		}
 		else
 		{
-			$childForm = null;
+			$childFormModel = null;
 		}
 
 		// Set the values for the form fields
-		$form->model->name = $model->name;
-		$form->model->description = $model->description;
-		$form->model->type = $model->type;
-		$form->model->bizRule = $model->bizRule!=='NULL' ? $model->bizRule : '';
-		$form->model->data = $model->data!==null ? serialize($model->data) : '';
+		$formModel->name = $model->name;
+		$formModel->description = $model->description;
+		$formModel->type = $model->type;
+		$formModel->bizRule = $model->bizRule!=='NULL' ? $model->bizRule : '';
+		$formModel->data = $model->data!==null ? serialize($model->data) : '';
 
-		$parentDataProvider = new AuthItemParentDataProvider($model);
-		$childDataProvider = new AuthItemChildDataProvider($model);
+		$parentDataProvider = new RAuthItemParentDataProvider($model);
+		$childDataProvider = new RAuthItemChildDataProvider($model);
 
 		// Render the view
 		$this->render('update', array(
 			'model'=>$model,
+			'formModel'=>$formModel,
+			'childFormModel'=>$childFormModel,
+			'childSelectOptions'=>$childSelectOptions,
 			'parentDataProvider'=>$parentDataProvider,
 			'childDataProvider'=>$childDataProvider,
-			'form'=>$form,
-			'childForm'=>$childForm,
 		));
 	}
 
@@ -392,7 +395,7 @@ class AuthItemController extends RightsBaseController
 
 			// If AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array(isset($_GET['redirect'])===true ? urldecode($_GET['redirect']) : 'authItem/permissions'));
+				$this->redirect(Yii::app()->user->getReturnUrl(array('authItem/permissions')));
 		}
 		else
 		{
@@ -477,7 +480,7 @@ class AuthItemController extends RightsBaseController
 	/**
 	* Processes the jui sortable.
 	*/
-	public function actionProcessSortable()
+	public function actionSortable()
 	{
 		// We only allow sorting via POST request
 		if( Yii::app()->request->isPostRequest===true )

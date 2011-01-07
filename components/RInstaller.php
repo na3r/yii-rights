@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.3
 */
-class RightsInstaller extends CApplicationComponent
+class RInstaller extends CApplicationComponent
 {
 	/**
 	* @property array the roles assigned to users implicitly.

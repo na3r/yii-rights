@@ -1,10 +1,12 @@
 <?php $this->widget('zii.widgets.CMenu', array(
+	'firstItemCssClass'=>'first',
+	'lastItemCssClass'=>'last',
 	'htmlOptions'=>array('class'=>'actions'),
 	'items'=>array(
 		array(
 			'label'=>Rights::t('core', 'Assignments'),
 			'url'=>array('assignment/view'),
-			'itemOptions'=>array('class'=>'item-assignments first'),
+			'itemOptions'=>array('class'=>'item-assignments'),
 		),
 		array(
 			'label'=>Rights::t('core', 'Permissions'),
@@ -24,7 +26,7 @@
 		array(
 			'label'=>Rights::t('core', 'Operations'),
 			'url'=>array('authItem/operations'),
-			'itemOptions'=>array('class'=>'item-operations last'),
+			'itemOptions'=>array('class'=>'item-operations'),
 		),
 	)
 ));	?>

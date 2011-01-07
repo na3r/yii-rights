@@ -6,9 +6,11 @@
 
 <div id="userAssignments">
 
+	<h2><?php echo Rights::t('core', 'Assignments for :username', array(
+		':username'=>$model->getName()
+	)); ?></h2>
+	
 	<div class="assignments span-12 first">
-
-		<h2><?php echo Rights::t('core', 'Assignments for :username', array(':username'=>$model->getName())); ?></h2>
 
 		<?php $this->widget('zii.widgets.grid.CGridView', array(
 			'dataProvider'=>$dataProvider,
@@ -46,11 +48,14 @@
 
 		<h3><?php echo Rights::t('core', 'Assign item'); ?></h3>
 
-		<?php if( $form!==null ): ?>
+		<?php if( $formModel!==null ): ?>
 
 			<div class="form">
 
-				<?php echo $form->render(); ?>
+				<?php $this->renderPartial('_assignmentForm', array(
+					'model'=>$formModel,
+					'itemnameSelectOptions'=>$assignSelectOptions,
+				)); ?>
 
 			</div>
 

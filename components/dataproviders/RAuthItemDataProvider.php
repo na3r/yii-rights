@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.10
 */
-class AuthItemDataProvider extends CDataProvider
+class RAuthItemDataProvider extends CDataProvider
 {
 	public $type;
 	public $userId;

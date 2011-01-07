@@ -6,14 +6,14 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.8
 */
-class InstallController extends RightsBaseController
+class InstallController extends RController
 {
 	/**
-	* @property RightsAuthorizer
+	* @property RAuthorizer
 	*/
 	private $_authorizer;
 	/**
-	* @property RightsInstaller
+	* @property RInstaller
 	*/
 	private $_installer;
 

@@ -4,7 +4,7 @@
 *
 * @author Christoffer Niska <cniska@live.com>
 * @copyright Copyright &copy; 2010 Christoffer Niska
-* @version 1.1.0
+* @version 1.2.0
 */
 class RightsModule extends CWebModule
 {
@@ -16,10 +16,6 @@ class RightsModule extends CWebModule
 	* @property string the name of the guest role.
 	*/
 	public $authenticatedName = 'Authenticated';
-	/**
-	* @property string the name of the guest role.
-	*/
-	public $guestName = 'Guest';
 	/**
 	* @property string the name of the user model class.
 	*/
@@ -41,6 +37,11 @@ class RightsModule extends CWebModule
 	*/
 	public $enableBizRuleData = false;
 	/**
+	* @property boolean whether to display authorization items description 
+	* instead of name it is set.
+	*/
+	public $displayDescription = true;
+	/**
 	* @property string the flash message key to use for success messages.
 	*/
 	public $flashSuccessKey = 'RightsSuccess';
@@ -57,15 +58,19 @@ class RightsModule extends CWebModule
 	*/
 	public $baseUrl = '/rights';
 	/**
-	* @property string that path to the layout file to use for displaying Rights.
+	* @property string the path to the layout file to use for displaying Rights.
 	*/
-	public $layout;
+	public $layout = 'rights.views.layouts.main';
+	/**
+	* @property string the path to the application layout file.
+	*/
+	public $appLayout = 'application.views.layouts.main';
 	/**
 	* @property string the style sheet file to use for Rights.
 	*/
 	public $cssFile;
 	/**
-	* @property boolean whether ot enable debug mode.
+	* @property boolean whether to enable debug mode.
 	*/
 	public $debug = false;
 
@@ -78,26 +83,25 @@ class RightsModule extends CWebModule
 	{
 		// Set required classes for import.
 		$this->setImport(array(
-			'rights.models.*',
 			'rights.components.*',
+			'rights.components.behaviors.*',
 			'rights.components.dataproviders.*',
 			'rights.controllers.*',
+			'rights.models.*',
 		));
-
-		// Set the user identity guest name.
-		Yii::app()->user->guestName = $this->guestName;
 
 		// Set the components component
 		$this->setComponents(array(
 			'authorizer'=>array(
-				'class'=>'RightsAuthorizer',
+				'class'=>'RAuthorizer',
 				'superuserName'=>$this->superuserName,
 			),
 			'generator'=>array(
-				'class'=>'RightsGenerator',
+				'class'=>'RGenerator',
 			),
 		));
 
+		// Normally the default controller is Assignment.
 		$this->defaultController = 'assignment';
 
 		// Set the installer if necessary
@@ -105,20 +109,17 @@ class RightsModule extends CWebModule
 		{
 			$this->setComponents(array(
 				'installer'=>array(
-					'class'=>'RightsInstaller',
+					'class'=>'RInstaller',
 					'superuserName'=>$this->superuserName,
 					'authenticatedName'=>$this->authenticatedName,
-					'guestName'=>$this->guestName,
+					'guestName'=>Yii::app()->user->guestName,
 					'defaultRoles'=>Yii::app()->getAuthManager()->defaultRoles,
 				),
 			));
 
+			// When installing we need to set the default controller to Install.
 			$this->defaultController = 'install';
 		}
-
-		// Default layout is used unless one is provided
-		if( $this->layout===null )
-			$this->layout = 'rights.views.layouts.rights';
 	}
 
 	/**
@@ -199,6 +200,6 @@ class RightsModule extends CWebModule
 	*/
 	public function getVersion()
 	{
-		return '1.1.0';
+		return '1.2.0';
 	}
 }

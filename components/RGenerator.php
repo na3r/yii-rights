@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.8
 */
-class RightsGenerator extends CApplicationComponent
+class RGenerator extends CApplicationComponent
 {
 	private $_authManager;
 	private $_items;

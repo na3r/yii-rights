@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.11
 */
-class PermissionDataProvider extends CDataProvider
+class RPermissionDataProvider extends CDataProvider
 {
 	/**
 	* @property boolean whether to show the parent type

@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.10
 */
-class RightsActiveDataProvider extends CActiveDataProvider
+class RActiveDataProvider extends CActiveDataProvider
 {
 	private $_behaviors = array();
 

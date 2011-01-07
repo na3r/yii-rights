@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.5
 */
-class RightsAuthorizer extends CApplicationComponent
+class RAuthorizer extends CApplicationComponent
 {
 	/**
 	* @property string the name of the superuser role.
@@ -262,13 +262,13 @@ class RightsAuthorizer extends CApplicationComponent
 		// We have a single item.
 		if( $items instanceof CAuthItem )
 		{
-			$items->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+			$items->attachBehavior('rights', new RAuthItemBehavior($userId, $parent));
 		}
 		// We have multiple items.
 		else if( $items===(array)$items )
 		{
 			foreach( $items as $item )
-				$item->attachBehavior('rights', new RightsAuthItemBehavior($userId, $parent));
+				$item->attachBehavior('rights', new RAuthItemBehavior($userId, $parent));
 		}
 
 		return $items;
@@ -309,13 +309,13 @@ class RightsAuthorizer extends CApplicationComponent
 		// We have a single user.
 		if( $users instanceof $userClass )
 		{
-			$users->attachBehavior('rights', new RightsUserBehavior);
+			$users->attachBehavior('rights', new RUserBehavior);
 		}
 		// We have multiple user.
 		else if( $users===(array)$users )
 		{
 			foreach( $users as $user )
-				$user->attachBehavior('rights', new RightsUserBehavior);
+				$user->attachBehavior('rights', new RUserBehavior);
 		}
 
 		return $users;
@@ -444,7 +444,7 @@ class RightsAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* @return RightsAuthManager the authorization manager.
+	* @return RAuthManager the authorization manager.
 	*/
 	public function getAuthManager()
 	{

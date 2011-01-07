@@ -27,7 +27,7 @@
     			'header'=>Rights::t('core', 'Name'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'name-column'),
-    			'value'=>'$data->getNameLink(false, true, true)',
+    			'value'=>'$data->getNameLink(true, true)',
     		),
     		array(
     			'name'=>'description',

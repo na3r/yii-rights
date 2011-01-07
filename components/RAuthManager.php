@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.7
 */
-class RightsAuthManager extends CDbAuthManager
+class RAuthManager extends CDbAuthManager
 {
 	public $rightsTable = 'Rights';
 

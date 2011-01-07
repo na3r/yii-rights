@@ -112,9 +112,9 @@ class Rights
 	{
 		switch( (int)$type )
 		{
-			case CAuthItem::TYPE_OPERATION: return 'authItem/operations';
-			case CAuthItem::TYPE_TASK: return 'authItem/tasks';
-			case CAuthItem::TYPE_ROLE: return 'authItem/roles';
+			case CAuthItem::TYPE_OPERATION: return array('authItem/operations');
+			case CAuthItem::TYPE_TASK: return array('authItem/tasks');
+			case CAuthItem::TYPE_ROLE: return array('authItem/roles');
 			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 		}
 	}
@@ -192,6 +192,36 @@ class Rights
 		}
 
 		return $selectOptions;
+	}
+	
+	/**
+	* Returns the cross-site request forgery parameter 
+	* to be placed in the data of Ajax-requests.
+	* An empty string is returned if csrf-validation is disabled.
+	* @return string the csrf parameter.
+	*/
+	public static function getDataCsrf()
+	{
+		return ($csrf = self::getCsrfParam())!==null ? ', '.$csrf : '';
+	}
+
+	/**
+	* Returns the cross-site request forgery parameter for Ajax-requests.
+	* Null is returned if csrf-validation is disabled.
+	* @return string the csrf parameter.
+	*/
+	public static function getCsrfParam()
+	{
+		if( Yii::app()->request->enableCsrfValidation===true )
+		{
+	        $csrfTokenName = Yii::app()->request->csrfTokenName;
+	        $csrfToken = Yii::app()->request->csrfToken;
+	        return "'$csrfTokenName':'$csrfToken'";
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/**

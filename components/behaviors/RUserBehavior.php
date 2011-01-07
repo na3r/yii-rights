@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.9.10
 */
-class RightsUserBehavior extends CModelBehavior
+class RUserBehavior extends CModelBehavior
 {
 	/**
 	* @property the name of the id column.

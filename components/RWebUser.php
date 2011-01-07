@@ -6,7 +6,7 @@
 * @copyright Copyright &copy; 2010 Christoffer Niska
 * @since 0.5
 */
-class RightsWebUser extends CWebUser
+class RWebUser extends CWebUser
 {
 	/**
 	* Actions to be taken after logging in.
@@ -15,7 +15,7 @@ class RightsWebUser extends CWebUser
 	*/
 	public function afterLogin($fromCookie)
 	{
-		parent::init($fromCookie);
+		parent::afterLogin($fromCookie);
 
 		// Mark the user as a superuser if necessary.
 		if( Rights::getAuthorizer()->isSuperuser($this->getId())===true )
@@ -48,7 +48,7 @@ class RightsWebUser extends CWebUser
 	*/
 	public function setIsSuperuser($value)
 	{
-		$this->setState('__isSuperuser', $value);
+		$this->setState('isSuperuser', $value);
 	}
 
 	/**
@@ -56,6 +56,27 @@ class RightsWebUser extends CWebUser
 	*/
 	public function getIsSuperuser()
 	{
-		return $this->getState('__isSuperuser');
+		return $this->getState('isSuperuser');
+	}
+	
+	/**
+	 * @param array return url.
+	 */
+	public function setReturnUrl($value)
+	{
+		$this->setState('returnUrl', $value);
+	}
+	
+	/**
+	 * Returns the url where the user should be returned.
+	 * @param array the url to return if no return url is set.
+	 * @return array return url.
+	 */
+	public function getReturnUrl($defaultValue=null)
+	{
+		if( ($returnUrl = $this->getState('returnUrl'))!==null )
+			$this->returnUrl = null;
+		
+		return $returnUrl!==null ? $returnUrl : $defaultValue;
 	}
 }
