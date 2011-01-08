@@ -27,7 +27,7 @@
     			'header'=>Rights::t('core', 'Name'),
     			'type'=>'raw',
     			'htmlOptions'=>array('class'=>'name-column'),
-    			'value'=>'$data->getNameLink(true, true)',
+    			'value'=>'$data->getGridNameLink()',
     		),
     		array(
     			'name'=>'description',

@@ -44,7 +44,7 @@
 
 	</div>
 
-	<div class="add-user-assignment span-11 last">
+	<div class="add-assignment span-11 last">
 
 		<h3><?php echo Rights::t('core', 'Assign item'); ?></h3>
 
@@ -52,7 +52,7 @@
 
 			<div class="form">
 
-				<?php $this->renderPartial('_assignmentForm', array(
+				<?php $this->renderPartial('_form', array(
 					'model'=>$formModel,
 					'itemnameSelectOptions'=>$assignSelectOptions,
 				)); ?>

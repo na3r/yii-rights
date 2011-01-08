@@ -33,8 +33,7 @@ class RAuthItemBehavior extends CBehavior
 	}
 
 	/**
-	* Returns the markup for the item name.
-	* @param boolean whether to display the human readable or system name.
+	* Returns the item name.
 	* @return string the markup.
 	*/
 	public function getNameText()
@@ -43,23 +42,30 @@ class RAuthItemBehavior extends CBehavior
 	}
 
 	/**
-	* Returns the markup for the name link.
-	* @param boolean whether to display the child count.
-	* @param boolean whether to display the sortable id.
+	* Returns the link to update the item.
 	* @return string the markup.
 	*/
-	public function getNameLink($displayChildCount=false, $displaySortableId=false)
-	{		
-		$markup = CHtml::link($this->getNameText(), array(
+	public function getNameLink()
+	{
+		return CHtml::link($this->getNameText(), array(
+			'authItem/update',
+			'name'=>$this->owner->name,
+		));
+	}
+	
+	/**
+	* Returns the markup for the name link to displayed in the grid.
+	* @return string the markup. 
+	*/
+	public function getGridNameLink()
+	{
+		$markup = CHtml::link($this->owner->name, array(
 			'authItem/update',
 			'name'=>$this->owner->name,
 		));
 
-		if( $displayChildCount===true )
-			$markup .= $this->childCount();
-
-		if( $displaySortableId===true )
-			$markup .= $this->sortableId();
+		$markup .= $this->childCount();
+		$markup .= $this->sortableId();
 
 		return $markup;
 	}
