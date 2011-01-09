@@ -70,6 +70,19 @@ class Rights
 		$module = self::module();
 		return Yii::app()->createUrl($module->baseUrl);
 	}
+	
+	/**
+	* Returns the list of authorization item types.
+	* @return array the list of types.
+	*/
+	public static function getAuthItemOptions()
+	{
+		return array(
+			CAuthItem::TYPE_OPERATION=>Rights::t('core', 'Operation'),
+			CAuthItem::TYPE_TASK=>Rights::t('core', 'Task'),
+			CAuthItem::TYPE_ROLE=>Rights::t('core', 'Role'),
+		);
+	}
 
 	/**
 	* Returns the name of a specific authorization item.
@@ -78,13 +91,11 @@ class Rights
 	*/
 	public static function getAuthItemTypeName($type)
 	{
-		switch( (int)$type )
-		{
-			case CAuthItem::TYPE_OPERATION: return Rights::t('core', 'Operation');
-			case CAuthItem::TYPE_TASK: return Rights::t('core', 'Task');
-			case CAuthItem::TYPE_ROLE: return Rights::t('core', 'Role');
-			default: throw new CException(Rights::t('core', 'Invalid authorization item type.'));
-		}
+		$options = self::getAuthItemOptions();
+		if( isset($options[ $type ])===true )
+			return $options[ $type ];
+		else
+			throw new CException(Rights::t('core', 'Invalid authorization item type.'));
 	}
 
 	/**

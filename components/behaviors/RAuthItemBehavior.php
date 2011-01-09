@@ -49,7 +49,7 @@ class RAuthItemBehavior extends CBehavior
 	{
 		return CHtml::link($this->getNameText(), array(
 			'authItem/update',
-			'name'=>$this->owner->name,
+			'name'=>urlencode($this->owner->name),
 		));
 	}
 	
@@ -61,7 +61,7 @@ class RAuthItemBehavior extends CBehavior
 	{
 		$markup = CHtml::link($this->owner->name, array(
 			'authItem/update',
-			'name'=>$this->owner->name,
+			'name'=>urlencode($this->owner->name),
 		));
 
 		$markup .= $this->childCount();
@@ -107,7 +107,7 @@ class RAuthItemBehavior extends CBehavior
 	public function getDeleteOperationLink()
 	{
 		return CHtml::linkButton(Rights::t('core', 'Delete'), array(
-			'submit'=>array('authItem/delete', 'name'=>$this->owner->name),
+			'submit'=>array('authItem/delete', 'name'=>urlencode($this->owner->name)),
 			'confirm'=>Rights::t('core', 'Are you sure you want to delete this operation?'),
 			'class'=>'delete-link',
 			'csrf'=>Yii::app()->request->enableCsrfValidation,
@@ -121,7 +121,7 @@ class RAuthItemBehavior extends CBehavior
 	public function getDeleteTaskLink()
 	{
 		return CHtml::linkButton(Rights::t('core', 'Delete'), array(
-			'submit'=>array('authItem/delete', 'name'=>$this->owner->name),
+			'submit'=>array('authItem/delete', 'name'=>urlencode($this->owner->name)),
 			'confirm'=>Rights::t('core', 'Are you sure you want to delete this task?'),
 			'class'=>'delete-link',
 			'csrf'=>Yii::app()->request->enableCsrfValidation,
@@ -138,7 +138,7 @@ class RAuthItemBehavior extends CBehavior
 		if( $this->owner->name!==Rights::module()->superuserName )
 		{
 			return CHtml::linkButton(Rights::t('core', 'Delete'), array(
-				'submit'=>array('authItem/delete', 'name'=>$this->owner->name),
+				'submit'=>array('authItem/delete', 'name'=>urlencode($this->owner->name)),
 				'confirm'=>Rights::t('core', 'Are you sure you want to delete this role?'),
 				'class'=>'delete-link',
 				'csrf'=>Yii::app()->request->enableCsrfValidation,
@@ -153,7 +153,7 @@ class RAuthItemBehavior extends CBehavior
 	public function getRemoveParentLink()
 	{
 		return CHtml::linkButton(Rights::t('core', 'Remove'), array(
-			'submit'=>array('authItem/removeChild', 'name'=>$this->owner->name, 'child'=>$this->parent->name),
+			'submit'=>array('authItem/removeChild', 'name'=>urlencode($this->owner->name), 'child'=>urlencode($this->parent->name)),
 			'class'=>'remove-link',
 			'csrf'=>Yii::app()->request->enableCsrfValidation,
 		));
@@ -166,7 +166,7 @@ class RAuthItemBehavior extends CBehavior
 	public function getRemoveChildLink()
 	{
 		return CHtml::linkButton(Rights::t('core', 'Remove'), array(
-			'submit'=>array('authItem/removeChild', 'name'=>$this->parent->name, 'child'=>$this->owner->name),
+			'submit'=>array('authItem/removeChild', 'name'=>urlencode($this->parent->name), 'child'=>urlencode($this->owner->name)),
 			'class'=>'remove-link',
 			'csrf'=>Yii::app()->request->enableCsrfValidation,
 		));
@@ -179,7 +179,7 @@ class RAuthItemBehavior extends CBehavior
 	public function getRevokeAssignmentLink()
 	{
 		return CHtml::linkButton(Rights::t('core', 'Revoke'), array(
-			'submit'=>array('assignment/revoke', 'id'=>$this->userId, 'name'=>$this->owner->name),
+			'submit'=>array('assignment/revoke', 'id'=>$this->userId, 'name'=>urlencode($this->owner->name)),
 			'class'=>'revoke-link',
 			'csrf'=>Yii::app()->request->enableCsrfValidation,
 		));
@@ -199,8 +199,8 @@ class RAuthItemBehavior extends CBehavior
 				jQuery.ajax({
 					type:'POST',
 					url:'".Yii::app()->controller->createUrl('authItem/revoke', array(
-						'name'=>$role->name, 
-						'child'=>$this->owner->name,
+						'name'=>urlencode($role->name), 
+						'child'=>urlencode($this->owner->name),
 					))."',
 					data:{ ajax:1 $csrf },
 					success:function() {
@@ -228,8 +228,8 @@ class RAuthItemBehavior extends CBehavior
 				jQuery.ajax({
 					type:'POST',
 					url:'".Yii::app()->controller->createUrl('authItem/assign', array(
-						'name'=>$role->name, 
-						'child'=>$this->owner->name,
+						'name'=>urlencode($role->name), 
+						'child'=>urlencode($this->owner->name),
 					))."',
 					data:{ ajax:1 $csrf },
 					success:function() {

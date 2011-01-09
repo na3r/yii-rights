@@ -85,6 +85,7 @@ class AuthItemController extends RController
 			array(
     			'name'=>'description',
 	    		'header'=>Rights::t('core', 'Item'),
+				'type'=>'raw',
     			'htmlOptions'=>array(
     				'class'=>'permission-column',
     				'style'=>'width:25%',
@@ -97,7 +98,7 @@ class AuthItemController extends RController
     	{
     		$columns[] = array(
 				'name'=>strtolower($roleName),
-    			'header'=>$roleName,
+    			'header'=>$role->getNameText(),
     			'type'=>'raw',
     			'htmlOptions'=>array(
     				'class'=>'role-column',
@@ -247,43 +248,38 @@ class AuthItemController extends RController
 
 	/**
 	* Creates an authorization item.
+	* @todo add type validation.
 	*/
 	public function actionCreate()
 	{
-		// Make sure that we have a type
-		if( isset($_GET['type'])===true )
-		{			
-			// Create the authorization item form
-			$formModel = new AuthItemForm('create');
+		$type = $this->getType();
+		
+		// Create the authorization item form
+		$formModel = new AuthItemForm('create');
 
-			if( isset($_POST['AuthItemForm'])===true )
-			{
-				$formModel->attributes = $_POST['AuthItemForm'];
-				if( $formModel->validate()===true )
-				{
-					// Create the item
-					$item = $this->_authorizer->createAuthItem($formModel->name, $_GET['type'], $formModel->description, $formModel->bizRule, $formModel->data);
-					$item = $this->_authorizer->attachAuthItemBehavior($item);
-
-					// Set a flash message for creating the item
-					Yii::app()->user->setFlash($this->module->flashSuccessKey,
-						Rights::t('core', ':name created.', array(':name'=>$item->getNameText()))
-					);
-
-					// Redirect to the correct destination
-					$this->redirect(Yii::app()->user->getRightsReturnUrl(array('authItem/permissions')));
-				}
-			}
-			
-			// Render the view
-			$this->render('create', array(
-				'formModel'=>$formModel,
-			));
-		}
-		else
+		if( isset($_POST['AuthItemForm'])===true )
 		{
-			throw new CHttpException(404, Rights::t('core', 'Invalid authorization item type.'));
+			$formModel->attributes = $_POST['AuthItemForm'];
+			if( $formModel->validate()===true )
+			{
+				// Create the item
+				$item = $this->_authorizer->createAuthItem($formModel->name, $type, $formModel->description, $formModel->bizRule, $formModel->data);
+				$item = $this->_authorizer->attachAuthItemBehavior($item);
+
+				// Set a flash message for creating the item
+				Yii::app()->user->setFlash($this->module->flashSuccessKey,
+					Rights::t('core', ':name created.', array(':name'=>$item->getNameText()))
+				);
+
+				// Redirect to the correct destination
+				$this->redirect(Yii::app()->user->getRightsReturnUrl(array('authItem/permissions')));
+			}
 		}
+
+		// Render the view
+		$this->render('create', array(
+			'formModel'=>$formModel,
+		));
 	}
 
 	/**
@@ -293,6 +289,7 @@ class AuthItemController extends RController
 	{
 		// Get the authorization item
 		$model = $this->loadModel();
+		$itemName = $model->getName();
 		
 		// Create the authorization item form
 		$formModel = new AuthItemForm('update');
@@ -303,7 +300,7 @@ class AuthItemController extends RController
 			if( $formModel->validate()===true )
 			{
 				// Update the item and load it
-				$this->_authorizer->updateAuthItem($_GET['name'], $formModel->name, $formModel->description, $formModel->bizRule, $formModel->data);
+				$this->_authorizer->updateAuthItem($itemName, $formModel->name, $formModel->description, $formModel->bizRule, $formModel->data);
 				$item = $this->_authorizer->authManager->getAuthItem($formModel->name);
 				$item = $this->_authorizer->attachAuthItemBehavior($item);
 
@@ -332,7 +329,7 @@ class AuthItemController extends RController
 				if( $childFormModel->validate()===true )
 				{
 					// Add the child and load it
-					$this->_authorizer->authManager->addItemChild($_GET['name'], $childFormModel->itemname);
+					$this->_authorizer->authManager->addItemChild($itemName, $childFormModel->itemname);
 					$child = $this->_authorizer->authManager->getAuthItem($childFormModel->itemname);
 					$child = $this->_authorizer->attachAuthItemBehavior($child);
 
@@ -342,7 +339,7 @@ class AuthItemController extends RController
 					);
 
 					// Reidrect to the same page
-					$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
+					$this->redirect(array('authItem/update', 'name'=>urlencode($itemName)));
 				}
 			}
 		}
@@ -380,17 +377,18 @@ class AuthItemController extends RController
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
+			$itemName = $this->getItemName();
+			
 			// Load the item and save the name for later use
-			$item = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+			$item = $this->_authorizer->authManager->getAuthItem($itemName);
 			$item = $this->_authorizer->attachAuthItemBehavior($item);
-			$name = $item->getNameText();
 
 			// Delete the item
-			$this->_authorizer->authManager->removeAuthItem($_GET['name']);
+			$this->_authorizer->authManager->removeAuthItem($itemName);
 
 			// Set a flash message for deleting the item
 			Yii::app()->user->setFlash($this->module->flashSuccessKey,
-				Rights::t('core', ':name deleted.', array(':name'=>$name))
+				Rights::t('core', ':name deleted.', array(':name'=>$item->getNameText()))
 			);
 
 			// If AJAX request, we should not redirect the browser
@@ -411,9 +409,12 @@ class AuthItemController extends RController
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
+			$itemName = $this->getItemName();
+			$childName = $this->getChildName();
+			
 			// Remove the child and load it
-			$this->_authorizer->authManager->removeItemChild($_GET['name'], $_GET['child']);
-			$child = $this->_authorizer->authManager->getAuthItem($_GET['child']);
+			$this->_authorizer->authManager->removeItemChild($itemName, $childName);
+			$child = $this->_authorizer->authManager->getAuthItem($childName);
 			$child = $this->_authorizer->attachAuthItemBehavior($child);
 
 			// Set a flash message for removing the child
@@ -423,7 +424,7 @@ class AuthItemController extends RController
 
 			// If AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
-				$this->redirect(array('authItem/update', 'name'=>$_GET['name']));
+				$this->redirect(array('authItem/update', 'name'=>urlencode($itemName)));
 		}
 		else
 		{
@@ -440,9 +441,10 @@ class AuthItemController extends RController
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$model = $this->loadModel();
-
-			if( isset($_GET['child'])===true && $model->hasChild($_GET['child'])===false )
-				$model->addChild($_GET['child']);
+			$childName = $this->getChildName();
+			
+			if( $childName!==null && $model->hasChild($childName)===false )
+				$model->addChild($childName);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -463,9 +465,10 @@ class AuthItemController extends RController
 		if( Yii::app()->request->isPostRequest===true )
 		{
 			$model = $this->loadModel();
+			$childName = $this->getChildName();
 
-			if( isset($_GET['child'])===true && $model->hasChild($_GET['child'])===true )
-				$model->removeChild($_GET['child']);
+			if( $childName!==null && $model->hasChild($childName)===true )
+				$model->removeChild($childName);
 
 			// if AJAX request, we should not redirect the browser
 			if( isset($_POST['ajax'])===false )
@@ -492,6 +495,36 @@ class AuthItemController extends RController
 			throw new CHttpException(400, Rights::t('core', 'Invalid request. Please do not repeat this request again.'));
 		}
 	}
+	
+	/**
+	* @return string the item name or null if not set.
+	*/
+	public function getItemName()
+	{
+		return isset($_GET['name'])===true ? urldecode($_GET['name']) : null;
+	}
+	
+	/**
+	* @return string the child name or null if not set.
+	*/
+	public function getChildName()
+	{
+		return isset($_GET['child'])===true ? urldecode($_GET['child']) : null;
+	}
+	
+	/**
+	 * Returns the authorization item type after validation.
+	 * @return int the type.
+	 */
+	public function getType()
+	{
+		$type = $_GET['type'];
+		$validTypes = array(CAuthItem::TYPE_OPERATION, CAuthItem::TYPE_TASK, CAuthItem::TYPE_ROLE);
+		if( in_array($type, $validTypes)===true )
+			return $type;
+		else
+			throw new CException(Rights::t('core', 'Invalid authorization item type.'));
+	}
 
 	/**
 	* Returns the data model based on the primary key given in the GET variable.
@@ -501,9 +534,11 @@ class AuthItemController extends RController
 	{
 		if( $this->_model===null )
 		{
-			if( isset($_GET['name'])===true )
+			$itemName = $this->getItemName();
+			
+			if( $itemName!==null )
 			{
-				$this->_model = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+				$this->_model = $this->_authorizer->authManager->getAuthItem($itemName);
 				$this->_model = $this->_authorizer->attachAuthItemBehavior($this->_model);
 			}
 

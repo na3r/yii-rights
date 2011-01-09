@@ -140,9 +140,11 @@ class AssignmentController extends RController
 		// We only allow deletion via POST request
 		if( Yii::app()->request->isPostRequest===true )
 		{
+			$itemName = $this->getItemName();
+			
 			// Revoke the item from the user and load it
-			$this->_authorizer->authManager->revoke($_GET['name'], $_GET['id']);
-			$item = $this->_authorizer->authManager->getAuthItem($_GET['name']);
+			$this->_authorizer->authManager->revoke($itemName, $_GET['id']);
+			$item = $this->_authorizer->authManager->getAuthItem($itemName);
 			$item = $this->_authorizer->attachAuthItemBehavior($item);
 
 			// Set flash message for revoking the item
@@ -158,5 +160,13 @@ class AssignmentController extends RController
 		{
 			throw new CHttpException(400, Rights::t('core', 'Invalid request. Please do not repeat this request again.'));
 		}
+	}
+	
+	/**
+	* @return string the item name or null if not set.
+	*/
+	public function getItemName()
+	{
+		return isset($_GET['name'])===true ? urldecode($_GET['name']) : null;
 	}
 }
