@@ -55,6 +55,7 @@ class InstallController extends RController
 				'actions'=>array(
 					'confirm',
 					'run',
+                    'error',
 					'ready',
 				),
 				'users'=>$this->_authorizer->getSuperusers(),
@@ -82,26 +83,19 @@ class InstallController extends RController
 		// Make sure the user is not a guest.
 		if( Yii::app()->user->isGuest===false )
 		{
-			// Get the application web user.
-			$user = Yii::app()->getUser();
-
 			// Make sure that the module is not already installed.
 			if( isset($_GET['confirm'])===true || $this->_installer->installed===false )
 			{
 				// Run the installer and check for an error.
-				if( $this->_installer->run(true)===true )
+				if( $this->_installer->run()===RInstaller::ERROR_NONE )
 				{
-					// Mark the user to have superuser priviledges.
-					$user->isSuperuser = true;
+					// Mark the user to have superuser privileges.
+					Yii::app()->user->isSuperuser = true;
 					$this->redirect(array('install/ready'));
 				}
 
-				// Set an error message.
-				$user->setFlash($this->module->flashErrorKey,
-					Rights::t('install', 'Installation failed.')
-				);
-
-				$this->redirect(Yii::app()->homeUrl);
+                // Redirect to the error page.
+				$this->redirect(array('install/error'));
 			}
 			// Module is already installed.
 			else
@@ -122,5 +116,13 @@ class InstallController extends RController
 	public function actionReady()
 	{
 		$this->render('ready');
+	}
+
+    /**
+	* Displays the install ready page.
+	*/
+	public function actionError()
+	{
+		$this->render('error');
 	}
 }
