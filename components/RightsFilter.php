@@ -12,7 +12,7 @@ class RightsFilter extends CFilter
 
 	/**
 	* Performs the pre-action filtering.
-	* @param CFilterChain the filter chain that the filter is on.
+	* @param CFilterChain $filterChain the filter chain that the filter is on.
 	* @return boolean whether the filtering process should continue and the action
 	* should be executed.
 	*/
@@ -64,7 +64,7 @@ class RightsFilter extends CFilter
 
 	/**
 	* Sets the allowed actions.
-	* @param string the actions that are always allowed separated by commas,
+	* @param string $allowedActions the actions that are always allowed separated by commas,
 	* you may also use star (*) to represent all actions.
 	*/
 	public function setAllowedActions($allowedActions)

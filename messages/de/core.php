@@ -45,6 +45,7 @@ return array (
   'Roles exist at the top of the authorization hierarchy and can therefore inherit from other roles, tasks and/or operations.' => '',
   'Source' => '',
   'Tasks exist below roles in the authorization hierarchy and can therefore only inherit from other tasks and/or operations.' => '',
+  'There must be at least one superuser!' => '',
   'This user has not been assigned any items.' => '',
   'Type' => '',
   'Update :name' => '',

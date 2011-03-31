@@ -23,8 +23,8 @@ class RAuthItemBehavior extends CBehavior
 
 	/**
 	* Constructs the behavior.
-	* @param integer the id of the user to whom this item is assigned
-	* @param CAuthItem the parent item.
+	* @param integer $userId the id of the user to whom this item is assigned
+	* @param CAuthItem $parent the parent item.
 	*/
 	public function __construct($userId=null, CAuthItem $parent=null)
 	{
@@ -245,8 +245,8 @@ class RAuthItemBehavior extends CBehavior
 	
 	/**
 	* Returns the markup for a inherited permission.
-	* @param array the parents for this item.
-	* @param boolean whether to display the parent item type.
+	* @param array $parents the parents for this item.
+	* @param boolean $displayType whether to display the parent item type.
 	* @return string the markup.
 	*/
 	public function getInheritedPermissionText($parents, $displayType=false)

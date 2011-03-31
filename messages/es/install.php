@@ -14,11 +14,13 @@
  * @version $Id: $
  */
 return array (
-  'Application authorization manager must extend the RightsAuthManager class.' => '',
-  'Application web user must extend the RightsWebUser class.' => '',
+  'An error occurred while installing Rights.' => '',
+  'Application authorization manager must extend the RDbAuthManager class.' => '',
+  'Application web user must extend the RWebUser class.' => '',
+  'Error' => '',
+  'Please try again or consult the documentation.' => '',
   'Congratulations!' => '¡Felicitaciones!',
   'Install Rights' => 'Instalar Rights',
-  'Installation failed.' => 'La instalación falló.',
   'No' => 'No',
   'Notice: All your existing data will be lost.' => 'Advertencia: Todos tus datos existentes se perderan.',
   'Please confirm if you wish to reinstall.' => 'Porfavor confirma si deseas reinstalar.',

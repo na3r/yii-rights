@@ -96,6 +96,7 @@ return array (
   'Tasks' => '',
   'Tasks exist below roles in the authorization hierarchy and can therefore only inherit from other tasks and/or operations.' => '',
   'The requested page does not exist.' => '',
+  'There must be at least one superuser!' => '',
   'This item has no children.' => '',
   'This item has no parents.' => '',
   'This user has not been assigned any items.' => '',

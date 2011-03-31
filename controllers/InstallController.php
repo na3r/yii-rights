@@ -67,7 +67,7 @@ class InstallController extends RController
 	}
 
 	/**
-	* Dislays the confirm overwrite page.
+	* Displays the confirm overwrite page.
 	*/
 	public function actionConfirm()
 	{

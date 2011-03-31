@@ -80,8 +80,8 @@ class RGenerator extends CApplicationComponent
 
 	/**
 	* Appends items to be generated of a specific type.
-	* @param array the items to be generated.
-	* @param integer the item type.
+	* @param array $items the items to be generated.
+	* @param integer $type the item type.
 	*/
 	public function addItems($items, $type)
 	{
@@ -94,7 +94,7 @@ class RGenerator extends CApplicationComponent
 
 	/**
 	* Returns all the controllers and their actions.
-	* @param array the controllers and actions.
+	* @param array $items the controllers and actions.
 	*/
 	public function getControllerActions($items=null)
 	{
@@ -144,7 +144,8 @@ class RGenerator extends CApplicationComponent
 
 	/**
 	* Returns all controllers under the specified path.
-	* @param array the controllers.
+	* @param string $path the path.
+	* @return array the controllers.
 	*/
 	protected function getControllersInPath($path)
 	{
@@ -180,7 +181,8 @@ class RGenerator extends CApplicationComponent
 
 	/**
 	* Returns all the controllers under the specified path.
-	* @param array the controllers.
+	* @param string $path the path.
+	* @return array the controllers.
 	*/
 	protected function getControllersInModules($path)
 	{

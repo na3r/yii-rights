@@ -57,7 +57,7 @@ class RUserBehavior extends CModelBehavior
 	/**
 	 * Returns a string with names of the authorization items
 	 * of the given type that are assigned to this user.
-	 * @param integer the item type (0: operation, 1: task, 2: role).
+	 * @param integer $type the item type (0: operation, 1: task, 2: role).
 	 * @return mixed the assigned items. 
 	 */
 	public function getAssignmentsText($type)

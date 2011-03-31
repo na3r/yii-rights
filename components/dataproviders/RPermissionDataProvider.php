@@ -22,8 +22,8 @@ class RPermissionDataProvider extends CDataProvider
 
 	/**
 	* Constructs the data provider.
-	* @param string the data provider identifier.
-	* @param array configuration (name=>value) to be applied as the initial property values of this class.
+	* @param string $id the data provider identifier.
+	* @param array $config configuration (name=>value) to be applied as the initial property values of this class.
 	* @return permissionDataProvider
 	*/
 	public function __construct($id, $config=array())

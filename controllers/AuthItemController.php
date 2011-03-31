@@ -35,7 +35,9 @@ class AuthItemController extends RController
 	*/
 	public function filters()
 	{
-		return array('accessControl');
+		return array(
+			'accessControl'
+		);
 	}
 
 	/**
@@ -207,14 +209,26 @@ class AuthItemController extends RController
 			$model->attributes = $_POST['GenerateForm'];
 			if( $model->validate()===true )
 			{
-				// Get the chosen items
-				$items = array();
-				foreach( $model->items as $itemname=>$value )
-					if( (bool)$value===true )
-						$items[] = $itemname;
+				$items = array(
+					'tasks'=>array(),
+					'operations'=>array(),
+				);
 
-				// Add the items to the generator as operations and run the generator
-				$generator->addItems($items, CAuthItem::TYPE_OPERATION);
+				// Get the chosen items
+				foreach( $model->items as $itemname=>$value )
+				{
+					if( (bool)$value===true )
+					{
+						if( strpos($itemname, '*')!==false )
+							$items['tasks'][] = $itemname;
+						else
+							$items['operations'][] = $itemname;
+					}
+				}
+
+				// Add the items to the generator as tasks and operations and run the generator.
+				$generator->addItems($items['tasks'], CAuthItem::TYPE_TASK);
+				$generator->addItems($items['operations'], CAuthItem::TYPE_OPERATION);
 				if( ($generatedItems = $generator->run())!==false && $generatedItems!==array() )
 				{
 					Yii::app()->getUser()->setFlash($this->module->flashSuccessKey,
@@ -229,9 +243,12 @@ class AuthItemController extends RController
 		$items = $generator->getControllerActions();
 
 		// We need the existing operations for comparason
-		$operations = $this->_authorizer->getAuthItems(CAuthItem::TYPE_OPERATION);
+		$authItems = $this->_authorizer->getAuthItems(array(
+			CAuthItem::TYPE_TASK,
+			CAuthItem::TYPE_OPERATION,
+		));
 		$existingItems = array();
-		foreach( $operations as $itemName=>$item )
+		foreach( $authItems as $itemName=>$item )
 			$existingItems[ $itemName ] = $itemName;
 
 		Yii::app()->clientScript->registerScript('rightsGenerateItemTableSelectRows',

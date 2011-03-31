@@ -11,7 +11,7 @@ class RWebUser extends CWebUser
 	/**
 	* Actions to be taken after logging in.
 	* Overloads the parent method in order to mark superusers.
-	* @param boolean whether the login is based on cookie.
+	* @param boolean $fromCookie whether the login is based on cookie.
 	*/
 	public function afterLogin($fromCookie)
 	{
@@ -25,10 +25,10 @@ class RWebUser extends CWebUser
 	/**
 	* Performs access check for this user.
 	* Overloads the parent method in order to allow superusers access implicitly.
-	* @param string the name of the operation that need access check.
-	* @param array name-value pairs that would be passed to business rules associated
+	* @param string $operation the name of the operation that need access check.
+	* @param array $params name-value pairs that would be passed to business rules associated
 	* with the tasks and roles assigned to the user.
-	* @param boolean whether to allow caching the result of access checki.
+	* @param boolean $allowCaching whether to allow caching the result of access checki.
 	* This parameter has been available since version 1.0.5. When this parameter
 	* is true (default), if the access check of an operation was performed before,
 	* its result will be directly returned when calling this method to check the same operation.
@@ -44,7 +44,7 @@ class RWebUser extends CWebUser
 	}
 
 	/**
-	* @param boolean whether the user is a superuser.
+	* @param boolean $value whether the user is a superuser.
 	*/
 	public function setIsSuperuser($value)
 	{
@@ -60,7 +60,7 @@ class RWebUser extends CWebUser
 	}
 	
 	/**
-	 * @param array return url.
+	 * @param array $value return url.
 	 */
 	public function setRightsReturnUrl($value)
 	{

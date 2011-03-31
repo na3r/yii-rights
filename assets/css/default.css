@@ -21,15 +21,16 @@
 
 #rights #menu { margin:0 0 25px 0; }
 #rights #menu ul.actions { margin:0; padding:0; list-style-type:none; }
-#rights #menu ul.actions li {
-	display:inline;
-	margin:0;
+#rights #menu ul.actions li { display:inline; }
+#rights #menu ul.actions a {
+	color:#ffffff;
+	font-size:12px;
+	text-decoration:none;
 	padding:8px 12px;
 	background:#666699;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 }
-#rights #menu ul.actions a { color:#ffffff; font-size:12px; text-decoration:none; }
 #rights #menu ul.actions a:hover { color:#ffffff; text-decoration:none; }
 
 #rights .form label {

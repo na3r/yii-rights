@@ -9,11 +9,10 @@ class RAssignmentDataProvider extends CActiveDataProvider
 	
 	/**
 	 * Constructor.
-	 * @param mixed $modelClass the model class (e.g. 'Post') or the model finder instance
 	 * (e.g. <code>Post::model()</code>, <code>Post::model()->published()</code>).
 	 * @param array $config configuration (name=>value) to be applied as the initial property values of this class.
 	 */
-	public function __construct($modelClass, $config=array())
+	public function __construct($config=array())
 	{
 		$module = Rights::module();
 		$userClass = $module->userClass;

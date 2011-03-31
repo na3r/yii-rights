@@ -12,7 +12,9 @@ class RAuthorizer extends CApplicationComponent
 	* @property string the name of the superuser role.
 	*/
 	public $superuserName;
-
+	/**
+	 * @property RDbAuthManager the authorization manager.
+	 */
 	private $_authManager;
 
 	/**
@@ -27,8 +29,8 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the a list of all roles.
-	* @param boolean whether to include the superuser.
-	* @param boolean whether to sort the items by their weights.
+	* @param boolean $includeSuperuser whether to include the superuser.
+	* @param boolean $sort whether to sort the items by their weights.
 	* @return the roles.
 	*/
 	public function getRoles($includeSuperuser=true, $sort=true)
@@ -41,12 +43,12 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Creates an authorization item.
-	* @param string the item name. This must be a unique identifier.
-	* @param integer the item type (0: operation, 1: task, 2: role).
-	* @param string description of the item
-	* @param string business rule associated with the item. This is a piece of
+	* @param string $name the item name. This must be a unique identifier.
+	* @param integer $type the item type (0: operation, 1: task, 2: role).
+	* @param string $description the description for the item.
+	* @param string $bizRule business rule associated with the item. This is a piece of
 	* PHP code that will be executed when {@link checkAccess} is called for the item.
-	* @param mixed additional data associated with the item.
+	* @param mixed $data additional data associated with the item.
 	* @return CAuthItem the authorization item
 	*/
 	public function createAuthItem($name, $type, $description='', $bizRule=null, $data=null)
@@ -61,12 +63,12 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Updates an authorization item.
-	* @param string the item name. This must be a unique identifier.
-	* @param integer the item type (0: operation, 1: task, 2: role).
-	* @param string description of the item
-	* @param string business rule associated with the item. This is a piece of
+	* @param string $oldName the item name. This must be a unique identifier.
+	* @param integer $name the item type (0: operation, 1: task, 2: role).
+	* @param string $description the description for the item.
+	* @param string $bizRule business rule associated with the item. This is a piece of
 	* PHP code that will be executed when {@link checkAccess} is called for the item.
-	* @param mixed additional data associated with the item.
+	* @param mixed $data additional data associated with the item.
 	*/
 	public function updateAuthItem($oldName, $name, $description='', $bizRule=null, $data=null)
 	{
@@ -84,13 +86,13 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	 * Returns the authorization items of the specific type and user.
-	 * @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	 * @param mixed $types the item type (0: operation, 1: task, 2: role). Defaults to null,
 	 * meaning returning all items regardless of their type.
-	 * @param mixed the user ID. Defaults to null, meaning returning all items even if
+	 * @param mixed $userId the user ID. Defaults to null, meaning returning all items even if
 	 * they are not assigned to a user.
-	 * @param CAuthItem the item for which to get the select options.
-	 * @param boolean sort items by to weights.
-	 * @param array the items to be excluded.
+	 * @param CAuthItem $parent the item for which to get the select options.
+	 * @param boolean $sort sort items by to weights.
+	 * @param array $exclude the items to be excluded.
 	 * @return array the authorization items of the specific type.
 	 */
 	public function getAuthItems($types=null, $userId=null, CAuthItem $parent=null, $sort=true, $exclude=array())
@@ -121,8 +123,8 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Merges two arrays with authorization items preserving the keys.
-	* @param array the items to merge to.
-	* @param array the items to merge from.
+	* @param array $array1 the items to merge to.
+	* @param array $array2 the items to merge from.
 	* @return array the merged items.
 	*/
 	protected function mergeAuthItems($array1, $array2)
@@ -137,9 +139,9 @@ class RAuthorizer extends CApplicationComponent
 	/**
 	* Excludes invalid authorization items.
 	* When an item is provided its parents and children are excluded aswell.
-	* @param array the authorization items to process.
-	* @param CAuthItem the item to check valid authorization items for.
-	* @param array additional items to be excluded.
+	* @param array $items the authorization items to process.
+	* @param CAuthItem $parent the item to check valid authorization items for.
+	* @param array $exclude additional items to be excluded.
 	* @return array valid authorization items.
 	*/
 	protected function excludeInvalidAuthItems($items, CAuthItem $parent=null, $exclude=array())
@@ -167,11 +169,11 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the parents of the specified authorization item.
-	* @param mixed the item name for which to get its parents.
-	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* @param mixed $item the item name for which to get its parents.
+	* @param integer $type the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
-	* @param string the name of the item in which permissions to search.
-	* @param boolean whether we want the specified items parent or all parents.
+	* @param string $parentName the name of the item in which permissions to search.
+	* @param boolean $direct whether we want the specified items parent or all parents.
 	* @return array the names of the parent items.
 	*/
 	public function getAuthItemParents($item, $type=null, $parentName=null, $direct=false)
@@ -194,9 +196,9 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the parents of the specified authorization item recursively.
-	* @param string the item name for which to get its parents.
-	* @param array the items to process.
-	* @param boolean whether we want the specified items parent or all parents.
+	* @param string $itemName the item name for which to get its parents.
+	* @param array $items the items to process.
+	* @param boolean $direct whether we want the specified items parent or all parents.
 	* @return the names of the parents items recursively.
 	*/
 	private function getAuthItemParentsRecursive($itemName, $items, $direct)
@@ -229,8 +231,8 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the children for the specified authorization item recursively.
-	* @param mixed the item for which to get its children.
-	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* @param mixed $item the item for which to get its children.
+	* @param integer $type the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
 	* @return array the names of the item's children.
 	*/
@@ -252,9 +254,9 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Attaches the rights authorization item behavior to the given item.
-	* @param mixed the item or items to which attach the behavior.
-	* @param int the ID of the user to which the item is assigned.
-	* @param CAuthItem the parent of the given item.
+	* @param mixed $items the item or items to which attach the behavior.
+	* @param int $userId the ID of the user to which the item is assigned.
+	* @param CAuthItem $parent the parent of the given item.
 	* @return mixed the item or items with the behavior attached.
 	*/
 	public function attachAuthItemBehavior($items, $userId=null, CAuthItem $parent=null)
@@ -275,31 +277,39 @@ class RAuthorizer extends CApplicationComponent
 	}
 
 	/**
-	* Returns the users with superuser priviledges.
+	* Returns the users with superuser privileges.
 	* @return the superusers.
 	*/
 	public function getSuperusers()
 	{
+		$assignments = $this->_authManager->getAssignmentsByItemName( Rights::module()->superuserName );
+
+		$userIdList = array();
+		foreach( $assignments as $assignment )
+			$userIdList[] = $assignment->userId;
+
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('id', $userIdList);
+
 		$userClass = Rights::module()->userClass;
-		$users = CActiveRecord::model($userClass)->findAll();
+		$users = CActiveRecord::model($userClass)->findAll($criteria);
 		$users = $this->attachUserBehavior($users);
 
 		$superusers = array();
 		foreach( $users as $user )
-		{
-			$items = $this->getAuthItems(CAuthItem::TYPE_ROLE, $user->getId());
-			$items = $this->attachAuthItemBehavior($items, $user->id);
+			$superusers[] = $user->name;
 
-			if( isset($items[ $this->superuserName ]) )
-				$superusers[] = $user->getName();
-		}
+		// Make sure that we have superusers, otherwise we would allow full access to Rights
+		// if there for some reason is not any superusers.
+		if( $superusers===array() )
+			throw new CHttpException(403, Rights::t('core', 'There must be at least one superuser!'));
 
 		return $superusers;
 	}
 
 	/**
 	* Attaches the rights user behavior to the given users.
-	* @param mixed the user or users to which attach the behavior.
+	* @param mixed $users the user or users to which attach the behavior.
 	* @return mixed the user or users with the behavior attached.
 	*/
 	public function attachUserBehavior($users)
@@ -323,7 +333,7 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns whether the user is a superuser.
-	* @param integer the id of the user to do the check for.
+	* @param integer $userId the id of the user to do the check for.
 	* @return boolean whether the user is a superuser.
 	*/
 	public function isSuperuser($userId)
@@ -334,12 +344,14 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the permissions for a specific authorization item.
-	* @param string the name of the item for which to get permissions. Defaults to null,
+	* @param string $itemName the name of the item for which to get permissions. Defaults to null,
 	* meaning that the full permission tree is returned.
 	* @return the permission tree.
 	*/
 	public function getPermissions($itemName=null)
 	{
+		$permissions = array();
+
 		if( $itemName!==null )
 		{
 			$item = $this->_authManager->getAuthItem($itemName);
@@ -356,7 +368,7 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the permissions for a specific authorization item recursively.
-	* @param CAuthItem the item for which to get permissions.
+	* @param CAuthItem $item the item for which to get permissions.
 	* @return array the section of the permissions tree.
 	*/
 	private function getPermissionsRecursive(CAuthItem $item)
@@ -374,9 +386,9 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Returns the permission type for an authorization item.
-	* @param string the name of the item to check permission for.
-	* @param string the name of the item in which permissions to look.
-	* @param array the permissions.
+	* @param string $itemName the name of the item to check permission for.
+	* @param string $parentName the name of the item in which permissions to look.
+	* @param array $permissions the permissions.
 	* @return integer the permission type (0: None, 1: Direct, 2: Inherited).
 	*/
 	public function hasPermission($itemName, $parentName=null, $permissions=array())
@@ -402,7 +414,7 @@ class RAuthorizer extends CApplicationComponent
 
 	/**
 	* Tries to sanitize code to make it safe for execution.
-	* @param string the code to be execute.
+	* @param string $code the code to be execute.
 	* @return mixed the return value of eval() or null if the code was unsafe to execute.
 	*/
 	protected function sanitizeExpression($code)

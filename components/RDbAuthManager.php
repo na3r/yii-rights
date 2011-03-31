@@ -8,6 +8,9 @@
 */
 class RDbAuthManager extends CDbAuthManager
 {
+	/**
+	 * @var string the name of the rights table.
+	 */
 	public $rightsTable = 'Rights';
 
 	private $_items = array();
@@ -17,7 +20,7 @@ class RDbAuthManager extends CDbAuthManager
 	 * Adds an item as a child of another item.
 	 * Overloads the parent method to make sure that
 	 * we do not add already existing children.
-	 * @param string the child item name.
+	 * @param string $itemName the item name.
 	 * @param string $childName the child item name.
 	 * @throws CException if either parent or child doesn't exist or if a loop has been detected.
 	 */
@@ -33,11 +36,11 @@ class RDbAuthManager extends CDbAuthManager
 	* the user doesn't already have this assignment.
 	* Overloads the parent method to make sure that
 	* we do not assign already assigned items.
-	* @param string the item name.
-	* @param mixed the user ID (see {@link IWebUser::getId})
-	* @param string the business rule to be executed when {@link checkAccess} is called
+	* @param string $itemName the item name.
+	* @param mixed $userId the user ID (see {@link IWebUser::getId})
+	* @param string $bizRule the business rule to be executed when {@link checkAccess} is called
 	* for this particular authorization item.
-	* @param mixed additional data associated with this assignment.
+	* @param mixed $data additional data associated with this assignment.
 	* @return CAuthAssignment the authorization assignment information.
 	* @throws CException if the item does not exist or if the item has already been assigned to the user.
 	*/
@@ -51,8 +54,8 @@ class RDbAuthManager extends CDbAuthManager
 	/**
 	* Returns the authorization item with the specified name.
 	* Overloads the parent method to allow for runtime caching.
-	* @param string the name of the item.
-	* @param boolean whether to accept cached data.
+	* @param string $name the name of the item.
+	* @param boolean $allowCaching whether to accept cached data.
 	* @return CAuthItem the authorization item. Null if the item cannot be found.
 	*/
 	public function getAuthItem($name, $allowCaching=true)
@@ -79,8 +82,8 @@ class RDbAuthManager extends CDbAuthManager
 
 	/**
 	* Returns the specified authorization items.
-	* @param array the names of the authorization items to get.
-	* @param boolean whether to nest the items by type.
+	* @param array $names the names of the authorization items to get.
+	* @param boolean $nested whether to nest the items by type.
 	* @return array the authorization items.
 	*/
 	public function getAuthItemsByNames($names, $nested=false)
@@ -108,11 +111,11 @@ class RDbAuthManager extends CDbAuthManager
 	/**
 	* Returns the authorization items of the specific type and user.
 	* Overloads the parent method to allow for sorting.
-	* @param integer the item type (0: operation, 1: task, 2: role). Defaults to null,
+	* @param integer $type the item type (0: operation, 1: task, 2: role). Defaults to null,
 	* meaning returning all items regardless of their type.
-	* @param mixed the user ID. Defaults to null, meaning returning all items even if
+	* @param mixed $userId the user ID. Defaults to null, meaning returning all items even if
 	* they are not assigned to a user.
-	* @param boolean whether to sort the items according to their weights.
+	* @param boolean $sort whether to sort the items according to their weights.
 	* @return array the authorization items of the specific type.
 	*/
 	public function getAuthItems($type=null, $userId=null, $sort=true)
@@ -180,7 +183,7 @@ class RDbAuthManager extends CDbAuthManager
 	 * Overloads the parent method to allow for caching.
 	 * @param mixed $names the parent item name. This can be either a string or an array.
 	 * The latter represents a list of item names (available since version 1.0.5).
-	 * @param boolean whether to accept cached data.
+	 * @param boolean $allowCaching whether to accept cached data.
 	 * @return array all child items of the parent
 	 */
 	public function getItemChildren($names, $allowCaching=true)
@@ -209,15 +212,21 @@ class RDbAuthManager extends CDbAuthManager
 
 				$condition = 'parent IN ('.implode(', ', $names).')';
 			}
+			else
+			{
+				$condition = '1';
+			}
 
-			$sql = "SELECT name, type, description, bizrule, data FROM {$this->itemTable}, {$this->itemChildTable} WHERE $condition AND name=child";
+			$sql = "SELECT name, type, description, bizrule, data
+				FROM {$this->itemTable}, {$this->itemChildTable}
+				WHERE {$condition} AND name=child";
 			$children = array();
 			foreach( $this->db->createCommand($sql)->queryAll() as $row )
 			{
 				if( ($data = @unserialize($row['data']))===false )
 					$data = null;
 
-				$children[$row['name']] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], $data);
+				$children[ $row['name'] ] = new CAuthItem($this, $row['name'], $row['type'], $row['description'], $row['bizrule'], $data);
 			}
 
 			// Attach the authorization item behavior.
@@ -228,9 +237,27 @@ class RDbAuthManager extends CDbAuthManager
 		}
 	}
 
+	public function getAssignmentsByItemName($name)
+	{
+		$sql = "SELECT * FROM {$this->assignmentTable} WHERE itemname=:itemname";
+		$command = $this->db->createCommand($sql);
+		$command->bindValue(':itemname', $name);
+
+		$assignments=array();
+		foreach($command->queryAll($sql) as $row)
+		{
+			if(($data=@unserialize($row['data']))===false)
+				$data=null;
+
+			$assignments[ $row['itemname'] ] = new CAuthAssignment($this, $row['itemname'], $row['userid'], $row['bizrule'], $data);
+		}
+
+		return $assignments;
+	}
+
 	/**
 	* Updates the authorization items weight.
-	* @param array the result returned from jui-sortable.
+	* @param array $result the result returned from jui-sortable.
 	*/
 	public function updateItemWeight($result)
 	{

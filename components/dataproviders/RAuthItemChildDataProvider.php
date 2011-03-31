@@ -10,8 +10,8 @@ class RAuthItemChildDataProvider extends RAuthItemDataProvider
 {
 	/**
 	* Constructs the data provider.
-	* @param string the data provider identifier.
-	* @param array configuration (name=>value) to be applied as the initial property values of this class.
+	* @param string $parent the data provider identifier.
+	* @param array $config configuration (name=>value) to be applied as the initial property values of this class.
 	* @return RightsAuthItemDataProvider
 	*/
 	public function __construct($parent, $config=array())
