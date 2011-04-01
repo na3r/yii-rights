@@ -289,7 +289,7 @@ class RAuthorizer extends CApplicationComponent
 			$userIdList[] = $assignment->userId;
 
 		$criteria = new CDbCriteria();
-		$criteria->addInCondition('id', $userIdList);
+		$criteria->addInCondition(Rights::module()->userIdColumn, $userIdList);
 
 		$userClass = Rights::module()->userClass;
 		$users = CActiveRecord::model($userClass)->findAll($criteria);
