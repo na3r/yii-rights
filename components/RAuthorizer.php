@@ -285,8 +285,8 @@ class RAuthorizer extends CApplicationComponent
 		$assignments = $this->_authManager->getAssignmentsByItemName( Rights::module()->superuserName );
 
 		$userIdList = array();
-		foreach( $assignments as $assignment )
-			$userIdList[] = $assignment->userId;
+		foreach( $assignments as $userId=>$assignment )
+			$userIdList[] = $userId;
 
 		$criteria = new CDbCriteria();
 		$criteria->addInCondition(Rights::module()->userIdColumn, $userIdList);

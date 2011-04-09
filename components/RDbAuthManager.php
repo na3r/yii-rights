@@ -249,7 +249,7 @@ class RDbAuthManager extends CDbAuthManager
 			if(($data=@unserialize($row['data']))===false)
 				$data=null;
 
-			$assignments[ $row['itemname'] ] = new CAuthAssignment($this, $row['itemname'], $row['userid'], $row['bizrule'], $data);
+			$assignments[ $row['userid'] ] = new CAuthAssignment($this, $row['itemname'], $row['userid'], $row['bizrule'], $data);
 		}
 
 		return $assignments;
